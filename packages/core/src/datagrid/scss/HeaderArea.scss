@@ -1,0 +1,12 @@
+.lfg-header-area {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+
+  &__inner {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    pointer-events: auto;
+  }
+}

@@ -1,0 +1,10 @@
+.lfg-column-header {
+  contain: strict;
+  position: absolute;
+  display: flex;
+  align-items: flex-end;
+  background: var(--lf-grid-header-cell-bg, var(--lf-grid-cell-bg, var(--lf-grid-bg)));
+  padding: 6px 12px;
+  direction: var(--lf-grid-direction);
+  outline: 1px solid var(--lf-grid-header-border-color, var(--lf-grid-border-color));
+}

@@ -1,0 +1,90 @@
+// Used in getScrollbarSize else on touch devices it will
+// come back as 0 since they are overlays by default. But
+// as soon as we style the scrollbar to not look terrible
+// it unfortunately means the scrollbar will always be visible
+// and never a nice overlay on phones/laptops.
+.lf-grid-scroll {
+  scrollbar-color: var(--lf-grid-scroll-thumb) var(--lf-grid-scroll-track);
+
+  // Size
+  &::-webkit-scrollbar {
+    width: 14px;
+    height: 14px;
+  }
+
+  // Track
+  &::-webkit-scrollbar-track {
+    background: var(--lf-grid-scroll-track);
+  }
+  &::-webkit-scrollbar-corner {
+    background: var(--lf-grid-scroll-track);
+  }
+
+  // Handle
+  &::-webkit-scrollbar-thumb {
+    background: var(--lf-grid-scroll-thumb);
+    border-radius: 8px;
+    border: 3px solid var(--lf-grid-scroll-track);
+  }
+
+  // Handle on hover
+  &::-webkit-scrollbar-thumb:hover {
+    background: var(--lf-grid-scroll-thumb-hover);
+  }
+}
+
+.lf-grid {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  flex: 1;
+  border-radius: 10px;
+  border: 1px solid var(--lf-grid-border-color);
+  overflow: hidden;
+
+  &__canvas {
+    position: relative;
+    overflow: auto;
+    height: 100%;
+    contain: strict;
+  }
+
+  &__grid-canvas-size {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  &__grid-view-container {
+    position: sticky;
+    top: 0;
+    left: 0;
+    contain: strict;
+    overflow: hidden;
+    user-select: none;
+  }
+
+  &__grid-view {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  &__grid-sheet {
+    position: absolute;
+    inset: 0;
+  }
+
+  &__pinned-details {
+    position: sticky;
+    left: 0;
+    z-index: 1;
+  }
+}
