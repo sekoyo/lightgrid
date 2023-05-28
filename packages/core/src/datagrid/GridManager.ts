@@ -131,7 +131,7 @@ class GridManager<T, R> {
   )
 
   // -- Grid areas (pushed in render order)
-  $topLeftArea = computed(() => {
+  $areas = computed(() => {
     const areas: GridArea<T, R>[] = []
     // Main
     if (this.$derivedRows().middle.size) {
@@ -139,7 +139,6 @@ class GridManager<T, R> {
         areas.push(
           new GridArea({
             id: 'mainMiddle',
-            pin: AreaPin.y,
             absX: this.$derivedCols().middle.startOffset,
             absY: this.$derivedRows().middle.startOffset,
             windowX: this.$derivedCols().middle.startOffset,
@@ -148,32 +147,38 @@ class GridManager<T, R> {
               this.$viewportWidth() -
               this.$derivedCols().start.size -
               this.$derivedCols().end.size,
-            windowHeight: this.$derivedRows().start.size,
+            windowHeight:
+              this.$viewportHeight() -
+              this.$derivedRows().start.startOffset -
+              this.$derivedRows().end.size,
             colResult: this.$derivedCols().middle,
-            rowResult: this.$derivedRows().start,
+            rowResult: this.$derivedRows().middle,
           })
         )
       }
       if (this.$derivedCols().end.size) {
         areas.push(
           new GridArea({
-            id: 'topRight',
-            pin: AreaPin.xy,
+            id: 'mainRight',
+            pin: AreaPin.x,
             absX: this.$derivedCols().end.startOffset,
-            absY: this.$headerHeight(),
+            absY: this.$derivedRows().middle.startOffset,
             windowX: this.$viewportWidth() - this.$derivedCols().end.size,
-            windowY: this.$headerHeight(),
+            windowY: this.$derivedRows().middle.startOffset,
             windowWidth: this.$derivedCols().end.size,
-            windowHeight: this.$derivedRows().start.size,
-            colResult: this.$derivedCols().middle,
-            rowResult: this.$derivedRows().start,
+            windowHeight:
+              this.$viewportHeight() -
+              this.$derivedRows().start.startOffset -
+              this.$derivedRows().end.size,
+            colResult: this.$derivedCols().end,
+            rowResult: this.$derivedRows().middle,
           })
         )
       }
       if (this.$derivedCols().start.size) {
         areas.push(
           new GridArea({
-            id: 'middleLeft',
+            id: 'mainLeft',
             pin: AreaPin.x,
             absX: 0,
             absY: this.$derivedRows().middle.startOffset,
@@ -182,11 +187,10 @@ class GridManager<T, R> {
             windowWidth: this.$derivedCols().start.size,
             windowHeight:
               this.$viewportHeight() -
-              this.$headerHeight() -
-              this.$derivedRows().start.size -
+              this.$derivedRows().start.startOffset -
               this.$derivedRows().end.size,
             colResult: this.$derivedCols().start,
-            rowResult: this.$derivedRows().start,
+            rowResult: this.$derivedRows().middle,
           })
         )
       }
@@ -200,13 +204,10 @@ class GridManager<T, R> {
             id: 'topMiddle',
             pin: AreaPin.y,
             absX: this.$derivedCols().middle.startOffset,
-            absY: this.$headerHeight(),
+            absY: this.$derivedRows().start.startOffset,
             windowX: this.$derivedCols().middle.startOffset,
-            windowY: this.$headerHeight(),
-            windowWidth:
-              this.$viewportWidth() -
-              this.$derivedCols().start.size -
-              this.$derivedCols().end.size,
+            windowY: this.$derivedRows().start.startOffset,
+            windowWidth: this.$derivedCols().end.size,
             windowHeight: this.$derivedRows().start.size,
             colResult: this.$derivedCols().middle,
             rowResult: this.$derivedRows().start,
@@ -219,12 +220,12 @@ class GridManager<T, R> {
             id: 'topRight',
             pin: AreaPin.xy,
             absX: this.$derivedCols().end.startOffset,
-            absY: this.$headerHeight(),
+            absY: this.$derivedRows().start.startOffset,
             windowX: this.$viewportWidth() - this.$derivedCols().end.size,
-            windowY: this.$headerHeight(),
+            windowY: this.$derivedRows().start.size,
             windowWidth: this.$derivedCols().end.size,
             windowHeight: this.$derivedRows().start.size,
-            colResult: this.$derivedCols().middle,
+            colResult: this.$derivedCols().end,
             rowResult: this.$derivedRows().start,
           })
         )
@@ -235,9 +236,9 @@ class GridManager<T, R> {
             id: 'topLeft',
             pin: AreaPin.xy,
             absX: 0,
-            absY: this.$headerHeight(),
+            absY: this.$derivedRows().start.startOffset,
             windowX: 0,
-            windowY: 0,
+            windowY: this.$derivedRows().start.size,
             windowWidth: this.$derivedCols().start.size,
             windowHeight: this.$derivedRows().start.size,
             colResult: this.$derivedCols().start,
@@ -245,12 +246,61 @@ class GridManager<T, R> {
           })
         )
       }
+      return areas
     }
-  })
 
-  $areas = computed(() => {
-    if (this.$derivedRows().start) {
+    // Bottom
+    if (this.$derivedRows().end.size) {
+      if (this.$derivedCols().middle.size) {
+        areas.push(
+          new GridArea({
+            id: 'bottomMiddle',
+            pin: AreaPin.y,
+            absX: this.$derivedCols().middle.startOffset,
+            absY: this.$derivedRows().end.startOffset,
+            windowX: this.$derivedCols().middle.startOffset,
+            windowY: this.$viewportHeight() - this.$derivedRows().end.size,
+            windowWidth:
+              this.$viewportWidth() -
+              this.$derivedCols().start.size -
+              this.$derivedCols().end.size,
+            windowHeight: this.$derivedRows().end.size,
+            colResult: this.$derivedCols().middle,
+            rowResult: this.$derivedRows().end,
+          })
+        )
+      }
+      if (this.$derivedCols().end.size) {
+        areas.push(
+          new GridArea({
+            id: 'bottomRight',
+            pin: AreaPin.xy,
+            absX: this.$derivedCols().end.startOffset,
+            absY: this.$derivedRows().start.startOffset,
+            windowX: this.$viewportWidth() - this.$derivedCols().end.size,
+            windowY: this.$viewportHeight() - this.$derivedRows().end.size,
+            windowWidth: this.$derivedCols().end.size,
+            windowHeight: this.$derivedRows().end.size,
+            colResult: this.$derivedCols().end,
+            rowResult: this.$derivedRows().end,
+          })
+        )
+      }
       if (this.$derivedCols().start.size) {
+        areas.push(
+          new GridArea({
+            id: 'bottomLeft',
+            pin: AreaPin.xy,
+            absX: 0,
+            absY: this.$derivedRows().start.startOffset,
+            windowX: 0,
+            windowY: this.$viewportHeight() - this.$derivedRows().end.size,
+            windowWidth: this.$derivedCols().start.size,
+            windowHeight: this.$derivedRows().end.size,
+            colResult: this.$derivedCols().start,
+            rowResult: this.$derivedRows().end,
+          })
+        )
       }
     }
   })
@@ -308,7 +358,5 @@ class GridManager<T, R> {
 }
 
 export function createGridManager<T, R>(props: GridManagerStaticProps<T, R>) {
-  return root(() => {
-    return new GridManager(props)
-  })
+  return root(() => new GridManager(props))
 }
