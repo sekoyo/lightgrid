@@ -8,8 +8,4 @@ export default defineConfig({
     port: 8094,
   },
   plugins: [tsconfigPaths(), react()],
-  resolve: {
-    // https://github.com/maverick-js/signals#testing
-    conditions: process.env.VITEST ? ['test'] : undefined,
-  },
 })

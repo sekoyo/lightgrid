@@ -9,36 +9,45 @@ export enum AreaPin {
 interface GridAreaProps<T, R> {
   id: string
   pin?: AreaPin
-  // Absolute position as if elements are laid out on a large grid
-  absX: number
-  absY: number
   // The portion of the window/viewport this occupies
   windowX: number
   windowY: number
   windowWidth: number
   windowHeight: number
+  width: number
+  height: number
   colResult: DerivedColResult<T, R>
   rowResult: DerivedRowResult<T>
+  pinnedX: boolean
+  pinnedY: boolean
 }
 
 export class GridArea<T, R> {
   id: string
   pin?: AreaPin
-  absX: number
-  absY: number
   windowX: number
   windowY: number
+  windowWidth: number
+  windowHeight: number
+  width: number
+  height: number
   colResult: DerivedColResult<T, R>
   rowResult: DerivedRowResult<T>
+  pinnedX: boolean
+  pinnedY: boolean
 
   constructor(props: GridAreaProps<T, R>) {
     this.id = props.id
     this.pin = props.pin
-    this.absX = props.absX
-    this.absY = props.absY
     this.windowX = props.windowX
     this.windowY = props.windowY
+    this.windowWidth = props.windowWidth
+    this.windowHeight = props.windowHeight
+    this.width = props.width
+    this.height = props.height
     this.colResult = props.colResult
     this.rowResult = props.rowResult
+    this.pinnedX = props.pinnedX
+    this.pinnedY = props.pinnedY
   }
 }

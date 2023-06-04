@@ -1,11 +1,10 @@
 import { defineConfig } from 'rollup'
 import { nodeResolve } from '@rollup/plugin-node-resolve'
 import typescript from '@rollup/plugin-typescript'
-import sass from 'rollup-plugin-sass'
+import scss from 'rollup-plugin-scss'
 import clean from '@rollup-extras/plugin-clean'
 import replace from '@rollup/plugin-replace'
 
-const isProd = process.env.NODE_ENV === 'production'
 const extensions = ['.js', '.jsx', '.ts', '.tsx']
 
 export default defineConfig({
@@ -24,6 +23,6 @@ export default defineConfig({
     }),
     nodeResolve({ extensions }),
     typescript(),
-    sass(),
+    scss({ fileName: 'styles.css' }),
   ],
 })

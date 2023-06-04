@@ -1,0 +1,36 @@
+.lfg-cell {
+  position: absolute;
+  height: 100%;
+  contain: strict;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  direction: var(--lfg-direction);
+  background: var(--lfg-cell-bg, var(--lfg-bg));
+
+  &[data-pinned-x='true'],
+  &[data-pinned-y='true'] {
+    background: var(--lfg-pinned-cell-bg, var(--lfg-cell-bg, var(--lfg-bg)));
+  }
+
+  &[data-selected='true'] {
+    background: var(--lfg-cell-selected-bg);
+  }
+
+  &[data-selection-start='true'] {
+    background: var(--lfg-cell-start-cell-bg);
+  }
+
+  &-details-btn {
+    margin: 0 2px 0 8px;
+  }
+}
+
+.lfg-default-cell {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+}

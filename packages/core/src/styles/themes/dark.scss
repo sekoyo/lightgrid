@@ -1,0 +1,14 @@
+.lfg[data-theme='lightfin-dark'] {
+  --lfg-bg: rgb(12, 12, 18);
+  --lfg-cell-bg: var(--lfg-bg);
+  --lfg-header-cell-bg: #171329;
+  --lfg-header-border-color: rgba(255, 255, 255);
+  --lfg-header-text-color: white;
+  --lfg-border-color: rgba(255, 255, 255);
+  --lfg-text-color: white;
+  --lfg-scroll-track: var(--lfg-bg);
+  --lfg-scroll-thumb: rgb(71, 71, 79);
+  --lfg-scroll-thumb-hover: rgb(93, 93, 101);
+  --lfg-cell-selected-bg: #364054;
+  --lfg-cell-start-cell-bg: #5c6679;
+}

@@ -20,7 +20,7 @@ export interface Column<T, R> {
   onSort?: (direction: SortDirection) => void
   filter?: R
   pin?: ColumnPin
-  CellComponent?: R
+  cellComponent?: (props: CellComponentProps<T, R>) => R
 }
 
 export type GroupedColumns<T, R> = (ColumnGroup<T, R> | Column<T, R>)[]
@@ -91,3 +91,13 @@ export type GetRowId<T> = (item: T) => string | number
 export type RenderRowDetails<T, R> = (item: T) => R
 
 export type GridRange = [startIndex: number, endIndex: number]
+
+export interface CellSelection {
+  rowRange: GridRange
+  colRange: GridRange
+}
+
+export interface CellPosition {
+  colIndex: number
+  rowIndex: number
+}

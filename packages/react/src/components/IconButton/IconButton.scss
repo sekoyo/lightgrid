@@ -1,0 +1,14 @@
+.lfg-icon-btn {
+  appearance: none;
+  background: transparent;
+  border: none;
+  color: white;
+  padding: 0;
+  width: 16px;
+  height: 16px;
+  padding: 2px;
+
+  &:not(:disabled) {
+    cursor: pointer;
+  }
+}
