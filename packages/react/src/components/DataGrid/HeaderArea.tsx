@@ -7,8 +7,6 @@ import { ColumnHeaderGroup } from './ColumnHeaderGroup'
 interface HeaderAreaProps<T> {
   columns: DerivedGroupColumns<T, R>
   headerRowHeight: number
-  isFirstGroup: boolean
-  isLastGroup: boolean
   left: number
   width: number
   height: number
@@ -17,8 +15,6 @@ interface HeaderAreaProps<T> {
 export function HeaderAreaNoMemo<T>({
   columns,
   headerRowHeight,
-  isFirstGroup,
-  isLastGroup,
   left,
   width,
   height,
@@ -30,12 +26,7 @@ export function HeaderAreaNoMemo<T>({
   return (
     <div className="lfg-header-area">
       <div className="lfg-header-area-inner" style={{ left, width, height }}>
-        <ColumnHeaderGroup
-          columns={columns}
-          headerRowHeight={headerRowHeight}
-          isFirstGroup={isFirstGroup}
-          isLastGroup={isLastGroup}
-        />
+        <ColumnHeaderGroup columns={columns} headerRowHeight={headerRowHeight} />
       </div>
     </div>
   )

@@ -37,7 +37,6 @@ interface GridManagerStaticProps<T, R> {
   renderRowDetails: RenderRowDetails<T, R>
   onRowStateChange: OnRowStateChange
   onColumnsChanged: (derivedCols: DerivedColsResult<T, R>) => void
-  onRowsChanged: (derivedRows: DerivedRowsResult<T>) => void
   onAreasChanged: (gridAreas: GridArea<T, R>[]) => void
   onViewportChanged: ({ width, height }: Viewport) => void
   onContentHeightChanged: (value: number) => void
@@ -374,7 +373,6 @@ class GridManager<T, R> {
     this.onRowStateChange = props.onRowStateChange
 
     effect(() => props.onColumnsChanged(this.$derivedCols()))
-    effect(() => props.onRowsChanged(this.$derivedRows()))
     effect(() => props.onAreasChanged(this.$areas().byRender))
     effect(() =>
       props.onViewportChanged({

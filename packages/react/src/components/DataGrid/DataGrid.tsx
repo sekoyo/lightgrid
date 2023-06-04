@@ -13,9 +13,7 @@ import {
   RowState,
   createGridManager,
   emptyDerivedColsResult,
-  emptyDerivedRowsResult,
   DerivedColsResult,
-  DerivedRowsResult,
   GridArea,
   DerivedColumn,
   DerivedRow,
@@ -86,8 +84,6 @@ export function DataGrid<T>({
 
   const [derivedCols, setDerivedCols] =
     useState<DerivedColsResult<T, R>>(emptyDerivedColsResult)
-  const [derivedRows, setDerivedRows] =
-    useState<DerivedRowsResult<T>>(emptyDerivedRowsResult)
   const [gridAreas, setGridAreas] = useState<GridArea<T, R>[]>([])
   const [viewport, setViewport] = useState({ width: 0, height: 0 })
   const [contentHeight, setContentHeight] = useState(0)
@@ -110,7 +106,6 @@ export function DataGrid<T>({
       renderRowDetails,
       onRowStateChange,
       onColumnsChanged: setDerivedCols,
-      onRowsChanged: setDerivedRows,
       onAreasChanged: setGridAreas,
       onViewportChanged: setViewport,
       onContentHeightChanged: setContentHeight,
@@ -212,8 +207,6 @@ export function DataGrid<T>({
               /*header middle*/
               columns={middleCols}
               headerRowHeight={headerRowHeight}
-              isFirstGroup={!derivedCols.start.size}
-              isLastGroup={!derivedCols.end.size}
               left={derivedCols.start.size}
               width={derivedCols.middle.size + derivedCols.end.size}
               height={headerHeight}
@@ -222,8 +215,6 @@ export function DataGrid<T>({
               /*header end (right)*/
               columns={derivedCols.end.itemsWithGrouping}
               headerRowHeight={headerRowHeight}
-              isFirstGroup={!derivedCols.start.size && !derivedCols.middle.size}
-              isLastGroup={true}
               left={viewport.width - derivedCols.end.size - scrollbarSize.width}
               width={derivedCols.end.size}
               height={headerHeight}
@@ -232,8 +223,6 @@ export function DataGrid<T>({
               /*header start (left)*/
               columns={derivedCols.start.itemsWithGrouping}
               headerRowHeight={headerRowHeight}
-              isFirstGroup={true}
-              isLastGroup={!derivedCols.middle.size && !derivedCols.end.size}
               left={0}
               width={derivedCols.start.size}
               height={headerHeight}

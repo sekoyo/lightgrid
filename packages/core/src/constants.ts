@@ -39,17 +39,17 @@ export const emptyDerivedColsResult: DerivedColsResult<any, any> = {
   totalItems: 0,
 }
 
-export const emptyDerivedRowResult: DerivedRowResult<any> = {
-  items: [],
-  itemDetails: [],
-  size: 0,
-  startOffset: 0,
-  startIndexOffset: 0,
-}
+// export const emptyDerivedRowResult: DerivedRowResult<any> = {
+//   items: [],
+//   itemDetails: [],
+//   size: 0,
+//   startOffset: 0,
+//   startIndexOffset: 0,
+// }
 
-export const emptyDerivedRowsResult: DerivedRowsResult<any> = {
-  start: emptyDerivedRowResult,
-  middle: emptyDerivedRowResult,
-  end: emptyDerivedRowResult,
-  totalItems: 0,
-}
+// export const emptyDerivedRowsResult: DerivedRowsResult<any> = {
+//   start: emptyDerivedRowResult,
+//   middle: emptyDerivedRowResult,
+//   end: emptyDerivedRowResult,
+//   totalItems: 0,
+// }
