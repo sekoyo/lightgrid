@@ -201,6 +201,7 @@ export function DataGrid<T>({
                 renderRowDetailsRef={renderRowDetailsRef}
                 selection={selection}
                 selectionStartCell={startCell}
+                isFirstColumnGroup={area.colResult.firstWithSize}
               />
             ))}
             <HeaderArea

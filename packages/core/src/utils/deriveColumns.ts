@@ -130,6 +130,7 @@ export interface DerivedColResult<T, R> {
   size: number
   startOffset: number
   startIndexOffset: number
+  firstWithSize: boolean
 }
 
 export interface DerivedColsResult<T, R> {
@@ -148,6 +149,7 @@ const createEmptyColResults: <T, R>() => DerivedColsResult<T, R> = () => ({
     size: 0,
     startOffset: 0,
     startIndexOffset: 0,
+    firstWithSize: false,
   },
   middle: {
     itemsWithGrouping: [],
@@ -155,6 +157,7 @@ const createEmptyColResults: <T, R>() => DerivedColsResult<T, R> = () => ({
     size: 0,
     startOffset: 0,
     startIndexOffset: 0,
+    firstWithSize: false,
   },
   end: {
     itemsWithGrouping: [],
@@ -162,6 +165,7 @@ const createEmptyColResults: <T, R>() => DerivedColsResult<T, R> = () => ({
     size: 0,
     startOffset: 0,
     startIndexOffset: 0,
+    firstWithSize: false,
   },
   size: 0,
   headerRows: 0,
@@ -245,6 +249,15 @@ export function deriveColumns<T, R>(
 
   const middleLastIdx = o.middle.items.length ? o.middle.items.at(-1)!.colIndex + 1 : 0
   recurseColumns(s.rightColumns, o.end, o.end.itemsWithGrouping, middleLastIdx)
+
+  // So we know what column area to render row item details (which span all areas) in
+  if (o.start.size) {
+    o.start.firstWithSize = true
+  } else if (!o.start.size && o.middle.size) {
+    o.middle.firstWithSize = true
+  } else if (!o.start.size && !o.middle.size) {
+    o.end.firstWithSize = true
+  }
 
   // Column index offsets to calc absolute column indexes
   o.middle.startIndexOffset = o.start.items.length

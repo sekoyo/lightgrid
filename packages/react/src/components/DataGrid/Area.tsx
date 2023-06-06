@@ -34,6 +34,7 @@ interface AreaProps<T> {
   renderRowDetailsRef: React.MutableRefObject<RenderRowDetails<T, R>>
   selection?: CellSelection
   selectionStartCell?: CellPosition
+  isFirstColumnGroup: boolean
 }
 
 export function AreaNoMemo<T>({
@@ -46,6 +47,7 @@ export function AreaNoMemo<T>({
   renderRowDetailsRef,
   selection,
   selectionStartCell,
+  isFirstColumnGroup,
 }: AreaProps<T>) {
   const onExpandToggle = useCallback(
     (rowId: string | number) =>
@@ -104,7 +106,7 @@ export function AreaNoMemo<T>({
             </div>
           )
         })}
-        {area.rowResult.itemDetails ? (
+        {isFirstColumnGroup && area.rowResult.itemDetails ? (
           <GridDetailRows
             itemDetails={area.rowResult.itemDetails}
             width={detailsWidth}
