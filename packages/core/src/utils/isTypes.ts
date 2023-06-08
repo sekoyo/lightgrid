@@ -1,6 +1,11 @@
-import { Column, ColumnGroup, DerivedColumn, DerivedColumnGroup } from '../types'
-import { DerivedColResult } from './deriveColumns'
-import { DerivedRowResult } from './deriveRows'
+import {
+  Column,
+  ColumnGroup,
+  DerivedColResult,
+  DerivedColumn,
+  DerivedColumnGroup,
+  DerivedRowResult,
+} from '../types'
 
 export function isColResult<T, R>(
   colOrRowResult: DerivedColResult<T, R> | DerivedRowResult<T>

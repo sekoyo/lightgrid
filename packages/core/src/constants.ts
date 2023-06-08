@@ -1,10 +1,4 @@
-import type { RowMeta } from './types'
-import type {
-  DerivedColResult,
-  DerivedColsResult,
-  DerivedRowResult,
-  DerivedRowsResult,
-} from './utils'
+import type { DerivedColResult, DerivedColsResult, RowMeta } from './types'
 
 export const defaultHeaderRowHeight = 32
 export const defaultRowHeight = 32
@@ -28,6 +22,7 @@ export const emptyDerivedColResult: DerivedColResult<any, any> = {
   size: 0,
   startOffset: 0,
   startIndexOffset: 0,
+  firstWithSize: false,
 }
 
 export const emptyDerivedColsResult: DerivedColsResult<any, any> = {

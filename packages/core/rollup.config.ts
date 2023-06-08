@@ -23,6 +23,6 @@ export default defineConfig({
     }),
     nodeResolve({ extensions }),
     typescript(),
-    scss({ fileName: 'styles.css' }),
+    scss({ fileName: 'styles.css', watch: 'src/styles' }),
   ],
 })

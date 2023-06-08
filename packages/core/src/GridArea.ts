@@ -1,4 +1,4 @@
-import { DerivedColResult, DerivedRowResult } from './utils'
+import { DerivedColResult, DerivedRowResult } from './types'
 
 export enum AreaPin {
   x,

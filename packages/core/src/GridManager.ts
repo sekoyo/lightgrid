@@ -1,5 +1,6 @@
 import { root, signal, computed, effect } from '@maverick-js/signals'
 import {
+  DerivedColsResult,
   DerivedColumn,
   DerivedRow,
   GetRowDetailsMeta,
@@ -11,16 +12,16 @@ import {
   RowState,
 } from './types'
 import {
-  DerivedColsResult,
-  DerivedRowsResult,
   deriveColumns,
   deriveRows,
   getColumnWindow,
   getRowWindow,
   getScrollBarSize,
+  throttle,
   willScrollbarsAppear,
 } from './utils'
 import { AreaPin, GridArea } from './GridArea'
+import { GridPlugin } from './GridPlugin'
 
 enum AreaIndex {
   Start,
@@ -43,7 +44,6 @@ interface GridManagerStaticProps<T, R> {
   onHeaderHeightChanged: (value: number) => void
   onMiddleColsChange: (cols: DerivedColumn<T, R>[]) => void
   onMiddleRowsChange: (rows: DerivedRow<T>[]) => void
-  onScrollbarSizeChange: ({ width, height }: Viewport) => void
 }
 
 interface GridManagerDynamicProps<T, R> {
@@ -56,8 +56,9 @@ interface GridManagerDynamicProps<T, R> {
 }
 
 class GridManager<T, R> {
+  gridEl?: HTMLDivElement
   sizeObserver?: ResizeObserver
-  scrollbarSize = getScrollBarSize() // TODO: Make this DOM agnostic, or bail if not DOM and do 0 (touch)
+  scrollbarSize = getScrollBarSize()
 
   // Static props
   getRowId: GetRowId<T>
@@ -67,6 +68,7 @@ class GridManager<T, R> {
   onRowStateChange: OnRowStateChange
 
   // Dynamic props
+  $plugins = signal<GridPlugin[]>([])
   $viewportWidth = signal(0)
   $viewportHeight = signal(0)
   $columns = signal<GroupedColumns<T, R>>([])
@@ -113,8 +115,6 @@ class GridManager<T, R> {
   $scrollbarHeight = computed(() =>
     this.$hasScroll().hasHScroll ? this.scrollbarSize : 0
   )
-  $availableWidth = computed(() => this.$viewportWidth() - this.$scrollbarWidth())
-  $availableHeight = computed(() => this.$viewportHeight() - this.$scrollbarHeight())
 
   // -- Column window.
   $midWidth = computed(
@@ -187,8 +187,7 @@ class GridManager<T, R> {
         const area: GridArea<T, R> = new GridArea({
           id: 'mainRight',
           pin: AreaPin.x,
-          windowX:
-            this.$viewportWidth() - this.$derivedCols().end.size - this.$scrollbarWidth(),
+          windowX: this.$viewportWidth() - this.$derivedCols().end.size,
           windowY: this.$derivedRows().middle.startOffset,
           windowWidth: this.$derivedCols().end.size,
           windowHeight:
@@ -252,8 +251,7 @@ class GridManager<T, R> {
         const area: GridArea<T, R> = new GridArea({
           id: 'topRight',
           pin: AreaPin.xy,
-          windowX:
-            this.$viewportWidth() - this.$derivedCols().end.size - this.$scrollbarWidth(),
+          windowX: this.$viewportWidth() - this.$derivedCols().end.size,
           windowY: this.$derivedRows().start.startOffset,
           windowWidth: this.$derivedCols().end.size,
           windowHeight: this.$derivedRows().start.size,
@@ -294,10 +292,7 @@ class GridManager<T, R> {
           id: 'bottomMiddle',
           pin: AreaPin.y,
           windowX: this.$derivedCols().middle.startOffset,
-          windowY:
-            this.$viewportHeight() -
-            this.$derivedRows().end.size -
-            this.$scrollbarHeight(),
+          windowY: this.$viewportHeight() - this.$derivedRows().end.size,
           windowWidth:
             this.$viewportWidth() -
             this.$derivedCols().start.size -
@@ -317,12 +312,8 @@ class GridManager<T, R> {
         const area: GridArea<T, R> = new GridArea({
           id: 'bottomRight',
           pin: AreaPin.xy,
-          windowX:
-            this.$viewportWidth() - this.$derivedCols().end.size - this.$scrollbarWidth(),
-          windowY:
-            this.$viewportHeight() -
-            this.$derivedRows().end.size -
-            this.$scrollbarHeight(),
+          windowX: this.$viewportWidth() - this.$derivedCols().end.size,
+          windowY: this.$viewportHeight() - this.$derivedRows().end.size,
           windowWidth: this.$derivedCols().end.size,
           windowHeight: this.$derivedRows().end.size,
           width: this.$derivedCols().end.size,
@@ -340,10 +331,7 @@ class GridManager<T, R> {
           id: 'bottomLeft',
           pin: AreaPin.xy,
           windowX: 0,
-          windowY:
-            this.$viewportHeight() -
-            this.$derivedRows().end.size -
-            this.$scrollbarHeight(),
+          windowY: this.$viewportHeight() - this.$derivedRows().end.size,
           windowWidth: this.$derivedCols().start.size,
           windowHeight: this.$derivedRows().end.size,
           width: this.$derivedCols().start.size,
@@ -384,12 +372,53 @@ class GridManager<T, R> {
     effect(() => props.onHeaderHeightChanged(this.$headerHeight()))
     effect(() => props.onMiddleColsChange(this.$middleCols()))
     effect(() => props.onMiddleRowsChange(this.$middleRows()))
-    effect(() =>
-      props.onScrollbarSizeChange({
-        width: this.$scrollbarWidth(),
-        height: this.$scrollbarHeight(),
-      })
-    )
+  }
+
+  mount(el: HTMLDivElement) {
+    this.gridEl = el
+    this.sizeObserver = new ResizeObserver(this.onResize)
+    this.sizeObserver.observe(el)
+    el.addEventListener('pointerdown', this.onPointerDown)
+    el.addEventListener('pointerup', this.onPointerUp)
+  }
+
+  unmount() {
+    this.sizeObserver?.disconnect()
+    this.gridEl?.removeEventListener('pointerdown', this.onPointerDown)
+    this.gridEl?.removeEventListener('pointerup', this.onPointerUp)
+  }
+
+  onResize: ResizeObserverCallback = throttle(([{ contentRect }]) => {
+    this.$viewportWidth.set(contentRect.width)
+    this.$viewportHeight.set(contentRect.height)
+  }, 30)
+
+  onPointerDown = (e: PointerEvent) => {
+    if (!this.gridEl) return
+    console.log('onPointerDown', e.clientX, e.clientY)
+    const rect = this.gridEl.getBoundingClientRect()
+    const windowX = e.clientX - rect.left
+    const windowY = e.clientY - rect.top
+    if (this.isInSelectableArea(windowX, windowY)) {
+      const absX = windowX + this.$scrollX()
+      const absY = windowY + this.$scrollY()
+
+      this.gridEl.addEventListener('pointermove', this.onPointerMove)
+    }
+  }
+
+  isInSelectableArea = (windowX: number, windowY: number) =>
+    windowX < this.$viewportWidth() - this.$scrollbarWidth() &&
+    windowY > this.$headerHeight() &&
+    windowY < this.$viewportHeight() - this.$scrollbarHeight()
+
+  onPointerMove = (e: PointerEvent) => {
+    console.log('onPointerMove')
+  }
+
+  onPointerUp = (e: PointerEvent) => {
+    console.log('onPointerUp')
+    this.gridEl?.removeEventListener('pointermove', this.onPointerMove)
   }
 
   update(props: GridManagerDynamicProps<T, R>) {
@@ -404,11 +433,6 @@ class GridManager<T, R> {
   updateScroll = (scrollX: number, scrollY: number) => {
     this.$scrollX.set(scrollX)
     this.$scrollY.set(scrollY)
-  }
-
-  updateViewport = (viewportWidth: number, viewportHeight: number) => {
-    this.$viewportWidth.set(viewportWidth)
-    this.$viewportHeight.set(viewportHeight)
   }
 
   onKeyDown = (key: string, metaKey: boolean, shiftKey: boolean) => {

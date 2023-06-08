@@ -1,5 +1,5 @@
 'use client'
-import { useEffect, useRef, useState, type CSSProperties } from 'react'
+import { useEffect, useRef, useState, type CSSProperties, useCallback } from 'react'
 import {
   defaultGetRowDetailsMeta,
   defaultGetRowMeta,
@@ -66,7 +66,6 @@ export function DataGrid<T>({
   theme = 'lightfin-dark',
 }: DataGridProps<T>) {
   const gridEl = useRef<HTMLDivElement>(null)
-  const scrollRef = useRef<HTMLDivElement>(null)
   const gridViewRef = useRef<HTMLDivElement>(null)
 
   // We can't trust that the user will memoize these so we
@@ -90,7 +89,6 @@ export function DataGrid<T>({
   const [headerHeight, setHeaderHeight] = useState(0)
   const [middleCols, setMiddleCols] = useState<DerivedColumn<T, R>[]>([])
   const [middleRows, setMiddleRows] = useState<DerivedRow<T>[]>([])
-  const [scrollbarSize, setScrollbarSize] = useState({ width: 0, height: 0 })
   const [scrollLeft, setScrollLeft] = useState(0)
   const [scrollTop, setScrollTop] = useState(0)
 
@@ -112,7 +110,6 @@ export function DataGrid<T>({
       onHeaderHeightChanged: setHeaderHeight,
       onMiddleColsChange: setMiddleCols,
       onMiddleRowsChange: setMiddleRows,
-      onScrollbarSizeChange: setScrollbarSize,
     })
   )
 
@@ -135,24 +132,33 @@ export function DataGrid<T>({
 
   useEffect(() => {
     if (gridEl.current) {
-      const onResize: ResizeObserverCallback = ([{ contentRect }]) => {
-        mgr.updateViewport(contentRect.width, contentRect.height)
-      }
-      const observer = new ResizeObserver(onResize)
-      observer.observe(gridEl.current)
-      return () => observer.disconnect()
+      mgr.mount(gridEl.current)
+      return () => mgr.unmount()
     }
   }, [mgr])
 
-  const viewportWidth = viewport.width - scrollbarSize.width
-  const viewportHeight = viewport.height - scrollbarSize.height
+  const onScroll = useCallback(
+    (e: React.UIEvent<HTMLDivElement, UIEvent>) => {
+      const el = e.currentTarget
+      if (el instanceof HTMLElement) {
+        setScrollLeft(el.scrollLeft)
+        setScrollTop(el.scrollTop)
+        mgr.updateScroll(el.scrollLeft, el.scrollTop)
+      }
+    },
+    [mgr]
+  )
+
+  const viewportWidth = viewport.width
+  const viewportHeight = viewport.height
 
   return (
     <div
       ref={gridEl}
-      className="lfg"
+      className="lfg lfg-scroll"
       data-theme={theme}
       tabIndex={0}
+      onScroll={onScroll}
       onKeyDown={e => {
         const ne = e.nativeEvent
         mgr.onKeyDown(ne.key, ne.metaKey, ne.shiftKey)
@@ -165,70 +171,57 @@ export function DataGrid<T>({
       }
     >
       <div
-        ref={scrollRef}
-        className="lfg-canvas lfg-scroll"
-        onScroll={e => {
-          const el = e.currentTarget
-          if (el instanceof HTMLElement) {
-            setScrollLeft(el.scrollLeft)
-            setScrollTop(el.scrollTop)
-            mgr.updateScroll(el.scrollLeft, el.scrollTop)
-          }
-        }}
+        className="lfg-grid-size"
+        style={{ width: derivedCols.size, height: contentHeight }}
+      />
+      <div
+        ref={gridViewRef}
+        className="lfg-view-container"
+        style={{ width: viewportWidth, height: viewportHeight }}
       >
         <div
-          className="lfg-canvas-size"
+          className="lfg-view"
           style={{ width: derivedCols.size, height: contentHeight }}
-        />
-        <div
-          ref={gridViewRef}
-          className="lfg-view-container"
-          style={{ width: viewportWidth, height: viewportHeight }}
         >
-          <div
-            className="lfg-view"
-            style={{ width: derivedCols.size, height: contentHeight }}
-          >
-            {gridAreas.map(area => (
-              <Area
-                key={area.id}
-                area={area}
-                columns={area.pinnedX ? area.colResult.items : middleCols}
-                rows={area.pinnedY ? area.rowResult.items : middleRows}
-                rowState={rowState}
-                onRowStateChangeRef={onRowStateChangeRef}
-                detailsWidth={viewportWidth}
-                renderRowDetailsRef={renderRowDetailsRef}
-                selection={selection}
-                selectionStartCell={startCell}
-                isFirstColumnGroup={area.colResult.firstWithSize}
-              />
-            ))}
-            <HeaderArea
-              /*header middle*/
-              columns={middleCols}
-              headerRowHeight={headerRowHeight}
-              left={derivedCols.start.size}
-              width={derivedCols.middle.size + derivedCols.end.size}
-              height={headerHeight}
+          {gridAreas.map(area => (
+            <Area
+              key={area.id}
+              area={area}
+              columns={area.pinnedX ? area.colResult.items : middleCols}
+              rows={area.pinnedY ? area.rowResult.items : middleRows}
+              rowState={rowState}
+              onRowStateChangeRef={onRowStateChangeRef}
+              detailsWidth={viewportWidth}
+              renderRowDetailsRef={renderRowDetailsRef}
+              selection={selection}
+              selectionStartCell={startCell}
+              isFirstColumnGroup={area.colResult.firstWithSize}
             />
-            <HeaderArea
-              /*header end (right)*/
-              columns={derivedCols.end.itemsWithGrouping}
-              headerRowHeight={headerRowHeight}
-              left={viewport.width - derivedCols.end.size - scrollbarSize.width}
-              width={derivedCols.end.size}
-              height={headerHeight}
-            />
-            <HeaderArea
-              /*header start (left)*/
-              columns={derivedCols.start.itemsWithGrouping}
-              headerRowHeight={headerRowHeight}
-              left={0}
-              width={derivedCols.start.size}
-              height={headerHeight}
-            />
-          </div>
+          ))}
+          <HeaderArea
+            /*header middle*/
+            columns={middleCols}
+            headerRowHeight={headerRowHeight}
+            left={derivedCols.start.size}
+            width={derivedCols.middle.size + derivedCols.end.size}
+            height={headerHeight}
+          />
+          <HeaderArea
+            /*header end (right)*/
+            columns={derivedCols.end.itemsWithGrouping}
+            headerRowHeight={headerRowHeight}
+            left={viewport.width - derivedCols.end.size}
+            width={derivedCols.end.size}
+            height={headerHeight}
+          />
+          <HeaderArea
+            /*header start (left)*/
+            columns={derivedCols.start.itemsWithGrouping}
+            headerRowHeight={headerRowHeight}
+            left={0}
+            width={derivedCols.start.size}
+            height={headerHeight}
+          />
         </div>
       </div>
     </div>

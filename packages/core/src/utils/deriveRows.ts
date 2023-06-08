@@ -1,19 +1,13 @@
-import {
+import type {
   GetRowMeta,
   GetRowDetailsMeta,
   DerivedRow,
   DerivedDetailRow,
   RowState,
   GetRowId,
+  DerivedRowResult,
+  DerivedRowsResult,
 } from '../types'
-
-export interface DerivedRowResult<T> {
-  items: DerivedRow<T>[]
-  itemDetails: DerivedDetailRow<T>[]
-  size: number
-  startOffset: number
-  startIndexOffset: number
-}
 
 function deriveRowsForGroup<T>(
   data: T[],
@@ -61,13 +55,6 @@ function deriveRowsForGroup<T>(
   }
 
   return { items, itemDetails, size: offset, startOffset, startIndexOffset }
-}
-
-export interface DerivedRowsResult<T> {
-  start: DerivedRowResult<T>
-  middle: DerivedRowResult<T>
-  end: DerivedRowResult<T>
-  totalItems: number
 }
 
 export function deriveRows<T>(

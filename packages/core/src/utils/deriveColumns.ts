@@ -1,4 +1,11 @@
-import { ColumnPin, GroupedColumns, DerivedColumn, DerivedGroupColumns } from '../types'
+import type {
+  ColumnPin,
+  GroupedColumns,
+  DerivedColumn,
+  DerivedGroupColumns,
+  DerivedColsResult,
+  DerivedColResult,
+} from '../types'
 import { isColumnGroup } from './isTypes'
 
 const DEFAULT_FR = 1
@@ -122,24 +129,6 @@ function getDerivedWidth(
   } else {
     return parseFloat(width) || DEFAULT_ABS
   }
-}
-
-export interface DerivedColResult<T, R> {
-  itemsWithGrouping: DerivedGroupColumns<T, R>
-  items: DerivedColumn<T, R>[]
-  size: number
-  startOffset: number
-  startIndexOffset: number
-  firstWithSize: boolean
-}
-
-export interface DerivedColsResult<T, R> {
-  start: DerivedColResult<T, R>
-  middle: DerivedColResult<T, R>
-  end: DerivedColResult<T, R>
-  size: number
-  headerRows: number
-  totalItems: number
 }
 
 const createEmptyColResults: <T, R>() => DerivedColsResult<T, R> = () => ({

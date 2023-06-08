@@ -45,6 +45,24 @@ export interface DerivedColumn<T, R> extends Column<T, R> {
 
 export type DerivedGroupColumns<T, R> = (DerivedColumnGroup<T, R> | DerivedColumn<T, R>)[]
 
+export interface DerivedColResult<T, R> {
+  itemsWithGrouping: DerivedGroupColumns<T, R>
+  items: DerivedColumn<T, R>[]
+  size: number
+  startOffset: number
+  startIndexOffset: number
+  firstWithSize: boolean
+}
+
+export interface DerivedColsResult<T, R> {
+  start: DerivedColResult<T, R>
+  middle: DerivedColResult<T, R>
+  end: DerivedColResult<T, R>
+  size: number
+  headerRows: number
+  totalItems: number
+}
+
 export interface RowMeta {
   height: number
   hasDetails?: boolean
@@ -57,6 +75,7 @@ export interface RowDetailsMeta {
 export type GetRowMeta<T> = (item: T) => RowMeta
 export type GetRowDetailsMeta<T> = (item: T) => RowDetailsMeta
 
+// Derived for internal use
 export interface DerivedRow<T> {
   item: T
   rowId: string | number
@@ -71,6 +90,21 @@ export interface DerivedDetailRow<T> {
   rowId: string | number
   size: number
   offset: number
+}
+
+export interface DerivedRowResult<T> {
+  items: DerivedRow<T>[]
+  itemDetails: DerivedDetailRow<T>[]
+  size: number
+  startOffset: number
+  startIndexOffset: number
+}
+
+export interface DerivedRowsResult<T> {
+  start: DerivedRowResult<T>
+  middle: DerivedRowResult<T>
+  end: DerivedRowResult<T>
+  totalItems: number
 }
 
 export interface CellComponentProps<T, R> {
@@ -101,3 +135,27 @@ export interface CellPosition {
   colIndex: number
   rowIndex: number
 }
+
+export enum AreaPin {
+  x,
+  y,
+  xy,
+}
+
+export interface GridArea<T, R> {
+  id: string
+  pin?: AreaPin
+  windowX: number
+  windowY: number
+  windowWidth: number
+  windowHeight: number
+  width: number
+  height: number
+  colResult: DerivedColResult<T, R>
+  rowResult: DerivedRowResult<T>
+  pinnedX: boolean
+  pinnedY: boolean
+}
+
+export type Point = { x: number; y: number }
+export type AreaRect = { x: number; y: number; width: number; height: number }
