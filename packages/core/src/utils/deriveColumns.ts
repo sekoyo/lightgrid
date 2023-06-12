@@ -196,7 +196,9 @@ export function deriveColumns<T, R>(
         )
         const size = sectionOffset.current - savedOffset
         levelDerivedCols.push({
-          ...column,
+          key: column.key,
+          header: column.header,
+          pin: column.pin,
           children,
           size,
           offset: savedOffset,
@@ -213,7 +215,15 @@ export function deriveColumns<T, R>(
           column.minWidth
         )
         const c: DerivedColumn<T, R> = {
-          ...column,
+          key: column.key,
+          header: column.header,
+          minWidth: column.minWidth,
+          getValue: column.getValue,
+          sortDirection: column.sortDirection,
+          onSort: column.onSort,
+          filter: column.filter,
+          pin: column.pin,
+          cellComponent: column.cellComponent,
           size: width,
           offset: sectionOffset.current,
           rowIndex,

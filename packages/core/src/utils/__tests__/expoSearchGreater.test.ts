@@ -1,6 +1,5 @@
-import { expect, test } from 'jest'
-
-import { expoSearchGreater } from './expoSearchGreater'
+import { expect, test } from '@jest/globals'
+import { expoSearchGreater } from '../expoSearchGreater'
 
 test('expoSearchGreater', () => {
   const values1 = [1, 4, 6, 13, 16, 26, 27, 29, 34, 38, 40, 47, 55]

@@ -55,10 +55,11 @@ interface GridManagerDynamicProps<T, R> {
   rowState: RowState
 }
 
-class GridManager<T, R> {
+export class GridManager<T, R> {
   gridEl?: HTMLDivElement
   sizeObserver?: ResizeObserver
   scrollbarSize = getScrollBarSize()
+  mounted = false
 
   // Static props
   getRowId: GetRowId<T>
@@ -68,7 +69,7 @@ class GridManager<T, R> {
   onRowStateChange: OnRowStateChange
 
   // Dynamic props
-  $plugins = signal<GridPlugin[]>([])
+  $plugins = signal<Record<string, GridPlugin<T, R>>>({})
   $viewportWidth = signal(0)
   $viewportHeight = signal(0)
   $columns = signal<GroupedColumns<T, R>>([])
@@ -374,51 +375,26 @@ class GridManager<T, R> {
     effect(() => props.onMiddleRowsChange(this.$middleRows()))
   }
 
-  mount(el: HTMLDivElement) {
-    this.gridEl = el
+  mount(gridEl: HTMLDivElement) {
+    this.mounted = true
+    this.gridEl = gridEl
     this.sizeObserver = new ResizeObserver(this.onResize)
-    this.sizeObserver.observe(el)
-    el.addEventListener('pointerdown', this.onPointerDown)
-    el.addEventListener('pointerup', this.onPointerUp)
+    this.sizeObserver.observe(gridEl)
+    Object.values(this.$plugins()).forEach(plugin => {
+      if (plugin?.mount) {
+        plugin.mount()
+      }
+    })
   }
 
   unmount() {
+    this.mounted = false
     this.sizeObserver?.disconnect()
-    this.gridEl?.removeEventListener('pointerdown', this.onPointerDown)
-    this.gridEl?.removeEventListener('pointerup', this.onPointerUp)
-  }
-
-  onResize: ResizeObserverCallback = throttle(([{ contentRect }]) => {
-    this.$viewportWidth.set(contentRect.width)
-    this.$viewportHeight.set(contentRect.height)
-  }, 30)
-
-  onPointerDown = (e: PointerEvent) => {
-    if (!this.gridEl) return
-    console.log('onPointerDown', e.clientX, e.clientY)
-    const rect = this.gridEl.getBoundingClientRect()
-    const windowX = e.clientX - rect.left
-    const windowY = e.clientY - rect.top
-    if (this.isInSelectableArea(windowX, windowY)) {
-      const absX = windowX + this.$scrollX()
-      const absY = windowY + this.$scrollY()
-
-      this.gridEl.addEventListener('pointermove', this.onPointerMove)
-    }
-  }
-
-  isInSelectableArea = (windowX: number, windowY: number) =>
-    windowX < this.$viewportWidth() - this.$scrollbarWidth() &&
-    windowY > this.$headerHeight() &&
-    windowY < this.$viewportHeight() - this.$scrollbarHeight()
-
-  onPointerMove = (e: PointerEvent) => {
-    console.log('onPointerMove')
-  }
-
-  onPointerUp = (e: PointerEvent) => {
-    console.log('onPointerUp')
-    this.gridEl?.removeEventListener('pointermove', this.onPointerMove)
+    Object.values(this.$plugins()).forEach(plugin => {
+      if (plugin?.unmount) {
+        plugin.unmount()
+      }
+    })
   }
 
   update(props: GridManagerDynamicProps<T, R>) {
@@ -430,13 +406,40 @@ class GridManager<T, R> {
     this.$rowState.set(props.rowState)
   }
 
-  updateScroll = (scrollX: number, scrollY: number) => {
-    this.$scrollX.set(scrollX)
-    this.$scrollY.set(scrollY)
+  updateScroll(scrollLeft: number, scrollTop: number) {
+    this.$scrollX.set(scrollLeft)
+    this.$scrollY.set(scrollTop)
   }
 
-  onKeyDown = (key: string, metaKey: boolean, shiftKey: boolean) => {
-    console.log('onKeyDown', key, metaKey, shiftKey)
+  onResize: ResizeObserverCallback = throttle(([{ contentRect }]) => {
+    this.$viewportWidth.set(contentRect.width)
+    this.$viewportHeight.set(contentRect.height)
+
+    Object.values(this.$plugins()).forEach(plugin => {
+      if (plugin?.onResize) {
+        plugin.onResize(contentRect.width, contentRect.height)
+      }
+    })
+  }, 30)
+
+  addPlugin(id: string, plugin: GridPlugin<T, R>) {
+    this.$plugins.set(prev => ({ ...prev, [id]: plugin }))
+    if (this.mounted && plugin.mount) {
+      plugin.mount()
+    }
+  }
+
+  removePlugin(id: string) {
+    this.$plugins.set(prev => {
+      if (prev[id]) {
+        const plugin = prev[id]
+        if (plugin.unmount) {
+          plugin.unmount()
+        }
+        delete prev[id]
+      }
+      return { ...prev }
+    })
   }
 }
 

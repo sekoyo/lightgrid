@@ -1,6 +1,8 @@
+export * from './plugins'
+export * from './utils'
+
 export * from './constants'
 export * from './types'
-export * from './utils'
 export * from './GridManager'
 export * from './GridPlugin'
 

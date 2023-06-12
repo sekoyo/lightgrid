@@ -19,18 +19,19 @@ import {
   DerivedRow,
   CellSelection,
   CellPosition,
+  CellSelectionPlugin,
 } from '@lightfin/datagrid'
 import '@lightfin/datagrid/dist/styles.css'
 import { R } from './types'
 import { HeaderArea } from './HeaderArea'
 import { Area } from './Area'
 
-const EMPTY_DATA: any[] = []
-const EMPTY_ROW_STATE: RowState = {}
-const NOOP = () => {
+const emptyData: any[] = []
+const emptyRpwState: RowState = {}
+const noop = () => {
   /**/
 }
-const DEFAULT_ROW_DETAILS_RENDERER = () => (
+const defaultRowDetailsRenderer = () => (
   <div>Define a `renderRowDetails` to customize this</div>
 )
 
@@ -48,6 +49,7 @@ interface DataGridProps<T> {
   onRowStateChange?: OnRowStateChange
   direction?: 'ltr' | 'rtl'
   theme?: string
+  disableCellSelection?: boolean
 }
 
 export function DataGrid<T>({
@@ -57,25 +59,20 @@ export function DataGrid<T>({
   getRowMeta = defaultGetRowMeta,
   getRowDetailsMeta = defaultGetRowDetailsMeta,
   data,
-  pinnedTopData = EMPTY_DATA,
-  pinnedBottomData = EMPTY_DATA,
-  rowState = EMPTY_ROW_STATE,
-  renderRowDetails = DEFAULT_ROW_DETAILS_RENDERER,
-  onRowStateChange = NOOP,
+  pinnedTopData = emptyData,
+  pinnedBottomData = emptyData,
+  rowState = emptyRpwState,
+  renderRowDetails = defaultRowDetailsRenderer,
+  onRowStateChange = noop,
   direction,
   theme = 'lightfin-dark',
+  disableCellSelection,
 }: DataGridProps<T>) {
   const gridEl = useRef<HTMLDivElement>(null)
-  const gridViewRef = useRef<HTMLDivElement>(null)
+  const viewportEl = useRef<HTMLDivElement>(null)
 
   // We can't trust that the user will memoize these so we
   // assume they never change.
-  const getRowIdRef = useRef(getRowId)
-  getRowIdRef.current = getRowId
-  const getRowMetaRef = useRef(getRowMeta)
-  getRowMetaRef.current = getRowMeta
-  const getRowDetailsMetaRef = useRef(getRowDetailsMeta)
-  getRowDetailsMetaRef.current = getRowDetailsMeta
   const renderRowDetailsRef = useRef(renderRowDetails)
   renderRowDetailsRef.current = renderRowDetails
   const onRowStateChangeRef = useRef(onRowStateChange)
@@ -85,17 +82,16 @@ export function DataGrid<T>({
     useState<DerivedColsResult<T, R>>(emptyDerivedColsResult)
   const [gridAreas, setGridAreas] = useState<GridArea<T, R>[]>([])
   const [viewport, setViewport] = useState({ width: 0, height: 0 })
+  const [scrollLeft, setScrollLeft] = useState(0)
+  const [scrollTop, setScrollTop] = useState(0)
   const [contentHeight, setContentHeight] = useState(0)
   const [headerHeight, setHeaderHeight] = useState(0)
   const [middleCols, setMiddleCols] = useState<DerivedColumn<T, R>[]>([])
   const [middleRows, setMiddleRows] = useState<DerivedRow<T>[]>([])
-  const [scrollLeft, setScrollLeft] = useState(0)
-  const [scrollTop, setScrollTop] = useState(0)
+  const [startCell, setStartCell] = useState<CellPosition>()
+  const [selection, setSelection] = useState<CellSelection>()
 
-  // TODO
-  const selection: CellSelection | undefined = undefined
-  const startCell: CellPosition | undefined = undefined
-
+  // Grid manager instance and props that don't change
   const [mgr] = useState(() =>
     createGridManager<T, R>({
       getRowId,
@@ -113,6 +109,18 @@ export function DataGrid<T>({
     })
   )
 
+  // Cell selection plugin
+  useEffect(() => {
+    if (!disableCellSelection) {
+      mgr.addPlugin(
+        'cellSelection',
+        new CellSelectionPlugin(mgr, setStartCell, setSelection)
+      )
+      return () => mgr.removePlugin('cellSelection')
+    }
+  }, [mgr, disableCellSelection])
+
+  // Pass props which update to grid manager
   useEffect(() => {
     mgr.update({
       columns,
@@ -124,18 +132,19 @@ export function DataGrid<T>({
     })
   }, [mgr, columns, headerRowHeight, data, pinnedTopData, pinnedBottomData, rowState])
 
+  // Mount and unmount
+  useEffect(() => {
+    mgr.mount(gridEl.current!)
+    return () => mgr.unmount()
+  }, [mgr])
+
   // Only change scroll when we receive an event, as the browser throttles
   // scroll events causing flashes of blankness on fast scrolling.
+  // Also we don't do this in GridManager as this syncs up with React
+  // rendering better and doesn't so easily cause flashes of blankness.
   useEffect(() => {
-    gridViewRef.current!.scrollTo(scrollLeft, scrollTop)
+    viewportEl.current!.scrollTo(scrollLeft, scrollTop)
   }, [scrollTop, scrollLeft])
-
-  useEffect(() => {
-    if (gridEl.current) {
-      mgr.mount(gridEl.current)
-      return () => mgr.unmount()
-    }
-  }, [mgr])
 
   const onScroll = useCallback(
     (e: React.UIEvent<HTMLDivElement, UIEvent>) => {
@@ -159,10 +168,6 @@ export function DataGrid<T>({
       data-theme={theme}
       tabIndex={0}
       onScroll={onScroll}
-      onKeyDown={e => {
-        const ne = e.nativeEvent
-        mgr.onKeyDown(ne.key, ne.metaKey, ne.shiftKey)
-      }}
       style={
         {
           '--lfg-direction': direction,
@@ -171,16 +176,16 @@ export function DataGrid<T>({
       }
     >
       <div
-        className="lfg-grid-size"
+        className="lfg-grid-sizer"
         style={{ width: derivedCols.size, height: contentHeight }}
       />
       <div
-        ref={gridViewRef}
-        className="lfg-view-container"
+        ref={viewportEl}
+        className="lfg-viewport"
         style={{ width: viewportWidth, height: viewportHeight }}
       >
         <div
-          className="lfg-view"
+          className="lfg-canvas"
           style={{ width: derivedCols.size, height: contentHeight }}
         >
           {gridAreas.map(area => (

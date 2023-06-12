@@ -1,5 +1,6 @@
-import { expect, test } from 'jest'
-import { deriveColumns } from './deriveColumns'
+import { expect, test } from '@jest/globals'
+import { deriveColumns } from '../deriveColumns'
+import { DerivedColsResult } from '../../types'
 
 test('deriveColumns', () => {
   const noop = () => {
@@ -44,12 +45,12 @@ test('deriveColumns', () => {
     1000
   )
 
-  expect(res).toEqual({
+  const expectedRes: DerivedColsResult<any, any> = {
     start: {
-      cols: [
+      itemsWithGrouping: [
         {
           key: 'e',
-          width: 10,
+          size: 10,
           pin: 'start',
           offset: 0,
           rowIndex: 0,
@@ -60,7 +61,7 @@ test('deriveColumns', () => {
         {
           key: 'f',
           pin: 'start',
-          width: 640,
+          size: 640,
           offset: 10,
           rowIndex: 0,
           rowSpan: 2,
@@ -71,7 +72,7 @@ test('deriveColumns', () => {
       items: [
         {
           key: 'e',
-          width: 10,
+          size: 10,
           pin: 'start',
           offset: 0,
           rowIndex: 0,
@@ -82,7 +83,7 @@ test('deriveColumns', () => {
         {
           key: 'f',
           pin: 'start',
-          width: 640,
+          size: 640,
           offset: 10,
           rowIndex: 0,
           rowSpan: 2,
@@ -91,12 +92,15 @@ test('deriveColumns', () => {
         },
       ],
       size: 650,
+      startOffset: 0,
+      startIndexOffset: 0,
+      firstWithSize: true,
     },
     middle: {
-      cols: [
+      itemsWithGrouping: [
         {
           key: 'a',
-          width: 20,
+          size: 20,
           offset: 0,
           rowIndex: 0,
           rowSpan: 2,
@@ -107,7 +111,7 @@ test('deriveColumns', () => {
       items: [
         {
           key: 'a',
-          width: 20,
+          size: 20,
           offset: 0,
           rowIndex: 0,
           rowSpan: 2,
@@ -116,16 +120,19 @@ test('deriveColumns', () => {
         },
       ],
       size: 20,
+      startOffset: 650,
+      startIndexOffset: 2,
+      firstWithSize: false,
     },
     end: {
-      cols: [
+      itemsWithGrouping: [
         {
           key: 'b',
           pin: 'end',
           children: [
             {
               key: 'c',
-              width: 10,
+              size: 10,
               offset: 0,
               rowIndex: 1,
               rowSpan: 1,
@@ -134,7 +141,7 @@ test('deriveColumns', () => {
             },
             {
               key: 'd',
-              width: 320,
+              size: 320,
               offset: 10,
               rowIndex: 1,
               rowSpan: 1,
@@ -142,7 +149,7 @@ test('deriveColumns', () => {
               getValue: noop,
             },
           ],
-          width: 330,
+          size: 330,
           offset: 0,
           rowIndex: 0,
           rowSpan: 1,
@@ -152,7 +159,7 @@ test('deriveColumns', () => {
       items: [
         {
           key: 'c',
-          width: 10,
+          size: 10,
           offset: 0,
           rowIndex: 1,
           rowSpan: 1,
@@ -161,7 +168,7 @@ test('deriveColumns', () => {
         },
         {
           key: 'd',
-          width: 320,
+          size: 320,
           offset: 10,
           rowIndex: 1,
           rowSpan: 1,
@@ -170,8 +177,14 @@ test('deriveColumns', () => {
         },
       ],
       size: 330,
+      startOffset: 670,
+      startIndexOffset: 3,
+      firstWithSize: false,
     },
     size: 1000,
     headerRows: 2,
-  })
+    totalItems: 5,
+  }
+
+  expect(res).toEqual(expectedRes)
 })
