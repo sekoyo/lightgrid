@@ -1,3 +1,41 @@
 @import './themes/dark.scss';
 @import './Grid.scss';
 @import './Cell.scss';
+
+// Note: generic class that getScrollbarSize also uses
+.lfg-scroll {
+  overflow: auto;
+  contain: strict;
+
+  @media (pointer: fine) {
+    // Only style on pointer devices as touch ones have scroll as a nice
+    // overlay that's normally hidden.
+    scrollbar-color: var(--lfg-scroll-thumb) var(--lfg-scroll-track);
+
+    // Size
+    &::-webkit-scrollbar {
+      width: 14px;
+      height: 14px;
+    }
+
+    // Track
+    &::-webkit-scrollbar-track {
+      background: var(--lfg-scroll-track);
+    }
+    &::-webkit-scrollbar-corner {
+      background: var(--lfg-scroll-track);
+    }
+
+    // Handle
+    &::-webkit-scrollbar-thumb {
+      background: var(--lfg-scroll-thumb);
+      border-radius: 8px;
+      border: 3px solid var(--lfg-scroll-track);
+    }
+
+    // Handle on hover
+    &::-webkit-scrollbar-thumb:hover {
+      background: var(--lfg-scroll-thumb-hover);
+    }
+  }
+}

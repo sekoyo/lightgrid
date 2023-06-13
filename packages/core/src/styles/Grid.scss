@@ -6,58 +6,58 @@
   }
 
   position: relative;
-  overflow: auto;
-  height: 100%;
-  contain: strict;
   box-sizing: border-box;
   width: 100%;
   height: 100%;
   flex: 1;
+  border-radius: 10px;
   border: 1px solid var(--lfg-border-color);
+  overflow: hidden;
   color: var(--lfg-text-color);
 
-  // Note: getScrollbarSize uses this class
+  // Used in getScrollbarSize else on touch devices it will
+  // come back as 0 since they are overlays by default. But
+  // as soon as we style the scrollbar to not look terrible
+  // it unfortunately means the scrollbar will always be visible
+  // and never a nice overlay on phones/laptops.
   &-scroll {
-    @media (pointer: fine) {
-      // Only style on pointer devices as touch ones have scroll as a nice
-      // overlay that's normally hidden.
-      scrollbar-color: var(--lfg-scroll-thumb) var(--lfg-scroll-track);
+    scrollbar-color: var(--lfg-scroll-thumb) var(--lfg-scroll-track);
 
-      // Size
-      &::-webkit-scrollbar {
-        width: 14px;
-        height: 14px;
-      }
+    // Size
+    &::-webkit-scrollbar {
+      width: 14px;
+      height: 14px;
+    }
 
-      // Track
-      &::-webkit-scrollbar-track {
-        background: var(--lfg-scroll-track);
-      }
-      &::-webkit-scrollbar-corner {
-        background: var(--lfg-scroll-track);
-      }
+    // Track
+    &::-webkit-scrollbar-track {
+      background: var(--lfg-scroll-track);
+    }
+    &::-webkit-scrollbar-corner {
+      background: var(--lfg-scroll-track);
+    }
 
-      // Handle
-      &::-webkit-scrollbar-thumb {
-        background: var(--lfg-scroll-thumb);
-        border-radius: 8px;
-        border: 3px solid var(--lfg-scroll-track);
-      }
+    // Handle
+    &::-webkit-scrollbar-thumb {
+      background: var(--lfg-scroll-thumb);
+      border-radius: 8px;
+      border: 3px solid var(--lfg-scroll-track);
+    }
 
-      // Handle on hover
-      &::-webkit-scrollbar-thumb:hover {
-        background: var(--lfg-scroll-thumb-hover);
-      }
+    // Handle on hover
+    &::-webkit-scrollbar-thumb:hover {
+      background: var(--lfg-scroll-thumb-hover);
     }
   }
 
-  &-grid-sizer {
-    position: absolute;
-    top: 0;
-    left: 0;
+  &-canvas {
+    position: relative;
+    overflow: auto;
+    height: 100%;
+    contain: strict;
   }
 
-  &-canvas {
+  &-grid-sizer {
     position: absolute;
     top: 0;
     left: 0;
@@ -72,10 +72,10 @@
     user-select: none;
   }
 
-  &-pinned-details {
-    position: sticky;
+  &-view {
+    position: absolute;
+    top: 0;
     left: 0;
-    z-index: 1;
   }
 
   &-area {

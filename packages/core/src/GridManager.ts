@@ -58,7 +58,7 @@ interface GridManagerDynamicProps<T, R> {
 }
 
 export class GridManager<T, R> {
-  gridEl?: HTMLDivElement
+  scrollEl?: HTMLDivElement
   sizeObserver?: ResizeObserver
   scrollbarSize = getScrollBarSize()
   mounted = false
@@ -192,6 +192,8 @@ export class GridManager<T, R> {
       this.$viewportWidth() - derivedCols.start.size - derivedCols.end.size
     const middleHeight =
       this.$viewportHeight() - derivedRows.middle.startOffset - derivedRows.end.size
+    const endX = this.$viewportWidth() - derivedCols.end.size - this.$scrollbarWidth()
+    const endY = this.$viewportHeight() - derivedRows.end.size - this.$scrollbarHeight()
 
     // Main
     if (derivedRows.middle.size) {
@@ -215,7 +217,7 @@ export class GridManager<T, R> {
       if (derivedCols.end.size) {
         const area: GridArea<T, R> = {
           id: 'mainRight',
-          windowX: this.$viewportWidth() - derivedCols.end.size,
+          windowX: endX,
           windowY: derivedRows.middle.startOffset,
           windowWidth: derivedCols.end.size,
           windowHeight: middleHeight,
@@ -270,7 +272,7 @@ export class GridManager<T, R> {
       if (derivedCols.end.size) {
         const area: GridArea<T, R> = {
           id: 'topRight',
-          windowX: this.$viewportWidth() - derivedCols.end.size,
+          windowX: endX,
           windowY: derivedRows.start.startOffset,
           windowWidth: derivedCols.end.size,
           windowHeight: derivedRows.start.size,
@@ -309,7 +311,7 @@ export class GridManager<T, R> {
         const area: GridArea<T, R> = {
           id: 'bottomMiddle',
           windowX: derivedCols.middle.startOffset,
-          windowY: this.$viewportHeight() - derivedRows.end.size,
+          windowY: endY,
           windowWidth: middleWidth,
           width: derivedCols.middle.size + derivedCols.end.size,
           height: derivedRows.end.size,
@@ -325,8 +327,8 @@ export class GridManager<T, R> {
       if (derivedCols.end.size) {
         const area: GridArea<T, R> = {
           id: 'bottomRight',
-          windowX: this.$viewportWidth() - derivedCols.end.size,
-          windowY: this.$viewportHeight() - derivedRows.end.size,
+          windowX: endX,
+          windowY: endY,
           windowWidth: derivedCols.end.size,
           windowHeight: derivedRows.end.size,
           width: derivedCols.end.size,
@@ -343,7 +345,7 @@ export class GridManager<T, R> {
         const area: GridArea<T, R> = {
           id: 'bottomLeft',
           windowX: 0,
-          windowY: this.$viewportHeight() - derivedRows.end.size,
+          windowY: endY,
           windowWidth: derivedCols.start.size,
           windowHeight: derivedRows.end.size,
           width: derivedCols.start.size,
@@ -376,8 +378,8 @@ export class GridManager<T, R> {
     effect(() => props.onAreasChanged(this.$areas().byRender))
     effect(() =>
       props.onViewportChanged({
-        width: this.$viewportWidth(),
-        height: this.$viewportHeight(),
+        width: this.$viewportWidth() - this.$scrollbarWidth(),
+        height: this.$viewportHeight() - this.$scrollbarHeight(),
       })
     )
     effect(() => props.onContentHeightChanged(this.$contentHeight()))
@@ -386,11 +388,11 @@ export class GridManager<T, R> {
     effect(() => props.onMiddleRowsChange(this.$middleRows()))
   }
 
-  mount(gridEl: HTMLDivElement) {
+  mount(scrollEl: HTMLDivElement) {
     this.mounted = true
-    this.gridEl = gridEl
+    this.scrollEl = scrollEl
     this.sizeObserver = new ResizeObserver(this.onResize)
-    this.sizeObserver.observe(gridEl)
+    this.sizeObserver.observe(scrollEl)
 
     Object.values(this.$plugins()).forEach(plugin => {
       if (plugin?.mount) {

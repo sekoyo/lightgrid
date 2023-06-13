@@ -23,18 +23,18 @@ export class CellSelectionPlugin<T, R> extends GridPlugin<T, R> {
   }
 
   mount() {
-    this.mgr.gridEl!.addEventListener('mousedown', this.onMouseDown)
-    this.mgr.gridEl!.addEventListener('mouseup', this.onMouseUp)
+    this.mgr.scrollEl!.addEventListener('mousedown', this.onMouseDown)
+    this.mgr.scrollEl!.addEventListener('mouseup', this.onMouseUp)
   }
 
   unmount() {
-    this.mgr.gridEl!.removeEventListener('mousedown', this.onMouseDown)
-    this.mgr.gridEl!.removeEventListener('mousemove', this.onMouseMove)
-    this.mgr.gridEl!.removeEventListener('mouseup', this.onMouseUp)
+    this.mgr.scrollEl!.removeEventListener('mousedown', this.onMouseDown)
+    this.mgr.scrollEl!.removeEventListener('mousemove', this.onMouseMove)
+    this.mgr.scrollEl!.removeEventListener('mouseup', this.onMouseUp)
   }
 
   onMouseDown = (e: MouseEvent) => {
-    this.rect = this.mgr.gridEl!.getBoundingClientRect()
+    this.rect = this.mgr.scrollEl!.getBoundingClientRect()
     this.startWindowX = e.clientX - this.rect.left
     this.startWindowY = e.clientY - this.rect.top
 
@@ -48,7 +48,7 @@ export class CellSelectionPlugin<T, R> extends GridPlugin<T, R> {
           this.startWindowY
         )
         this.setStartCell(cell)
-        this.mgr.gridEl!.addEventListener('mousemove', this.onMouseMove, {
+        this.mgr.scrollEl!.addEventListener('mousemove', this.onMouseMove, {
           passive: true,
         })
       }
@@ -61,7 +61,7 @@ export class CellSelectionPlugin<T, R> extends GridPlugin<T, R> {
   }
 
   onMouseUp = (e: MouseEvent) => {
-    this.mgr.gridEl!.removeEventListener('mousemove', this.onMouseMove)
+    this.mgr.scrollEl!.removeEventListener('mousemove', this.onMouseMove)
   }
 
   isInSelectableArea = (windowX: number, windowY: number) =>

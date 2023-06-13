@@ -69,6 +69,7 @@ export function DataGrid<T>({
   disableCellSelection,
 }: DataGridProps<T>) {
   const gridEl = useRef<HTMLDivElement>(null)
+  const scrollEl = useRef<HTMLDivElement>(null)
   const viewportEl = useRef<HTMLDivElement>(null)
 
   // We can't trust that the user will memoize these so we
@@ -164,10 +165,9 @@ export function DataGrid<T>({
   return (
     <div
       ref={gridEl}
-      className="lfg lfg-scroll"
+      className="lfg"
       data-theme={theme}
       tabIndex={0}
-      onScroll={onScroll}
       style={
         {
           '--lfg-direction': direction,
@@ -176,57 +176,70 @@ export function DataGrid<T>({
       }
     >
       <div
-        className="lfg-grid-sizer"
-        style={{ width: derivedCols.size, height: contentHeight }}
-      />
-      <div
-        ref={viewportEl}
-        className="lfg-viewport"
-        style={{ width: viewportWidth, height: viewportHeight }}
+        ref={scrollEl}
+        className="lfg-canvas lfg-scroll"
+        onScroll={e => {
+          const el = e.currentTarget
+          if (el instanceof HTMLElement) {
+            setScrollLeft(el.scrollLeft)
+            setScrollTop(el.scrollTop)
+            mgr.updateScroll(el.scrollLeft, el.scrollTop)
+          }
+        }}
       >
         <div
-          className="lfg-canvas"
+          className="lfg-grid-sizer"
           style={{ width: derivedCols.size, height: contentHeight }}
+        />
+        <div
+          ref={viewportEl}
+          className="lfg-viewport"
+          style={{ width: viewportWidth, height: viewportHeight }}
         >
-          {gridAreas.map(area => (
-            <Area
-              key={area.id}
-              area={area}
-              columns={area.pinnedX ? area.colResult.items : middleCols}
-              rows={area.pinnedY ? area.rowResult.items : middleRows}
-              rowState={rowState}
-              onRowStateChangeRef={onRowStateChangeRef}
-              detailsWidth={viewportWidth}
-              renderRowDetailsRef={renderRowDetailsRef}
-              selection={selection}
-              selectionStartCell={startCell}
-              isFirstColumnGroup={area.colResult.firstWithSize}
+          <div
+            className="lfg-view"
+            style={{ width: derivedCols.size, height: contentHeight }}
+          >
+            {gridAreas.map(area => (
+              <Area
+                key={area.id}
+                area={area}
+                columns={area.pinnedX ? area.colResult.items : middleCols}
+                rows={area.pinnedY ? area.rowResult.items : middleRows}
+                rowState={rowState}
+                onRowStateChangeRef={onRowStateChangeRef}
+                detailsWidth={viewportWidth}
+                renderRowDetailsRef={renderRowDetailsRef}
+                selection={selection}
+                selectionStartCell={startCell}
+                isFirstColumnGroup={area.colResult.firstWithSize}
+              />
+            ))}
+            <HeaderArea
+              /*header middle*/
+              columns={middleCols}
+              headerRowHeight={headerRowHeight}
+              left={derivedCols.start.size}
+              width={derivedCols.middle.size + derivedCols.end.size}
+              height={headerHeight}
             />
-          ))}
-          <HeaderArea
-            /*header middle*/
-            columns={middleCols}
-            headerRowHeight={headerRowHeight}
-            left={derivedCols.start.size}
-            width={derivedCols.middle.size + derivedCols.end.size}
-            height={headerHeight}
-          />
-          <HeaderArea
-            /*header end (right)*/
-            columns={derivedCols.end.itemsWithGrouping}
-            headerRowHeight={headerRowHeight}
-            left={viewport.width - derivedCols.end.size}
-            width={derivedCols.end.size}
-            height={headerHeight}
-          />
-          <HeaderArea
-            /*header start (left)*/
-            columns={derivedCols.start.itemsWithGrouping}
-            headerRowHeight={headerRowHeight}
-            left={0}
-            width={derivedCols.start.size}
-            height={headerHeight}
-          />
+            <HeaderArea
+              /*header end (right)*/
+              columns={derivedCols.end.itemsWithGrouping}
+              headerRowHeight={headerRowHeight}
+              left={viewport.width - derivedCols.end.size}
+              width={derivedCols.end.size}
+              height={headerHeight}
+            />
+            <HeaderArea
+              /*header start (left)*/
+              columns={derivedCols.start.itemsWithGrouping}
+              headerRowHeight={headerRowHeight}
+              left={0}
+              width={derivedCols.start.size}
+              height={headerHeight}
+            />
+          </div>
         </div>
       </div>
     </div>
