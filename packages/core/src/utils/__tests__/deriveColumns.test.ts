@@ -183,7 +183,6 @@ test('deriveColumns', () => {
     },
     size: 1000,
     headerRows: 2,
-    totalItems: 5,
   }
 
   expect(res).toEqual(expectedRes)

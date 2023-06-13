@@ -6,16 +6,15 @@ import type {
   RowState,
   GetRowId,
   DerivedRowResult,
-  DerivedRowsResult,
 } from '../types'
 
-function deriveRowsForGroup<T>(
+export function deriveRows<T>(
   data: T[],
   rowState: RowState,
   getRowId: GetRowId<T>,
   getRowMeta: GetRowMeta<T>,
   getRowDetailsMeta: GetRowDetailsMeta<T>,
-  startOffset: number,
+  getStartOffset: (thiSize: number) => number,
   startIndexOffset: number
 ): DerivedRowResult<T> {
   const items: DerivedRow<T>[] = []
@@ -54,50 +53,11 @@ function deriveRowsForGroup<T>(
     }
   }
 
-  return { items, itemDetails, size: offset, startOffset, startIndexOffset }
-}
-
-export function deriveRows<T>(
-  pinnedTopData: T[],
-  data: T[],
-  pinnedBottomData: T[],
-  rowState: RowState,
-  headerHeight: number,
-  getRowId: GetRowId<T>,
-  getRowMeta: GetRowMeta<T>,
-  getRowDetailsMeta: GetRowDetailsMeta<T>
-): DerivedRowsResult<T> {
-  const start = deriveRowsForGroup(
-    pinnedTopData,
-    rowState,
-    getRowId,
-    getRowMeta,
-    getRowDetailsMeta,
-    headerHeight,
-    0
-  )
-  const middle = deriveRowsForGroup(
-    data,
-    rowState,
-    getRowId,
-    getRowMeta,
-    getRowDetailsMeta,
-    headerHeight + start.size,
-    start.items.length
-  )
-  const end = deriveRowsForGroup(
-    pinnedBottomData,
-    rowState,
-    getRowId,
-    getRowMeta,
-    getRowDetailsMeta,
-    headerHeight + start.size + middle.size,
-    start.items.length + middle.items.length
-  )
   return {
-    start,
-    middle,
-    end,
-    totalItems: start.items.length + middle.items.length + end.items.length,
+    items,
+    itemDetails,
+    size: offset,
+    startOffset: getStartOffset(offset),
+    startIndexOffset,
   }
 }

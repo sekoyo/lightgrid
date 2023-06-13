@@ -18,8 +18,8 @@ import {
   DerivedColumn,
   DerivedRow,
   CellSelection,
-  CellPosition,
   CellSelectionPlugin,
+  CellPosition,
 } from '@lightfin/datagrid'
 import '@lightfin/datagrid/dist/styles.css'
 import { R } from './types'
@@ -27,7 +27,7 @@ import { HeaderArea } from './HeaderArea'
 import { Area } from './Area'
 
 const emptyData: any[] = []
-const emptyRpwState: RowState = {}
+const emptyRowState: RowState = {}
 const noop = () => {
   /**/
 }
@@ -61,7 +61,7 @@ export function DataGrid<T>({
   data,
   pinnedTopData = emptyData,
   pinnedBottomData = emptyData,
-  rowState = emptyRpwState,
+  rowState = emptyRowState,
   renderRowDetails = defaultRowDetailsRenderer,
   onRowStateChange = noop,
   direction,

@@ -1,11 +1,15 @@
 import { root, signal, computed, effect } from '@maverick-js/signals'
+import throttle from 'lodash-es/throttle'
+
 import {
   DerivedColsResult,
   DerivedColumn,
   DerivedRow,
+  DerivedRowsResult,
   GetRowDetailsMeta,
   GetRowId,
   GetRowMeta,
+  GridArea,
   GroupedColumns,
   OnRowStateChange,
   RenderRowDetails,
@@ -17,10 +21,8 @@ import {
   getColumnWindow,
   getRowWindow,
   getScrollBarSize,
-  throttle,
   willScrollbarsAppear,
 } from './utils'
-import { AreaPin, GridArea } from './GridArea'
 import { GridPlugin } from './GridPlugin'
 
 enum AreaIndex {
@@ -82,18 +84,44 @@ export class GridManager<T, R> {
   // Derived values
   $derivedCols = computed(() => deriveColumns(this.$columns(), this.$viewportWidth()))
   $headerHeight = computed(() => this.$derivedCols().headerRows * this.$headerRowHeight())
-  $derivedRows = computed(() =>
+  $derivedStartRows = computed(() =>
     deriveRows(
       this.$pinnedTopData(),
-      this.$data(),
-      this.$pinnedBottomData(),
       this.$rowState(),
-      this.$headerHeight(),
       this.getRowId,
       this.getRowMeta,
-      this.getRowDetailsMeta
+      this.getRowDetailsMeta,
+      () => this.$headerHeight(),
+      0
     )
   )
+  $derivedMiddleRows = computed(() =>
+    deriveRows(
+      this.$data(),
+      this.$rowState(),
+      this.getRowId,
+      this.getRowMeta,
+      this.getRowDetailsMeta,
+      () => this.$headerHeight() + this.$derivedStartRows().size,
+      this.$derivedStartRows().items.length
+    )
+  )
+  $derivedEndRows = computed(() =>
+    deriveRows(
+      this.$pinnedBottomData(),
+      this.$rowState(),
+      this.getRowId,
+      this.getRowMeta,
+      this.getRowDetailsMeta,
+      thisSize => this.$viewportHeight() - thisSize,
+      this.$derivedStartRows().items.length + this.$derivedMiddleRows().items.length
+    )
+  )
+  $derivedRows = computed<DerivedRowsResult<T>>(() => ({
+    start: this.$derivedStartRows(),
+    middle: this.$derivedMiddleRows(),
+    end: this.$derivedEndRows(),
+  }))
   $bodyHeight = computed(
     () =>
       this.$derivedRows().middle.size +
@@ -114,7 +142,7 @@ export class GridManager<T, R> {
     this.$hasScroll().hasHScroll ? this.scrollbarSize : 0
   )
   $scrollbarHeight = computed(() =>
-    this.$hasScroll().hasHScroll ? this.scrollbarSize : 0
+    this.$hasScroll().hasVScroll ? this.scrollbarSize : 0
   )
 
   // -- Column window.
@@ -147,7 +175,6 @@ export class GridManager<T, R> {
   )
 
   // -- Grid areas (pushed in render order)
-  // TODO: include top, left, pinnedX, pinnedY?
   $areas = computed(() => {
     const byRender: GridArea<T, R>[] = []
     const byCol: GridArea<T, R>[][] = []
@@ -159,189 +186,173 @@ export class GridManager<T, R> {
       byCol[colIndex][rowIndex] = area
     }
 
+    const derivedRows = this.$derivedRows()
+    const derivedCols = this.$derivedCols()
+    const middleWidth =
+      this.$viewportWidth() - derivedCols.start.size - derivedCols.end.size
+    const middleHeight =
+      this.$viewportHeight() - derivedRows.middle.startOffset - derivedRows.end.size
+
     // Main
-    if (this.$derivedRows().middle.size) {
-      if (this.$derivedCols().middle.size) {
-        const area: GridArea<T, R> = new GridArea({
+    if (derivedRows.middle.size) {
+      if (derivedCols.middle.size) {
+        const area: GridArea<T, R> = {
           id: 'mainMiddle',
-          windowX: this.$derivedCols().middle.startOffset,
-          windowY: this.$derivedRows().middle.startOffset,
-          windowWidth:
-            this.$viewportWidth() -
-            this.$derivedCols().start.size -
-            this.$derivedCols().end.size,
-          windowHeight:
-            this.$viewportHeight() -
-            this.$derivedRows().start.startOffset -
-            this.$derivedRows().end.size,
-          width: this.$derivedCols().middle.size,
-          height: this.$derivedRows().middle.size,
-          colResult: this.$derivedCols().middle,
-          rowResult: this.$derivedRows().middle,
+          windowX: derivedCols.middle.startOffset,
+          windowY: derivedRows.middle.startOffset,
+          windowWidth: middleWidth,
+          windowHeight: middleHeight,
+          width: derivedCols.middle.size,
+          height: derivedRows.middle.size,
+          colResult: derivedCols.middle,
+          rowResult: derivedRows.middle,
           pinnedX: false,
           pinnedY: false,
-        })
+        }
         byRender.push(area)
         addToCol(AreaIndex.Middle, AreaIndex.Middle, area)
       }
-      if (this.$derivedCols().end.size) {
-        const area: GridArea<T, R> = new GridArea({
+      if (derivedCols.end.size) {
+        const area: GridArea<T, R> = {
           id: 'mainRight',
-          pin: AreaPin.x,
-          windowX: this.$viewportWidth() - this.$derivedCols().end.size,
-          windowY: this.$derivedRows().middle.startOffset,
-          windowWidth: this.$derivedCols().end.size,
-          windowHeight:
-            this.$viewportHeight() -
-            this.$derivedRows().start.startOffset -
-            this.$derivedRows().end.size,
-          width: this.$derivedCols().end.size,
-          height: this.$derivedRows().middle.size,
-          colResult: this.$derivedCols().end,
-          rowResult: this.$derivedRows().middle,
+          windowX: this.$viewportWidth() - derivedCols.end.size,
+          windowY: derivedRows.middle.startOffset,
+          windowWidth: derivedCols.end.size,
+          windowHeight: middleHeight,
+          width: derivedCols.end.size,
+          height: derivedRows.middle.size,
+          colResult: derivedCols.end,
+          rowResult: derivedRows.middle,
           pinnedX: true,
           pinnedY: false,
-        })
+        }
         byRender.push(area)
         addToCol(AreaIndex.End, AreaIndex.Middle, area)
       }
-      if (this.$derivedCols().start.size) {
-        const area: GridArea<T, R> = new GridArea({
+      if (derivedCols.start.size) {
+        const area: GridArea<T, R> = {
           id: 'mainLeft',
-          pin: AreaPin.x,
           windowX: 0,
-          windowY: this.$derivedRows().middle.startOffset,
-          windowWidth: this.$derivedCols().start.size,
-          windowHeight:
-            this.$viewportHeight() -
-            this.$derivedRows().start.startOffset -
-            this.$derivedRows().end.size,
-          width: this.$derivedCols().start.size,
-          height: this.$derivedRows().middle.size,
-          colResult: this.$derivedCols().start,
-          rowResult: this.$derivedRows().middle,
+          windowY: derivedRows.middle.startOffset,
+          windowWidth: derivedCols.start.size,
+          windowHeight: middleHeight,
+          width: derivedCols.start.size,
+          height: derivedRows.middle.size,
+          colResult: derivedCols.start,
+          rowResult: derivedRows.middle,
           pinnedX: true,
           pinnedY: false,
-        })
+        }
         byRender.push(area)
         addToCol(AreaIndex.Start, AreaIndex.Middle, area)
       }
     }
 
     // Top
-    if (this.$derivedRows().start.size) {
-      if (this.$derivedCols().middle.size) {
-        const area: GridArea<T, R> = new GridArea({
+    if (derivedRows.start.size) {
+      if (derivedCols.middle.size) {
+        const area: GridArea<T, R> = {
           id: 'topMiddle',
-          pin: AreaPin.y,
-          windowX: this.$derivedCols().middle.startOffset,
-          windowY: this.$derivedRows().start.startOffset,
-          windowWidth: this.$derivedCols().end.size,
-          windowHeight: this.$derivedRows().start.size,
-          width: this.$derivedCols().middle.size + this.$derivedCols().end.size,
-          height: this.$derivedRows().start.size,
-          colResult: this.$derivedCols().middle,
-          rowResult: this.$derivedRows().start,
+          windowX: derivedCols.middle.startOffset,
+          windowY: derivedRows.start.startOffset,
+          windowWidth: middleWidth,
+          windowHeight: derivedRows.start.size,
+          width: derivedCols.middle.size + derivedCols.end.size,
+          height: derivedRows.start.size,
+          colResult: derivedCols.middle,
+          rowResult: derivedRows.start,
           pinnedX: false,
           pinnedY: true,
-        })
+        }
         byRender.push(area)
         addToCol(AreaIndex.Middle, AreaIndex.Start, area)
       }
-      if (this.$derivedCols().end.size) {
-        const area: GridArea<T, R> = new GridArea({
+      if (derivedCols.end.size) {
+        const area: GridArea<T, R> = {
           id: 'topRight',
-          pin: AreaPin.xy,
-          windowX: this.$viewportWidth() - this.$derivedCols().end.size,
-          windowY: this.$derivedRows().start.startOffset,
-          windowWidth: this.$derivedCols().end.size,
-          windowHeight: this.$derivedRows().start.size,
-          width: this.$derivedCols().end.size,
-          height: this.$derivedRows().start.size,
-          colResult: this.$derivedCols().end,
-          rowResult: this.$derivedRows().start,
+          windowX: this.$viewportWidth() - derivedCols.end.size,
+          windowY: derivedRows.start.startOffset,
+          windowWidth: derivedCols.end.size,
+          windowHeight: derivedRows.start.size,
+          width: derivedCols.end.size,
+          height: derivedRows.start.size,
+          colResult: derivedCols.end,
+          rowResult: derivedRows.start,
           pinnedX: true,
           pinnedY: true,
-        })
+        }
         byRender.push(area)
         addToCol(AreaIndex.End, AreaIndex.Start, area)
       }
-      if (this.$derivedCols().start.size) {
-        const area: GridArea<T, R> = new GridArea({
+      if (derivedCols.start.size) {
+        const area: GridArea<T, R> = {
           id: 'topLeft',
-          pin: AreaPin.xy,
           windowX: 0,
-          windowY: this.$derivedRows().start.startOffset,
-          windowWidth: this.$derivedCols().start.size,
-          windowHeight: this.$derivedRows().start.size,
-          width: this.$derivedCols().start.size,
-          height: this.$derivedRows().start.size,
-          colResult: this.$derivedCols().start,
-          rowResult: this.$derivedRows().start,
+          windowY: derivedRows.start.startOffset,
+          windowWidth: derivedCols.start.size,
+          windowHeight: derivedRows.start.size,
+          width: derivedCols.start.size,
+          height: derivedRows.start.size,
+          colResult: derivedCols.start,
+          rowResult: derivedRows.start,
           pinnedX: true,
           pinnedY: true,
-        })
+        }
         byRender.push(area)
         addToCol(AreaIndex.Start, AreaIndex.Start, area)
       }
     }
 
     // Bottom
-    if (this.$derivedRows().end.size) {
-      if (this.$derivedCols().middle.size) {
-        const area: GridArea<T, R> = new GridArea({
+    if (derivedRows.end.size) {
+      if (derivedCols.middle.size) {
+        const area: GridArea<T, R> = {
           id: 'bottomMiddle',
-          pin: AreaPin.y,
-          windowX: this.$derivedCols().middle.startOffset,
-          windowY: this.$viewportHeight() - this.$derivedRows().end.size,
-          windowWidth:
-            this.$viewportWidth() -
-            this.$derivedCols().start.size -
-            this.$derivedCols().end.size,
-          width: this.$derivedCols().middle.size + this.$derivedCols().end.size,
-          height: this.$derivedRows().end.size,
-          windowHeight: this.$derivedRows().end.size,
-          colResult: this.$derivedCols().middle,
-          rowResult: this.$derivedRows().end,
+          windowX: derivedCols.middle.startOffset,
+          windowY: this.$viewportHeight() - derivedRows.end.size,
+          windowWidth: middleWidth,
+          width: derivedCols.middle.size + derivedCols.end.size,
+          height: derivedRows.end.size,
+          windowHeight: derivedRows.end.size,
+          colResult: derivedCols.middle,
+          rowResult: derivedRows.end,
           pinnedX: false,
           pinnedY: true,
-        })
+        }
         byRender.push(area)
         addToCol(AreaIndex.Middle, AreaIndex.End, area)
       }
-      if (this.$derivedCols().end.size) {
-        const area: GridArea<T, R> = new GridArea({
+      if (derivedCols.end.size) {
+        const area: GridArea<T, R> = {
           id: 'bottomRight',
-          pin: AreaPin.xy,
-          windowX: this.$viewportWidth() - this.$derivedCols().end.size,
-          windowY: this.$viewportHeight() - this.$derivedRows().end.size,
-          windowWidth: this.$derivedCols().end.size,
-          windowHeight: this.$derivedRows().end.size,
-          width: this.$derivedCols().end.size,
-          height: this.$derivedRows().end.size,
-          colResult: this.$derivedCols().end,
-          rowResult: this.$derivedRows().end,
+          windowX: this.$viewportWidth() - derivedCols.end.size,
+          windowY: this.$viewportHeight() - derivedRows.end.size,
+          windowWidth: derivedCols.end.size,
+          windowHeight: derivedRows.end.size,
+          width: derivedCols.end.size,
+          height: derivedRows.end.size,
+          colResult: derivedCols.end,
+          rowResult: derivedRows.end,
           pinnedX: true,
           pinnedY: true,
-        })
+        }
         byRender.push(area)
         addToCol(AreaIndex.End, AreaIndex.End, area)
       }
-      if (this.$derivedCols().start.size) {
-        const area: GridArea<T, R> = new GridArea({
+      if (derivedCols.start.size) {
+        const area: GridArea<T, R> = {
           id: 'bottomLeft',
-          pin: AreaPin.xy,
           windowX: 0,
-          windowY: this.$viewportHeight() - this.$derivedRows().end.size,
-          windowWidth: this.$derivedCols().start.size,
-          windowHeight: this.$derivedRows().end.size,
-          width: this.$derivedCols().start.size,
-          height: this.$derivedRows().end.size,
-          colResult: this.$derivedCols().start,
-          rowResult: this.$derivedRows().end,
+          windowY: this.$viewportHeight() - derivedRows.end.size,
+          windowWidth: derivedCols.start.size,
+          windowHeight: derivedRows.end.size,
+          width: derivedCols.start.size,
+          height: derivedRows.end.size,
+          colResult: derivedCols.start,
+          rowResult: derivedRows.end,
           pinnedX: true,
           pinnedY: true,
-        })
+        }
         byRender.push(area)
         addToCol(AreaIndex.Start, AreaIndex.End, area)
       }
@@ -380,6 +391,7 @@ export class GridManager<T, R> {
     this.gridEl = gridEl
     this.sizeObserver = new ResizeObserver(this.onResize)
     this.sizeObserver.observe(gridEl)
+
     Object.values(this.$plugins()).forEach(plugin => {
       if (plugin?.mount) {
         plugin.mount()
@@ -390,6 +402,7 @@ export class GridManager<T, R> {
   unmount() {
     this.mounted = false
     this.sizeObserver?.disconnect()
+    this.onResize.cancel()
     Object.values(this.$plugins()).forEach(plugin => {
       if (plugin?.unmount) {
         plugin.unmount()
@@ -411,15 +424,9 @@ export class GridManager<T, R> {
     this.$scrollY.set(scrollTop)
   }
 
-  onResize: ResizeObserverCallback = throttle(([{ contentRect }]) => {
+  private onResize = throttle<ResizeObserverCallback>(([{ contentRect }]) => {
     this.$viewportWidth.set(contentRect.width)
     this.$viewportHeight.set(contentRect.height)
-
-    Object.values(this.$plugins()).forEach(plugin => {
-      if (plugin?.onResize) {
-        plugin.onResize(contentRect.width, contentRect.height)
-      }
-    })
   }, 30)
 
   addPlugin(id: string, plugin: GridPlugin<T, R>) {

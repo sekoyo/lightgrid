@@ -60,7 +60,6 @@ export interface DerivedColsResult<T, R> {
   end: DerivedColResult<T, R>
   size: number
   headerRows: number
-  totalItems: number
 }
 
 export interface RowMeta {
@@ -104,7 +103,6 @@ export interface DerivedRowsResult<T> {
   start: DerivedRowResult<T>
   middle: DerivedRowResult<T>
   end: DerivedRowResult<T>
-  totalItems: number
 }
 
 export interface CellComponentProps<T, R> {
@@ -136,15 +134,8 @@ export interface CellPosition {
   rowIndex: number
 }
 
-export enum AreaPin {
-  x,
-  y,
-  xy,
-}
-
 export interface GridArea<T, R> {
   id: string
-  pin?: AreaPin
   windowX: number
   windowY: number
   windowWidth: number

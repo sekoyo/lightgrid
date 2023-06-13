@@ -145,33 +145,35 @@ export function App() {
   )
 
   return (
-    <div style={{ padding: '3em', height: 498 }}>
+    <div style={{ padding: '3em' }}>
       <div style={{ marginBottom: '1em' }}>
         <button onClick={changeData}>Change data</button>
       </div>
-      <DataGrid<Item>
-        columns={columns}
-        rowState={rowState}
-        onRowStateChange={onRowStateChange}
-        getRowId={item => item.id}
-        getRowMeta={item => ({
-          height: 30,
-          hasDetails: Boolean(item.details),
-        })}
-        getRowDetailsMeta={() => ({
-          height: 140,
-        })}
-        renderRowDetails={item => (
-          <div>
-            <div>name: {item.details.name}</div>
-            <div>dob: {item.details.dob}</div>
-          </div>
-        )}
-        data={data}
-        pinnedTopData={pinnedTopData}
-        pinnedBottomData={pinnedBottomData}
-        // direction="rtl"
-      />
+      <div style={{ height: 498 }}>
+        <DataGrid<Item>
+          columns={columns}
+          rowState={rowState}
+          onRowStateChange={onRowStateChange}
+          getRowId={item => item.id}
+          getRowMeta={item => ({
+            height: 30,
+            hasDetails: Boolean(item.details),
+          })}
+          getRowDetailsMeta={() => ({
+            height: 140,
+          })}
+          renderRowDetails={item => (
+            <div>
+              <div>name: {item.details.name}</div>
+              <div>dob: {item.details.dob}</div>
+            </div>
+          )}
+          data={data}
+          pinnedTopData={pinnedTopData}
+          pinnedBottomData={pinnedBottomData}
+          // direction="rtl"
+        />
+      </div>
     </div>
   )
 }
