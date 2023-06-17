@@ -103,6 +103,7 @@ export interface DerivedRowsResult<T> {
   start: DerivedRowResult<T>
   middle: DerivedRowResult<T>
   end: DerivedRowResult<T>
+  size: number
 }
 
 export interface CellComponentProps<T, R> {

@@ -11,9 +11,9 @@
   height: 100%;
   flex: 1;
   border-radius: 10px;
-  border: 1px solid var(--lfg-border-color);
+  border: 1px solid var(--lfgBorderColor);
   overflow: hidden;
-  color: var(--lfg-text-color);
+  color: var(--lfgTextColor);
 
   // Used in getScrollbarSize else on touch devices it will
   // come back as 0 since they are overlays by default. But
@@ -21,7 +21,7 @@
   // it unfortunately means the scrollbar will always be visible
   // and never a nice overlay on phones/laptops.
   &-scroll {
-    scrollbar-color: var(--lfg-scroll-thumb) var(--lfg-scroll-track);
+    scrollbar-color: var(--lfgScrollThumb) var(--lfgScrollTrack);
 
     // Size
     &::-webkit-scrollbar {
@@ -31,22 +31,22 @@
 
     // Track
     &::-webkit-scrollbar-track {
-      background: var(--lfg-scroll-track);
+      background: var(--lfgScrollTrack);
     }
     &::-webkit-scrollbar-corner {
-      background: var(--lfg-scroll-track);
+      background: var(--lfgScrollTrack);
     }
 
     // Handle
     &::-webkit-scrollbar-thumb {
-      background: var(--lfg-scroll-thumb);
+      background: var(--lfgScrollThumb);
       border-radius: 8px;
-      border: 3px solid var(--lfg-scroll-track);
+      border: 3px solid var(--lfgScrollTrack);
     }
 
     // Handle on hover
     &::-webkit-scrollbar-thumb:hover {
-      background: var(--lfg-scroll-thumb-hover);
+      background: var(--lfgScrollThumbHover);
     }
   }
 
@@ -85,7 +85,7 @@
 
     &-inner {
       pointer-events: auto;
-      outline: 1px solid var(--lfg-border-color);
+      outline: 1px solid var(--lfgBorderColor);
     }
   }
 
@@ -94,11 +94,11 @@
     position: absolute;
     display: flex;
     align-items: flex-end;
-    background: var(--lfg-header-cell-bg, var(--lfg-cell-bg, var(--lfg-bg)));
+    background: var(--lfgHeaderCellBg, var(--lfgCellBg, var(--lfgBg)));
     padding: 6px 12px;
     direction: var(--lfg-direction);
-    outline: 1px solid var(--lfg-header-border-color, var(--lfg-border-color));
-    color: var(--lfg-header-text-color);
+    outline: 1px solid var(--lfgHeaderBorderColor, var(--lfgBorderColor));
+    color: var(--lfgHeaderTextColor);
   }
 
   &-header-area {
@@ -125,8 +125,8 @@
       left: 0;
       width: 100%;
       height: 100%;
-      outline: 1px solid var(--lfg-border-color);
-      background: var(--lfg-cell-bg, var(--lfg-bg));
+      outline: 1px solid var(--lfgBorderColor);
+      background: var(--lfgCellBg, var(--lfgBg));
     }
   }
 

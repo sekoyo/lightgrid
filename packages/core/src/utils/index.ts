@@ -1,4 +1,5 @@
 export * from './binarySearch'
+export * from './clamp'
 export * from './deriveColumns'
 export * from './deriveRows'
 export * from './expoSearchGreater'

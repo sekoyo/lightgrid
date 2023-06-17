@@ -8,19 +8,19 @@
   overflow: hidden;
   text-overflow: ellipsis;
   direction: var(--lfg-direction);
-  background: var(--lfg-cell-bg, var(--lfg-bg));
+  background: var(--lfgCellBg, var(--lfgBg));
 
   &[data-pinned-x='true'],
   &[data-pinned-y='true'] {
-    background: var(--lfg-pinned-cell-bg, var(--lfg-cell-bg, var(--lfg-bg)));
+    background: var(--lfg-pinned-cell-bg, var(--lfgCellBg, var(--lfgBg)));
   }
 
   &[data-selected='true'] {
-    background: var(--lfg-cell-selected-bg);
+    background: var(--lfgCellSelectedBg);
   }
 
   &[data-selection-start='true'] {
-    background: var(--lfg-cell-start-cell-bg);
+    background: var(--lfgCellStartCellBg);
   }
 
   &-details-btn {

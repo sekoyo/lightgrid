@@ -1,4 +1,4 @@
-import { root, signal, computed, effect } from '@maverick-js/signals'
+import { root, signal, computed, effect, untrack } from '@maverick-js/signals'
 import throttle from 'lodash-es/throttle'
 
 import {
@@ -59,6 +59,7 @@ interface GridManagerDynamicProps<T, R> {
 
 export class GridManager<T, R> {
   scrollEl?: HTMLDivElement
+  viewportEl?: HTMLDivElement
   sizeObserver?: ResizeObserver
   scrollbarSize = getScrollBarSize()
   mounted = false
@@ -117,11 +118,18 @@ export class GridManager<T, R> {
       this.$derivedStartRows().items.length + this.$derivedMiddleRows().items.length
     )
   )
-  $derivedRows = computed<DerivedRowsResult<T>>(() => ({
-    start: this.$derivedStartRows(),
-    middle: this.$derivedMiddleRows(),
-    end: this.$derivedEndRows(),
-  }))
+  $derivedRows = computed<DerivedRowsResult<T>>(() => {
+    const start = this.$derivedStartRows()
+    const middle = this.$derivedMiddleRows()
+    const end = this.$derivedEndRows()
+    return {
+      start,
+      middle,
+      end,
+      size: start.size + middle.size + end.size,
+    }
+  })
+
   $bodyHeight = computed(
     () =>
       this.$derivedRows().middle.size +
@@ -192,8 +200,8 @@ export class GridManager<T, R> {
       this.$viewportWidth() - derivedCols.start.size - derivedCols.end.size
     const middleHeight =
       this.$viewportHeight() - derivedRows.middle.startOffset - derivedRows.end.size
-    const endX = this.$viewportWidth() - derivedCols.end.size - this.$scrollbarWidth()
-    const endY = this.$viewportHeight() - derivedRows.end.size - this.$scrollbarHeight()
+    const endX = this.$viewportWidth() - derivedCols.end.size
+    const endY = this.$viewportHeight() - derivedRows.end.size
 
     // Main
     if (derivedRows.middle.size) {
@@ -378,8 +386,8 @@ export class GridManager<T, R> {
     effect(() => props.onAreasChanged(this.$areas().byRender))
     effect(() =>
       props.onViewportChanged({
-        width: this.$viewportWidth() - this.$scrollbarWidth(),
-        height: this.$viewportHeight() - this.$scrollbarHeight(),
+        width: this.$viewportWidth(),
+        height: this.$viewportHeight(),
       })
     )
     effect(() => props.onContentHeightChanged(this.$contentHeight()))
@@ -388,9 +396,10 @@ export class GridManager<T, R> {
     effect(() => props.onMiddleRowsChange(this.$middleRows()))
   }
 
-  mount(scrollEl: HTMLDivElement) {
+  mount(scrollEl: HTMLDivElement, viewportEl: HTMLDivElement) {
     this.mounted = true
     this.scrollEl = scrollEl
+    this.viewportEl = viewportEl
     this.sizeObserver = new ResizeObserver(this.onResize)
     this.sizeObserver.observe(scrollEl)
 

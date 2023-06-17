@@ -10,7 +10,7 @@
   @media (pointer: fine) {
     // Only style on pointer devices as touch ones have scroll as a nice
     // overlay that's normally hidden.
-    scrollbar-color: var(--lfg-scroll-thumb) var(--lfg-scroll-track);
+    scrollbar-color: var(--lfgScrollThumb) var(--lfgScrollTrack);
 
     // Size
     &::-webkit-scrollbar {
@@ -20,22 +20,22 @@
 
     // Track
     &::-webkit-scrollbar-track {
-      background: var(--lfg-scroll-track);
+      background: var(--lfgScrollTrack);
     }
     &::-webkit-scrollbar-corner {
-      background: var(--lfg-scroll-track);
+      background: var(--lfgScrollTrack);
     }
 
     // Handle
     &::-webkit-scrollbar-thumb {
-      background: var(--lfg-scroll-thumb);
+      background: var(--lfgScrollThumb);
       border-radius: 8px;
-      border: 3px solid var(--lfg-scroll-track);
+      border: 3px solid var(--lfgScrollTrack);
     }
 
     // Handle on hover
     &::-webkit-scrollbar-thumb:hover {
-      background: var(--lfg-scroll-thumb-hover);
+      background: var(--lfgScrollThumbHover);
     }
   }
 }

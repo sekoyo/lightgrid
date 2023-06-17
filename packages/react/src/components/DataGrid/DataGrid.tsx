@@ -135,7 +135,7 @@ export function DataGrid<T>({
 
   // Mount and unmount
   useEffect(() => {
-    mgr.mount(gridEl.current!)
+    mgr.mount(scrollEl.current!, viewportEl.current!)
     return () => mgr.unmount()
   }, [mgr])
 
@@ -175,18 +175,7 @@ export function DataGrid<T>({
         } as CSSProperties
       }
     >
-      <div
-        ref={scrollEl}
-        className="lfg-canvas lfg-scroll"
-        onScroll={e => {
-          const el = e.currentTarget
-          if (el instanceof HTMLElement) {
-            setScrollLeft(el.scrollLeft)
-            setScrollTop(el.scrollTop)
-            mgr.updateScroll(el.scrollLeft, el.scrollTop)
-          }
-        }}
-      >
+      <div ref={scrollEl} className="lfg-canvas lfg-scroll" onScroll={onScroll}>
         <div
           className="lfg-grid-sizer"
           style={{ width: derivedCols.size, height: contentHeight }}
