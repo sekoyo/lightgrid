@@ -29,10 +29,12 @@ export class CellSelectionPlugin<T, R> extends GridPlugin<T, R> {
     this.setStartCell = (cell: CellPosition | undefined) => {
       this.startCell = cell
       setStartCell(cell)
+      return cell
     }
     this.setSelection = (sel: CellSelection | undefined) => {
       this.selection = sel
       setSelection(sel)
+      return sel
     }
   }
 
@@ -315,5 +317,38 @@ export class CellSelectionPlugin<T, R> extends GridPlugin<T, R> {
     }
   }
 
-  moveSelection(direction: Direction) {}
+  moveSelection(direction: Direction) {
+    if (!this.startCell || !this.selection) {
+      return
+    }
+
+    const startCell = { ...this.startCell }
+
+    switch (direction) {
+      case Direction.Up:
+        startCell.rowIndex = Math.max(0, startCell.rowIndex - 1)
+        break
+      case Direction.Down:
+        startCell.rowIndex = Math.min(
+          startCell.rowIndex + 1,
+          this.mgr.$derivedRows().itemCount - 1
+        )
+        break
+      case Direction.Right:
+        startCell.colIndex = Math.min(
+          startCell.colIndex + 1,
+          this.mgr.$derivedCols().itemCount - 1
+        )
+        break
+      case Direction.Left:
+        startCell.colIndex = Math.max(0, startCell.colIndex - 1)
+        break
+    }
+
+    this.setStartCell(startCell)
+    this.setSelection({
+      rowRange: [startCell.rowIndex, startCell.rowIndex],
+      colRange: [startCell.colIndex, startCell.colIndex],
+    })
+  }
 }
