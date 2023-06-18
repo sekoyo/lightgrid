@@ -159,9 +159,6 @@ export function DataGrid<T>({
     [mgr]
   )
 
-  const viewportWidth = viewport.width
-  const viewportHeight = viewport.height
-
   return (
     <div
       ref={gridEl}
@@ -183,7 +180,7 @@ export function DataGrid<T>({
         <div
           ref={viewportEl}
           className="lfg-viewport"
-          style={{ width: viewportWidth, height: viewportHeight }}
+          style={{ width: viewport.width, height: viewport.height }}
         >
           <div
             className="lfg-view"
@@ -197,7 +194,7 @@ export function DataGrid<T>({
                 rows={area.pinnedY ? area.rowResult.items : middleRows}
                 rowState={rowState}
                 onRowStateChangeRef={onRowStateChangeRef}
-                detailsWidth={viewportWidth}
+                detailsWidth={viewport.width}
                 renderRowDetailsRef={renderRowDetailsRef}
                 selection={selection}
                 selectionStartCell={startCell}

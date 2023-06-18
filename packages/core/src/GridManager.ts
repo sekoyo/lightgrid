@@ -202,8 +202,8 @@ export class GridManager<T, R> {
       this.$viewportWidth() - derivedCols.start.size - derivedCols.end.size
     const middleHeight =
       this.$viewportHeight() - derivedRows.middle.startOffset - derivedRows.end.size
-    const endX = this.$viewportWidth() - derivedCols.end.size
-    const endY = this.$viewportHeight() - derivedRows.end.size
+    const endX = this.$viewportWidth() - derivedCols.end.size - this.$scrollbarWidth()
+    const endY = this.$viewportHeight() - derivedRows.end.size - this.$scrollbarHeight()
 
     // Main
     if (derivedRows.middle.size) {
@@ -388,8 +388,8 @@ export class GridManager<T, R> {
     effect(() => props.onAreasChanged(this.$areas().byRender))
     effect(() =>
       props.onViewportChanged({
-        width: this.$viewportWidth(),
-        height: this.$viewportHeight(),
+        width: this.$viewportWidth() - this.$scrollbarWidth(),
+        height: this.$viewportHeight() - this.$scrollbarHeight(),
       })
     )
     effect(() => props.onContentHeightChanged(this.$contentHeight()))
@@ -404,7 +404,7 @@ export class GridManager<T, R> {
     this.scrollEl = scrollEl
     this.viewportEl = viewportEl
     this.sizeObserver = new ResizeObserver(this.onResize)
-    this.sizeObserver.observe(scrollEl)
+    this.sizeObserver.observe(gridEl)
 
     Object.values(this.$plugins()).forEach(plugin => {
       if (plugin?.mount) {
