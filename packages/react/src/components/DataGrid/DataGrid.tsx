@@ -135,7 +135,7 @@ export function DataGrid<T>({
 
   // Mount and unmount
   useEffect(() => {
-    mgr.mount(scrollEl.current!, viewportEl.current!)
+    mgr.mount(gridEl.current!, scrollEl.current!, viewportEl.current!)
     return () => mgr.unmount()
   }, [mgr])
 

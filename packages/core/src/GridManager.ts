@@ -1,4 +1,4 @@
-import { root, signal, computed, effect, untrack } from '@maverick-js/signals'
+import { root, signal, computed, effect } from '@maverick-js/signals'
 import throttle from 'lodash-es/throttle'
 
 import {
@@ -58,6 +58,7 @@ interface GridManagerDynamicProps<T, R> {
 }
 
 export class GridManager<T, R> {
+  gridEl?: HTMLDivElement
   scrollEl?: HTMLDivElement
   viewportEl?: HTMLDivElement
   sizeObserver?: ResizeObserver
@@ -127,6 +128,7 @@ export class GridManager<T, R> {
       middle,
       end,
       size: start.size + middle.size + end.size,
+      itemCount: start.items.length + middle.items.length + end.items.length,
     }
   })
 
@@ -396,8 +398,9 @@ export class GridManager<T, R> {
     effect(() => props.onMiddleRowsChange(this.$middleRows()))
   }
 
-  mount(scrollEl: HTMLDivElement, viewportEl: HTMLDivElement) {
+  mount(gridEl: HTMLDivElement, scrollEl: HTMLDivElement, viewportEl: HTMLDivElement) {
     this.mounted = true
+    this.gridEl = gridEl
     this.scrollEl = scrollEl
     this.viewportEl = viewportEl
     this.sizeObserver = new ResizeObserver(this.onResize)
@@ -433,6 +436,24 @@ export class GridManager<T, R> {
   updateScroll(scrollLeft: number, scrollTop: number) {
     this.$scrollX.set(scrollLeft)
     this.$scrollY.set(scrollTop)
+  }
+
+  // When scrolling we should scroll both scrollEl and viewportEl.
+  // Preferably we'd have an effect on $scrollX/Y but we don't want
+  // the set in `updateScroll` to scroll (the UI framework should do that)
+  // but `untrack` from @maverick-js/signals isn't working as expected:
+  // https://github.com/maverick-js/signals/issues/22
+  scrollLeft(value: number) {
+    this.scrollEl!.scrollLeft = value
+    this.viewportEl!.scrollLeft = value
+  }
+  scrollTop(value: number) {
+    this.scrollEl!.scrollTop = value
+    this.viewportEl!.scrollTop = value
+  }
+  scrollTo(x: number, y: number) {
+    this.scrollEl!.scrollTo(x, y)
+    this.viewportEl!.scrollTo(x, y)
   }
 
   private onResize = throttle<ResizeObserverCallback>(([{ contentRect }]) => {

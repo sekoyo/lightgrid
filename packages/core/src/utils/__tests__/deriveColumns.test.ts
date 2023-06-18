@@ -182,6 +182,7 @@ test('deriveColumns', () => {
       firstWithSize: false,
     },
     size: 1000,
+    itemCount: 6,
     headerRows: 2,
   }
 

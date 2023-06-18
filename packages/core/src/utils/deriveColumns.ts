@@ -157,6 +157,7 @@ const createEmptyColResults: <T, R>() => DerivedColsResult<T, R> = () => ({
     firstWithSize: false,
   },
   size: 0,
+  itemCount: 0,
   headerRows: 0,
 })
 
@@ -265,6 +266,7 @@ export function deriveColumns<T, R>(
   o.middle.startOffset = o.start.size
   o.end.startOffset = viewportWidth - o.end.size
 
+  o.itemCount = o.start.items.length + o.middle.items.length + o.end.items.length
   o.headerRows = s.totalDepth
 
   return o

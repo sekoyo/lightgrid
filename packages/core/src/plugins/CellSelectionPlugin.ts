@@ -1,7 +1,7 @@
 import { signal, effect } from '@maverick-js/signals'
 import { GridManager } from '../GridManager'
 import { GridPlugin } from '../GridPlugin'
-import { CellPosition, CellSelection, GridArea } from '../types'
+import { CellPosition, CellSelection, Direction, GridArea } from '../types'
 import { clamp } from '../utils'
 
 export class CellSelectionPlugin<T, R> extends GridPlugin<T, R> {
@@ -37,17 +37,57 @@ export class CellSelectionPlugin<T, R> extends GridPlugin<T, R> {
   }
 
   mount() {
-    this.mgr.scrollEl!.addEventListener('mousedown', this.onMouseDown)
+    this.mgr.gridEl!.addEventListener('keydown', this.onKeyDown)
+    this.mgr.gridEl!.addEventListener('mousedown', this.onMouseDown)
   }
 
   unmount() {
-    this.mgr.scrollEl!.removeEventListener('mousedown', this.onMouseDown)
+    this.mgr.gridEl!.removeEventListener('keydown', this.onKeyDown)
+    this.mgr.gridEl!.removeEventListener('mousedown', this.onMouseDown)
     window.removeEventListener('mousemove', this.onMouseMove)
     window.removeEventListener('mouseup', this.onMouseUp)
   }
 
+  onKeyDown = (e: KeyboardEvent) => {
+    if (e.metaKey) {
+      const lowerKey = e.key.toLowerCase()
+      if (lowerKey === 'c') {
+        // copyToClipboard(selection, derivedCols, derivedRows)
+        return
+      } else if (lowerKey === 'a') {
+        this.selectAll()
+      }
+    } else {
+      if (e.key === 'ArrowLeft') {
+        if (e.shiftKey) {
+          this.shiftChangeSelection(Direction.Left)
+        } else {
+          this.moveSelection(Direction.Left)
+        }
+      } else if (e.key === 'ArrowRight') {
+        if (e.shiftKey) {
+          this.shiftChangeSelection(Direction.Right)
+        } else {
+          this.moveSelection(Direction.Right)
+        }
+      } else if (e.key === 'ArrowUp') {
+        if (e.shiftKey) {
+          this.shiftChangeSelection(Direction.Up)
+        } else {
+          this.moveSelection(Direction.Up)
+        }
+      } else if (e.key === 'ArrowDown') {
+        if (e.shiftKey) {
+          this.shiftChangeSelection(Direction.Down)
+        } else {
+          this.moveSelection(Direction.Down)
+        }
+      }
+    }
+  }
+
   onMouseDown = (e: MouseEvent) => {
-    this.rect = this.mgr.scrollEl!.getBoundingClientRect()
+    this.rect = this.mgr.gridEl!.getBoundingClientRect()
     const startWindowX = e.clientX - this.rect.left
     const startWindowY = e.clientY - this.rect.top
 
@@ -149,8 +189,7 @@ export class CellSelectionPlugin<T, R> extends GridPlugin<T, R> {
           (this.mgr.$viewportWidth() - this.mgr.$scrollbarWidth())
         const scrollLeft = clamp(this.mgr.$scrollX() + this.scrollXStep, 0, maxScroll)
         this.mgr.$scrollX.set(scrollLeft)
-        this.mgr.scrollEl!.scrollLeft = scrollLeft
-        this.mgr.viewportEl!.scrollLeft = scrollLeft
+        this.mgr.scrollLeft(scrollLeft)
       }, 10)
       return () => clearInterval(id)
     }
@@ -164,10 +203,117 @@ export class CellSelectionPlugin<T, R> extends GridPlugin<T, R> {
           (this.mgr.$viewportHeight() - this.mgr.$scrollbarHeight())
         const scrollTop = clamp(this.mgr.$scrollY() + this.scrollYStep, 0, maxScroll)
         this.mgr.$scrollY.set(scrollTop)
-        this.mgr.scrollEl!.scrollTop = scrollTop
-        this.mgr.viewportEl!.scrollTop = scrollTop
+        this.mgr.scrollTop(scrollTop)
       }, 10)
       return () => clearInterval(id)
     }
   })
+
+  selectAll() {
+    this.setSelection({
+      colRange: [0, this.mgr.$derivedCols().itemCount - 1],
+      rowRange: [0, this.mgr.$derivedRows().itemCount - 1],
+    })
+  }
+
+  shiftChangeSelection(direction: Direction) {
+    if (!this.startCell || !this.selection) {
+      return
+    }
+
+    switch (direction) {
+      case Direction.Up:
+        if (this.startCell.rowIndex >= this.selection.rowRange[1]) {
+          // Expand upwards
+          this.setSelection({
+            colRange: this.selection.colRange,
+            rowRange: [
+              Math.max(0, this.selection.rowRange[0] - 1),
+              this.selection.rowRange[1],
+            ],
+          })
+        } else {
+          // Shrink from bottom
+          this.setSelection({
+            colRange: this.selection.colRange,
+            rowRange: [
+              this.selection.rowRange[0],
+              Math.max(this.selection.rowRange[0], this.selection.rowRange[1] - 1),
+            ],
+          })
+        }
+        break
+      case Direction.Down:
+        if (this.startCell.rowIndex <= this.selection.rowRange[0]) {
+          // Expand downwards
+          this.setSelection({
+            colRange: this.selection.colRange,
+            rowRange: [
+              this.selection.rowRange[0],
+              Math.min(
+                this.selection.rowRange[1] + 1,
+                this.mgr.$derivedRows().itemCount - 1
+              ),
+            ],
+          })
+        } else {
+          // Shrink from top
+          this.setSelection({
+            colRange: this.selection.colRange,
+            rowRange: [
+              Math.min(this.selection.rowRange[0] + 1, this.selection.rowRange[1]),
+              this.selection.rowRange[1],
+            ],
+          })
+        }
+        break
+      case Direction.Right:
+        if (this.startCell.colIndex <= this.selection.colRange[0]) {
+          // Expand right
+          this.setSelection({
+            colRange: [
+              this.selection.colRange[0],
+              Math.min(
+                this.selection.colRange[1] + 1,
+                this.mgr.$derivedCols().itemCount - 1
+              ),
+            ],
+            rowRange: this.selection.rowRange,
+          })
+        } else {
+          // Shring from left
+          this.setSelection({
+            colRange: [
+              Math.min(this.selection.colRange[0] + 1, this.selection.colRange[1]),
+              this.selection.colRange[1],
+            ],
+            rowRange: this.selection.rowRange,
+          })
+        }
+        break
+      case Direction.Left:
+        if (this.startCell.colIndex >= this.selection.colRange[1]) {
+          // Expand left
+          this.setSelection({
+            colRange: [
+              Math.max(0, this.selection.colRange[0] - 1),
+              this.selection.colRange[1],
+            ],
+            rowRange: this.selection.rowRange,
+          })
+        } else {
+          // Shrink from right
+          this.setSelection({
+            colRange: [
+              this.selection.colRange[0],
+              Math.max(this.selection.colRange[1] - 1, this.selection.colRange[0]),
+            ],
+            rowRange: this.selection.rowRange,
+          })
+        }
+        break
+    }
+  }
+
+  moveSelection(direction: Direction) {}
 }

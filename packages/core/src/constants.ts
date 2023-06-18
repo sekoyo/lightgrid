@@ -42,6 +42,7 @@ export const emptyDerivedColsResult: DerivedColsResult<any, any> = {
   middle: emptyDerivedColResult,
   end: emptyDerivedColResult,
   size: 0,
+  itemCount: 0,
   headerRows: 0,
 }
 

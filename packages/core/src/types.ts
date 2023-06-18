@@ -59,6 +59,7 @@ export interface DerivedColsResult<T, R> {
   middle: DerivedColResult<T, R>
   end: DerivedColResult<T, R>
   size: number
+  itemCount: number
   headerRows: number
 }
 
@@ -104,6 +105,7 @@ export interface DerivedRowsResult<T> {
   middle: DerivedRowResult<T>
   end: DerivedRowResult<T>
   size: number
+  itemCount: number
 }
 
 export interface CellComponentProps<T, R> {
@@ -151,3 +153,10 @@ export interface GridArea<T, R> {
 
 export type Point = { x: number; y: number }
 export type AreaRect = { x: number; y: number; width: number; height: number }
+
+export enum Direction {
+  Up,
+  Down,
+  Left,
+  Right,
+}
