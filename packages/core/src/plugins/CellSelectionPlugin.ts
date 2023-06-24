@@ -2,7 +2,7 @@ import { signal, effect } from '@maverick-js/signals'
 import { GridManager } from '../GridManager'
 import { GridPlugin } from '../GridPlugin'
 import { AreaPos, CellPosition, CellSelection, Direction, GridArea } from '../types'
-import { clamp } from '../utils'
+import { clamp, copySelection } from '../utils'
 
 export class CellSelectionPlugin<T, R> extends GridPlugin<T, R> {
   rect?: DOMRect
@@ -58,8 +58,7 @@ export class CellSelectionPlugin<T, R> extends GridPlugin<T, R> {
     if (e.metaKey) {
       const lowerKey = e.key.toLowerCase()
       if (lowerKey === 'c') {
-        // copyToClipboard(selection, derivedCols, derivedRows)
-        return
+        copySelection(this.selection, this.mgr.$derivedCols(), this.mgr.$derivedRows())
       } else if (lowerKey === 'a') {
         this.selectAll()
       }
