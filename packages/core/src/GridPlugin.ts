@@ -1,6 +1,6 @@
 import { getColumnOffset, getRowOffset } from './constants'
 import { type GridManager } from './GridManager'
-import { CellPosition, GridArea } from './types'
+import type { CellPosition, GridArea } from './types'
 import { binarySearch } from './utils'
 
 export abstract class GridPlugin<T, R> {
@@ -53,6 +53,28 @@ export abstract class GridPlugin<T, R> {
     return {
       colIndex: area.colResult.items[colIndex].colIndex,
       rowIndex: area.rowResult.items[rowIndex].rowIndex,
+    }
+  }
+
+  getColResultFromIndex(colIndex: number) {
+    const cols = this.mgr.$derivedCols()
+    if (colIndex < cols.start.items.length) {
+      return cols.start
+    } else if (colIndex >= cols.start.items.length + cols.middle.items.length) {
+      return cols.end
+    } else {
+      return cols.middle
+    }
+  }
+
+  getRowResultFromIndex(rowIndex: number) {
+    const rows = this.mgr.$derivedRows()
+    if (rowIndex < rows.start.items.length) {
+      return rows.start
+    } else if (rowIndex >= rows.start.items.length + rows.middle.items.length) {
+      return rows.end
+    } else {
+      return rows.middle
     }
   }
 }

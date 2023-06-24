@@ -2,6 +2,7 @@ import { root, signal, computed, effect } from '@maverick-js/signals'
 import throttle from 'lodash-es/throttle'
 
 import {
+  AreaPos,
   DerivedColsResult,
   DerivedColumn,
   DerivedRow,
@@ -24,12 +25,6 @@ import {
   willScrollbarsAppear,
 } from './utils'
 import { GridPlugin } from './GridPlugin'
-
-enum AreaIndex {
-  Start,
-  Middle,
-  End,
-}
 
 type Viewport = { width: number; height: number }
 
@@ -88,6 +83,7 @@ export class GridManager<T, R> {
   $headerHeight = computed(() => this.$derivedCols().headerRows * this.$headerRowHeight())
   $derivedStartRows = computed(() =>
     deriveRows(
+      AreaPos.Start,
       this.$pinnedTopData(),
       this.$rowState(),
       this.getRowId,
@@ -99,6 +95,7 @@ export class GridManager<T, R> {
   )
   $derivedMiddleRows = computed(() =>
     deriveRows(
+      AreaPos.Middle,
       this.$data(),
       this.$rowState(),
       this.getRowId,
@@ -110,6 +107,7 @@ export class GridManager<T, R> {
   )
   $derivedEndRows = computed(() =>
     deriveRows(
+      AreaPos.End,
       this.$pinnedBottomData(),
       this.$rowState(),
       this.getRowId,
@@ -222,7 +220,7 @@ export class GridManager<T, R> {
           pinnedY: false,
         }
         byRender.push(area)
-        addToCol(AreaIndex.Middle, AreaIndex.Middle, area)
+        addToCol(AreaPos.Middle, AreaPos.Middle, area)
       }
       if (derivedCols.end.size) {
         const area: GridArea<T, R> = {
@@ -239,7 +237,7 @@ export class GridManager<T, R> {
           pinnedY: false,
         }
         byRender.push(area)
-        addToCol(AreaIndex.End, AreaIndex.Middle, area)
+        addToCol(AreaPos.End, AreaPos.Middle, area)
       }
       if (derivedCols.start.size) {
         const area: GridArea<T, R> = {
@@ -256,7 +254,7 @@ export class GridManager<T, R> {
           pinnedY: false,
         }
         byRender.push(area)
-        addToCol(AreaIndex.Start, AreaIndex.Middle, area)
+        addToCol(AreaPos.Start, AreaPos.Middle, area)
       }
     }
 
@@ -277,7 +275,7 @@ export class GridManager<T, R> {
           pinnedY: true,
         }
         byRender.push(area)
-        addToCol(AreaIndex.Middle, AreaIndex.Start, area)
+        addToCol(AreaPos.Middle, AreaPos.Start, area)
       }
       if (derivedCols.end.size) {
         const area: GridArea<T, R> = {
@@ -294,7 +292,7 @@ export class GridManager<T, R> {
           pinnedY: true,
         }
         byRender.push(area)
-        addToCol(AreaIndex.End, AreaIndex.Start, area)
+        addToCol(AreaPos.End, AreaPos.Start, area)
       }
       if (derivedCols.start.size) {
         const area: GridArea<T, R> = {
@@ -311,7 +309,7 @@ export class GridManager<T, R> {
           pinnedY: true,
         }
         byRender.push(area)
-        addToCol(AreaIndex.Start, AreaIndex.Start, area)
+        addToCol(AreaPos.Start, AreaPos.Start, area)
       }
     }
 
@@ -332,7 +330,7 @@ export class GridManager<T, R> {
           pinnedY: true,
         }
         byRender.push(area)
-        addToCol(AreaIndex.Middle, AreaIndex.End, area)
+        addToCol(AreaPos.Middle, AreaPos.End, area)
       }
       if (derivedCols.end.size) {
         const area: GridArea<T, R> = {
@@ -349,7 +347,7 @@ export class GridManager<T, R> {
           pinnedY: true,
         }
         byRender.push(area)
-        addToCol(AreaIndex.End, AreaIndex.End, area)
+        addToCol(AreaPos.End, AreaPos.End, area)
       }
       if (derivedCols.start.size) {
         const area: GridArea<T, R> = {
@@ -366,7 +364,7 @@ export class GridManager<T, R> {
           pinnedY: true,
         }
         byRender.push(area)
-        addToCol(AreaIndex.Start, AreaIndex.End, area)
+        addToCol(AreaPos.Start, AreaPos.End, area)
       }
     }
 

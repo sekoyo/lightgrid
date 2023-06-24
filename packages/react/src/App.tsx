@@ -61,7 +61,7 @@ export function App() {
     return a
   })
   const [pinnedBottomData, setPinnedBottomData] = useState(() => {
-    const a: Item[] = new Array(2).fill(0).map((_, i) => ({
+    const a: Item[] = new Array(3).fill(0).map((_, i) => ({
       id: i + 3000,
       details: {
         name: 'Bobby Longshaft',

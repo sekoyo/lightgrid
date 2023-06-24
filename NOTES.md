@@ -1,4 +1,4 @@
-- Fix: Clicking in row details selects closest parent cell
+- Fix(low): Clicking in row details selects closest parent cell
 
 ## Later
 

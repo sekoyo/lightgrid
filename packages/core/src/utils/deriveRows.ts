@@ -1,4 +1,5 @@
 import type {
+  AreaPos,
   GetRowMeta,
   GetRowDetailsMeta,
   DerivedRow,
@@ -9,6 +10,7 @@ import type {
 } from '../types'
 
 export function deriveRows<T>(
+  areaPos: AreaPos,
   data: T[],
   rowState: RowState,
   getRowId: GetRowId<T>,
@@ -54,6 +56,7 @@ export function deriveRows<T>(
   }
 
   return {
+    areaPos,
     items,
     itemDetails,
     size: offset,

@@ -1,7 +1,7 @@
 import { signal, effect } from '@maverick-js/signals'
 import { GridManager } from '../GridManager'
 import { GridPlugin } from '../GridPlugin'
-import { CellPosition, CellSelection, Direction, GridArea } from '../types'
+import { AreaPos, CellPosition, CellSelection, Direction, GridArea } from '../types'
 import { clamp } from '../utils'
 
 export class CellSelectionPlugin<T, R> extends GridPlugin<T, R> {
@@ -51,6 +51,10 @@ export class CellSelectionPlugin<T, R> extends GridPlugin<T, R> {
   }
 
   onKeyDown = (e: KeyboardEvent) => {
+    if (!this.startCell || !this.selection) {
+      return
+    }
+
     if (e.metaKey) {
       const lowerKey = e.key.toLowerCase()
       if (lowerKey === 'c') {
@@ -66,24 +70,28 @@ export class CellSelectionPlugin<T, R> extends GridPlugin<T, R> {
         } else {
           this.moveSelection(Direction.Left)
         }
+        this.scrollXNeeded(this.selection.colRange[0])
       } else if (e.key === 'ArrowRight') {
         if (e.shiftKey) {
           this.shiftChangeSelection(Direction.Right)
         } else {
           this.moveSelection(Direction.Right)
         }
+        this.scrollXNeeded(this.selection.colRange[1])
       } else if (e.key === 'ArrowUp') {
         if (e.shiftKey) {
           this.shiftChangeSelection(Direction.Up)
         } else {
           this.moveSelection(Direction.Up)
         }
+        this.scrollYNeeded(this.selection.rowRange[0])
       } else if (e.key === 'ArrowDown') {
         if (e.shiftKey) {
           this.shiftChangeSelection(Direction.Down)
         } else {
           this.moveSelection(Direction.Down)
         }
+        this.scrollYNeeded(this.selection.rowRange[1])
       }
     }
   }
@@ -350,5 +358,70 @@ export class CellSelectionPlugin<T, R> extends GridPlugin<T, R> {
       rowRange: [startCell.rowIndex, startCell.rowIndex],
       colRange: [startCell.colIndex, startCell.colIndex],
     })
+  }
+
+  scrollXNeeded(colIndex: number) {
+    const colResult = this.getColResultFromIndex(colIndex)
+
+    // Don't scroll unless scrollable area
+    if (colResult.areaPos !== AreaPos.Middle) {
+      return
+    }
+
+    const scrollX = this.mgr.$scrollX()
+    const relativeColIndex = colIndex - colResult.items[0].colIndex
+    const col = colResult.items[relativeColIndex]
+    const startSize = this.mgr.$derivedCols().start.size
+    const endSize = this.mgr.$derivedCols().end.size
+
+    if (col.offset - scrollX < 0) {
+      this.mgr.scrollLeft(col.offset)
+      return
+    }
+
+    // This seems a bit complex, is there a better way?
+    const scrollbarWidth = this.mgr.$scrollbarWidth()
+    const mainXWidth = this.mgr.$viewportWidth() - (startSize + endSize)
+    const colEndY = scrollbarWidth + col.offset + col.size - scrollX
+
+    if (colEndY > mainXWidth) {
+      const areaOutlineWidth = 1
+      this.mgr.scrollLeft(
+        scrollbarWidth + col.offset + col.size + areaOutlineWidth - mainXWidth
+      )
+    }
+  }
+
+  scrollYNeeded(rowIndex: number) {
+    const rowResult = this.getRowResultFromIndex(rowIndex)
+
+    // Don't scroll unless scrollable area
+    if (rowResult.areaPos !== AreaPos.Middle) {
+      return
+    }
+
+    const scrollY = this.mgr.$scrollY()
+    const relativeRowIndex = rowIndex - rowResult.items[0].rowIndex
+    const row = rowResult.items[relativeRowIndex]
+    const startSize = this.mgr.$derivedRows().start.size
+    const endSize = this.mgr.$derivedRows().end.size
+
+    if (row.offset - scrollY < 0) {
+      this.mgr.scrollTop(row.offset)
+      return
+    }
+
+    // This seems a bit complex, is there a better way?
+    const scrollbarHeight = this.mgr.$scrollbarHeight()
+    const mainYHeight =
+      this.mgr.$viewportHeight() - (this.mgr.$headerHeight() + startSize + endSize)
+    const rowEndY = scrollbarHeight + row.offset + row.size - scrollY
+
+    if (rowEndY > mainYHeight) {
+      const areaOutlineHeight = 1
+      this.mgr.scrollTop(
+        scrollbarHeight + row.offset + row.size + areaOutlineHeight - mainYHeight
+      )
+    }
   }
 }

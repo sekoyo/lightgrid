@@ -46,6 +46,7 @@ export interface DerivedColumn<T, R> extends Column<T, R> {
 export type DerivedGroupColumns<T, R> = (DerivedColumnGroup<T, R> | DerivedColumn<T, R>)[]
 
 export interface DerivedColResult<T, R> {
+  areaPos: AreaPos
   itemsWithGrouping: DerivedGroupColumns<T, R>
   items: DerivedColumn<T, R>[]
   size: number
@@ -93,6 +94,7 @@ export interface DerivedDetailRow<T> {
 }
 
 export interface DerivedRowResult<T> {
+  areaPos: AreaPos
   items: DerivedRow<T>[]
   itemDetails: DerivedDetailRow<T>[]
   size: number
@@ -149,6 +151,12 @@ export interface GridArea<T, R> {
   rowResult: DerivedRowResult<T>
   pinnedX: boolean
   pinnedY: boolean
+}
+
+export enum AreaPos {
+  Start,
+  Middle,
+  End,
 }
 
 export type Point = { x: number; y: number }

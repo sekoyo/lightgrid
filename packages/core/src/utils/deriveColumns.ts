@@ -1,10 +1,11 @@
-import type {
-  ColumnPin,
-  GroupedColumns,
-  DerivedColumn,
-  DerivedGroupColumns,
-  DerivedColsResult,
-  DerivedColResult,
+import {
+  type ColumnPin,
+  type GroupedColumns,
+  type DerivedColumn,
+  type DerivedGroupColumns,
+  type DerivedColsResult,
+  type DerivedColResult,
+  AreaPos,
 } from '../types'
 import { isColumnGroup } from './isTypes'
 
@@ -133,6 +134,7 @@ function getDerivedWidth(
 
 const createEmptyColResults: <T, R>() => DerivedColsResult<T, R> = () => ({
   start: {
+    areaPos: AreaPos.Start,
     itemsWithGrouping: [],
     items: [],
     size: 0,
@@ -141,6 +143,7 @@ const createEmptyColResults: <T, R>() => DerivedColsResult<T, R> = () => ({
     firstWithSize: false,
   },
   middle: {
+    areaPos: AreaPos.Middle,
     itemsWithGrouping: [],
     items: [],
     size: 0,
@@ -149,6 +152,7 @@ const createEmptyColResults: <T, R>() => DerivedColsResult<T, R> = () => ({
     firstWithSize: false,
   },
   end: {
+    areaPos: AreaPos.End,
     itemsWithGrouping: [],
     items: [],
     size: 0,
