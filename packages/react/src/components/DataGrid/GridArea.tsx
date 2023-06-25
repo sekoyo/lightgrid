@@ -4,7 +4,7 @@ import {
   CellSelection,
   DerivedColumn,
   DerivedRow,
-  GridArea,
+  GridAreaDesc,
   OnRowStateChange,
   RenderRowDetails,
   RowState,
@@ -24,8 +24,8 @@ function isCellSelected(colIndex: number, rowIndex: number, selection?: CellSele
   )
 }
 
-interface AreaProps<T> {
-  area: GridArea<T, R>
+interface GridAreaProps<T> {
+  area: GridAreaDesc<T, R>
   columns: DerivedColumn<T, R>[]
   rows: DerivedRow<T>[]
   rowState: RowState
@@ -37,7 +37,7 @@ interface AreaProps<T> {
   isFirstColumnGroup: boolean
 }
 
-export function AreaNoMemo<T>({
+export function GridAreaNoMemo<T>({
   area,
   columns,
   rows,
@@ -48,7 +48,7 @@ export function AreaNoMemo<T>({
   selection,
   selectionStartCell,
   isFirstColumnGroup,
-}: AreaProps<T>) {
+}: GridAreaProps<T>) {
   const onExpandToggle = useCallback(
     (rowId: string | number) =>
       onRowStateChangeRef.current(rowId, {
@@ -119,4 +119,4 @@ export function AreaNoMemo<T>({
 }
 
 const typedMemo: <T>(c: T) => T = memo
-export const Area = typedMemo(AreaNoMemo)
+export const GridArea = typedMemo(GridAreaNoMemo)

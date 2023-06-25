@@ -10,7 +10,7 @@ import {
   GetRowDetailsMeta,
   GetRowId,
   GetRowMeta,
-  GridArea,
+  GridAreaDesc,
   GroupedColumns,
   OnRowStateChange,
   RenderRowDetails,
@@ -35,7 +35,7 @@ interface GridManagerStaticProps<T, R> {
   renderRowDetails: RenderRowDetails<T, R>
   onRowStateChange: OnRowStateChange
   onColumnsChanged: (derivedCols: DerivedColsResult<T, R>) => void
-  onAreasChanged: (gridAreas: GridArea<T, R>[]) => void
+  onAreasChanged: (gridAreas: GridAreaDesc<T, R>[]) => void
   onViewportChanged: ({ width, height }: Viewport) => void
   onContentHeightChanged: (value: number) => void
   onHeaderHeightChanged: (value: number) => void
@@ -184,10 +184,10 @@ export class GridManager<T, R> {
 
   // -- Grid areas (pushed in render order)
   $areas = computed(() => {
-    const byRender: GridArea<T, R>[] = []
-    const byCol: GridArea<T, R>[][] = []
+    const byRender: GridAreaDesc<T, R>[] = []
+    const byCol: GridAreaDesc<T, R>[][] = []
 
-    const addToCol = (colIndex: number, rowIndex: number, area: GridArea<T, R>) => {
+    const addToCol = (colIndex: number, rowIndex: number, area: GridAreaDesc<T, R>) => {
       if (!byCol[colIndex]) {
         byCol[colIndex] = []
       }
@@ -206,7 +206,7 @@ export class GridManager<T, R> {
     // Main
     if (derivedRows.middle.size) {
       if (derivedCols.middle.size) {
-        const area: GridArea<T, R> = {
+        const area: GridAreaDesc<T, R> = {
           id: 'mainMiddle',
           windowX: derivedCols.middle.startOffset,
           windowY: derivedRows.middle.startOffset,
@@ -223,7 +223,7 @@ export class GridManager<T, R> {
         addToCol(AreaPos.Middle, AreaPos.Middle, area)
       }
       if (derivedCols.end.size) {
-        const area: GridArea<T, R> = {
+        const area: GridAreaDesc<T, R> = {
           id: 'mainRight',
           windowX: endX,
           windowY: derivedRows.middle.startOffset,
@@ -240,7 +240,7 @@ export class GridManager<T, R> {
         addToCol(AreaPos.End, AreaPos.Middle, area)
       }
       if (derivedCols.start.size) {
-        const area: GridArea<T, R> = {
+        const area: GridAreaDesc<T, R> = {
           id: 'mainLeft',
           windowX: 0,
           windowY: derivedRows.middle.startOffset,
@@ -261,7 +261,7 @@ export class GridManager<T, R> {
     // Top
     if (derivedRows.start.size) {
       if (derivedCols.middle.size) {
-        const area: GridArea<T, R> = {
+        const area: GridAreaDesc<T, R> = {
           id: 'topMiddle',
           windowX: derivedCols.middle.startOffset,
           windowY: derivedRows.start.startOffset,
@@ -278,7 +278,7 @@ export class GridManager<T, R> {
         addToCol(AreaPos.Middle, AreaPos.Start, area)
       }
       if (derivedCols.end.size) {
-        const area: GridArea<T, R> = {
+        const area: GridAreaDesc<T, R> = {
           id: 'topRight',
           windowX: endX,
           windowY: derivedRows.start.startOffset,
@@ -295,7 +295,7 @@ export class GridManager<T, R> {
         addToCol(AreaPos.End, AreaPos.Start, area)
       }
       if (derivedCols.start.size) {
-        const area: GridArea<T, R> = {
+        const area: GridAreaDesc<T, R> = {
           id: 'topLeft',
           windowX: 0,
           windowY: derivedRows.start.startOffset,
@@ -316,7 +316,7 @@ export class GridManager<T, R> {
     // Bottom
     if (derivedRows.end.size) {
       if (derivedCols.middle.size) {
-        const area: GridArea<T, R> = {
+        const area: GridAreaDesc<T, R> = {
           id: 'bottomMiddle',
           windowX: derivedCols.middle.startOffset,
           windowY: endY,
@@ -333,7 +333,7 @@ export class GridManager<T, R> {
         addToCol(AreaPos.Middle, AreaPos.End, area)
       }
       if (derivedCols.end.size) {
-        const area: GridArea<T, R> = {
+        const area: GridAreaDesc<T, R> = {
           id: 'bottomRight',
           windowX: endX,
           windowY: endY,
@@ -350,7 +350,7 @@ export class GridManager<T, R> {
         addToCol(AreaPos.End, AreaPos.End, area)
       }
       if (derivedCols.start.size) {
-        const area: GridArea<T, R> = {
+        const area: GridAreaDesc<T, R> = {
           id: 'bottomLeft',
           windowX: 0,
           windowY: endY,

@@ -1,5 +1,16 @@
 ## Todo
 
+- Consider how the user can write their own plugins and interfere with the render -
+  overlays could be quite easy if we iterate over plugins and map `.render()`. Other
+  key parts could be at specific places e.g. in the cell renderer.
+
+  **How would we handle if the plugin wants to change e.g. columns?**
+  We could make users pass in a `onColumnsChange` which will be needed anyway and expose
+  that in the Grid Manager.
+
+  We could make all plugins the same way - e.g. for CellSelectionPlugin you need to pass it
+  in at app level.
+
 - Column resizing
 - Column re-ordering
 - Row re-ordering

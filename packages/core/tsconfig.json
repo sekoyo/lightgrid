@@ -15,9 +15,6 @@
     "isolatedModules": true,
     "declaration": true,
 
-    // "types": ["@maverick-js/signals/dist/types"],
-    // "typeRoots": ["@maverick-js/signals/dist/types"],
-
     /* Linting */
     "strict": true,
     "noFallthroughCasesInSwitch": true

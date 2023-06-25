@@ -139,7 +139,7 @@ export interface CellPosition {
   rowIndex: number
 }
 
-export interface GridArea<T, R> {
+export interface GridAreaDesc<T, R> {
   id: string
   windowX: number
   windowY: number

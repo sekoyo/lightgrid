@@ -14,7 +14,7 @@ import {
   createGridManager,
   emptyDerivedColsResult,
   DerivedColsResult,
-  GridArea,
+  GridAreaDesc,
   DerivedColumn,
   DerivedRow,
   CellSelection,
@@ -24,7 +24,7 @@ import {
 import '@lightfin/datagrid/dist/styles.css'
 import { R } from './types'
 import { HeaderArea } from './HeaderArea'
-import { Area } from './Area'
+import { GridArea } from './GridArea'
 
 const emptyData: any[] = []
 const emptyRowState: RowState = {}
@@ -81,7 +81,7 @@ export function DataGrid<T>({
 
   const [derivedCols, setDerivedCols] =
     useState<DerivedColsResult<T, R>>(emptyDerivedColsResult)
-  const [gridAreas, setGridAreas] = useState<GridArea<T, R>[]>([])
+  const [gridAreas, setGridAreas] = useState<GridAreaDesc<T, R>[]>([])
   const [viewport, setViewport] = useState({ width: 0, height: 0 })
   const [scrollLeft, setScrollLeft] = useState(0)
   const [scrollTop, setScrollTop] = useState(0)
@@ -187,7 +187,7 @@ export function DataGrid<T>({
             style={{ width: derivedCols.size, height: contentHeight }}
           >
             {gridAreas.map(area => (
-              <Area
+              <GridArea
                 key={area.id}
                 area={area}
                 columns={area.pinnedX ? area.colResult.items : middleCols}

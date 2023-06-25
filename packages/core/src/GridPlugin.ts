@@ -1,6 +1,6 @@
 import { getColumnOffset, getRowOffset } from './constants'
 import { type GridManager } from './GridManager'
-import type { CellPosition, GridArea } from './types'
+import type { CellPosition, GridAreaDesc } from './types'
 import { binarySearch } from './utils'
 
 export abstract class GridPlugin<T, R> {
@@ -33,7 +33,7 @@ export abstract class GridPlugin<T, R> {
   }
 
   getCellInAreaFromPoint(
-    area: GridArea<T, R>,
+    area: GridAreaDesc<T, R>,
     windowX: number,
     windowY: number
   ): CellPosition {
