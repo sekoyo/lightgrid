@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import {
   CellComponentProps,
   GroupedColumns,
@@ -91,58 +91,55 @@ export function App() {
     })
   }
 
-  const columns = useMemo<GroupedColumns<Item, R>>(
-    () => [
-      ...middleCols,
-      {
-        key: 'b',
-        header: 'B',
-        pin: 'end',
-        children: [
-          {
-            key: 'c',
-            header: 'C',
-            width: 80,
-            getValue,
-          },
-          {
-            key: 'd',
-            header: 'D',
-            children: [
-              {
-                key: 'x',
-                header: 'X',
-                width: '0.5fr',
-                getValue,
-              },
-              {
-                key: 'y',
-                header: 'Y',
-                width: '0.5fr',
-                getValue,
-              },
-            ],
-          },
-          {
-            key: 'e',
-            header: 'E',
-            width: '120px',
-            getValue,
-            pin: 'start',
-          },
-        ],
-      },
-      {
-        key: 'f',
-        header: 'F',
-        pin: 'start',
-        width: '1fr',
-        getValue: () => today.getFullYear(),
-        cellComponent: props => <CustomCell column={props.column} item={props.item} />,
-      },
-    ],
-    []
-  )
+  const [columns, setColumns] = useState<GroupedColumns<Item, R>>(() => [
+    ...middleCols,
+    {
+      key: 'b',
+      header: 'B',
+      pin: 'end',
+      children: [
+        {
+          key: 'c',
+          header: 'C',
+          width: 80,
+          getValue,
+        },
+        {
+          key: 'd',
+          header: 'D',
+          children: [
+            {
+              key: 'x',
+              header: 'X',
+              width: '0.5fr',
+              getValue,
+            },
+            {
+              key: 'y',
+              header: 'Y',
+              width: '0.5fr',
+              getValue,
+            },
+          ],
+        },
+        {
+          key: 'e',
+          header: 'E',
+          width: '120px',
+          getValue,
+          pin: 'start',
+        },
+      ],
+    },
+    {
+      key: 'f',
+      header: 'F',
+      pin: 'start',
+      width: '1fr',
+      getValue: () => today.getFullYear(),
+      cellComponent: props => <CustomCell column={props.column} item={props.item} />,
+    },
+  ])
 
   return (
     <div style={{ padding: '3em' }}>
@@ -171,6 +168,9 @@ export function App() {
           data={data}
           pinnedTopData={pinnedTopData}
           pinnedBottomData={pinnedBottomData}
+          enableCellSelection
+          enableColumnResize
+          onColumnsChange={setColumns}
           // direction="rtl"
         />
       </div>

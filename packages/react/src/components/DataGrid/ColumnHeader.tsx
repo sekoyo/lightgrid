@@ -1,12 +1,26 @@
-import { DerivedColumn, DerivedColumnGroup } from '@lightfin/datagrid'
+import {
+  AreaPos,
+  DerivedColumn,
+  DerivedColumnGroup,
+  GridManager,
+} from '@lightfin/datagrid'
 import { R } from './types'
 
 interface ColumnHeaderProps<T> {
+  mgr: GridManager<T, React.ReactNode>
   column: DerivedColumnGroup<T, R> | DerivedColumn<T, R>
+  colAreaPos: AreaPos
   headerRowHeight: number
+  enableColumnResize?: boolean
 }
 
-export function ColumnHeader<T>({ column, headerRowHeight }: ColumnHeaderProps<T>) {
+export function ColumnHeader<T>({
+  mgr,
+  column,
+  colAreaPos,
+  headerRowHeight,
+  enableColumnResize,
+}: ColumnHeaderProps<T>) {
   return (
     <div
       className="lfg-column-header"
@@ -19,6 +33,16 @@ export function ColumnHeader<T>({ column, headerRowHeight }: ColumnHeaderProps<T
       }}
     >
       {column.header || column.key}
+      {enableColumnResize && (
+        <div
+          className="lfg-column-resizer"
+          role="button"
+          aria-labelledby="resize handle"
+          onPointerDown={e =>
+            mgr.columnResizePlugin.onPointerDown(e.nativeEvent, column, colAreaPos)
+          }
+        />
+      )}
     </div>
   )
 }

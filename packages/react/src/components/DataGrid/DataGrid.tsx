@@ -18,8 +18,9 @@ import {
   DerivedColumn,
   DerivedRow,
   CellSelection,
-  CellSelectionPlugin,
   CellPosition,
+  AreaPos,
+  ColResizeData,
 } from '@lightfin/datagrid'
 import '@lightfin/datagrid/dist/styles.css'
 import { R } from './types'
@@ -49,7 +50,9 @@ interface DataGridProps<T> {
   onRowStateChange?: OnRowStateChange
   direction?: 'ltr' | 'rtl'
   theme?: string
-  disableCellSelection?: boolean
+  enableCellSelection?: boolean
+  enableColumnResize?: boolean
+  onColumnsChange?: (columnns: GroupedColumns<T, React.ReactNode>) => void
 }
 
 export function DataGrid<T>({
@@ -66,7 +69,9 @@ export function DataGrid<T>({
   onRowStateChange = noop,
   direction,
   theme = 'lightfin-dark',
-  disableCellSelection,
+  enableCellSelection,
+  enableColumnResize,
+  onColumnsChange,
 }: DataGridProps<T>) {
   const gridEl = useRef<HTMLDivElement>(null)
   const scrollEl = useRef<HTMLDivElement>(null)
@@ -91,6 +96,7 @@ export function DataGrid<T>({
   const [middleRows, setMiddleRows] = useState<DerivedRow<T>[]>([])
   const [startCell, setStartCell] = useState<CellPosition>()
   const [selection, setSelection] = useState<CellSelection>()
+  const [colResizeData, setColResizeData] = useState<ColResizeData | undefined>()
 
   // Grid manager instance and props that don't change
   const [mgr] = useState(() =>
@@ -99,8 +105,12 @@ export function DataGrid<T>({
       getRowMeta,
       getRowDetailsMeta,
       renderRowDetails,
+      setStartCell,
+      setSelection,
+      setColResizeData,
       onRowStateChange,
-      onColumnsChanged: setDerivedCols,
+      onColumnsChange,
+      onDerivedColumnsChange: setDerivedCols,
       onAreasChanged: setGridAreas,
       onViewportChanged: setViewport,
       onContentHeightChanged: setContentHeight,
@@ -109,17 +119,6 @@ export function DataGrid<T>({
       onMiddleRowsChange: setMiddleRows,
     })
   )
-
-  // Cell selection plugin
-  useEffect(() => {
-    if (!disableCellSelection) {
-      mgr.addPlugin(
-        'cellSelection',
-        new CellSelectionPlugin(mgr, setStartCell, setSelection)
-      )
-      return () => mgr.removePlugin('cellSelection')
-    }
-  }, [mgr, disableCellSelection])
 
   // Pass props which update to grid manager
   useEffect(() => {
@@ -130,19 +129,29 @@ export function DataGrid<T>({
       pinnedTopData,
       pinnedBottomData,
       rowState,
+      enableCellSelection,
+      enableColumnResize,
     })
-  }, [mgr, columns, headerRowHeight, data, pinnedTopData, pinnedBottomData, rowState])
+  }, [
+    mgr,
+    columns,
+    headerRowHeight,
+    data,
+    pinnedTopData,
+    pinnedBottomData,
+    rowState,
+    enableCellSelection,
+    enableColumnResize,
+  ])
 
   // Mount and unmount
-  useEffect(() => {
-    mgr.mount(gridEl.current!, scrollEl.current!, viewportEl.current!)
-    return () => mgr.unmount()
-  }, [mgr])
+  useEffect(
+    () => mgr.mount(gridEl.current!, scrollEl.current!, viewportEl.current!),
+    [mgr]
+  )
 
-  // Only change scroll when we receive an event, as the browser throttles
-  // scroll events causing flashes of blankness on fast scrolling.
-  // Also we don't do this in GridManager as this syncs up with React
-  // rendering better and doesn't so easily cause flashes of blankness.
+  // Relay scroll events to actually move the view and move it based on React state changes
+  // This makes flickers of blankness less likely
   useEffect(() => {
     viewportEl.current!.scrollTo(scrollLeft, scrollTop)
   }, [scrollTop, scrollLeft])
@@ -168,7 +177,7 @@ export function DataGrid<T>({
       style={
         {
           '--lfg-direction': direction,
-          minHeight: mgr.$headerHeight(),
+          minHeight: headerHeight,
         } as CSSProperties
       }
     >
@@ -202,30 +211,42 @@ export function DataGrid<T>({
               />
             ))}
             <HeaderArea
-              /*header middle*/
+              mgr={mgr}
               columns={middleCols}
+              colAreaPos={AreaPos.Middle}
               headerRowHeight={headerRowHeight}
               left={derivedCols.start.size}
               width={derivedCols.middle.size + derivedCols.end.size}
               height={headerHeight}
+              enableColumnResize={enableColumnResize}
             />
             <HeaderArea
-              /*header end (right)*/
+              mgr={mgr}
               columns={derivedCols.end.itemsWithGrouping}
+              colAreaPos={AreaPos.End}
               headerRowHeight={headerRowHeight}
               left={viewport.width - derivedCols.end.size}
               width={derivedCols.end.size}
               height={headerHeight}
+              enableColumnResize={enableColumnResize}
             />
             <HeaderArea
-              /*header start (left)*/
+              mgr={mgr}
               columns={derivedCols.start.itemsWithGrouping}
+              colAreaPos={AreaPos.Start}
               headerRowHeight={headerRowHeight}
               left={0}
               width={derivedCols.start.size}
               height={headerHeight}
+              enableColumnResize={enableColumnResize}
             />
           </div>
+          {!!(enableColumnResize && colResizeData) && (
+            <div
+              className="lfg-column-resize-marker"
+              style={{ left: colResizeData.left }}
+            />
+          )}
         </div>
       </div>
     </div>

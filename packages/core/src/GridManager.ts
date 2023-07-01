@@ -3,6 +3,8 @@ import throttle from 'lodash-es/throttle'
 
 import {
   AreaPos,
+  CellPosition,
+  CellSelection,
   DerivedColsResult,
   DerivedColumn,
   DerivedRow,
@@ -24,7 +26,7 @@ import {
   getScrollBarSize,
   willScrollbarsAppear,
 } from './utils'
-import { GridPlugin } from './GridPlugin'
+import { CellSelectionPlugin, ColumnResizePlugin, SetColResizeData } from './plugins'
 
 type Viewport = { width: number; height: number }
 
@@ -33,8 +35,12 @@ interface GridManagerStaticProps<T, R> {
   getRowMeta: GetRowMeta<T>
   getRowDetailsMeta: GetRowDetailsMeta<T>
   renderRowDetails: RenderRowDetails<T, R>
+  setStartCell: (cellPosition: CellPosition | undefined) => void
+  setSelection: (cellSelection: CellSelection | undefined) => void
+  setColResizeData: SetColResizeData
+  onColumnsChange?: (columns: GroupedColumns<T, R>) => void
   onRowStateChange: OnRowStateChange
-  onColumnsChanged: (derivedCols: DerivedColsResult<T, R>) => void
+  onDerivedColumnsChange: (derivedCols: DerivedColsResult<T, R>) => void
   onAreasChanged: (gridAreas: GridAreaDesc<T, R>[]) => void
   onViewportChanged: ({ width, height }: Viewport) => void
   onContentHeightChanged: (value: number) => void
@@ -50,6 +56,8 @@ interface GridManagerDynamicProps<T, R> {
   pinnedTopData: T[]
   pinnedBottomData: T[]
   rowState: RowState
+  enableCellSelection?: boolean
+  enableColumnResize?: boolean
 }
 
 export class GridManager<T, R> {
@@ -65,10 +73,13 @@ export class GridManager<T, R> {
   getRowMeta: GetRowMeta<T>
   getRowDetailsMeta: GetRowDetailsMeta<T>
   renderRowDetails: RenderRowDetails<T, R>
+  onColumnsChange?: (columns: GroupedColumns<T, R>) => void
   onRowStateChange: OnRowStateChange
 
+  cellSelectionPlugin: CellSelectionPlugin<T, R>
+  columnResizePlugin: ColumnResizePlugin<T, R>
+
   // Dynamic props
-  $plugins = signal<Record<string, GridPlugin<T, R>>>({})
   $viewportWidth = signal(0)
   $viewportHeight = signal(0)
   $columns = signal<GroupedColumns<T, R>>([])
@@ -77,6 +88,8 @@ export class GridManager<T, R> {
   $pinnedTopData = signal<T[]>([])
   $pinnedBottomData = signal<T[]>([])
   $rowState = signal<RowState>({})
+  $enableCellSelection = signal<boolean | undefined>(false)
+  $enableColumnResize = signal<boolean | undefined>(false)
 
   // Derived values
   $derivedCols = computed(() => deriveColumns(this.$columns(), this.$viewportWidth()))
@@ -380,9 +393,19 @@ export class GridManager<T, R> {
     this.getRowMeta = props.getRowMeta
     this.getRowDetailsMeta = props.getRowDetailsMeta
     this.renderRowDetails = props.renderRowDetails
+    this.onColumnsChange = props.onColumnsChange
     this.onRowStateChange = props.onRowStateChange
 
-    effect(() => props.onColumnsChanged(this.$derivedCols()))
+    // Initialise plugins
+    this.cellSelectionPlugin = new CellSelectionPlugin(
+      this,
+      props.setStartCell,
+      props.setSelection
+    )
+    this.columnResizePlugin = new ColumnResizePlugin(this, props.setColResizeData)
+
+    // Run side effects
+    effect(() => props.onDerivedColumnsChange(this.$derivedCols()))
     effect(() => props.onAreasChanged(this.$areas().byRender))
     effect(() =>
       props.onViewportChanged({
@@ -403,23 +426,25 @@ export class GridManager<T, R> {
     this.viewportEl = viewportEl
     this.sizeObserver = new ResizeObserver(this.onResize)
     this.sizeObserver.observe(gridEl)
+    this.cellSelectionPlugin.mount()
 
-    Object.values(this.$plugins()).forEach(plugin => {
-      if (plugin?.mount) {
-        plugin.mount()
+    const stopCellSelectionEnabledChange = effect(() => {
+      const enabled = this.$enableCellSelection()
+      if (enabled) {
+        this.cellSelectionPlugin.mount()
+      } else {
+        this.cellSelectionPlugin.unmount()
       }
     })
-  }
 
-  unmount() {
-    this.mounted = false
-    this.sizeObserver?.disconnect()
-    this.onResize.cancel()
-    Object.values(this.$plugins()).forEach(plugin => {
-      if (plugin?.unmount) {
-        plugin.unmount()
-      }
-    })
+    return () => {
+      this.mounted = false
+      this.sizeObserver?.disconnect()
+      this.onResize.cancel()
+      this.cellSelectionPlugin.unmount()
+      this.columnResizePlugin.unmount()
+      stopCellSelectionEnabledChange()
+    }
   }
 
   update(props: GridManagerDynamicProps<T, R>) {
@@ -429,6 +454,8 @@ export class GridManager<T, R> {
     this.$pinnedTopData.set(props.pinnedTopData)
     this.$pinnedBottomData.set(props.pinnedBottomData)
     this.$rowState.set(props.rowState)
+    this.$enableCellSelection.set(props.enableCellSelection)
+    this.$enableColumnResize.set(props.enableColumnResize)
   }
 
   updateScroll(scrollLeft: number, scrollTop: number) {
@@ -458,26 +485,6 @@ export class GridManager<T, R> {
     this.$viewportWidth.set(contentRect.width)
     this.$viewportHeight.set(contentRect.height)
   }, 30)
-
-  addPlugin(id: string, plugin: GridPlugin<T, R>) {
-    this.$plugins.set(prev => ({ ...prev, [id]: plugin }))
-    if (this.mounted && plugin.mount) {
-      plugin.mount()
-    }
-  }
-
-  removePlugin(id: string) {
-    this.$plugins.set(prev => {
-      if (prev[id]) {
-        const plugin = prev[id]
-        if (plugin.unmount) {
-          plugin.unmount()
-        }
-        delete prev[id]
-      }
-      return { ...prev }
-    })
-  }
 }
 
 export function createGridManager<T, R>(props: GridManagerStaticProps<T, R>) {

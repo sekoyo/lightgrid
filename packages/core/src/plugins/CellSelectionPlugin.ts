@@ -1,7 +1,7 @@
 import { signal, effect } from '@maverick-js/signals'
+import { AreaPos, CellPosition, CellSelection, Direction, GridAreaDesc } from '../types'
 import { GridManager } from '../GridManager'
 import { GridPlugin } from '../GridPlugin'
-import { AreaPos, CellPosition, CellSelection, Direction, GridAreaDesc } from '../types'
 import { clamp, copySelection } from '../utils'
 
 export class CellSelectionPlugin<T, R> extends GridPlugin<T, R> {

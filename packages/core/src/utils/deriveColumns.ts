@@ -9,8 +9,11 @@ import {
 } from '../types'
 import { isColumnGroup } from './isTypes'
 
-const DEFAULT_FR = 1
-const DEFAULT_ABS = 100
+const defaultFr = 1
+const defaultAbs = 100
+// We don't actually validate if the user pass in < minWidth only that
+// when calculating fractional widths there is a min, and when column resizing
+const defaultFrMinWidth = 100
 
 function sumAndDivideCols<T, R>(columns: GroupedColumns<T, R>) {
   const leftColumns: GroupedColumns<T, R> = []
@@ -81,9 +84,9 @@ function sumAndDivideCols<T, R>(columns: GroupedColumns<T, R>) {
         if (typeof width === 'number') {
           totalAbsolutes += width
         } else if (width.endsWith('fr')) {
-          totalFractions += parseFloat(width) ?? DEFAULT_FR
+          totalFractions += parseFloat(width) ?? defaultFr
         } else {
-          totalAbsolutes += parseFloat(width) ?? DEFAULT_ABS
+          totalAbsolutes += parseFloat(width) ?? defaultAbs
         }
 
         // Split out cols into groups (left|middle|right)
@@ -115,7 +118,7 @@ function getDerivedWidth(
   totalAbsolutes: number,
   totalFractions: number,
   maybeWidth?: number | string,
-  minWidth = 100
+  minWidth = defaultFrMinWidth
 ) {
   const width = maybeWidth ?? '1fr'
 
@@ -125,10 +128,10 @@ function getDerivedWidth(
     const n = parseFloat(width)
     return Math.max(
       minWidth,
-      Math.floor(((n ?? DEFAULT_FR) / totalFractions) * (viewportWidth - totalAbsolutes))
+      Math.floor(((n ?? defaultFr) / totalFractions) * (viewportWidth - totalAbsolutes))
     )
   } else {
-    return parseFloat(width) || DEFAULT_ABS
+    return parseFloat(width) || defaultAbs
   }
 }
 

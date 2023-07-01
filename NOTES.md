@@ -11,7 +11,6 @@
   We could make all plugins the same way - e.g. for CellSelectionPlugin you need to pass it
   in at app level.
 
-- Column resizing
 - Column re-ordering
 - Row re-ordering
 - Column filtering
@@ -21,6 +20,7 @@
 - SolidJS support
 - Safely limit row/col window range
 - Grid overlay prop - allows you to place a loading view etc over grid
+- Allow user to programmatically scroll to a row/col
 
 ### Docs
 
@@ -35,6 +35,7 @@
 ### Post MVP
 
 - Row resizing
+- Throw on non-unique key in deriveCols/Rows if NODE_ENV !== 'production'
 
 ## Bugs
 

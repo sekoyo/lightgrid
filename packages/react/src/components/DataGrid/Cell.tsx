@@ -59,9 +59,7 @@ export function CellNoMemo<T>({
           <DownArrow />
         </IconButton>
       )}
-      {column.cellComponent ? (
-        column.cellComponent({ column, item: row.item })
-      ) : (
+      {column.cellComponent?.({ column, item: row.item }) || (
         <DefaultCellComponent column={column} item={row.item} />
       )}
     </div>

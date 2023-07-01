@@ -1,10 +1,11 @@
-import type {
-  DerivedColResult,
-  DerivedColsResult,
-  DerivedColumn,
-  DerivedColumnGroup,
-  DerivedRow,
-  RowMeta,
+import {
+  AreaPos,
+  type DerivedColResult,
+  type DerivedColsResult,
+  type DerivedColumn,
+  type DerivedColumnGroup,
+  type DerivedRow,
+  type RowMeta,
 } from './types'
 
 export const defaultHeaderRowHeight = 32
@@ -29,6 +30,7 @@ export const getColumnOffset = <T, R>(
 export const getRowOffset = <T>(r: DerivedRow<T>) => r.offset
 
 export const emptyDerivedColResult: DerivedColResult<any, any> = {
+  areaPos: AreaPos.Start,
   itemsWithGrouping: [],
   items: [],
   size: 0,
@@ -38,9 +40,9 @@ export const emptyDerivedColResult: DerivedColResult<any, any> = {
 }
 
 export const emptyDerivedColsResult: DerivedColsResult<any, any> = {
-  start: emptyDerivedColResult,
-  middle: emptyDerivedColResult,
-  end: emptyDerivedColResult,
+  start: { ...emptyDerivedColResult, areaPos: AreaPos.Start },
+  middle: { ...emptyDerivedColResult, areaPos: AreaPos.Middle },
+  end: { ...emptyDerivedColResult, areaPos: AreaPos.End },
   size: 0,
   itemCount: 0,
   headerRows: 0,
