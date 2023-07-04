@@ -72,6 +72,7 @@ export function App() {
     return a
   })
   const [rowState, setRowState] = useState<RowState>({})
+  const [cellSelectionEnabled, setCellSelectionEnabled] = useState(true)
 
   const onRowStateChange: OnRowStateChange = (
     itemId: string | number,
@@ -168,12 +169,15 @@ export function App() {
           data={data}
           pinnedTopData={pinnedTopData}
           pinnedBottomData={pinnedBottomData}
-          enableCellSelection
+          enableCellSelection={cellSelectionEnabled}
           enableColumnResize
           onColumnsChange={setColumns}
           // direction="rtl"
         />
       </div>
+      <button onClick={() => setCellSelectionEnabled(f => !f)}>
+        {cellSelectionEnabled ? 'Disable' : 'Enable'} cell selection
+      </button>
     </div>
   )
 }

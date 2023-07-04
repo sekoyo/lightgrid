@@ -26,7 +26,8 @@ import {
   getScrollBarSize,
   willScrollbarsAppear,
 } from './utils'
-import { CellSelectionPlugin, ColumnResizePlugin, SetColResizeData } from './plugins'
+import type { ColumnResizePlugin, SetColResizeData } from './plugins/ColumnResizePlugin'
+import type { CellSelectionPlugin } from './plugins/CellSelectionPlugin'
 
 type Viewport = { width: number; height: number }
 
@@ -73,11 +74,14 @@ export class GridManager<T, R> {
   getRowMeta: GetRowMeta<T>
   getRowDetailsMeta: GetRowDetailsMeta<T>
   renderRowDetails: RenderRowDetails<T, R>
+  setStartCell: (cellPosition: CellPosition | undefined) => void
+  setSelection: (cellSelection: CellSelection | undefined) => void
+  setColResizeData: SetColResizeData
   onColumnsChange?: (columns: GroupedColumns<T, R>) => void
   onRowStateChange: OnRowStateChange
 
-  cellSelectionPlugin: CellSelectionPlugin<T, R>
-  columnResizePlugin: ColumnResizePlugin<T, R>
+  cellSelectionPlugin?: CellSelectionPlugin<T, R>
+  columnResizePlugin?: ColumnResizePlugin<T, R>
 
   // Dynamic props
   $viewportWidth = signal(0)
@@ -396,15 +400,30 @@ export class GridManager<T, R> {
     this.onColumnsChange = props.onColumnsChange
     this.onRowStateChange = props.onRowStateChange
 
-    // Initialise plugins
-    this.cellSelectionPlugin = new CellSelectionPlugin(
-      this,
-      props.setStartCell,
-      props.setSelection
-    )
-    this.columnResizePlugin = new ColumnResizePlugin(this, props.setColResizeData)
+    this.setStartCell = props.setStartCell
+    this.setSelection = props.setSelection
+    this.setColResizeData = props.setColResizeData
 
-    // Run side effects
+    // Lazily load plugins
+    effect(() => {
+      const enabled = this.$enableCellSelection()
+      if (enabled) {
+        this.enableCellSelectionPlugin()
+      } else {
+        this.cellSelectionPlugin?.unmount()
+      }
+    })
+
+    effect(() => {
+      const enabled = this.$enableColumnResize()
+      if (enabled) {
+        this.enableColumnResizePlugin()
+      } else {
+        this.columnResizePlugin?.unmount()
+      }
+    })
+
+    // Run other side effects
     effect(() => props.onDerivedColumnsChange(this.$derivedCols()))
     effect(() => props.onAreasChanged(this.$areas().byRender))
     effect(() =>
@@ -420,30 +439,27 @@ export class GridManager<T, R> {
   }
 
   mount(gridEl: HTMLDivElement, scrollEl: HTMLDivElement, viewportEl: HTMLDivElement) {
-    this.mounted = true
-    this.gridEl = gridEl
-    this.scrollEl = scrollEl
-    this.viewportEl = viewportEl
-    this.sizeObserver = new ResizeObserver(this.onResize)
-    this.sizeObserver.observe(gridEl)
-    this.cellSelectionPlugin.mount()
+    if (!this.mounted) {
+      this.mounted = true
+      this.gridEl = gridEl
+      this.scrollEl = scrollEl
+      this.viewportEl = viewportEl
+      this.sizeObserver = new ResizeObserver(this.onResize)
+      this.sizeObserver.observe(gridEl)
+      this.cellSelectionPlugin?.mount()
+    }
 
-    const stopCellSelectionEnabledChange = effect(() => {
-      const enabled = this.$enableCellSelection()
-      if (enabled) {
-        this.cellSelectionPlugin.mount()
-      } else {
-        this.cellSelectionPlugin.unmount()
-      }
-    })
+    return () => this.unmount()
+  }
 
-    return () => {
-      this.mounted = false
+  unmount() {
+    if (this.mounted) {
+      console.log('GridManager unmount')
       this.sizeObserver?.disconnect()
       this.onResize.cancel()
-      this.cellSelectionPlugin.unmount()
-      this.columnResizePlugin.unmount()
-      stopCellSelectionEnabledChange()
+      this.cellSelectionPlugin?.unmount()
+      this.columnResizePlugin?.unmount()
+      this.mounted = false
     }
   }
 
@@ -485,6 +501,23 @@ export class GridManager<T, R> {
     this.$viewportWidth.set(contentRect.width)
     this.$viewportHeight.set(contentRect.height)
   }, 30)
+
+  async enableCellSelectionPlugin() {
+    const { CellSelectionPlugin } = await import('./plugins/CellSelectionPlugin')
+    this.cellSelectionPlugin = new CellSelectionPlugin(
+      this,
+      this.setStartCell,
+      this.setSelection
+    )
+    if (this.mounted) {
+      this.cellSelectionPlugin.mount()
+    }
+  }
+
+  async enableColumnResizePlugin() {
+    const { ColumnResizePlugin } = await import('./plugins/ColumnResizePlugin')
+    this.columnResizePlugin = new ColumnResizePlugin(this, this.setColResizeData)
+  }
 }
 
 export function createGridManager<T, R>(props: GridManagerStaticProps<T, R>) {

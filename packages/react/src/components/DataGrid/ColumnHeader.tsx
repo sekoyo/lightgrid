@@ -39,7 +39,7 @@ export function ColumnHeader<T>({
           role="button"
           aria-labelledby="resize handle"
           onPointerDown={e =>
-            mgr.columnResizePlugin.onPointerDown(e.nativeEvent, column, colAreaPos)
+            mgr.columnResizePlugin?.onPointerDown(e.nativeEvent, column, colAreaPos)
           }
         />
       )}

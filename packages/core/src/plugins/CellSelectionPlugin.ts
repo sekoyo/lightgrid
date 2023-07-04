@@ -39,11 +39,15 @@ export class CellSelectionPlugin<T, R> extends GridPlugin<T, R> {
   }
 
   mount() {
+    console.log('mount cell selection')
     this.mgr.gridEl!.addEventListener('keydown', this.onKeyDown)
     this.mgr.gridEl!.addEventListener('mousedown', this.onMouseDown)
   }
 
   unmount() {
+    console.log('unmount cell selection')
+    this.setStartCell(undefined)
+    this.setSelection(undefined)
     this.mgr.gridEl!.removeEventListener('keydown', this.onKeyDown)
     this.mgr.gridEl!.removeEventListener('mousedown', this.onMouseDown)
     window.removeEventListener('mousemove', this.onMouseMove)
