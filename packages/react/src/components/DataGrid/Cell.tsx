@@ -37,6 +37,7 @@ export function CellNoMemo<T>({
 }: CellProps<T>) {
   return (
     <div
+      role="cell"
       className="lfg-cell"
       data-pinned-x={pinnedX}
       data-pinned-y={pinnedY}

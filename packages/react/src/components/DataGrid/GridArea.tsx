@@ -56,6 +56,7 @@ export function GridAreaNoMemo<T>({
   return (
     <div className="lfg-area">
       <div
+        role="rowgroup"
         className="lfg-area-inner"
         style={{
           position: area.pinnedX || area.pinnedY ? 'sticky' : 'absolute',
@@ -69,6 +70,7 @@ export function GridAreaNoMemo<T>({
           return (
             <div
               key={row.rowId}
+              role="row"
               className="lfg-row"
               style={{
                 height: row.size,

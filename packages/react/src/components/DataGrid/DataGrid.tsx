@@ -1,26 +1,26 @@
 'use client'
 import { useEffect, useRef, useState, type CSSProperties, useCallback } from 'react'
 import {
+  createGridManager,
   defaultGetRowDetailsMeta,
   defaultGetRowMeta,
   defaultHeaderRowHeight,
+  emptyDerivedColsResult,
+  AreaPos,
+  CellSelection,
+  CellPosition,
+  ColResizeData,
+  DerivedColsResult,
+  DerivedColumn,
+  DerivedRow,
   GetRowDetailsMeta,
   GetRowId,
   GetRowMeta,
+  GridAreaDesc,
   GroupedColumns,
   OnRowStateChange,
   RenderRowDetails,
   RowState,
-  createGridManager,
-  emptyDerivedColsResult,
-  DerivedColsResult,
-  GridAreaDesc,
-  DerivedColumn,
-  DerivedRow,
-  CellSelection,
-  CellPosition,
-  AreaPos,
-  ColResizeData,
 } from '@lightfin/datagrid'
 import '@lightfin/datagrid/dist/styles.css'
 import { R } from './types'
@@ -172,6 +172,7 @@ export function DataGrid<T>({
     <div
       ref={gridEl}
       className="lfg"
+      role="table"
       data-theme={theme}
       tabIndex={0}
       style={
