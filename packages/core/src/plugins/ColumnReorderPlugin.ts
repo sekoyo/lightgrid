@@ -6,24 +6,24 @@ import { GridPlugin } from '../GridPlugin'
 const defaultColGroupWidth = 100
 const defaultAbsMinWidth = 30
 
-export type ColResizeData = {
+export type ColReorderData = {
   colAreaPos: AreaPos
   left: number
 }
 
-export type SetColResizeData = (colResizeData: ColResizeData | undefined) => void
+export type SetColReorderData = (colResizeData: ColReorderData | undefined) => void
 
-export class ColumnSortPlugin<T, R> extends GridPlugin<T, R> {
+export class ColumnReorderPlugin<T, R> extends GridPlugin<T, R> {
   rect?: DOMRect
-  setColResizeData: SetColResizeData
+  setColReorderData: SetColReorderData
   startClientX = 0
   startClientY = 0
   column?: DerivedColumnGroup<T, R> | DerivedColumn<T, R>
   colAreaPos?: AreaPos
 
-  constructor(mgr: GridManager<T, R>, setColResizeData: SetColResizeData) {
+  constructor(mgr: GridManager<T, R>, setColReorderData: SetColReorderData) {
     super(mgr)
-    this.setColResizeData = setColResizeData
+    this.setColReorderData = setColReorderData
   }
 
   unmount() {
@@ -71,7 +71,7 @@ export class ColumnSortPlugin<T, R> extends GridPlugin<T, R> {
       left += this.mgr.$derivedCols().end.startOffset - this.mgr.$scrollbarWidth()
     }
 
-    this.setColResizeData({ colAreaPos, left })
+    this.setColReorderData({ colAreaPos, left })
   }
 
   onPointerUp = (e: PointerEvent) => {
@@ -88,7 +88,7 @@ export class ColumnSortPlugin<T, R> extends GridPlugin<T, R> {
 
     window.removeEventListener('pointermove', this.onPointerMove)
     window.removeEventListener('pointerup', this.onPointerUp)
-    this.setColResizeData(undefined)
+    this.setColReorderData(undefined)
   }
 
   getGroupUpdates(group: DerivedColumnGroup<T, R>, newSize: number) {

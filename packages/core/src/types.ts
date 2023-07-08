@@ -153,6 +153,15 @@ export interface GridAreaDesc<T, R> {
   pinnedY: boolean
 }
 
+export interface HeaderAreaDesc<T, R> {
+  columns: DerivedGroupColumns<T, R>
+  colAreaPos: AreaPos
+  headerRowHeight: number
+  left: number
+  width: number
+  height: number
+}
+
 export enum AreaPos {
   Start,
   Middle,

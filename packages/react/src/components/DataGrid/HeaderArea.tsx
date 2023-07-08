@@ -13,6 +13,7 @@ interface HeaderAreaProps<T> {
   width: number
   height: number
   enableColumnResize?: boolean
+  enableColumnReorder?: boolean
 }
 
 export function HeaderAreaNoMemo<T>({
@@ -24,6 +25,7 @@ export function HeaderAreaNoMemo<T>({
   width,
   height,
   enableColumnResize,
+  enableColumnReorder,
 }: HeaderAreaProps<T>) {
   if (!columns.length) {
     return null
@@ -38,6 +40,7 @@ export function HeaderAreaNoMemo<T>({
           colAreaPos={colAreaPos}
           headerRowHeight={headerRowHeight}
           enableColumnResize={enableColumnResize}
+          enableColumnReorder={enableColumnReorder}
         />
       </div>
     </div>

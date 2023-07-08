@@ -10,6 +10,7 @@ import {
   CellSelection,
   CellPosition,
   ColResizeData,
+  ColReorderData,
   DerivedColsResult,
   DerivedColumn,
   DerivedRow,
@@ -21,6 +22,7 @@ import {
   OnRowStateChange,
   RenderRowDetails,
   RowState,
+  HeaderAreaDesc,
 } from '@lightfin/datagrid'
 import '@lightfin/datagrid/dist/styles.css'
 import { R } from './types'
@@ -38,6 +40,7 @@ const defaultRowDetailsRenderer = () => (
 
 interface DataGridProps<T> {
   columns: GroupedColumns<T, React.ReactNode>
+  onColumnsChange?: (columnns: GroupedColumns<T, React.ReactNode>) => void
   headerRowHeight?: number
   getRowId: GetRowId<T>
   getRowMeta?: GetRowMeta<T>
@@ -52,11 +55,12 @@ interface DataGridProps<T> {
   theme?: string
   enableCellSelection?: boolean
   enableColumnResize?: boolean
-  onColumnsChange?: (columnns: GroupedColumns<T, React.ReactNode>) => void
+  enableColumnReorder?: boolean
 }
 
 export function DataGrid<T>({
   columns,
+  onColumnsChange,
   headerRowHeight = defaultHeaderRowHeight,
   getRowId,
   getRowMeta = defaultGetRowMeta,
@@ -71,7 +75,7 @@ export function DataGrid<T>({
   theme = 'lightfin-dark',
   enableCellSelection,
   enableColumnResize,
-  onColumnsChange,
+  enableColumnReorder,
 }: DataGridProps<T>) {
   const gridEl = useRef<HTMLDivElement>(null)
   const scrollEl = useRef<HTMLDivElement>(null)
@@ -86,7 +90,8 @@ export function DataGrid<T>({
 
   const [derivedCols, setDerivedCols] =
     useState<DerivedColsResult<T, R>>(emptyDerivedColsResult)
-  const [gridAreas, setGridAreas] = useState<GridAreaDesc<T, R>[]>([])
+  const [gridAreas, setBodyAreas] = useState<GridAreaDesc<T, R>[]>([])
+  const [headerAreas, setHeaderAreas] = useState<HeaderAreaDesc<T, R>[]>([])
   const [viewport, setViewport] = useState({ width: 0, height: 0 })
   const [scrollLeft, setScrollLeft] = useState(0)
   const [scrollTop, setScrollTop] = useState(0)
@@ -97,6 +102,7 @@ export function DataGrid<T>({
   const [startCell, setStartCell] = useState<CellPosition>()
   const [selection, setSelection] = useState<CellSelection>()
   const [colResizeData, setColResizeData] = useState<ColResizeData | undefined>()
+  const [colReorderData, setColReorderData] = useState<ColReorderData | undefined>()
 
   // Grid manager instance and props that don't change
   const [mgr] = useState(() =>
@@ -108,10 +114,12 @@ export function DataGrid<T>({
       setStartCell,
       setSelection,
       setColResizeData,
+      setColReorderData,
       onRowStateChange,
       onColumnsChange,
       onDerivedColumnsChange: setDerivedCols,
-      onAreasChanged: setGridAreas,
+      onAreasChanged: setBodyAreas,
+      onHeadersChanged: setHeaderAreas,
       onViewportChanged: setViewport,
       onContentHeightChanged: setContentHeight,
       onHeaderHeightChanged: setHeaderHeight,
@@ -131,6 +139,7 @@ export function DataGrid<T>({
       rowState,
       enableCellSelection,
       enableColumnResize,
+      enableColumnReorder,
     })
   }, [
     mgr,
@@ -142,6 +151,7 @@ export function DataGrid<T>({
     rowState,
     enableCellSelection,
     enableColumnResize,
+    enableColumnReorder,
   ])
 
   // Mount and unmount
@@ -211,36 +221,20 @@ export function DataGrid<T>({
                 isFirstColumnGroup={area.colResult.firstWithSize}
               />
             ))}
-            <HeaderArea
-              mgr={mgr}
-              columns={middleCols}
-              colAreaPos={AreaPos.Middle}
-              headerRowHeight={headerRowHeight}
-              left={derivedCols.start.size}
-              width={derivedCols.middle.size + derivedCols.end.size}
-              height={headerHeight}
-              enableColumnResize={enableColumnResize}
-            />
-            <HeaderArea
-              mgr={mgr}
-              columns={derivedCols.end.itemsWithGrouping}
-              colAreaPos={AreaPos.End}
-              headerRowHeight={headerRowHeight}
-              left={viewport.width - derivedCols.end.size}
-              width={derivedCols.end.size}
-              height={headerHeight}
-              enableColumnResize={enableColumnResize}
-            />
-            <HeaderArea
-              mgr={mgr}
-              columns={derivedCols.start.itemsWithGrouping}
-              colAreaPos={AreaPos.Start}
-              headerRowHeight={headerRowHeight}
-              left={0}
-              width={derivedCols.start.size}
-              height={headerHeight}
-              enableColumnResize={enableColumnResize}
-            />
+            {headerAreas.map(headerArea => (
+              <HeaderArea
+                key={headerArea.colAreaPos}
+                mgr={mgr}
+                columns={headerArea.columns}
+                colAreaPos={headerArea.colAreaPos}
+                headerRowHeight={headerArea.headerRowHeight}
+                left={headerArea.left}
+                width={headerArea.width}
+                height={headerArea.height}
+                enableColumnResize={enableColumnResize}
+                enableColumnReorder={enableColumnReorder}
+              />
+            ))}
           </div>
           {!!(enableColumnResize && colResizeData) && (
             <div

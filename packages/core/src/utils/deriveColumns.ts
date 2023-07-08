@@ -11,8 +11,6 @@ import { isColumnGroup } from './isTypes'
 
 const defaultFr = 1
 const defaultAbs = 100
-// We don't actually validate if the user pass in < minWidth only that
-// when calculating fractional widths there is a min, and when column resizing
 const defaultFrMinWidth = 100
 
 function sumAndDivideCols<T, R>(columns: GroupedColumns<T, R>) {

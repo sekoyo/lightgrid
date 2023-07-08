@@ -12,6 +12,7 @@ interface ColumnHeaderProps<T> {
   colAreaPos: AreaPos
   headerRowHeight: number
   enableColumnResize?: boolean
+  enableColumnReorder?: boolean
 }
 
 export function ColumnHeader<T>({
@@ -20,6 +21,7 @@ export function ColumnHeader<T>({
   colAreaPos,
   headerRowHeight,
   enableColumnResize,
+  enableColumnReorder,
 }: ColumnHeaderProps<T>) {
   return (
     <div
@@ -31,6 +33,11 @@ export function ColumnHeader<T>({
           column.rowIndex * headerRowHeight
         }px)`,
       }}
+      onPointerDown={
+        enableColumnReorder
+          ? e => mgr.columnReorderPlugin?.onPointerDown(e.nativeEvent, column, colAreaPos)
+          : undefined
+      }
     >
       {column.header || column.key}
       {enableColumnResize && (

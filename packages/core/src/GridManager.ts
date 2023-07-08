@@ -14,6 +14,7 @@ import {
   GetRowMeta,
   GridAreaDesc,
   GroupedColumns,
+  HeaderAreaDesc,
   OnRowStateChange,
   RenderRowDetails,
   RowState,
@@ -27,6 +28,10 @@ import {
   willScrollbarsAppear,
 } from './utils'
 import type { ColumnResizePlugin, SetColResizeData } from './plugins/ColumnResizePlugin'
+import type {
+  ColumnReorderPlugin,
+  SetColReorderData,
+} from './plugins/ColumnReorderPlugin'
 import type { CellSelectionPlugin } from './plugins/CellSelectionPlugin'
 
 type Viewport = { width: number; height: number }
@@ -39,10 +44,12 @@ interface GridManagerStaticProps<T, R> {
   setStartCell: (cellPosition: CellPosition | undefined) => void
   setSelection: (cellSelection: CellSelection | undefined) => void
   setColResizeData: SetColResizeData
+  setColReorderData: SetColReorderData
   onColumnsChange?: (columns: GroupedColumns<T, R>) => void
   onRowStateChange: OnRowStateChange
   onDerivedColumnsChange: (derivedCols: DerivedColsResult<T, R>) => void
   onAreasChanged: (gridAreas: GridAreaDesc<T, R>[]) => void
+  onHeadersChanged: (headerAreas: HeaderAreaDesc<T, R>[]) => void
   onViewportChanged: ({ width, height }: Viewport) => void
   onContentHeightChanged: (value: number) => void
   onHeaderHeightChanged: (value: number) => void
@@ -59,6 +66,7 @@ interface GridManagerDynamicProps<T, R> {
   rowState: RowState
   enableCellSelection?: boolean
   enableColumnResize?: boolean
+  enableColumnReorder?: boolean
 }
 
 export class GridManager<T, R> {
@@ -77,11 +85,13 @@ export class GridManager<T, R> {
   setStartCell: (cellPosition: CellPosition | undefined) => void
   setSelection: (cellSelection: CellSelection | undefined) => void
   setColResizeData: SetColResizeData
+  setColReorderData: SetColReorderData
   onColumnsChange?: (columns: GroupedColumns<T, R>) => void
   onRowStateChange: OnRowStateChange
 
   cellSelectionPlugin?: CellSelectionPlugin<T, R>
   columnResizePlugin?: ColumnResizePlugin<T, R>
+  columnReorderPlugin?: ColumnReorderPlugin<T, R>
 
   // Dynamic props
   $viewportWidth = signal(0)
@@ -92,8 +102,9 @@ export class GridManager<T, R> {
   $pinnedTopData = signal<T[]>([])
   $pinnedBottomData = signal<T[]>([])
   $rowState = signal<RowState>({})
-  $enableCellSelection = signal<boolean | undefined>(false)
-  $enableColumnResize = signal<boolean | undefined>(false)
+  $enableCellSelection = signal<boolean>(false)
+  $enableColumnResize = signal<boolean>(false)
+  $enableColumnReorder = signal<boolean>(false)
 
   // Derived values
   $derivedCols = computed(() => deriveColumns(this.$columns(), this.$viewportWidth()))
@@ -198,6 +209,41 @@ export class GridManager<T, R> {
   $middleRows = computed(() =>
     this.$derivedRows().middle.items.slice(this.$rowWindow()[0], this.$rowWindow()[1] + 1)
   )
+
+  $headerAreas = computed<HeaderAreaDesc<T, R>[]>(() => {
+    const derivedCols = this.$derivedCols()
+    const headerRowHeight = this.$headerRowHeight()
+    const headerHeight = this.$headerHeight()
+    return [
+      {
+        id: AreaPos.Middle,
+        columns: this.$middleCols(),
+        colAreaPos: AreaPos.Middle,
+        headerRowHeight,
+        left: derivedCols.start.size,
+        width: derivedCols.middle.size + derivedCols.end.size,
+        height: headerHeight,
+      },
+      {
+        id: AreaPos.End,
+        columns: derivedCols.end.itemsWithGrouping,
+        colAreaPos: AreaPos.End,
+        headerRowHeight,
+        left: this.$viewportWidth() - this.$scrollbarWidth() - derivedCols.end.size,
+        width: derivedCols.end.size,
+        height: headerHeight,
+      },
+      {
+        id: AreaPos.Start,
+        columns: derivedCols.start.itemsWithGrouping,
+        colAreaPos: AreaPos.Start,
+        headerRowHeight,
+        left: 0,
+        width: derivedCols.start.size,
+        height: headerHeight,
+      },
+    ]
+  })
 
   // -- Grid areas (pushed in render order)
   $areas = computed(() => {
@@ -403,6 +449,7 @@ export class GridManager<T, R> {
     this.setStartCell = props.setStartCell
     this.setSelection = props.setSelection
     this.setColResizeData = props.setColResizeData
+    this.setColReorderData = props.setColReorderData
 
     // Lazily load plugins
     effect(() => {
@@ -423,9 +470,19 @@ export class GridManager<T, R> {
       }
     })
 
-    // Run other side effects
+    effect(() => {
+      const enabled = this.$enableColumnReorder()
+      if (enabled) {
+        this.enableColumnReorderPlugin()
+      } else {
+        this.columnReorderPlugin?.unmount()
+      }
+    })
+
+    // Propagate changes to props
     effect(() => props.onDerivedColumnsChange(this.$derivedCols()))
     effect(() => props.onAreasChanged(this.$areas().byRender))
+    effect(() => props.onHeadersChanged(this.$headerAreas()))
     effect(() =>
       props.onViewportChanged({
         width: this.$viewportWidth() - this.$scrollbarWidth(),
@@ -459,6 +516,7 @@ export class GridManager<T, R> {
       this.onResize.cancel()
       this.cellSelectionPlugin?.unmount()
       this.columnResizePlugin?.unmount()
+      this.columnReorderPlugin?.unmount()
       this.mounted = false
     }
   }
@@ -470,8 +528,9 @@ export class GridManager<T, R> {
     this.$pinnedTopData.set(props.pinnedTopData)
     this.$pinnedBottomData.set(props.pinnedBottomData)
     this.$rowState.set(props.rowState)
-    this.$enableCellSelection.set(props.enableCellSelection)
-    this.$enableColumnResize.set(props.enableColumnResize)
+    this.$enableCellSelection.set(props.enableCellSelection || false)
+    this.$enableColumnResize.set(props.enableColumnResize || false)
+    this.$enableColumnReorder.set(props.enableColumnReorder || false)
   }
 
   updateScroll(scrollLeft: number, scrollTop: number) {
@@ -479,11 +538,6 @@ export class GridManager<T, R> {
     this.$scrollY.set(scrollTop)
   }
 
-  // When scrolling we should scroll both scrollEl and viewportEl.
-  // Preferably we'd have an effect on $scrollX/Y but we don't want
-  // the set in `updateScroll` to scroll (the UI framework should do that)
-  // but `untrack` from @maverick-js/signals isn't working as expected:
-  // https://github.com/maverick-js/signals/issues/22
   scrollLeft(value: number) {
     this.scrollEl!.scrollLeft = value
     this.viewportEl!.scrollLeft = value
@@ -517,6 +571,11 @@ export class GridManager<T, R> {
   async enableColumnResizePlugin() {
     const { ColumnResizePlugin } = await import('./plugins/ColumnResizePlugin')
     this.columnResizePlugin = new ColumnResizePlugin(this, this.setColResizeData)
+  }
+
+  async enableColumnReorderPlugin() {
+    const { ColumnReorderPlugin } = await import('./plugins/ColumnReorderPlugin')
+    this.columnReorderPlugin = new ColumnReorderPlugin(this, this.setColReorderData)
   }
 }
 

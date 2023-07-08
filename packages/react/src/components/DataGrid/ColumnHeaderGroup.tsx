@@ -15,6 +15,7 @@ interface ColumnHeaderGroupProps<T> {
   colAreaPos: AreaPos
   headerRowHeight: number
   enableColumnResize?: boolean
+  enableColumnReorder?: boolean
   colResizeData?: number
 }
 
@@ -24,6 +25,7 @@ function ColumnHeaderGroupNoMemo<T>({
   colAreaPos,
   headerRowHeight,
   enableColumnResize,
+  enableColumnReorder,
   colResizeData,
 }: ColumnHeaderGroupProps<T>) {
   return (
@@ -36,6 +38,7 @@ function ColumnHeaderGroupNoMemo<T>({
             colAreaPos={colAreaPos}
             headerRowHeight={headerRowHeight}
             enableColumnResize={enableColumnResize}
+            enableColumnReorder={enableColumnReorder}
           />
           {isDerivedColumnGroup(column) && (
             <ColumnHeaderGroupNoMemo<T>
@@ -44,6 +47,7 @@ function ColumnHeaderGroupNoMemo<T>({
               colAreaPos={colAreaPos}
               headerRowHeight={headerRowHeight}
               enableColumnResize={enableColumnResize}
+              enableColumnReorder={enableColumnReorder}
             />
           )}
         </Fragment>
