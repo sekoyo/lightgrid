@@ -1,6 +1,10 @@
-import { AreaPos, DerivedColumn, DerivedColumnGroup, GroupedColumns } from '../types'
+import {
+  AreaPos,
+  DerivedColumnGroup,
+  DerivedColumnOrGroup,
+  GroupedColumns,
+} from '../types'
 import { isColumnGroup, isDerivedColumnGroup } from '../utils'
-import { GridManager } from '../GridManager'
 import { GridPlugin } from '../GridPlugin'
 
 const defaultColGroupWidth = 100
@@ -11,27 +15,20 @@ export type ColResizeData = {
   left: number
 }
 
-export type SetColResizeData = (colResizeData: ColResizeData | undefined) => void
+export type SetColResizeData = (colReorderKey: ColResizeData | undefined) => void
 
 export class ColumnResizePlugin<T, R> extends GridPlugin<T, R> {
-  rect?: DOMRect
-  setColResizeData: SetColResizeData
   startClientX = 0
   startClientY = 0
-  column?: DerivedColumnGroup<T, R> | DerivedColumn<T, R>
+  column?: DerivedColumnOrGroup<T, R>
   colAreaPos?: AreaPos
 
-  constructor(mgr: GridManager<T, R>, setColResizeData: SetColResizeData) {
-    super(mgr)
-    this.setColResizeData = setColResizeData
-  }
-
   unmount() {
-    window.removeEventListener('pointermove', this.onPointerMove)
-    window.removeEventListener('pointerup', this.onPointerUp)
+    window.removeEventListener('pointermove', this.onWindowPointerMove)
+    window.removeEventListener('pointerup', this.onWindowPointerUp)
   }
 
-  rangeBoundDiff(column: DerivedColumnGroup<T, R> | DerivedColumn<T, R>, diffX: number) {
+  rangeBoundDiff(column: DerivedColumnOrGroup<T, R>, diffX: number) {
     const minWidth = isColumnGroup(column)
       ? defaultColGroupWidth
       : column.minWidth ?? defaultAbsMinWidth
@@ -45,20 +42,24 @@ export class ColumnResizePlugin<T, R> extends GridPlugin<T, R> {
 
   onPointerDown = (
     e: PointerEvent,
-    column: DerivedColumnGroup<T, R> | DerivedColumn<T, R>,
+    column: DerivedColumnOrGroup<T, R>,
     colAreaPos: AreaPos
   ) => {
+    if (!this.mgr.onColumnsChange) {
+      console.error('onColumnsChange prop is required to enable column resizing')
+      return
+    }
+
     this.column = column
     this.colAreaPos = colAreaPos
-    this.rect = this.mgr.gridEl!.getBoundingClientRect()
     this.startClientX = e.clientX
     this.startClientY = e.clientY
 
-    window.addEventListener('pointermove', this.onPointerMove)
-    window.addEventListener('pointerup', this.onPointerUp)
+    window.addEventListener('pointermove', this.onWindowPointerMove)
+    window.addEventListener('pointerup', this.onWindowPointerUp)
   }
 
-  onPointerMove = (e: PointerEvent) => {
+  onWindowPointerMove = (e: PointerEvent) => {
     const column = this.column!
     const colAreaPos = this.colAreaPos!
     const diffX = this.rangeBoundDiff(column, e.clientX - this.startClientX)
@@ -71,24 +72,18 @@ export class ColumnResizePlugin<T, R> extends GridPlugin<T, R> {
       left += this.mgr.$derivedCols().end.startOffset - this.mgr.$scrollbarWidth()
     }
 
-    this.setColResizeData({ colAreaPos, left })
+    this.mgr.setColResizeData({ colAreaPos, left })
   }
 
-  onPointerUp = (e: PointerEvent) => {
-    if (this.mgr.onColumnsChange) {
-      const column = this.column!
-      const diffX = this.rangeBoundDiff(column, e.clientX - this.startClientX)
-      const nextColumns = this.updateColumnWidth(column, column.size + diffX)
-      this.mgr.onColumnsChange(nextColumns)
-    } else {
-      console.warn(
-        'onColumnsChange prop must be passed into the grid to enable column resizing'
-      )
-    }
+  onWindowPointerUp = (e: PointerEvent) => {
+    const column = this.column!
+    const diffX = this.rangeBoundDiff(column, e.clientX - this.startClientX)
+    const nextColumns = this.updateColumnWidth(column, column.size + diffX)
+    this.mgr.onColumnsChange!(nextColumns)
 
-    window.removeEventListener('pointermove', this.onPointerMove)
-    window.removeEventListener('pointerup', this.onPointerUp)
-    this.setColResizeData(undefined)
+    window.removeEventListener('pointermove', this.onWindowPointerMove)
+    window.removeEventListener('pointerup', this.onWindowPointerUp)
+    this.mgr.setColResizeData(undefined)
   }
 
   getGroupUpdates(group: DerivedColumnGroup<T, R>, newSize: number) {
@@ -116,10 +111,7 @@ export class ColumnResizePlugin<T, R> extends GridPlugin<T, R> {
     return columnUpdates
   }
 
-  updateColumnWidth(
-    colOrGroup: DerivedColumnGroup<T, R> | DerivedColumn<T, R>,
-    newSize: number
-  ) {
+  updateColumnWidth(colOrGroup: DerivedColumnOrGroup<T, R>, newSize: number) {
     const nextColumns: GroupedColumns<T, R> = [...this.mgr.$columns()]
     const isUpdatingGroup = isDerivedColumnGroup(colOrGroup)
     let columnUpdates: Map<string | number, number>

@@ -4,11 +4,13 @@ import {
   CellSelection,
   DerivedColumn,
   DerivedRow,
-  GridAreaDesc,
+  BodyAreaDesc,
+  ItemId,
   OnRowStateChange,
   RenderRowDetails,
   RowState,
   isCellSelected,
+  GridManager,
 } from '@lightfin/datagrid'
 
 import { R } from './types'
@@ -16,7 +18,8 @@ import { GridDetailRows } from './GridDetailRows'
 import { Cell } from './Cell'
 
 interface GridAreaProps<T> {
-  area: GridAreaDesc<T, R>
+  mgr: GridManager<T, React.ReactNode>
+  area: BodyAreaDesc<T, R>
   columns: DerivedColumn<T, R>[]
   rows: DerivedRow<T>[]
   rowState: RowState
@@ -26,9 +29,12 @@ interface GridAreaProps<T> {
   selection?: CellSelection
   selectionStartCell?: CellPosition
   isFirstColumnGroup: boolean
+  colReorderKey?: ItemId
+  enableColumnReorder?: boolean
 }
 
 export function GridAreaNoMemo<T>({
+  mgr,
   area,
   columns,
   rows,
@@ -39,9 +45,11 @@ export function GridAreaNoMemo<T>({
   selection,
   selectionStartCell,
   isFirstColumnGroup,
+  colReorderKey,
+  enableColumnReorder,
 }: GridAreaProps<T>) {
   const onExpandToggle = useCallback(
-    (rowId: string | number) =>
+    (rowId: ItemId) =>
       onRowStateChangeRef.current(rowId, {
         ...rowState[rowId],
         detailsExpanded: !rowState[rowId]?.detailsExpanded,
@@ -80,6 +88,7 @@ export function GridAreaNoMemo<T>({
               {columns.map(column => (
                 <Cell<T>
                   key={column.key}
+                  mgr={mgr}
                   column={column}
                   row={row}
                   rowId={row.rowId}
@@ -87,6 +96,8 @@ export function GridAreaNoMemo<T>({
                   hasExpandInCell={Boolean(row.hasDetails && column.colIndex === 0)}
                   pinnedX={area.pinnedX}
                   pinnedY={area.pinnedY}
+                  colReorderKey={colReorderKey}
+                  enableColumnReorder={enableColumnReorder}
                   selected={isCellSelected(column.colIndex, row.rowIndex, selection)}
                   selectionStart={Boolean(
                     selectionStartCell &&

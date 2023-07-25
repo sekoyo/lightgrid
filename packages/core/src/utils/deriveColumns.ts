@@ -2,7 +2,7 @@ import {
   type ColumnPin,
   type GroupedColumns,
   type DerivedColumn,
-  type DerivedGroupColumns,
+  type GroupedDerivedColumns,
   type DerivedColsResult,
   type DerivedColResult,
   AreaPos,
@@ -182,7 +182,7 @@ export function deriveColumns<T, R>(
   function recurseColumns(
     levelColumns: GroupedColumns<T, R>,
     colResult: DerivedColResult<T, R>,
-    levelDerivedCols: DerivedGroupColumns<T, R>,
+    levelDerivedCols: GroupedDerivedColumns<T, R>,
     colIndexOffset = 0,
     rowIndex = 0,
     sectionOffset = { current: 0 }

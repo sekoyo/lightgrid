@@ -1,5 +1,5 @@
 import { signal, effect } from '@maverick-js/signals'
-import { AreaPos, CellPosition, CellSelection, Direction, GridAreaDesc } from '../types'
+import { AreaPos, CellPosition, CellSelection, Direction, BodyAreaDesc } from '../types'
 import { GridManager } from '../GridManager'
 import { GridPlugin } from '../GridPlugin'
 import { clamp, copySelection } from '../utils'
@@ -7,7 +7,7 @@ import { clamp, copySelection } from '../utils'
 export class CellSelectionPlugin<T, R> extends GridPlugin<T, R> {
   rect?: DOMRect
 
-  startArea?: GridAreaDesc<T, R>
+  startArea?: BodyAreaDesc<T, R>
   startCell?: CellPosition
   setStartCell: (pos: CellPosition | undefined) => void
 
@@ -48,8 +48,8 @@ export class CellSelectionPlugin<T, R> extends GridPlugin<T, R> {
     this.setSelection(undefined)
     this.mgr.gridEl!.removeEventListener('keydown', this.onKeyDown)
     this.mgr.gridEl!.removeEventListener('mousedown', this.onMouseDown)
-    window.removeEventListener('mousemove', this.onMouseMove)
-    window.removeEventListener('mouseup', this.onMouseUp)
+    window.removeEventListener('mousemove', this.onWindowMouseMove)
+    window.removeEventListener('mouseup', this.onWindowMouseUp)
   }
 
   onKeyDown = (e: KeyboardEvent) => {
@@ -103,7 +103,7 @@ export class CellSelectionPlugin<T, R> extends GridPlugin<T, R> {
     const startWindowY = e.clientY - this.rect.top
 
     if (this.isInSelectableArea(startWindowX, startWindowY)) {
-      this.startArea = this.getAreaFromPoint(startWindowX, startWindowY)
+      this.startArea = this.getBodyAreaFromPoint(startWindowX, startWindowY)
 
       if (this.startArea) {
         const startCell = this.getCellInAreaFromPoint(
@@ -116,20 +116,20 @@ export class CellSelectionPlugin<T, R> extends GridPlugin<T, R> {
           rowRange: [startCell.rowIndex, startCell.rowIndex],
           colRange: [startCell.colIndex, startCell.colIndex],
         })
-        window.addEventListener('mousemove', this.onMouseMove, {
+        window.addEventListener('mousemove', this.onWindowMouseMove, {
           passive: true,
         })
-        window.addEventListener('mouseup', this.onMouseUp, {
+        window.addEventListener('mouseup', this.onWindowMouseUp, {
           passive: true,
         })
       }
     }
   }
 
-  onMouseMove = (e: MouseEvent) => {
+  onWindowMouseMove = (e: MouseEvent) => {
     const endWindowX = e.clientX - this.rect!.left
     const endWindowY = e.clientY - this.rect!.top
-    const endArea = this.getAreaFromPoint(endWindowX, endWindowY)
+    const endArea = this.getBodyAreaFromPoint(endWindowX, endWindowY)
 
     if (endArea) {
       // Selection area
@@ -180,11 +180,11 @@ export class CellSelectionPlugin<T, R> extends GridPlugin<T, R> {
     }
   }
 
-  onMouseUp = () => {
+  onWindowMouseUp = () => {
     this.$autoScrollX.set(false)
     this.$autoScrollY.set(false)
-    window.removeEventListener('mouseup', this.onMouseUp)
-    window.removeEventListener('mousemove', this.onMouseMove)
+    window.removeEventListener('mouseup', this.onWindowMouseUp)
+    window.removeEventListener('mousemove', this.onWindowMouseMove)
   }
 
   isInSelectableArea = (windowX: number, windowY: number) =>

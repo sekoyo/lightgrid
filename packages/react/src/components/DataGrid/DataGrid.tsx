@@ -6,23 +6,22 @@ import {
   defaultGetRowMeta,
   defaultHeaderRowHeight,
   emptyDerivedColsResult,
-  AreaPos,
   CellSelection,
   CellPosition,
   ColResizeData,
-  ColReorderData,
   DerivedColsResult,
   DerivedColumn,
   DerivedRow,
   GetRowDetailsMeta,
   GetRowId,
   GetRowMeta,
-  GridAreaDesc,
+  BodyAreaDesc,
   GroupedColumns,
   OnRowStateChange,
   RenderRowDetails,
   RowState,
   HeaderAreaDesc,
+  ItemId,
 } from '@lightfin/datagrid'
 import '@lightfin/datagrid/dist/styles.css'
 import { R } from './types'
@@ -90,7 +89,7 @@ export function DataGrid<T>({
 
   const [derivedCols, setDerivedCols] =
     useState<DerivedColsResult<T, R>>(emptyDerivedColsResult)
-  const [gridAreas, setBodyAreas] = useState<GridAreaDesc<T, R>[]>([])
+  const [gridAreas, setBodyAreas] = useState<BodyAreaDesc<T, R>[]>([])
   const [headerAreas, setHeaderAreas] = useState<HeaderAreaDesc<T, R>[]>([])
   const [viewport, setViewport] = useState({ width: 0, height: 0 })
   const [scrollLeft, setScrollLeft] = useState(0)
@@ -101,8 +100,8 @@ export function DataGrid<T>({
   const [middleRows, setMiddleRows] = useState<DerivedRow<T>[]>([])
   const [startCell, setStartCell] = useState<CellPosition>()
   const [selection, setSelection] = useState<CellSelection>()
-  const [colResizeData, setColResizeData] = useState<ColResizeData | undefined>()
-  const [colReorderData, setColReorderData] = useState<ColReorderData | undefined>()
+  const [colResizeData, setColResizeData] = useState<ColResizeData>()
+  const [colReorderKey, setColReorderKey] = useState<ItemId>()
 
   // Grid manager instance and props that don't change
   const [mgr] = useState(() =>
@@ -114,7 +113,7 @@ export function DataGrid<T>({
       setStartCell,
       setSelection,
       setColResizeData,
-      setColReorderData,
+      setColReorderKey,
       onRowStateChange,
       onColumnsChange,
       onDerivedColumnsChange: setDerivedCols,
@@ -209,6 +208,7 @@ export function DataGrid<T>({
             {gridAreas.map(area => (
               <GridArea
                 key={area.id}
+                mgr={mgr}
                 area={area}
                 columns={area.pinnedX ? area.colResult.items : middleCols}
                 rows={area.pinnedY ? area.rowResult.items : middleRows}
@@ -216,9 +216,11 @@ export function DataGrid<T>({
                 onRowStateChangeRef={onRowStateChangeRef}
                 detailsWidth={viewport.width}
                 renderRowDetailsRef={renderRowDetailsRef}
+                enableColumnReorder={enableColumnReorder}
                 selection={selection}
                 selectionStartCell={startCell}
                 isFirstColumnGroup={area.colResult.firstWithSize}
+                colReorderKey={colReorderKey}
               />
             ))}
             {headerAreas.map(headerArea => (
@@ -233,6 +235,7 @@ export function DataGrid<T>({
                 height={headerArea.height}
                 enableColumnResize={enableColumnResize}
                 enableColumnReorder={enableColumnReorder}
+                colReorderKey={colReorderKey}
               />
             ))}
           </div>

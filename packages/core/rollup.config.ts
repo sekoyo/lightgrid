@@ -6,12 +6,14 @@ import clean from '@rollup-extras/plugin-clean'
 import replace from '@rollup/plugin-replace'
 
 const extensions = ['.js', '.jsx', '.ts', '.tsx']
+const isProd = process.env.NODE_ENV === 'production'
 
 export default defineConfig({
   input: 'src/index.ts',
   output: {
     dir: 'dist',
     format: 'es',
+    chunkFileNames: isProd ? '[name]-[hash].js' : '[name].js',
   },
   plugins: [
     clean(),

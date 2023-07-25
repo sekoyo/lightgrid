@@ -1,6 +1,6 @@
 import { getColumnOffset, getRowOffset } from './constants'
 import { type GridManager } from './GridManager'
-import type { CellPosition, GridAreaDesc } from './types'
+import { type CellPosition, type BodyAreaDesc, AreaPos } from './types'
 import { binarySearch } from './utils'
 
 export abstract class GridPlugin<T, R> {
@@ -13,7 +13,7 @@ export abstract class GridPlugin<T, R> {
   unmount?(): void
   onResize?(width: number, height: number): void
 
-  getAreaFromPoint(windowX: number, windowY: number) {
+  getBodyAreaFromPoint(windowX: number, windowY: number) {
     const areasByCol = this.mgr.$areas().byCol
     for (let i = 0; i < areasByCol.length; i++) {
       const areas = areasByCol[i]
@@ -33,22 +33,22 @@ export abstract class GridPlugin<T, R> {
   }
 
   getCellInAreaFromPoint(
-    area: GridAreaDesc<T, R>,
+    area: BodyAreaDesc<T, R>,
     windowX: number,
     windowY: number
   ): CellPosition {
-    let relativeX = windowX - area.colResult.startOffset
-    let relativeY = windowY - area.rowResult.startOffset
+    let scrolledX = windowX - area.colResult.startOffset
+    let scrolledY = windowY - area.rowResult.startOffset
 
     if (!area.pinnedX) {
-      relativeX += this.mgr.$scrollX()
+      scrolledX += this.mgr.$scrollX()
     }
     if (!area.pinnedY) {
-      relativeY += this.mgr.$scrollY()
+      scrolledY += this.mgr.$scrollY()
     }
 
-    const colIndex = binarySearch(area.colResult.items, relativeX, getColumnOffset)
-    const rowIndex = binarySearch(area.rowResult.items, relativeY, getRowOffset)
+    const colIndex = binarySearch(area.colResult.items, scrolledX, getColumnOffset)
+    const rowIndex = binarySearch(area.rowResult.items, scrolledY, getRowOffset)
 
     return {
       colIndex: area.colResult.items[colIndex].colIndex,
@@ -67,6 +67,10 @@ export abstract class GridPlugin<T, R> {
     }
   }
 
+  getColPosFromIndex(colIndex: number) {
+    this.getColResultFromIndex(colIndex).areaPos
+  }
+
   getRowResultFromIndex(rowIndex: number) {
     const rows = this.mgr.$derivedRows()
     if (rowIndex < rows.start.items.length) {
@@ -76,5 +80,9 @@ export abstract class GridPlugin<T, R> {
     } else {
       return rows.middle
     }
+  }
+
+  getRowPosFromIndex(colIndex: number) {
+    this.getColResultFromIndex(colIndex).areaPos
   }
 }

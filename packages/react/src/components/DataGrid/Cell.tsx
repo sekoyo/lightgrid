@@ -1,5 +1,11 @@
 import { memo } from 'react'
-import { DerivedColumn, DerivedRow, RowStateItem } from '@lightfin/datagrid'
+import {
+  DerivedColumn,
+  DerivedRow,
+  GridManager,
+  ItemId,
+  RowStateItem,
+} from '@lightfin/datagrid'
 
 import { DownArrow } from '../Icons'
 import { IconButton } from '../IconButton'
@@ -11,19 +17,23 @@ import { DefaultCellComponent } from './DefaultCellComponent'
 // this memo will only allow the rows whose `item`
 // reference changed.
 interface CellProps<T> {
+  mgr: GridManager<T, React.ReactNode>
   column: DerivedColumn<T, R>
   row: DerivedRow<T>
-  rowId: string | number
+  rowId: ItemId
   rowStateItem: RowStateItem | undefined
   hasExpandInCell: boolean
   pinnedX: boolean
   pinnedY: boolean
+  colReorderKey?: ItemId
+  enableColumnReorder?: boolean
   selected: boolean
   selectionStart: boolean
-  onExpandToggle: (rowId: string | number) => void
+  onExpandToggle: (rowId: ItemId) => void
 }
 
 export function CellNoMemo<T>({
+  mgr,
   column,
   row,
   rowId,
@@ -31,8 +41,10 @@ export function CellNoMemo<T>({
   hasExpandInCell,
   pinnedX,
   pinnedY,
+  colReorderKey,
   selected,
   selectionStart,
+  enableColumnReorder,
   onExpandToggle,
 }: CellProps<T>) {
   return (
@@ -43,10 +55,24 @@ export function CellNoMemo<T>({
       data-pinned-y={pinnedY}
       data-selected={selected}
       data-selection-start={selectionStart}
+      data-reordering={!!colReorderKey}
+      data-moving-col={column.key === colReorderKey}
       style={{
         width: column.size,
         transform: `translateX(${column.offset}px)`,
       }}
+      onPointerEnter={
+        enableColumnReorder && colReorderKey
+          ? e =>
+              mgr.columnReorderPlugin?.onPointerEnter(e.currentTarget, e.clientX, column)
+          : undefined
+      }
+      onPointerMove={
+        enableColumnReorder && colReorderKey
+          ? e =>
+              mgr.columnReorderPlugin?.onPointerMove(e.currentTarget, e.clientX, column)
+          : undefined
+      }
     >
       {hasExpandInCell && (
         <IconButton

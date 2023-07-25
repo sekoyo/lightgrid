@@ -1,5 +1,6 @@
 export * from './binarySearch'
 export * from './clamp'
+export * from './cls'
 export * from './copySelection'
 export * from './deriveColumns'
 export * from './deriveRows'

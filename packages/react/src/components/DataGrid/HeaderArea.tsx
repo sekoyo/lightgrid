@@ -1,12 +1,12 @@
 import { memo } from 'react'
-import { AreaPos, DerivedGroupColumns, GridManager } from '@lightfin/datagrid'
+import { AreaPos, GroupedDerivedColumns, GridManager, ItemId } from '@lightfin/datagrid'
 
 import { R } from './types'
 import { ColumnHeaderGroup } from './ColumnHeaderGroup'
 
 interface HeaderAreaProps<T> {
   mgr: GridManager<T, React.ReactNode>
-  columns: DerivedGroupColumns<T, R>
+  columns: GroupedDerivedColumns<T, R>
   colAreaPos: AreaPos
   headerRowHeight: number
   left: number
@@ -14,6 +14,8 @@ interface HeaderAreaProps<T> {
   height: number
   enableColumnResize?: boolean
   enableColumnReorder?: boolean
+  colResizeData?: number
+  colReorderKey?: ItemId
 }
 
 export function HeaderAreaNoMemo<T>({
@@ -26,6 +28,8 @@ export function HeaderAreaNoMemo<T>({
   height,
   enableColumnResize,
   enableColumnReorder,
+  colResizeData,
+  colReorderKey,
 }: HeaderAreaProps<T>) {
   if (!columns.length) {
     return null
@@ -41,6 +45,8 @@ export function HeaderAreaNoMemo<T>({
           headerRowHeight={headerRowHeight}
           enableColumnResize={enableColumnResize}
           enableColumnReorder={enableColumnReorder}
+          colResizeData={colResizeData}
+          colReorderKey={colReorderKey}
         />
       </div>
     </div>

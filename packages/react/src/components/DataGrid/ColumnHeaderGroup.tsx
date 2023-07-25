@@ -1,9 +1,10 @@
-import { Fragment, memo, useCallback } from 'react'
+import { Fragment, memo } from 'react'
 import {
   AreaPos,
-  DerivedGroupColumns,
+  GroupedDerivedColumns,
   GridManager,
   isDerivedColumnGroup,
+  ItemId,
 } from '@lightfin/datagrid'
 
 import { R } from './types'
@@ -11,12 +12,13 @@ import { ColumnHeader } from './ColumnHeader'
 
 interface ColumnHeaderGroupProps<T> {
   mgr: GridManager<T, React.ReactNode>
-  columns: DerivedGroupColumns<T, R>
+  columns: GroupedDerivedColumns<T, R>
   colAreaPos: AreaPos
   headerRowHeight: number
   enableColumnResize?: boolean
   enableColumnReorder?: boolean
   colResizeData?: number
+  colReorderKey?: ItemId
 }
 
 function ColumnHeaderGroupNoMemo<T>({
@@ -27,6 +29,7 @@ function ColumnHeaderGroupNoMemo<T>({
   enableColumnResize,
   enableColumnReorder,
   colResizeData,
+  colReorderKey,
 }: ColumnHeaderGroupProps<T>) {
   return (
     <>
@@ -39,6 +42,7 @@ function ColumnHeaderGroupNoMemo<T>({
             headerRowHeight={headerRowHeight}
             enableColumnResize={enableColumnResize}
             enableColumnReorder={enableColumnReorder}
+            colReorderKey={colReorderKey}
           />
           {isDerivedColumnGroup(column) && (
             <ColumnHeaderGroupNoMemo<T>
@@ -48,6 +52,7 @@ function ColumnHeaderGroupNoMemo<T>({
               headerRowHeight={headerRowHeight}
               enableColumnResize={enableColumnResize}
               enableColumnReorder={enableColumnReorder}
+              colReorderKey={colReorderKey}
             />
           )}
         </Fragment>

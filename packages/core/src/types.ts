@@ -2,16 +2,18 @@ export type SortDirection = 'none' | 'asc' | 'desc'
 export type ColumnPin = 'start' | 'end'
 export type ValueSource = 'render' | 'clipboard'
 
+export type ItemId = string | number
+
 // Raw from user
 export interface ColumnGroup<T, R> {
-  key: string | number
+  key: ItemId
   header?: R
   children: GroupedColumns<T, R>
   pin?: ColumnPin
 }
 
 export interface Column<T, R> {
-  key: string | number
+  key: ItemId
   header?: R
   width?: number | string
   minWidth?: number
@@ -23,11 +25,13 @@ export interface Column<T, R> {
   cellComponent?: (props: CellComponentProps<T, R>) => R
 }
 
-export type GroupedColumns<T, R> = (ColumnGroup<T, R> | Column<T, R>)[]
+export type ColumnOrGroup<T, R> = ColumnGroup<T, R> | Column<T, R>
+
+export type GroupedColumns<T, R> = ColumnOrGroup<T, R>[]
 
 // Derived for internal use
 export interface DerivedColumnGroup<T, R> extends ColumnGroup<T, R> {
-  children: DerivedGroupColumns<T, R>
+  children: GroupedDerivedColumns<T, R>
   size: number
   offset: number
   rowSpan: number
@@ -43,11 +47,13 @@ export interface DerivedColumn<T, R> extends Column<T, R> {
   rowIndex: number
 }
 
-export type DerivedGroupColumns<T, R> = (DerivedColumnGroup<T, R> | DerivedColumn<T, R>)[]
+export type DerivedColumnOrGroup<T, R> = DerivedColumnGroup<T, R> | DerivedColumn<T, R>
+
+export type GroupedDerivedColumns<T, R> = DerivedColumnOrGroup<T, R>[]
 
 export interface DerivedColResult<T, R> {
   areaPos: AreaPos
-  itemsWithGrouping: DerivedGroupColumns<T, R>
+  itemsWithGrouping: GroupedDerivedColumns<T, R>
   items: DerivedColumn<T, R>[]
   size: number
   startOffset: number
@@ -79,7 +85,7 @@ export type GetRowDetailsMeta<T> = (item: T) => RowDetailsMeta
 // Derived for internal use
 export interface DerivedRow<T> {
   item: T
-  rowId: string | number
+  rowId: ItemId
   hasDetails?: boolean
   size: number
   offset: number
@@ -88,7 +94,7 @@ export interface DerivedRow<T> {
 
 export interface DerivedDetailRow<T> {
   item: T
-  rowId: string | number
+  rowId: ItemId
   size: number
   offset: number
 }
@@ -119,11 +125,11 @@ export interface RowStateItem {
   detailsExpanded?: boolean
 }
 
-export type RowState = Record<string | number, RowStateItem>
+export type RowState = Record<ItemId, RowStateItem>
 
-export type OnRowStateChange = (itemId: string | number, item: RowStateItem) => void
+export type OnRowStateChange = (itemId: ItemId, item: RowStateItem) => void
 
-export type GetRowId<T> = (item: T) => string | number
+export type GetRowId<T> = (item: T) => ItemId
 
 export type RenderRowDetails<T, R> = (item: T) => R
 
@@ -139,7 +145,7 @@ export interface CellPosition {
   rowIndex: number
 }
 
-export interface GridAreaDesc<T, R> {
+export interface BodyAreaDesc<T, R> {
   id: string
   windowX: number
   windowY: number
@@ -154,7 +160,7 @@ export interface GridAreaDesc<T, R> {
 }
 
 export interface HeaderAreaDesc<T, R> {
-  columns: DerivedGroupColumns<T, R>
+  columns: GroupedDerivedColumns<T, R>
   colAreaPos: AreaPos
   headerRowHeight: number
   left: number

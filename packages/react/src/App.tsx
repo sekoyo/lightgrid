@@ -2,6 +2,7 @@ import { useState } from 'react'
 import {
   CellComponentProps,
   GroupedColumns,
+  ItemId,
   OnRowStateChange,
   RowState,
   RowStateItem,
@@ -16,7 +17,7 @@ interface Details {
 }
 
 interface Item {
-  id: string | number
+  id: ItemId
   details: Details
 }
 
@@ -74,10 +75,7 @@ export function App() {
   const [rowState, setRowState] = useState<RowState>({})
   const [cellSelectionEnabled, setCellSelectionEnabled] = useState(true)
 
-  const onRowStateChange: OnRowStateChange = (
-    itemId: string | number,
-    item: RowStateItem
-  ) => {
+  const onRowStateChange: OnRowStateChange = (itemId: ItemId, item: RowStateItem) => {
     setRowState(s => ({
       ...s,
       [itemId]: item,
@@ -150,6 +148,7 @@ export function App() {
       <div style={{ height: 498 }}>
         <DataGrid<Item>
           columns={columns}
+          onColumnsChange={setColumns}
           rowState={rowState}
           onRowStateChange={onRowStateChange}
           getRowId={item => item.id}
@@ -171,7 +170,7 @@ export function App() {
           pinnedBottomData={pinnedBottomData}
           enableCellSelection={cellSelectionEnabled}
           enableColumnResize
-          onColumnsChange={setColumns}
+          enableColumnReorder
           // direction="rtl"
         />
       </div>

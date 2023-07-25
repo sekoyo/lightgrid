@@ -2,8 +2,8 @@ import {
   Column,
   ColumnGroup,
   DerivedColResult,
-  DerivedColumn,
   DerivedColumnGroup,
+  DerivedColumnOrGroup,
   DerivedRowResult,
 } from '../types'
 
@@ -28,7 +28,7 @@ export function isColumnGroup<T, R>(
 }
 
 export function isDerivedColumnGroup<T, R>(
-  column: DerivedColumnGroup<T, R> | DerivedColumn<T, R>
+  column: DerivedColumnOrGroup<T, R>
 ): column is DerivedColumnGroup<T, R> {
   return Array.isArray((column as DerivedColumnGroup<T, R>).children)
 }
