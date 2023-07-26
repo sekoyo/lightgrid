@@ -1,6 +1,5 @@
 ## Todo
 
-- Big: Dragging group col causes jitter cray cray
 - Column sorting
 - Safely limit row/col window range
 

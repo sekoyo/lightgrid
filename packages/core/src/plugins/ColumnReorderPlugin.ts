@@ -37,8 +37,19 @@ function findColumn<T, R>(
   }
 }
 
+function collectChildKeys<T, R>(columns: GroupedColumns<T, R>) {
+  return columns.reduce((keys, c) => {
+    keys.push(c.key)
+    if (isColumnGroup(c)) {
+      keys.push(...collectChildKeys(c.children))
+    }
+    return keys
+  }, [] as ItemId[])
+}
+
 export class ColumnReorderPlugin<T, R> extends GridPlugin<T, R> {
   colToMove?: ColumnOrGroup<T, R>
+  colToMoveChildKeys: ItemId[] = []
   lastOverColumnKey?: ItemId
   lastPointerSide = PointerSide.None
   lastPin?: ColumnPin
@@ -74,6 +85,7 @@ export class ColumnReorderPlugin<T, R> extends GridPlugin<T, R> {
     this.dragLabel.unmount()
     this.lastOverColumnKey = undefined
     this.lastPointerSide = PointerSide.None
+    this.colToMoveChildKeys = []
   }
 
   onPointerDown = (e: PointerEvent, column: DerivedColumnOrGroup<T, R>) => {
@@ -87,13 +99,20 @@ export class ColumnReorderPlugin<T, R> extends GridPlugin<T, R> {
     }
 
     this.colToMove = findColumn(this.mgr.$columns(), column.key)
+
+    if (!this.colToMove) {
+      return
+    }
+
     this.lastPin = column.pin
 
-    if (this.colToMove) {
-      this.mgr.setColReorderKey(column.key)
-      this.onWindowPointerEvents()
-      this.dragLabel.mount(e.target.textContent || String(column.key), DragIcon.Move)
+    if (isColumnGroup(this.colToMove)) {
+      this.colToMoveChildKeys = collectChildKeys(this.colToMove.children)
     }
+
+    this.mgr.setColReorderKey(column.key)
+    this.onWindowPointerEvents()
+    this.dragLabel.mount(e.target.textContent || String(column.key), DragIcon.Move)
   }
 
   // In react at least, e.nativeEvent.target/currentTarget is wrong :/
@@ -119,7 +138,11 @@ export class ColumnReorderPlugin<T, R> extends GridPlugin<T, R> {
     clientX: number,
     overColumn: DerivedColumnOrGroup<T, R>
   ) => {
-    if (this.colToMove && this.colToMove.key !== overColumn.key) {
+    if (
+      this.colToMove &&
+      this.colToMove.key !== overColumn.key &&
+      !this.colToMoveChildKeys.includes(overColumn.key)
+    ) {
       // What side is it on?
       const rect = el.getBoundingClientRect()
       const localX = clientX - rect.left

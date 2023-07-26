@@ -23,7 +23,6 @@ import {
   deriveColumns,
   deriveRows,
   getColumnWindow,
-  getNestedColSlice,
   getRowWindow,
   getScrollBarSize,
   willScrollbarsAppear,
@@ -192,11 +191,17 @@ export class GridManager<T, R> {
   $middleCols = computed(() =>
     this.$derivedCols().middle.items.slice(this.$colWindow()[0], this.$colWindow()[1] + 1)
   )
+  $colHeaderWindow = computed(() =>
+    getColumnWindow(
+      this.$midWidth(),
+      this.$scrollX(),
+      this.$derivedCols().middle.itemsWithGrouping
+    )
+  )
   $middleHeaderCols = computed(() =>
-    getNestedColSlice(
-      this.$derivedCols().middle.itemsWithGrouping,
-      this.$colWindow()[0],
-      this.$colWindow()[1] + 1
+    this.$derivedCols().middle.itemsWithGrouping.slice(
+      this.$colHeaderWindow()[0],
+      this.$colHeaderWindow()[1] + 1
     )
   )
 
