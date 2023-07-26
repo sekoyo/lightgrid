@@ -91,7 +91,6 @@ export function App() {
   }
 
   const [columns, setColumns] = useState<GroupedColumns<Item, R>>(() => [
-    ...middleCols,
     {
       key: 'b',
       header: 'B',
@@ -130,6 +129,7 @@ export function App() {
         },
       ],
     },
+    ...middleCols,
     {
       key: 'f',
       header: 'F',

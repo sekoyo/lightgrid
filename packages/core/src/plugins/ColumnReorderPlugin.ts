@@ -144,6 +144,7 @@ export class ColumnReorderPlugin<T, R> extends GridPlugin<T, R> {
         overColumn.key,
         pointerSide
       )
+
       this.mgr.$columns.set(nextColumns)
     }
   }
@@ -185,7 +186,7 @@ export class ColumnReorderPlugin<T, R> extends GridPlugin<T, R> {
           adjacentColKey,
           pointerSide
         )
-        nextCols.push(col)
+        nextCols.push(colToMoveCopy)
       } else {
         nextCols.push(col)
       }

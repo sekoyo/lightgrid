@@ -23,6 +23,7 @@ import {
   deriveColumns,
   deriveRows,
   getColumnWindow,
+  getNestedColSlice,
   getRowWindow,
   getScrollBarSize,
   willScrollbarsAppear,
@@ -99,9 +100,9 @@ export class GridManager<T, R> {
   $pinnedTopData = signal<T[]>([])
   $pinnedBottomData = signal<T[]>([])
   $rowState = signal<RowState>({})
-  $enableCellSelection = signal<boolean>(false)
-  $enableColumnResize = signal<boolean>(false)
-  $enableColumnReorder = signal<boolean>(false)
+  $enableCellSelection = signal(false)
+  $enableColumnResize = signal(false)
+  $enableColumnReorder = signal(false)
 
   // Derived values
   $derivedCols = computed(() => deriveColumns(this.$columns(), this.$viewportWidth()))
@@ -191,6 +192,13 @@ export class GridManager<T, R> {
   $middleCols = computed(() =>
     this.$derivedCols().middle.items.slice(this.$colWindow()[0], this.$colWindow()[1] + 1)
   )
+  $middleHeaderCols = computed(() =>
+    getNestedColSlice(
+      this.$derivedCols().middle.itemsWithGrouping,
+      this.$colWindow()[0],
+      this.$colWindow()[1] + 1
+    )
+  )
 
   // -- Row window.
   $midHeight = computed(
@@ -215,7 +223,7 @@ export class GridManager<T, R> {
     return [
       {
         id: AreaPos.Middle,
-        columns: this.$middleCols(),
+        columns: this.$middleHeaderCols(),
         colAreaPos: AreaPos.Middle,
         headerRowHeight,
         left: derivedCols.start.size,
