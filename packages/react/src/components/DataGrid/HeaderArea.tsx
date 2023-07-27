@@ -8,7 +8,7 @@ import {
 } from '@lightfin/datagrid'
 
 import { R } from './types'
-import { ColumnHeader } from './ColumnHeader'
+import { HeaderCell } from './HeaderCell'
 
 interface HeaderAreaProps<T> {
   mgr: GridManager<T, React.ReactNode>
@@ -41,7 +41,7 @@ export function HeaderArea<T>({
         <>
           {groupCols.map(column => (
             <Fragment key={column.key}>
-              <ColumnHeader
+              <HeaderCell
                 mgr={mgr}
                 column={column}
                 colAreaPos={colAreaPos}

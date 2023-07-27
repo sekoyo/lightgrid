@@ -1,27 +1,25 @@
 import { AreaPos, DerivedColumnOrGroup, GridManager, ItemId } from '@lightfin/datagrid'
 import { R } from './types'
 
-interface ColumnHeaderProps<T> {
+interface HeaderCellProps<T> {
   mgr: GridManager<T, React.ReactNode>
   column: DerivedColumnOrGroup<T, R>
   colAreaPos: AreaPos
   headerRowHeight: number
   enableColumnResize?: boolean
   enableColumnReorder?: boolean
-  enableColumnSort?: boolean
   colReorderKey?: ItemId
 }
 
-export function ColumnHeader<T>({
+export function HeaderCell<T>({
   mgr,
   column,
   colAreaPos,
   headerRowHeight,
   enableColumnResize,
   enableColumnReorder,
-  enableColumnSort,
   colReorderKey,
-}: ColumnHeaderProps<T>) {
+}: HeaderCellProps<T>) {
   return (
     <div
       className="lfg-column-header"

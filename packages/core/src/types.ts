@@ -18,8 +18,8 @@ export interface Column<T, R> {
   width?: number | string
   minWidth?: number
   getValue: (row: T, source?: ValueSource) => any
+  sortable?: boolean
   sortDirection?: SortDirection
-  onSort?: (direction: SortDirection) => void
   filter?: R
   pin?: ColumnPin
   cellComponent?: (props: CellComponentProps<T, R>) => R

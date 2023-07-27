@@ -225,7 +225,7 @@ export function deriveColumns<T, R>(
           minWidth: column.minWidth,
           getValue: column.getValue,
           sortDirection: column.sortDirection,
-          onSort: column.onSort,
+          sortable: column.sortable,
           filter: column.filter,
           pin: column.pin,
           cellComponent: column.cellComponent,

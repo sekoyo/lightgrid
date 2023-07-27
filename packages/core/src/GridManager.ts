@@ -65,7 +65,6 @@ interface GridManagerDynamicProps<T, R> {
   enableCellSelection?: boolean
   enableColumnResize?: boolean
   enableColumnReorder?: boolean
-  enableColumnSort?: boolean
 }
 
 export class GridManager<T, R> {
@@ -105,7 +104,6 @@ export class GridManager<T, R> {
   $enableCellSelection = signal(false)
   $enableColumnResize = signal(false)
   $enableColumnReorder = signal(false)
-  $enableColumnSort = signal(false)
 
   // Derived values
   $derivedCols = computed(() => deriveColumns(this.$columns(), this.$viewportWidth()))
@@ -547,7 +545,6 @@ export class GridManager<T, R> {
     this.$enableCellSelection.set(props.enableCellSelection || false)
     this.$enableColumnResize.set(props.enableColumnResize || false)
     this.$enableColumnReorder.set(props.enableColumnReorder || false)
-    this.$enableColumnSort.set(props.enableColumnSort || false)
   }
 
   updateScroll(scrollLeft: number, scrollTop: number) {

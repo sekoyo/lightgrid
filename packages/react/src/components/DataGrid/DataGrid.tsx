@@ -56,7 +56,6 @@ interface DataGridProps<T> {
   enableCellSelection?: boolean
   enableColumnResize?: boolean
   enableColumnReorder?: boolean
-  enableColumnSort?: boolean
 }
 
 export function DataGrid<T>({
@@ -78,7 +77,6 @@ export function DataGrid<T>({
   enableCellSelection,
   enableColumnResize,
   enableColumnReorder,
-  enableColumnSort,
 }: DataGridProps<T>) {
   const gridEl = useRef<HTMLDivElement>(null)
   const scrollEl = useRef<HTMLDivElement>(null)
@@ -144,7 +142,6 @@ export function DataGrid<T>({
       enableCellSelection,
       enableColumnResize,
       enableColumnReorder,
-      enableColumnSort,
     })
   }, [
     mgr,
@@ -157,7 +154,6 @@ export function DataGrid<T>({
     enableCellSelection,
     enableColumnResize,
     enableColumnReorder,
-    enableColumnSort,
   ])
 
   // Mount and unmount
