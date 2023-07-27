@@ -1,7 +1,6 @@
 ## Todo
 
 - Column sorting
-- Safely limit row/col window range
 
 ### Docs
 
@@ -28,6 +27,7 @@
 - SolidJS support
 - Find a good TS throttle
 - Clicking column header highlights cells in column
+- Safely limit row/col window range?
 
 ## Bugs
 

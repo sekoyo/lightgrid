@@ -45,6 +45,7 @@ interface DataGridProps<T> {
   getRowMeta?: GetRowMeta<T>
   getRowDetailsMeta?: GetRowDetailsMeta<T>
   data: T[]
+  onDataChange?: (data: T[]) => void
   pinnedTopData?: T[]
   pinnedBottomData?: T[]
   rowState?: RowState
@@ -55,6 +56,7 @@ interface DataGridProps<T> {
   enableCellSelection?: boolean
   enableColumnResize?: boolean
   enableColumnReorder?: boolean
+  enableColumnSort?: boolean
 }
 
 export function DataGrid<T>({
@@ -65,6 +67,7 @@ export function DataGrid<T>({
   getRowMeta = defaultGetRowMeta,
   getRowDetailsMeta = defaultGetRowDetailsMeta,
   data,
+  onDataChange,
   pinnedTopData = emptyData,
   pinnedBottomData = emptyData,
   rowState = emptyRowState,
@@ -75,6 +78,7 @@ export function DataGrid<T>({
   enableCellSelection,
   enableColumnResize,
   enableColumnReorder,
+  enableColumnSort,
 }: DataGridProps<T>) {
   const gridEl = useRef<HTMLDivElement>(null)
   const scrollEl = useRef<HTMLDivElement>(null)
@@ -116,6 +120,7 @@ export function DataGrid<T>({
       setColReorderKey,
       onRowStateChange,
       onColumnsChange,
+      onDataChange,
       onDerivedColumnsChange: setDerivedCols,
       onAreasChanged: setBodyAreas,
       onHeadersChanged: setHeaderAreas,
@@ -139,6 +144,7 @@ export function DataGrid<T>({
       enableCellSelection,
       enableColumnResize,
       enableColumnReorder,
+      enableColumnSort,
     })
   }, [
     mgr,
@@ -151,6 +157,7 @@ export function DataGrid<T>({
     enableCellSelection,
     enableColumnResize,
     enableColumnReorder,
+    enableColumnSort,
   ])
 
   // Mount and unmount

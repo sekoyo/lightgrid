@@ -8,6 +8,7 @@ interface ColumnHeaderProps<T> {
   headerRowHeight: number
   enableColumnResize?: boolean
   enableColumnReorder?: boolean
+  enableColumnSort?: boolean
   colReorderKey?: ItemId
 }
 
@@ -18,6 +19,7 @@ export function ColumnHeader<T>({
   headerRowHeight,
   enableColumnResize,
   enableColumnReorder,
+  enableColumnSort,
   colReorderKey,
 }: ColumnHeaderProps<T>) {
   return (

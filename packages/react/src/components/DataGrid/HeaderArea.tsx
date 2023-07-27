@@ -1,8 +1,14 @@
-import { memo } from 'react'
-import { AreaPos, GroupedDerivedColumns, GridManager, ItemId } from '@lightfin/datagrid'
+import { Fragment, useCallback } from 'react'
+import {
+  AreaPos,
+  GroupedDerivedColumns,
+  GridManager,
+  ItemId,
+  isDerivedColumnGroup,
+} from '@lightfin/datagrid'
 
 import { R } from './types'
-import { ColumnHeaderGroup } from './ColumnHeaderGroup'
+import { ColumnHeader } from './ColumnHeader'
 
 interface HeaderAreaProps<T> {
   mgr: GridManager<T, React.ReactNode>
@@ -14,11 +20,10 @@ interface HeaderAreaProps<T> {
   height: number
   enableColumnResize?: boolean
   enableColumnReorder?: boolean
-  colResizeData?: number
   colReorderKey?: ItemId
 }
 
-export function HeaderAreaNoMemo<T>({
+export function HeaderArea<T>({
   mgr,
   columns,
   colAreaPos,
@@ -28,9 +33,39 @@ export function HeaderAreaNoMemo<T>({
   height,
   enableColumnResize,
   enableColumnReorder,
-  colResizeData,
   colReorderKey,
 }: HeaderAreaProps<T>) {
+  const renderColumns = useCallback(
+    (groupCols: GroupedDerivedColumns<T, R>) => {
+      return (
+        <>
+          {groupCols.map(column => (
+            <Fragment key={column.key}>
+              <ColumnHeader
+                mgr={mgr}
+                column={column}
+                colAreaPos={colAreaPos}
+                headerRowHeight={headerRowHeight}
+                enableColumnResize={enableColumnResize}
+                enableColumnReorder={enableColumnReorder}
+                colReorderKey={colReorderKey}
+              />
+              {isDerivedColumnGroup(column) && renderColumns(column.children)}
+            </Fragment>
+          ))}
+        </>
+      )
+    },
+    [
+      colAreaPos,
+      colReorderKey,
+      enableColumnReorder,
+      enableColumnResize,
+      headerRowHeight,
+      mgr,
+    ]
+  )
+
   if (!columns.length) {
     return null
   }
@@ -38,20 +73,8 @@ export function HeaderAreaNoMemo<T>({
   return (
     <div className="lfg-header-area">
       <div className="lfg-header-area-inner" style={{ left, width, height }}>
-        <ColumnHeaderGroup
-          mgr={mgr}
-          columns={columns}
-          colAreaPos={colAreaPos}
-          headerRowHeight={headerRowHeight}
-          enableColumnResize={enableColumnResize}
-          enableColumnReorder={enableColumnReorder}
-          colResizeData={colResizeData}
-          colReorderKey={colReorderKey}
-        />
+        {renderColumns(columns)}
       </div>
     </div>
   )
 }
-
-const typedMemo: <T>(c: T) => T = memo
-export const HeaderArea = typedMemo(HeaderAreaNoMemo)

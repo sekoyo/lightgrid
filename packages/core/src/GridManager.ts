@@ -43,6 +43,7 @@ interface GridManagerStaticProps<T, R> {
   setColResizeData: SetColResizeData
   setColReorderKey: SetColReorderKey
   onColumnsChange?: (columns: GroupedColumns<T, R>) => void
+  onDataChange?: (data: T[]) => void
   onRowStateChange: OnRowStateChange
   onDerivedColumnsChange: (derivedCols: DerivedColsResult<T, R>) => void
   onAreasChanged: (gridAreas: BodyAreaDesc<T, R>[]) => void
@@ -64,6 +65,7 @@ interface GridManagerDynamicProps<T, R> {
   enableCellSelection?: boolean
   enableColumnResize?: boolean
   enableColumnReorder?: boolean
+  enableColumnSort?: boolean
 }
 
 export class GridManager<T, R> {
@@ -84,6 +86,7 @@ export class GridManager<T, R> {
   setColResizeData: SetColResizeData
   setColReorderKey: SetColReorderKey
   onColumnsChange?: (columns: GroupedColumns<T, R>) => void
+  onDataChange?: (data: T[]) => void
   onRowStateChange: OnRowStateChange
 
   cellSelectionPlugin?: CellSelectionPlugin<T, R>
@@ -102,6 +105,7 @@ export class GridManager<T, R> {
   $enableCellSelection = signal(false)
   $enableColumnResize = signal(false)
   $enableColumnReorder = signal(false)
+  $enableColumnSort = signal(false)
 
   // Derived values
   $derivedCols = computed(() => deriveColumns(this.$columns(), this.$viewportWidth()))
@@ -455,6 +459,7 @@ export class GridManager<T, R> {
     this.getRowDetailsMeta = props.getRowDetailsMeta
     this.renderRowDetails = props.renderRowDetails
     this.onColumnsChange = props.onColumnsChange
+    this.onDataChange = props.onDataChange
     this.onRowStateChange = props.onRowStateChange
 
     this.setStartCell = props.setStartCell
@@ -542,6 +547,7 @@ export class GridManager<T, R> {
     this.$enableCellSelection.set(props.enableCellSelection || false)
     this.$enableColumnResize.set(props.enableColumnResize || false)
     this.$enableColumnReorder.set(props.enableColumnReorder || false)
+    this.$enableColumnSort.set(props.enableColumnSort || false)
   }
 
   updateScroll(scrollLeft: number, scrollTop: number) {

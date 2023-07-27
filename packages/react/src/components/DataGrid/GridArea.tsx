@@ -68,7 +68,7 @@ export function GridAreaNoMemo<T>({
         className="lfg-area-inner"
         style={{
           position: area.pinnedX || area.pinnedY ? 'sticky' : 'absolute',
-          ...{ [area.pinnedX && !area.pinnedY ? 'marginTop' : 'top']: area.windowY },
+          [area.pinnedX && !area.pinnedY ? 'marginTop' : 'top']: area.windowY,
           left: area.windowX,
           width: area.width,
           height: area.height,
@@ -90,7 +90,7 @@ export function GridAreaNoMemo<T>({
                   key={column.key}
                   mgr={mgr}
                   column={column}
-                  row={row}
+                  item={row.item}
                   rowId={row.rowId}
                   rowStateItem={rowState[row.rowId]}
                   hasExpandInCell={Boolean(row.hasDetails && column.colIndex === 0)}

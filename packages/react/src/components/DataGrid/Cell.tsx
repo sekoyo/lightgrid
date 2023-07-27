@@ -1,25 +1,17 @@
 import { memo } from 'react'
-import {
-  DerivedColumn,
-  DerivedRow,
-  GridManager,
-  ItemId,
-  RowStateItem,
-} from '@lightfin/datagrid'
+import { DerivedColumn, GridManager, ItemId, RowStateItem } from '@lightfin/datagrid'
 
 import { DownArrow } from '../Icons'
 import { IconButton } from '../IconButton'
 import { R } from './types'
 import { DefaultCellComponent } from './DefaultCellComponent'
 
-// Not passing in the row reference itself means that
-// if a data change triggered rows being re-derived,
-// this memo will only allow the rows whose `item`
-// reference changed.
 interface CellProps<T> {
   mgr: GridManager<T, React.ReactNode>
   column: DerivedColumn<T, R>
-  row: DerivedRow<T>
+  // Passing in item instead of `row: DerivedRow<T>` means that if data changes
+  // and rows are re-derived, only cells with a changed item will re-render.
+  item: T
   rowId: ItemId
   rowStateItem: RowStateItem | undefined
   hasExpandInCell: boolean
@@ -35,7 +27,7 @@ interface CellProps<T> {
 export function CellNoMemo<T>({
   mgr,
   column,
-  row,
+  item,
   rowId,
   rowStateItem,
   hasExpandInCell,
@@ -86,8 +78,8 @@ export function CellNoMemo<T>({
           <DownArrow />
         </IconButton>
       )}
-      {column.cellComponent?.({ column, item: row.item }) || (
-        <DefaultCellComponent column={column} item={row.item} />
+      {column.cellComponent?.({ column, item: item }) || (
+        <DefaultCellComponent column={column} item={item} />
       )}
     </div>
   )
