@@ -190,25 +190,27 @@ export function deriveColumns<T, R>(
     for (let i = 0; i < levelColumns.length; i++) {
       const column = levelColumns[i]
       if (isColumnGroup(column)) {
-        const savedOffset = sectionOffset.current
-        const children = recurseColumns(
-          column.children,
-          colResult,
-          [],
-          colIndexOffset + i,
-          rowIndex + 1,
-          sectionOffset
-        )
-        const size = sectionOffset.current - savedOffset
-        levelDerivedCols.push({
-          ...column,
-          children,
-          size,
-          offset: savedOffset,
-          rowIndex,
-          rowSpan: 1,
-          colIndex: colIndexOffset + i,
-        })
+        if (column.children.length) {
+          const savedOffset = sectionOffset.current
+          const children = recurseColumns(
+            column.children,
+            colResult,
+            [],
+            colIndexOffset + i,
+            rowIndex + 1,
+            sectionOffset
+          )
+          const size = sectionOffset.current - savedOffset
+          levelDerivedCols.push({
+            ...column,
+            children,
+            size,
+            offset: savedOffset,
+            rowIndex,
+            rowSpan: 1,
+            colIndex: colIndexOffset + i,
+          })
+        }
       } else {
         const size = getDerivedWidth(
           viewportWidth,

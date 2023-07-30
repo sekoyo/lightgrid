@@ -1,7 +1,5 @@
 ## Todo
 
-- Handle/check if all children are moved out of group
-
 ### Docs
 
 - Checkout nice CodeSandbox embed - https://leptos-rs.github.io/leptos/view/02_dynamic_attributes.html
