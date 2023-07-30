@@ -1,6 +1,13 @@
-export type SortDirection = 'none' | 'asc' | 'desc'
+export enum SortDirection {
+  Desc = -1,
+  Asc = 1,
+}
 export type ColumnPin = 'start' | 'end'
-export type ValueSource = 'render' | 'clipboard'
+export enum ValueSource {
+  Render,
+  Clipboard,
+  Sort,
+}
 
 export type ItemId = string | number
 
@@ -12,6 +19,8 @@ export interface ColumnGroup<T, R> {
   pin?: ColumnPin
 }
 
+export type Comparator<T> = (a: T, b: T) => number
+
 export interface Column<T, R> {
   key: ItemId
   header?: R
@@ -20,6 +29,8 @@ export interface Column<T, R> {
   getValue: (row: T, source?: ValueSource) => any
   sortable?: boolean
   sortDirection?: SortDirection
+  createSortComparator?: (sortDirection: SortDirection) => Comparator<T>
+  sortPriority?: number
   filter?: R
   pin?: ColumnPin
   cellComponent?: (props: CellComponentProps<T, R>) => R

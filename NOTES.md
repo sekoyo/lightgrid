@@ -1,6 +1,6 @@
 ## Todo
 
-- Column sorting
+- Handle/check if all children are moved out of group
 
 ### Docs
 
@@ -12,9 +12,11 @@
 - Theming (create theme builder UI too)
 - Master-details example
 - Tree data example
+- Free + Sponsored features, with sponsoring being minimum $5
 
 ### Post MVP
 
+- Add JSDocs to types
 - Row resizing
 - Pasting tabular data into multiple selected cells
 - Throw on non-unique key in deriveCols/Rows if NODE_ENV !== 'production'
@@ -28,6 +30,8 @@
 - Find a good TS throttle
 - Clicking column header highlights cells in column
 - Safely limit row/col window range?
+- Sorting group column (https://www.ag-grid.com/javascript-data-grid/row-sorting/#custom-sorting-groups-example)
+- Only highlight column @ col reorder when pointermove happens
 
 ## Bugs
 

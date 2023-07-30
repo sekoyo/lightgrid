@@ -2,11 +2,14 @@ import { defineConfig } from 'rollup'
 import { nodeResolve } from '@rollup/plugin-node-resolve'
 import typescript from '@rollup/plugin-typescript'
 import scss from 'rollup-plugin-scss'
-import clean from '@rollup-extras/plugin-clean'
 import replace from '@rollup/plugin-replace'
+import copy from 'rollup-plugin-copy'
+import { rimrafSync } from 'rimraf'
 
 const extensions = ['.js', '.jsx', '.ts', '.tsx']
 const isProd = process.env.NODE_ENV === 'production'
+
+rimrafSync('./dist')
 
 export default defineConfig({
   input: 'src/index.ts',
@@ -16,7 +19,6 @@ export default defineConfig({
     chunkFileNames: isProd ? '[name]-[hash].js' : '[name].js',
   },
   plugins: [
-    clean(),
     replace({
       preventAssignment: true,
       values: {
@@ -26,5 +28,8 @@ export default defineConfig({
     nodeResolve({ extensions }),
     typescript(),
     scss({ fileName: 'styles.css', watch: 'src/styles' }),
+    copy({
+      targets: [{ src: 'src/assets/**/*', dest: 'dist/assets' }],
+    }),
   ],
 })

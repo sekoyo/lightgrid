@@ -201,9 +201,7 @@ export function deriveColumns<T, R>(
         )
         const size = sectionOffset.current - savedOffset
         levelDerivedCols.push({
-          key: column.key,
-          header: column.header,
-          pin: column.pin,
+          ...column,
           children,
           size,
           offset: savedOffset,
@@ -212,7 +210,7 @@ export function deriveColumns<T, R>(
           colIndex: colIndexOffset + i,
         })
       } else {
-        const width = getDerivedWidth(
+        const size = getDerivedWidth(
           viewportWidth,
           s.totalAbsolutes,
           s.totalFractions,
@@ -220,16 +218,8 @@ export function deriveColumns<T, R>(
           column.minWidth
         )
         const c: DerivedColumn<T, R> = {
-          key: column.key,
-          header: column.header,
-          minWidth: column.minWidth,
-          getValue: column.getValue,
-          sortDirection: column.sortDirection,
-          sortable: column.sortable,
-          filter: column.filter,
-          pin: column.pin,
-          cellComponent: column.cellComponent,
-          size: width,
+          ...column,
+          size,
           offset: sectionOffset.current,
           rowIndex,
           rowSpan: s.totalDepth - rowIndex,
@@ -237,9 +227,9 @@ export function deriveColumns<T, R>(
         }
         levelDerivedCols.push(c)
         colResult.items.push(c)
-        o.size += width
-        sectionOffset.current += width
-        colResult.size += width
+        o.size += size
+        sectionOffset.current += size
+        colResult.size += size
       }
     }
 

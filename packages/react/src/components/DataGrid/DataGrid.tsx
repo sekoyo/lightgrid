@@ -243,10 +243,7 @@ export function DataGrid<T>({
             ))}
           </div>
           {!!(enableColumnResize && colResizeData) && (
-            <div
-              className="lfg-column-resize-marker"
-              style={{ left: colResizeData.left }}
-            />
+            <div className="lfg-resizer-marker" style={{ left: colResizeData.left }} />
           )}
         </div>
       </div>

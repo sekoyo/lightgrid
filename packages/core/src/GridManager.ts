@@ -18,13 +18,20 @@ import {
   OnRowStateChange,
   RenderRowDetails,
   RowState,
+  Column,
 } from './types'
 import {
+  createDefaultSortComparator,
+  createMultiSort,
   deriveColumns,
   deriveRows,
+  flatMapColumns,
   getColumnWindow,
+  getNextSortDirection,
   getRowWindow,
   getScrollBarSize,
+  isColumnGroup,
+  updateColumn,
   willScrollbarsAppear,
 } from './utils'
 import type { ColumnResizePlugin, SetColResizeData } from './plugins/ColumnResizePlugin'
@@ -106,7 +113,33 @@ export class GridManager<T, R> {
   $enableColumnReorder = signal(false)
 
   // Derived values
+  $derivedData = computed(() => {
+    const $comparators = computed(() =>
+      flatMapColumns(
+        this.$columns(),
+        c => c as Column<T, R>,
+        c => Boolean(!isColumnGroup(c) && c.sortable && c.sortDirection)
+      )
+        .sort((a, b) => (a.sortPriority ?? 0) - (b.sortPriority ?? 0))
+        .map(c => {
+          if (c.createSortComparator) {
+            return c.createSortComparator(c.sortDirection!)
+          }
+
+          return createDefaultSortComparator(c.getValue, c.sortDirection!)
+        })
+    )
+
+    // Sort data
+    if (!$comparators().length) {
+      return this.$data()
+    }
+
+    return this.$data().slice().sort(createMultiSort($comparators()))
+  })
+
   $derivedCols = computed(() => deriveColumns(this.$columns(), this.$viewportWidth()))
+
   $headerHeight = computed(() => this.$derivedCols().headerRows * this.$headerRowHeight())
   $derivedStartRows = computed(() =>
     deriveRows(
@@ -123,7 +156,7 @@ export class GridManager<T, R> {
   $derivedMiddleRows = computed(() =>
     deriveRows(
       AreaPos.Middle,
-      this.$data(),
+      this.$derivedData(),
       this.$rowState(),
       this.getRowId,
       this.getRowMeta,
@@ -569,6 +602,25 @@ export class GridManager<T, R> {
     this.$viewportWidth.set(contentRect.width)
     this.$viewportHeight.set(contentRect.height)
   }, 30)
+
+  changeSort(column: DerivedColumn<T, R>) {
+    if (!this.onColumnsChange) {
+      console.error('onColumnsChange prop is required to enable column sorting')
+      return
+    }
+
+    const nextSortDirection = getNextSortDirection(column.sortDirection)
+
+    // Update columns, we derived sorting columns and sort the data once
+    // we receive new $columns
+    const nextColumns = updateColumn(this.$columns(), {
+      ...column,
+      sortDirection: nextSortDirection,
+      sortPriority: Date.now(),
+    })
+
+    this.onColumnsChange(nextColumns)
+  }
 
   async enableCellSelectionPlugin() {
     const { CellSelectionPlugin } = await import('./plugins/CellSelectionPlugin')

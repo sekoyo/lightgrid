@@ -1,9 +1,10 @@
-import type {
-  CellSelection,
-  DerivedColResult,
-  DerivedColsResult,
-  DerivedRowResult,
-  DerivedRowsResult,
+import {
+  ValueSource,
+  type CellSelection,
+  type DerivedColResult,
+  type DerivedColsResult,
+  type DerivedRowResult,
+  type DerivedRowsResult,
 } from '../types'
 
 const quotes = new RegExp('"', 'g')
@@ -67,7 +68,7 @@ function getCellValues<T, R>(
       }
       for (let c = colStartIdx; c <= colEndIdx; c++) {
         const column = colResult.items[c]
-        const value = column.getValue(row.item, 'clipboard')
+        const value = column.getValue(row.item, ValueSource.Clipboard)
         csvRows[row.rowIndex].push(value)
       }
     }

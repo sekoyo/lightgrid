@@ -1,0 +1,70 @@
+.lfg-header {
+  &-area {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    pointer-events: none;
+
+    &-inner {
+      position: sticky;
+      top: 0;
+      z-index: 1;
+      pointer-events: auto;
+    }
+  }
+
+  &-cell {
+    contain: strict;
+    position: absolute;
+    display: flex;
+    align-items: flex-end;
+    background: var(--lfgHeaderCellBg, var(--lfgCellBg, var(--lfgBg)));
+    padding: 6px 12px;
+    direction: var(--lfg-direction);
+    outline: 1px solid var(--lfgHeaderBorderColor, var(--lfgBorderColor));
+    color: var(--lfgHeaderTextColor);
+
+    &[role='button'] {
+      cursor: pointer;
+    }
+
+    &[data-reordering='true'] * {
+      pointer-events: none;
+    }
+
+    &[data-moving-col='true'] {
+      background: var(--lfgColReorderBgColor);
+    }
+  }
+  &-cell-inner {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5em;
+    overflow: hidden;
+  }
+  &-cell-label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &-sort-indicator {
+    pointer-events: none;
+    width: 12px;
+    height: 12px;
+    color: var(--lfgHeaderTextColor);
+  }
+
+  &-grip-resizer {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 6px;
+    cursor: col-resize;
+  }
+}

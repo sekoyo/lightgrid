@@ -1,4 +1,14 @@
-import { AreaPos, DerivedColumnOrGroup, GridManager, ItemId } from '@lightfin/datagrid'
+import {
+  AreaPos,
+  DerivedColumnOrGroup,
+  GridManager,
+  ItemId,
+  SortDirection,
+  isColumnGroup,
+  isDerivedColumnGroup,
+} from '@lightfin/datagrid'
+import { ReactComponent as SortAscendingIcon } from '@lightfin/datagrid/dist/assets/sort-ascending.svg'
+import { ReactComponent as SortDescendingIcon } from '@lightfin/datagrid/dist/assets/sort-descending.svg'
 import { R } from './types'
 
 interface HeaderCellProps<T> {
@@ -20,11 +30,13 @@ export function HeaderCell<T>({
   enableColumnReorder,
   colReorderKey,
 }: HeaderCellProps<T>) {
+  const sortable = !isDerivedColumnGroup(column) && column.sortable
   return (
     <div
-      className="lfg-column-header"
+      className="lfg-header-cell"
       data-reordering={!!colReorderKey}
       data-moving-col={column.key === colReorderKey}
+      role={sortable ? 'button' : undefined}
       style={{
         width: column.size,
         height: column.rowSpan * headerRowHeight,
@@ -32,6 +44,7 @@ export function HeaderCell<T>({
           column.rowIndex * headerRowHeight
         }px)`,
       }}
+      onClick={sortable ? () => mgr.changeSort(column) : undefined}
       onPointerDown={
         enableColumnReorder
           ? e => mgr.columnReorderPlugin?.onPointerDown(e.nativeEvent, column)
@@ -50,10 +63,19 @@ export function HeaderCell<T>({
           : undefined
       }
     >
-      {column.header || column.key}
+      <div className="lfg-header-cell-inner">
+        <div className="lfg-header-cell-label">{column.header || column.key}</div>
+        {!isColumnGroup(column) &&
+          column.sortDirection &&
+          (column.sortDirection === SortDirection.Asc ? (
+            <SortAscendingIcon className="lfg-header-sort-indicator" />
+          ) : (
+            <SortDescendingIcon className="lfg-header-sort-indicator" />
+          ))}
+      </div>
       {enableColumnResize && (
         <div
-          className="lfg-column-resizer"
+          className="lfg-header-grip-resizer"
           role="button"
           aria-labelledby="resize handle"
           onPointerDown={e => {

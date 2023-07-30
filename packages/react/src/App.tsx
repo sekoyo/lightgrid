@@ -126,6 +126,7 @@ export function App() {
           width: '120px',
           getValue,
           pin: 'start',
+          sortable: true,
         },
       ],
     },
@@ -135,6 +136,7 @@ export function App() {
       header: 'F',
       pin: 'start',
       width: '1fr',
+      sortable: true,
       getValue: () => today.getFullYear(),
       cellComponent: props => <CustomCell column={props.column} item={props.item} />,
     },
@@ -166,6 +168,7 @@ export function App() {
             </div>
           )}
           data={data}
+          onDataChange={setData}
           pinnedTopData={pinnedTopData}
           pinnedBottomData={pinnedBottomData}
           enableCellSelection={cellSelectionEnabled}

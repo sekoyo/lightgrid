@@ -6,7 +6,7 @@ import type {
   GroupedColumns,
   ItemId,
 } from '../types'
-import { isColumnGroup } from '../utils'
+import { findColumn, flatMapColumns, isColumnGroup, updateColumn } from '../utils'
 import { GridPlugin } from '../GridPlugin'
 
 export type SetColReorderKey = (colReorderKey: ItemId | undefined) => void
@@ -21,30 +21,6 @@ enum PointerSide {
   None,
   Left,
   Right,
-}
-
-function findColumn<T, R>(
-  columns: GroupedColumns<T, R>,
-  columnKey: ItemId
-): ColumnOrGroup<T, R> | undefined {
-  for (const c of columns) {
-    if (c.key === columnKey) return c
-
-    if (isColumnGroup(c)) {
-      const foundCol = findColumn(c.children, columnKey)
-      if (foundCol) return foundCol
-    }
-  }
-}
-
-function collectChildKeys<T, R>(columns: GroupedColumns<T, R>) {
-  return columns.reduce((keys, c) => {
-    keys.push(c.key)
-    if (isColumnGroup(c)) {
-      keys.push(...collectChildKeys(c.children))
-    }
-    return keys
-  }, [] as ItemId[])
 }
 
 export class ColumnReorderPlugin<T, R> extends GridPlugin<T, R> {
@@ -107,7 +83,7 @@ export class ColumnReorderPlugin<T, R> extends GridPlugin<T, R> {
     this.lastPin = column.pin
 
     if (isColumnGroup(this.colToMove)) {
-      this.colToMoveChildKeys = collectChildKeys(this.colToMove.children)
+      this.colToMoveChildKeys = flatMapColumns(this.colToMove.children, c => c.key)
     }
 
     this.mgr.setColReorderKey(column.key)
@@ -263,32 +239,13 @@ export class ColumnReorderPlugin<T, R> extends GridPlugin<T, R> {
     // itself have a pin set but meh
     if (this.colToMove && newPin && newPin !== this.lastPin) {
       this.lastPin = newPin
-      const newColumns = this.updateColPin(this.colToMove.key, newPin)
+      const newColumns = updateColumn(this.mgr.$columns(), {
+        ...this.colToMove,
+        pin: newPin,
+      })
       this.mgr.onColumnsChange?.(newColumns)
     }
   }, 150)
-
-  updateColPin(colKey: ItemId, pin?: ColumnPin) {
-    function update(columns: GroupedColumns<T, R>) {
-      for (let i = 0; i < columns.length; i++) {
-        const column = columns[i]
-        if (column.key === colKey) {
-          const columnCopy = Object.assign({}, column)
-          columnCopy.pin = pin
-          columns.splice(i, 1, columnCopy)
-          break
-        } else if (isColumnGroup(column)) {
-          const columnCopy = Object.assign({}, column)
-          columnCopy.children = update(column.children.slice())
-          columns.splice(i, 1, columnCopy)
-        }
-      }
-
-      return columns
-    }
-
-    return update(this.mgr.$columns().slice())
-  }
 }
 
 class DragLabel {
