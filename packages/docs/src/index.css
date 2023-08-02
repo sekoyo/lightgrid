@@ -1,0 +1,57 @@
+:root {
+  --bg: rgb(1, 4, 11);
+  --textColor: rgba(255, 255, 255, 0.96);
+  --textColorSecondary: rgba(255, 255, 255, 0.65);
+  --textColorTertiary: rgba(255, 255, 255, 0.45);
+  --borderColor: #353535;
+  --logoColor: #feea00;
+}
+
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+}
+
+body {
+  margin: 0;
+  font-family: sans-serif;
+  font-size: 18px;
+  color: var(--textColor);
+  background-color: var(--bg);
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+.h-flex {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.v-flex {
+  display: flex;
+  flex-direction: column;
+}
+.gap-1 {
+  gap: 1rem;
+}
+.gap-2 {
+  gap: 2rem;
+}
+.p-1 {
+  padding: 1rem;
+}
+.p-2 {
+  padding: 2rem;
+}
+.p-1by2 {
+  padding: 1rem 2rem;
+}

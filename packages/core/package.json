@@ -6,6 +6,7 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "sideEffects": false,
+  "license": "UNLICENSED",
   "scripts": {
     "dev": "NODE_ENV=development rollup -c rollup.config.ts --configPlugin typescript -w",
     "build": "NODE_ENV=production rollup -c rollup.config.ts --configPlugin typescript",

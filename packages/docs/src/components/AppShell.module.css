@@ -1,0 +1,45 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.logoLink {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.75em;
+  text-decoration: none;
+  color: var(--textColor);
+}
+.logo {
+  height: 24px;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.navLink {
+  text-decoration: none;
+  color: var(--textColorSecondary);
+}
+.navLink:hover {
+  color: var(--textColor);
+}
+.navLinkActive {
+  color: var(--textColor);
+}
+
+.content {
+  flex: 1;
+  display: flex;
+}
