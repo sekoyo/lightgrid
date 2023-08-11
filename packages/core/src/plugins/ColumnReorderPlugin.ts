@@ -49,8 +49,16 @@ export class ColumnReorderPlugin<T, R> extends GridPlugin<T, R> {
 
   onWindowPointerMove = (e: PointerEvent) => {
     if (this.dragLabel.el) {
-      this.dragLabel.el.style.setProperty('left', `${e.clientX}px`)
-      this.dragLabel.el.style.setProperty('top', `${e.clientY}px`)
+      const clampedX = Math.max(
+        0,
+        Math.min(e.clientX, window.innerWidth - this.dragLabel.width)
+      )
+      const clampedY = Math.max(
+        0,
+        Math.min(e.clientY, window.innerHeight - this.dragLabel.height)
+      )
+      this.dragLabel.el.style.setProperty('left', `${clampedX}px`)
+      this.dragLabel.el.style.setProperty('top', `${clampedY}px`)
     }
     this.checkBoundsActions(e.clientX, e.clientY)
   }
@@ -269,6 +277,8 @@ class DragLabel {
 
   el?: HTMLElement
   currIcon = DragIcon.Move
+  width = 0
+  height = 0
 
   getDragIconHTML(icon: DragIcon) {
     switch (icon) {
@@ -324,6 +334,11 @@ class DragLabel {
     this.el = el
     document.body.appendChild(el)
     this.currIcon = icon
+
+    const box = this.el.getBoundingClientRect()
+    this.width = box.width
+    this.height = box.height
+
     return el
   }
 
