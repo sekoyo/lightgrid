@@ -1,4 +1,4 @@
-import type { Component } from 'solid-js'
+import { type Component } from 'solid-js'
 import { Route, Routes } from '@solidjs/router'
 
 import { Home } from 'src/pages/Homes'

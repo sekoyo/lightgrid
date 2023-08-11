@@ -6,6 +6,7 @@
 
 .sidebar {
   padding: 2rem;
+  overflow: auto;
 
   .docSection {
     margin: 0 0 2em;
@@ -34,6 +35,7 @@
 }
 
 .docContent {
+  min-width: 0; /* important for overflow scrollbars to work */
   padding: 2rem;
 }
 

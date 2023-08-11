@@ -2,12 +2,16 @@
 
 ### Docs
 
-- Can we consume TS Props in docs?
+- Code snippet component which can have multi tabs for each framework
+- Demo component which can have multi tabs for each framework
+- Can we consume TS Props in docs? Perhaps by compiling to JSON?
 - Add JSDocs to types
 - Legal page
+- Lazily load iframe demos based on visibility
 
 ### Post MVP
 
+- Include instructions to use from CDN
 - Row resizing
 - Pasting tabular data into multiple selected cells
 - Allow user to programmatically scroll to a row/col
@@ -19,6 +23,7 @@
 - Safely limit row/col window range?
 - Sorting group column (https://www.ag-grid.com/javascript-data-grid/row-sorting/#custom-sorting-groups-example)
 - When sorting col at edge auto scroll
+- Write medium articles under Lightfin and link to Datagrid. e.g. one about Solid
 
 ## Bugs
 

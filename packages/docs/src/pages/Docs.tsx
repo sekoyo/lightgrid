@@ -1,18 +1,24 @@
-import { A, useParams, useMatch, useLocation } from '@solidjs/router'
-import { createEffect, lazy } from 'solid-js'
+import { A, useParams, useLocation } from '@solidjs/router'
+import { lazy } from 'solid-js'
 
+import { cls } from 'src/utils/cls'
 import { AppShell } from 'src/components/AppShell'
 import { DoubleArrowUp } from 'src/components/Icons'
-
-import styles from './Docs.module.css'
-import { cls } from 'src/utils/cls'
 import { EIcon } from 'src/components/DocTypography'
+import styles from './Docs.module.css'
 
-const IntroDoc = lazy(() => import('./docs/IntroDoc'))
+const IntroDoc = lazy(() => import('./docs/Intro'))
+const ReactSetup = lazy(() => import('./docs/ReactSetup'))
+const GridSetup = lazy(() => import('./docs/GridSetup'))
 
 function getDocPage(slug?: string) {
   switch (slug) {
+    case 'guides/react-setup':
+      return <ReactSetup />
+    case 'guides/grid-setup':
+      return <GridSetup />
     default:
+      // TODO: Change to 404
       return <IntroDoc />
   }
 }
@@ -59,8 +65,7 @@ export function Docs() {
           </ul>
           <ul class={styles.docSection}>
             <li class={styles.sectionTitle}>Guides</li>
-            {sectionItem('guides/react', 'React setup')}
-            {sectionItem('guides/solid', 'Solid setup')}
+            {sectionItem('guides/grid-setup', 'Grid setup')}
             {sectionItem('guides/theming', 'Theming')}
             {sectionItem('guides/global-search', 'Global search')}
             {sectionItem('guides/loading-indicator', 'Loading indicator')}

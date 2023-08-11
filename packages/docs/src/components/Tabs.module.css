@@ -1,0 +1,30 @@
+.container {
+}
+
+.tabHeader {
+  display: flex;
+  gap: 0.5em;
+}
+
+.tabButton {
+  appearance: none;
+  border-radius: 0.5em;
+  border: none;
+  background: rgb(23, 24, 24);
+  padding: 0.5em 1em;
+  font-family: inherit;
+  font-size: 0.75em;
+  color: inherit;
+
+  &:not(:disabled):hover {
+    cursor: pointer;
+    filter: brightness(1.5);
+  }
+
+  &[data-active='true'] {
+    background: rgb(94, 117, 117);
+  }
+}
+
+.tabContent {
+}
