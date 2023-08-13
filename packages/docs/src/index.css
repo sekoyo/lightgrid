@@ -1,6 +1,6 @@
 :root {
   --bg: rgb(1, 4, 11);
-  --textColor: rgba(255, 255, 255, 0.96);
+  --textColor: rgba(255, 255, 255, 0.4);
   --textColorSecondary: rgba(255, 255, 255, 0.65);
   --textColorTertiary: rgba(255, 255, 255, 0.45);
   --borderColor: #353535;
@@ -20,21 +20,20 @@
   width: 12px;
   height: 12px;
 }
-
 *::-webkit-scrollbar-track {
   background: var(--scrollTrackColor);
 }
-
+::-webkit-scrollbar-corner {
+  background: var(--scrollTrackColor);
+}
 *::-webkit-scrollbar-thumb {
   background: var(--scrollThumbColor);
-  border: 2px solid var(--bg);
+  border: 2px solid var(--scrollTrackColor);
   border-radius: 12px;
 }
-
 *::-webkit-scrollbar-thumb:hover {
   background: var(--scrollThumbHoverColor);
 }
-
 * {
   scrollbar-color: var(--scrollThumbColor) var(--scrollTrackColor);
 }

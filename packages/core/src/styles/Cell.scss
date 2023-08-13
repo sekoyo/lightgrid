@@ -35,7 +35,7 @@
 
 .lfg-default-cell {
   align-items: center;
-  padding: 0 12px;
+  padding: 0 var(--lfgCellHPadding);
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;

@@ -190,13 +190,7 @@ export class GridManager<T, R> {
     }
   })
 
-  $bodyHeight = computed(
-    () =>
-      this.$derivedRows().middle.size +
-      this.$derivedRows().start.size +
-      this.$derivedRows().end.size
-  )
-  $contentHeight = computed(() => this.$headerHeight() + this.$bodyHeight())
+  $contentHeight = computed(() => this.$headerHeight() + this.$derivedRows().size)
   $hasScroll = computed(() =>
     willScrollbarsAppear(
       this.$viewportWidth(),

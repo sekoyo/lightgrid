@@ -16,15 +16,15 @@
   }
 
   &-cell {
-    contain: strict;
     position: absolute;
     display: flex;
-    align-items: flex-end;
+    align-items: center;
     background: var(--lfgHeaderCellBg, var(--lfgCellBg, var(--lfgBg)));
-    padding: 6px 12px;
+    padding: 6px var(--lfgCellHPadding);
     direction: var(--lfg-direction);
-    outline: 1px solid var(--lfgHeaderBorderColor, var(--lfgBorderColor));
+    // outline: 1px solid var(--lfgHeaderBorderColor, var(--lfgBorderColor));
     color: var(--lfgHeaderTextColor);
+    font-weight: bold;
 
     &[role='button'] {
       cursor: pointer;
@@ -36,6 +36,26 @@
 
     &[data-moving-col='true'] {
       background: var(--lfgColReorderBgColor);
+    }
+
+    border-bottom: 1px solid var(--lfgHeaderBorderColor, var(--lfgBorderColor));
+    &::before,
+    &::after {
+      content: '';
+      display: flex;
+      width: 1px;
+      position: absolute;
+      height: calc(100% - (10% + 16px));
+      background: var(
+        --lfgHeaderInnerBorderColor,
+        var(--lfgHeaderBorderColor, var(--lfgBorderColor))
+      );
+    }
+    &::before {
+      left: -1px;
+    }
+    &::after {
+      right: -1px;
     }
   }
   &-cell-inner {

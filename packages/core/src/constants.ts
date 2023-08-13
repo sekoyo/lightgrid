@@ -8,8 +8,8 @@ import {
   type RowMeta,
 } from './types'
 
-export const defaultHeaderRowHeight = 32
-export const defaultRowHeight = 32
+export const defaultHeaderRowHeight = 40
+export const defaultRowHeight = 40
 export const defaultRowDetailsHeight = 160
 
 export const defaultRowMeta: RowMeta = { height: defaultRowHeight }

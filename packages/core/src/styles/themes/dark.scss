@@ -1,16 +1,19 @@
 .lfg[data-theme='lightfin-dark'] {
-  --lfgBg: rgb(12, 12, 18);
+  --lfgBorderRadius: 4px;
+  --lfgBg: rgb(0, 0, 0);
   --lfgCellBg: var(--lfgBg);
-  --lfgHeaderCellBg: #171329;
-  --lfgHeaderBorderColor: rgba(255, 255, 255);
-  --lfgHeaderTextColor: white;
-  --lfgBorderColor: rgba(255, 255, 255);
+  --lfgHeaderCellBg: rgb(238, 216, 64);
+  --lfgHeaderBorderColor: rgb(59, 55, 76);
+  --lfgHeaderInnerBorderColor: rgb(59, 55, 76);
+  --lfgHeaderTextColor: black;
+  // --lfgBorderColor: rgb(39, 39, 45);
+  --lfgBorderColor: red;
   --lfgTextColor: white;
-  --lfgScrollTrack: var(--lfgBg);
-  --lfgScrollThumb: rgb(71, 71, 79);
-  --lfgScrollThumbHover: rgb(93, 93, 101);
-  --lfgCellSelectedBg: #26273c;
-  --lfgCellStartCellBg: #1a1a2a;
+  --lfgScrollTrack: #111;
+  --lfgScrollThumb: #3e3e3e;
+  --lfgScrollThumbHover: #555;
+  --lfgCellSelectedBg: rgb(38, 39, 60);
+  --lfgCellStartCellBg: rgb(26, 26, 42);
   --lfgColResizeColor: rgb(44, 170, 255);
   --lfgColReorderBgColor: rgb(48, 63, 158);
 }

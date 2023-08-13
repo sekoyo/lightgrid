@@ -5,8 +5,11 @@
 }
 
 .sidebar {
+  position: sticky;
+  top: 0;
   padding: 2rem;
   overflow: auto;
+  max-height: 100vh;
 
   .docSection {
     margin: 0 0 2em;

@@ -8,15 +8,12 @@ import { EIcon } from 'src/components/DocTypography'
 import styles from './Docs.module.css'
 
 const IntroDoc = lazy(() => import('./docs/Intro'))
-const ReactSetup = lazy(() => import('./docs/ReactSetup'))
-const GridSetup = lazy(() => import('./docs/GridSetup'))
+const Setup = lazy(() => import('./docs/Setup'))
 
 function getDocPage(slug?: string) {
   switch (slug) {
-    case 'guides/react-setup':
-      return <ReactSetup />
-    case 'guides/grid-setup':
-      return <GridSetup />
+    case 'guides/setup':
+      return <Setup />
     default:
       // TODO: Change to 404
       return <IntroDoc />
@@ -48,59 +45,62 @@ export function Docs() {
   return (
     <AppShell>
       <div class={styles.layout}>
-        <div class={styles.sidebar}>
-          <ul class={styles.docSection}>
-            <li>
-              <A
-                href={`/docs/`}
-                class={cls(
-                  styles.sectionItem,
-                  (location.pathname === '/docs' || location.pathname === '/docs/') &&
-                    styles.sectionItemActive
-                )}
-              >
-                Intro
-              </A>
-            </li>
-          </ul>
-          <ul class={styles.docSection}>
-            <li class={styles.sectionTitle}>Guides</li>
-            {sectionItem('guides/grid-setup', 'Grid setup')}
-            {sectionItem('guides/theming', 'Theming')}
-            {sectionItem('guides/global-search', 'Global search')}
-            {sectionItem('guides/loading-indicator', 'Loading indicator')}
-            {sectionItem('guides/pagination', 'Pagination')}
-          </ul>
-          <ul class={styles.docSection}>
-            <li class={styles.sectionTitle}>Columns</li>
-            {sectionItem('columns/defining-columns', 'Defining Columns')}
-            {sectionItem('columns/grouping', 'Grouping')}
-            {sectionItem('columns/sorting', 'Sorting')}
-            {sectionItem('columns/filtering', 'Filtering')}
-            {sectionItem('columns/pinning', 'Pinning', true)}
-            {sectionItem('columns/reszing', 'Resizing', true)}
-            {sectionItem('columns/reordering', 'Reordering', true)}
-          </ul>
-          <ul class={styles.docSection}>
-            <li class={styles.sectionTitle}>Rows</li>
-            {sectionItem('rows/row-data', 'Row data')}
-            {sectionItem('rows/hierarchical-data', 'Hierarchical data')}
-            {sectionItem('rows/pinning', 'Pinning', true)}
-            {sectionItem('rows/row-details', 'Row details', true)}
-          </ul>
-          <ul class={styles.docSection}>
-            <li class={styles.sectionTitle}>Cells</li>
-            {sectionItem('cells/cell-editing', 'Cell editing')}
-            {sectionItem('cells/cell-selection', 'Cell selection', true)}
-          </ul>
-          <a
-            class={styles.toTopBtn}
-            href="#top"
-            title="Back to the top"
-            onClick={onBackToTopClick}
-          >
-            <DoubleArrowUp />
-          </a>
+        <div>
+          {/*for position sticky to work on sidebar*/}
+          <div class={styles.sidebar}>
+            <ul class={styles.docSection}>
+              <li>
+                <A
+                  href={`/docs/`}
+                  class={cls(
+                    styles.sectionItem,
+                    (location.pathname === '/docs' || location.pathname === '/docs/') &&
+                      styles.sectionItemActive
+                  )}
+                >
+                  Intro
+                </A>
+              </li>
+            </ul>
+            <ul class={styles.docSection}>
+              <li class={styles.sectionTitle}>Guides</li>
+              {sectionItem('guides/setup', 'Setup')}
+              {sectionItem('guides/theming', 'Theming')}
+              {sectionItem('guides/global-search', 'Global search')}
+              {sectionItem('guides/loading-indicator', 'Loading indicator')}
+              {sectionItem('guides/pagination', 'Pagination')}
+            </ul>
+            <ul class={styles.docSection}>
+              <li class={styles.sectionTitle}>Columns</li>
+              {sectionItem('columns/defining-columns', 'Defining Columns')}
+              {sectionItem('columns/grouping', 'Grouping')}
+              {sectionItem('columns/sorting', 'Sorting')}
+              {sectionItem('columns/filtering', 'Filtering')}
+              {sectionItem('columns/pinning', 'Pinning', true)}
+              {sectionItem('columns/reszing', 'Resizing', true)}
+              {sectionItem('columns/reordering', 'Reordering', true)}
+            </ul>
+            <ul class={styles.docSection}>
+              <li class={styles.sectionTitle}>Rows</li>
+              {sectionItem('rows/row-data', 'Row data')}
+              {sectionItem('rows/hierarchical-data', 'Hierarchical data')}
+              {sectionItem('rows/pinning', 'Pinning', true)}
+              {sectionItem('rows/row-details', 'Row details', true)}
+            </ul>
+            <ul class={styles.docSection}>
+              <li class={styles.sectionTitle}>Cells</li>
+              {sectionItem('cells/cell-editing', 'Cell editing')}
+              {sectionItem('cells/cell-selection', 'Cell selection', true)}
+            </ul>
+            <a
+              class={styles.toTopBtn}
+              href="#top"
+              title="Back to the top"
+              onClick={onBackToTopClick}
+            >
+              <DoubleArrowUp />
+            </a>
+          </div>
         </div>
         <main class={styles.docContent}>{getDocPage(params.slug)}</main>
       </div>

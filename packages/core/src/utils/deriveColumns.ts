@@ -124,6 +124,7 @@ function getDerivedWidth(
     return width
   } else if (width.endsWith('fr')) {
     const n = parseFloat(width)
+    // Problem: How to handle underflow?
     return Math.max(
       minWidth,
       Math.floor(((n ?? defaultFr) / totalFractions) * (viewportWidth - totalAbsolutes))

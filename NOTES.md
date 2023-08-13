@@ -1,5 +1,10 @@
 ## Todo
 
+- Make import alias so that this `import { DataGrid } from '../components/DataGrid'` becomes `import { DataGrid } from '@lightfin/react-datagrid'`
+- Lazy load iframe and code
+- Full screen demo button
+- Copy source code button
+
 ### Docs
 
 - Code snippet component which can have multi tabs for each framework

@@ -11,17 +11,25 @@ import { dedent } from 'src/utils/dedent'
 import styles from './DocTypography.module.css'
 
 export const H1 = (props: ParentProps) => <h1 class={styles.h1}>{props.children}</h1>
-
-export const H2 = (props: ParentProps) => <h2 class={styles.h1}>{props.children}</h2>
-
+export const H2 = (props: ParentProps) => <h2 class={styles.h2}>{props.children}</h2>
+export const H3 = (props: ParentProps) => <h3 class={styles.h3}>{props.children}</h3>
+export const H4 = (props: ParentProps) => <h4 class={styles.h4}>{props.children}</h4>
+export const H5 = (props: ParentProps) => <h5 class={styles.h5}>{props.children}</h5>
 export const P = (props: ParentProps) => <p class={styles.p}>{props.children}</p>
-
+export const Section = (props: ParentProps) => (
+  <section class={styles.section}>{props.children}</section>
+)
+export const Secondary = (props: ParentProps) => (
+  <span class={styles.secondary}>{props.children}</span>
+)
 export const A = (props: AnchorProps) => (
   <RouterA {...props} class={cls(styles.a, props.class)} />
 )
-
+export const UL = (props: ParentProps) => <ul class={styles.ul}>{props.children}</ul>
+export const OL = (props: ParentProps) => <ol class={styles.ol}>{props.children}</ol>
+export const LI = (props: ParentProps) => <li class={styles.li}>{props.children}</li>
 export const EIcon = () => (
-  <A href="/pricing" class={styles.eicon} aria-labelledby="Go to pricing page">
+  <A href="/pricing" class={styles.eicon} aria-labelledby="Enterprise feature">
     E
   </A>
 )
@@ -64,7 +72,7 @@ export const IFrame = (attrs: JSX.IframeHTMLAttributes<HTMLIFrameElement>) => {
   )
 }
 
-export const Code = (props: { children: string; lang?: string }) => {
+export const Code = (props: { children: string; lang?: string; class?: string }) => {
   const parsedCode = createMemo(() =>
     props.lang
       ? Prism.highlight(dedent(props.children), Prism.languages[props.lang], props.lang)
@@ -72,7 +80,7 @@ export const Code = (props: { children: string; lang?: string }) => {
   )
 
   return (
-    <pre class={`language-${props.lang}`}>
+    <pre class={cls(`language-${props.lang}`, props.class)}>
       <code innerHTML={parsedCode()} />
     </pre>
   )
