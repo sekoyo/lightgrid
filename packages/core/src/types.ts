@@ -156,6 +156,18 @@ export interface CellPosition {
   rowIndex: number
 }
 
+export enum BodyAreaId {
+  TopStart,
+  TopMiddle,
+  TopEnd,
+  MainStart,
+  MainMiddle,
+  MainEnd,
+  BottomStart,
+  BottomMiddle,
+  BottomEnd,
+}
+
 export interface BodyAreaDesc<T, R> {
   id: string
   windowX: number
@@ -168,6 +180,7 @@ export interface BodyAreaDesc<T, R> {
   rowResult: DerivedRowResult<T>
   pinnedX: boolean
   pinnedY: boolean
+  lastY: boolean
 }
 
 export interface HeaderAreaDesc<T, R> {

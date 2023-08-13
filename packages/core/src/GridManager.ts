@@ -321,13 +321,14 @@ export class GridManager<T, R> {
           rowResult: derivedRows.middle,
           pinnedX: false,
           pinnedY: false,
+          lastY: !derivedCols.end.size,
         }
         byRender.push(area)
         addToCol(AreaPos.Middle, AreaPos.Middle, area)
       }
       if (derivedCols.end.size) {
         const area: BodyAreaDesc<T, R> = {
-          id: 'mainRight',
+          id: 'mainEnd',
           windowX: endX,
           windowY: derivedRows.middle.startOffset,
           windowWidth: derivedCols.end.size,
@@ -338,13 +339,14 @@ export class GridManager<T, R> {
           rowResult: derivedRows.middle,
           pinnedX: true,
           pinnedY: false,
+          lastY: !derivedCols.end.size,
         }
         byRender.push(area)
         addToCol(AreaPos.End, AreaPos.Middle, area)
       }
       if (derivedCols.start.size) {
         const area: BodyAreaDesc<T, R> = {
-          id: 'mainLeft',
+          id: 'mainStart',
           windowX: 0,
           windowY: derivedRows.middle.startOffset,
           windowWidth: derivedCols.start.size,
@@ -355,6 +357,7 @@ export class GridManager<T, R> {
           rowResult: derivedRows.middle,
           pinnedX: true,
           pinnedY: false,
+          lastY: !derivedCols.end.size,
         }
         byRender.push(area)
         addToCol(AreaPos.Start, AreaPos.Middle, area)
@@ -376,13 +379,14 @@ export class GridManager<T, R> {
           rowResult: derivedRows.start,
           pinnedX: false,
           pinnedY: true,
+          lastY: !derivedCols.middle.size && !derivedCols.end.size,
         }
         byRender.push(area)
         addToCol(AreaPos.Middle, AreaPos.Start, area)
       }
       if (derivedCols.end.size) {
         const area: BodyAreaDesc<T, R> = {
-          id: 'topRight',
+          id: 'topEnd',
           windowX: endX,
           windowY: derivedRows.start.startOffset,
           windowWidth: derivedCols.end.size,
@@ -393,13 +397,14 @@ export class GridManager<T, R> {
           rowResult: derivedRows.start,
           pinnedX: true,
           pinnedY: true,
+          lastY: !derivedCols.middle.size && !derivedCols.end.size,
         }
         byRender.push(area)
         addToCol(AreaPos.End, AreaPos.Start, area)
       }
       if (derivedCols.start.size) {
         const area: BodyAreaDesc<T, R> = {
-          id: 'topLeft',
+          id: 'topStart',
           windowX: 0,
           windowY: derivedRows.start.startOffset,
           windowWidth: derivedCols.start.size,
@@ -410,6 +415,7 @@ export class GridManager<T, R> {
           rowResult: derivedRows.start,
           pinnedX: true,
           pinnedY: true,
+          lastY: !derivedCols.middle.size && !derivedCols.end.size,
         }
         byRender.push(area)
         addToCol(AreaPos.Start, AreaPos.Start, area)
@@ -431,13 +437,14 @@ export class GridManager<T, R> {
           rowResult: derivedRows.end,
           pinnedX: false,
           pinnedY: true,
+          lastY: true,
         }
         byRender.push(area)
         addToCol(AreaPos.Middle, AreaPos.End, area)
       }
       if (derivedCols.end.size) {
         const area: BodyAreaDesc<T, R> = {
-          id: 'bottomRight',
+          id: 'bottomEnd',
           windowX: endX,
           windowY: endY,
           windowWidth: derivedCols.end.size,
@@ -448,13 +455,14 @@ export class GridManager<T, R> {
           rowResult: derivedRows.end,
           pinnedX: true,
           pinnedY: true,
+          lastY: true,
         }
         byRender.push(area)
         addToCol(AreaPos.End, AreaPos.End, area)
       }
       if (derivedCols.start.size) {
         const area: BodyAreaDesc<T, R> = {
-          id: 'bottomLeft',
+          id: 'bottomStart',
           windowX: 0,
           windowY: endY,
           windowWidth: derivedCols.start.size,
@@ -465,6 +473,7 @@ export class GridManager<T, R> {
           rowResult: derivedRows.end,
           pinnedX: true,
           pinnedY: true,
+          lastY: true,
         }
         byRender.push(area)
         addToCol(AreaPos.Start, AreaPos.End, area)

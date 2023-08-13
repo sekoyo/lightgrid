@@ -62,7 +62,7 @@ export function GridAreaNoMemo<T>({
   }
 
   return (
-    <div className="lfg-area">
+    <div className="lfg-area" data-borderbottom={!area.lastY}>
       <div
         role="rowgroup"
         className="lfg-area-inner"
@@ -74,42 +74,40 @@ export function GridAreaNoMemo<T>({
           height: area.height,
         }}
       >
-        {rows.map(row => {
-          return (
-            <div
-              key={row.rowId}
-              role="row"
-              className="lfg-row"
-              style={{
-                height: row.size,
-                transform: `translateY(${row.offset}px)`,
-              }}
-            >
-              {columns.map(column => (
-                <Cell<T>
-                  key={column.key}
-                  mgr={mgr}
-                  column={column}
-                  item={row.item}
-                  rowId={row.rowId}
-                  rowStateItem={rowState[row.rowId]}
-                  hasExpandInCell={Boolean(row.hasDetails && column.colIndex === 0)}
-                  pinnedX={area.pinnedX}
-                  pinnedY={area.pinnedY}
-                  colReorderKey={colReorderKey}
-                  enableColumnReorder={enableColumnReorder}
-                  selected={isCellSelected(column.colIndex, row.rowIndex, selection)}
-                  selectionStart={Boolean(
-                    selectionStartCell &&
-                      selectionStartCell.colIndex === column.colIndex &&
-                      selectionStartCell.rowIndex === row.rowIndex
-                  )}
-                  onExpandToggle={onExpandToggle}
-                />
-              ))}
-            </div>
-          )
-        })}
+        {rows.map(row => (
+          <div
+            key={row.rowId}
+            role="row"
+            className="lfg-row"
+            style={{
+              height: row.size,
+              transform: `translateY(${row.offset}px)`,
+            }}
+          >
+            {columns.map(column => (
+              <Cell<T>
+                key={column.key}
+                mgr={mgr}
+                column={column}
+                item={row.item}
+                rowId={row.rowId}
+                rowStateItem={rowState[row.rowId]}
+                hasExpandInCell={Boolean(row.hasDetails && column.colIndex === 0)}
+                pinnedX={area.pinnedX}
+                pinnedY={area.pinnedY}
+                colReorderKey={colReorderKey}
+                enableColumnReorder={enableColumnReorder}
+                selected={isCellSelected(column.colIndex, row.rowIndex, selection)}
+                selectionStart={Boolean(
+                  selectionStartCell &&
+                    selectionStartCell.colIndex === column.colIndex &&
+                    selectionStartCell.rowIndex === row.rowIndex
+                )}
+                onExpandToggle={onExpandToggle}
+              />
+            ))}
+          </div>
+        ))}
         {isFirstColumnGroup && area.rowResult.itemDetails ? (
           <GridDetailRows
             itemDetails={area.rowResult.itemDetails}
@@ -117,6 +115,8 @@ export function GridAreaNoMemo<T>({
             renderRowDetails={renderRowDetailsRef.current}
           />
         ) : undefined}
+        <div className="lfg-area-h-borders" />
+        <div className="lfg-area-v-borders" />
       </div>
     </div>
   )

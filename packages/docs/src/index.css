@@ -1,6 +1,6 @@
 :root {
   --bg: rgb(1, 4, 11);
-  --textColor: rgba(255, 255, 255, 0.4);
+  --textColor: rgba(255, 255, 255, 0.96);
   --textColorSecondary: rgba(255, 255, 255, 0.65);
   --textColorTertiary: rgba(255, 255, 255, 0.45);
   --borderColor: #353535;

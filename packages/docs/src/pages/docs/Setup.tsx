@@ -94,6 +94,7 @@ export default function BasicGrid() {
       <Demo
         demoUrl={`${import.meta.env.VITE_REACT_DEMO_BASE_URL}/demos/basic-grid`}
         demoSrc={import('/../react/src/demos/BasicGrid.tsx?raw')}
+        demoHeight={362}
       />
       <HGroup justifyEnd>
         <PageButton href="/docs" secondaryLabel="Previous">

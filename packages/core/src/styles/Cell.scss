@@ -12,6 +12,10 @@
     background: var(--lfg-pinned-cell-bg, var(--lfgCellBg, var(--lfgBg)));
   }
 
+  .lfg-row:nth-child(even) & {
+    background: var(--lfgEvenRowCellBg, var(--lfgCellBg, var(--lfgBg)));
+  }
+
   &[data-selected='true'] {
     background: var(--lfgCellSelectedBg);
   }
