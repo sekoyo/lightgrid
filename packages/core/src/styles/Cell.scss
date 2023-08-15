@@ -4,7 +4,7 @@
   contain: strict;
   display: flex;
   align-items: center;
-  direction: var(--lfg-direction);
+  direction: var(--lfgDirection);
   background: var(--lfgCellBg, var(--lfgBg));
 
   &[data-pinned-x='true'],

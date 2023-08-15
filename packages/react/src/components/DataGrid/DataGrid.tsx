@@ -1,11 +1,21 @@
 'use client'
-import { useEffect, useRef, useState, type CSSProperties, useCallback } from 'react'
 import {
+  useEffect,
+  useRef,
+  useState,
+  type CSSProperties,
+  useCallback,
+  useMemo,
+} from 'react'
+import {
+  cls,
   createGridManager,
+  darkTheme,
   defaultGetRowDetailsMeta,
   defaultGetRowMeta,
   defaultHeaderRowHeight,
   emptyDerivedColsResult,
+  BodyAreaDesc,
   CellSelection,
   CellPosition,
   ColResizeData,
@@ -15,13 +25,14 @@ import {
   GetRowDetailsMeta,
   GetRowId,
   GetRowMeta,
-  BodyAreaDesc,
+  HeaderAreaDesc,
+  ItemId,
   GroupedColumns,
   OnRowStateChange,
   RenderRowDetails,
   RowState,
-  HeaderAreaDesc,
-  ItemId,
+  Theme,
+  themeToCSSObj,
 } from '@lightfin/datagrid'
 import '@lightfin/datagrid/dist/styles.css'
 import { R } from './types'
@@ -52,10 +63,12 @@ interface DataGridProps<T> {
   renderRowDetails?: RenderRowDetails<T, React.ReactNode>
   onRowStateChange?: OnRowStateChange
   direction?: 'ltr' | 'rtl'
-  theme?: string
+  theme?: Theme
   enableCellSelection?: boolean
   enableColumnResize?: boolean
   enableColumnReorder?: boolean
+  className?: string
+  style?: React.CSSProperties
 }
 
 export function DataGrid<T>({
@@ -73,10 +86,12 @@ export function DataGrid<T>({
   renderRowDetails = defaultRowDetailsRenderer,
   onRowStateChange = noop,
   direction,
-  theme = 'lightfin-dark',
+  theme = darkTheme,
   enableCellSelection,
   enableColumnResize,
   enableColumnReorder,
+  className,
+  style,
 }: DataGridProps<T>) {
   const gridEl = useRef<HTMLDivElement>(null)
   const scrollEl = useRef<HTMLDivElement>(null)
@@ -180,19 +195,25 @@ export function DataGrid<T>({
     [mgr]
   )
 
+  const themeObj = useMemo(() => themeToCSSObj(theme), [theme])
+  const mergedStyle = useMemo(
+    () =>
+      ({
+        ...themeObj,
+        '--lfgDirection': direction,
+        minHeight: headerHeight,
+        ...style,
+      } as CSSProperties),
+    [themeObj, direction, headerHeight, style]
+  )
+
   return (
     <div
       ref={gridEl}
-      className="lfg"
+      className={cls('lfg', className)}
       role="table"
-      data-theme={theme}
       tabIndex={0}
-      style={
-        {
-          '--lfg-direction': direction,
-          minHeight: headerHeight,
-        } as CSSProperties
-      }
+      style={mergedStyle}
     >
       <div ref={scrollEl} className="lfg-canvas lfg-scroll" onScroll={onScroll}>
         <div

@@ -3,5 +3,42 @@
 
 .code {
   overflow: auto;
-  max-height: 500px;
+}
+
+.switchContainer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1em;
+  margin-top: 0.5em;
+}
+
+.switchBtn {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  appearance: none;
+  background: transparent;
+  border-radius: 4px;
+  border: none;
+  padding: 0.5em;
+  font-family: inherit;
+  font-size: 0.75em;
+  color: var(--textColorSecondary);
+
+  &:not(:disabled) {
+    cursor: pointer;
+
+    &:hover {
+      background: rgb(49 49 50);
+    }
+  }
+
+  &:disabled {
+    color: var(--textColor);
+  }
+
+  svg {
+    flex-shrink: 0;
+    height: 16px;
+  }
 }

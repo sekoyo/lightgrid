@@ -5,8 +5,9 @@ import { DemoContainer } from './components/DemoContainer'
 const params = new URLSearchParams(window.location.search)
 const height = Number(params.get('height')) || 800
 
-const BasicGridDemo = lazy(() => import('./demos/BasicGrid'))
-const KitchenSinkDemo = lazy(() => import('./demos/KitchenSink'))
+const BasicGridDemo = lazy(() => import('./demos/BasicGridDemo'))
+const KitchenSinkDemo = lazy(() => import('./demos/KitchenSinkDemo'))
+const ThemingDemo = lazy(() => import('./demos/ThemingDemo'))
 
 export function App() {
   return (
@@ -19,6 +20,11 @@ export function App() {
       <Route path="/demos/kitchen-sink">
         <DemoContainer height={height}>
           <KitchenSinkDemo />
+        </DemoContainer>
+      </Route>
+      <Route path="/demos/theming">
+        <DemoContainer height={height}>
+          <ThemingDemo />
         </DemoContainer>
       </Route>
     </>

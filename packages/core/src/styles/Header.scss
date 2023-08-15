@@ -21,7 +21,7 @@
     align-items: center;
     background: var(--lfgHeaderCellBg, var(--lfgCellBg, var(--lfgBg)));
     padding: 6px var(--lfgCellHPadding);
-    direction: var(--lfg-direction);
+    direction: var(--lfgDirection);
     // outline: 1px solid var(--lfgHeaderBorderColor, var(--lfgBorderColor));
     color: var(--lfgHeaderTextColor);
     font-weight: bold;

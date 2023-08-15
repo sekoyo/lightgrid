@@ -561,7 +561,6 @@ export class GridManager<T, R> {
 
   unmount() {
     if (this.mounted) {
-      console.log('GridManager unmount')
       this.sizeObserver?.disconnect()
       this.onResize.cancel()
       this.cellSelectionPlugin?.unmount()

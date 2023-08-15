@@ -3,6 +3,7 @@ import { A as RouterA, AnchorProps } from '@solidjs/router'
 import Prism from 'prismjs'
 import 'prismjs/components/prism-typescript'
 import 'prismjs/components/prism-bash'
+import 'prismjs/components/prism-css'
 import 'src/assets/prism-theme.css'
 
 import { cls } from 'src/utils/cls'
@@ -28,6 +29,16 @@ export const A = (props: AnchorProps) => (
 export const UL = (props: ParentProps) => <ul class={styles.ul}>{props.children}</ul>
 export const OL = (props: ParentProps) => <ol class={styles.ol}>{props.children}</ol>
 export const LI = (props: ParentProps) => <li class={styles.li}>{props.children}</li>
+export const ExternalLink = (props: ParentProps<{ href: string }>) => (
+  <a
+    class={styles.externalLink}
+    href={props.href}
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    {props.children}
+  </a>
+)
 export const EIcon = () => (
   <A href="/pricing" class={styles.eicon} aria-labelledby="Enterprise feature">
     E
@@ -72,7 +83,10 @@ export const IFrame = (attrs: JSX.IframeHTMLAttributes<HTMLIFrameElement>) => {
   )
 }
 
-export const Code = (props: { children: string; lang?: string; class?: string }) => {
+export const Code = (props: ParentProps) => (
+  <code class={styles.code}>{props.children}</code>
+)
+export const CodeBlock = (props: { children: string; lang?: string; class?: string }) => {
   const parsedCode = createMemo(() =>
     props.lang
       ? Prism.highlight(dedent(props.children), Prism.languages[props.lang], props.lang)
@@ -80,7 +94,7 @@ export const Code = (props: { children: string; lang?: string; class?: string })
   )
 
   return (
-    <pre class={cls(`language-${props.lang}`, props.class)}>
+    <pre class={cls(styles.codePre, `language-${props.lang}`, props.class)}>
       <code innerHTML={parsedCode()} />
     </pre>
   )

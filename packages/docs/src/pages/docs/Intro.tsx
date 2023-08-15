@@ -18,7 +18,7 @@ export default function Intro() {
         for features marked with <EIcon />.
       </P>
       <HGroup justifyEnd>
-        <PageButton href="/docs/guides/grid-setup" secondaryLabel="Next">
+        <PageButton href="/docs/guides/setup" secondaryLabel="Next">
           Grid Setup
         </PageButton>
       </HGroup>

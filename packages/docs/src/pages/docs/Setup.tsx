@@ -1,5 +1,5 @@
 import {
-  Code,
+  CodeBlock,
   H1,
   P,
   PageButton,
@@ -12,7 +12,7 @@ import { useFrameworkTabs } from 'src/components/FrameworkTabContext'
 import { Tabs } from 'src/components/Tabs'
 import { Demo } from 'src/components/Demo'
 
-export default function BasicGrid() {
+export default function Doc() {
   const { state, changeTab } = useFrameworkTabs()
 
   return (
@@ -26,22 +26,22 @@ export default function BasicGrid() {
               id: 'react',
               label: 'React',
               component: (
-                <Code lang="bash">{`
+                <CodeBlock lang="bash">{`
                 npm install @lightfin/react-datagrid
                 yarn add @lightfin/react-datagrid
                 pnpm add @lightfin/react-datagrid
-              `}</Code>
+              `}</CodeBlock>
               ),
             },
             {
               id: 'solid',
               label: 'Solid',
               component: (
-                <Code lang="bash">{`
+                <CodeBlock lang="bash">{`
                 npm install @lightfin/solid-datagrid
                 yarn add @lightfin/solid-datagrid
                 pnpm add @lightfin/solid-datagrid
-              `}</Code>
+              `}</CodeBlock>
               ),
             },
           ]}
@@ -55,18 +55,18 @@ export default function BasicGrid() {
               id: 'react',
               label: 'React',
               component: (
-                <Code lang="bash">{`
+                <CodeBlock lang="bash">{`
                 import { Datagrid } from '@lightfin/react-datagrid'
-              `}</Code>
+              `}</CodeBlock>
               ),
             },
             {
               id: 'solid',
               label: 'Solid',
               component: (
-                <Code lang="bash">{`
+                <CodeBlock lang="bash">{`
               import { Datagrid } from '@lightfin/solid-datagrid'
-              `}</Code>
+              `}</CodeBlock>
               ),
             },
           ]}
@@ -74,9 +74,9 @@ export default function BasicGrid() {
       </Section>
       <Section>
         <P>Include the CSS</P>
-        <Code lang="typescript">{`
+        <CodeBlock lang="typescript">{`
         import '@lightfin/datagrid/dist/styles.css'
-      `}</Code>
+      `}</CodeBlock>
       </Section>
       <P>All grids must define three things</P>
       <OL>
@@ -91,11 +91,32 @@ export default function BasicGrid() {
         </LI>
       </OL>
       <P>These three props get us a simple, read-only table</P>
-      <Demo
-        demoUrl={`${import.meta.env.VITE_REACT_DEMO_BASE_URL}/demos/basic-grid`}
-        demoSrc={import('/../react/src/demos/BasicGrid.tsx?raw')}
-        demoHeight={362}
-      />
+      <Tabs activeTabId={state.activeTabId} onTabPress={changeTab}>
+        {[
+          {
+            id: 'react',
+            label: 'React',
+            component: (
+              <Demo
+                demoUrl={`${import.meta.env.VITE_REACT_DEMO_BASE_URL}/demos/basic-grid`}
+                demoSrc={import('/../react/src/demos/BasicGridDemo.tsx?raw')}
+                height={362}
+              />
+            ),
+          },
+          {
+            id: 'solid',
+            label: 'Solid',
+            component: (
+              <Demo
+                demoUrl={`${import.meta.env.VITE_REACT_DEMO_BASE_URL}/demos/basic-grid`}
+                demoSrc={import('/../react/src/demos/BasicGridDemo.tsx?raw')}
+                height={362}
+              />
+            ),
+          },
+        ]}
+      </Tabs>
       <HGroup justifyEnd>
         <PageButton href="/docs" secondaryLabel="Previous">
           Intro

@@ -9,11 +9,14 @@ import styles from './Docs.module.css'
 
 const IntroDoc = lazy(() => import('./docs/Intro'))
 const Setup = lazy(() => import('./docs/Setup'))
+const Theming = lazy(() => import('./docs/Theming'))
 
 function getDocPage(slug?: string) {
   switch (slug) {
     case 'guides/setup':
       return <Setup />
+    case 'guides/theming':
+      return <Theming />
     default:
       // TODO: Change to 404
       return <IntroDoc />
@@ -45,8 +48,8 @@ export function Docs() {
   return (
     <AppShell>
       <div class={styles.layout}>
+        {/*div is for position sticky to work on sidebar*/}
         <div>
-          {/*for position sticky to work on sidebar*/}
           <div class={styles.sidebar}>
             <ul class={styles.docSection}>
               <li>

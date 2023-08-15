@@ -1,18 +1,14 @@
 ## Todo
 
-- Make import alias so that this `import { DataGrid } from '../components/DataGrid'` becomes `import { DataGrid } from '@lightfin/react-datagrid'`
-- Lazy load iframe and code
-- Full screen demo button
-- Copy source code button
-
 ### Docs
 
-- Code snippet component which can have multi tabs for each framework
-- Demo component which can have multi tabs for each framework
+- Do theming with an object so it's strongly typed and makes upgrading for users much easier
+- More user friendly version of `GroupedColumns<Animal, React.ReactNode>` for each framework
+- Add copy CodeBlock btn to code component + extract out to own file
 - Can we consume TS Props in docs? Perhaps by compiling to JSON?
 - Add JSDocs to types
 - Legal page
-- Lazily load iframe demos based on visibility
+- Lazily load iframe demos based on visibility?
 
 ### Post MVP
 
