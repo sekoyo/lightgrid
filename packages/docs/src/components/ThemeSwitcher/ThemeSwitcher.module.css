@@ -1,0 +1,17 @@
+.btn {
+  appearance: none;
+  color: inherit;
+  font-size: inherit;
+  font-family: inherit;
+  border: none;
+  background: none;
+  padding: 0;
+
+  &:not(:disabled) {
+    cursor: pointer;
+  }
+
+  svg {
+    height: 1.25em;
+  }
+}

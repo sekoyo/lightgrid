@@ -23,18 +23,14 @@
   padding: 0.5em;
   font-family: inherit;
   font-size: 0.75em;
-  color: var(--textColorSecondary);
+  color: var(--secondaryTextColor);
 
   &:not(:disabled) {
     cursor: pointer;
-
-    &:hover {
-      background: rgb(49 49 50);
-    }
   }
 
   &:disabled {
-    color: var(--textColor);
+    background-color: var(--secondaryBtnBg);
   }
 
   svg {

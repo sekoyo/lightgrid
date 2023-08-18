@@ -10,6 +10,7 @@ import styles from './Docs.module.css'
 const IntroDoc = lazy(() => import('./docs/Intro'))
 const Setup = lazy(() => import('./docs/Setup'))
 const Theming = lazy(() => import('./docs/Theming'))
+const GlobalSearch = lazy(() => import('./docs/GlobalSearch'))
 
 function getDocPage(slug?: string) {
   switch (slug) {
@@ -17,6 +18,8 @@ function getDocPage(slug?: string) {
       return <Setup />
     case 'guides/theming':
       return <Theming />
+    case 'guides/global-search':
+      return <GlobalSearch />
     default:
       // TODO: Change to 404
       return <IntroDoc />

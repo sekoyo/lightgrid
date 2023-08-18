@@ -3,6 +3,7 @@ import { render } from 'solid-js/web'
 import { Router } from '@solidjs/router'
 
 import { FrameworkTabProvider } from './components/FrameworkTabContext'
+import { ThemeProvider, getInitialTheme } from './components/ThemeProvider'
 import App from './App'
 
 import './index.css'
@@ -17,11 +18,13 @@ if (!(root instanceof HTMLElement)) {
 
 render(
   () => (
-    <FrameworkTabProvider activeTabId="react">
-      <Router>
-        <App />
-      </Router>
-    </FrameworkTabProvider>
+    <ThemeProvider theme={getInitialTheme()}>
+      <FrameworkTabProvider activeTabId="react">
+        <Router>
+          <App />
+        </Router>
+      </FrameworkTabProvider>
+    </ThemeProvider>
   ),
   root
 )

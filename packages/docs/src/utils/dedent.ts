@@ -22,8 +22,6 @@ export function dedent(str: string) {
     return leadingSpaces < acc ? leadingSpaces : acc
   }, Infinity)
 
-  console.log({ minLeadingSpaces })
-
   // Trim lines, join them and return the result
   return lines.map(line => line.substring(minLeadingSpaces)).join('\n')
 }

@@ -1,3 +1,3 @@
-export type DemoProps = {
-  height: number
+export interface DemoProps {
+  theme: 'light' | 'dark'
 }

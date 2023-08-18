@@ -2,7 +2,7 @@
   appearance: none;
   background: transparent;
   border: none;
-  color: var(--textColor);
+  color: inherit;
   padding: 0;
   width: 16px;
   height: 16px;

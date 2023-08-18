@@ -3,6 +3,7 @@ import { A } from '@solidjs/router'
 
 import { ContentContainer } from './ContentContainer'
 import { LightfinDatagridLogo } from './LightfinDatagridLogo'
+import { ThemeSwitcher } from './ThemeSwitcher'
 
 import styles from './AppShell.module.css'
 
@@ -30,6 +31,7 @@ export function AppShell(props: ParentProps) {
               <A class={styles.navLink} href="/docs" activeClass={styles.navLinkActive}>
                 Docs
               </A>
+              <ThemeSwitcher />
             </nav>
           </div>
         </ContentContainer>

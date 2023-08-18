@@ -4,17 +4,21 @@ import { DemoContainer } from './components/DemoContainer'
 
 const params = new URLSearchParams(window.location.search)
 const height = Number(params.get('height')) || 800
+const theme = params.get('theme') === 'light' ? 'light' : 'dark'
 
 const BasicGridDemo = lazy(() => import('./demos/BasicGridDemo'))
 const KitchenSinkDemo = lazy(() => import('./demos/KitchenSinkDemo'))
 const ThemingDemo = lazy(() => import('./demos/ThemingDemo'))
+const GlobalSearchDemo = lazy(() => import('./demos/GlobalSearchDemo'))
+
+document.body.classList.add(theme)
 
 export function App() {
   return (
     <>
       <Route path="/demos/basic-grid">
         <DemoContainer height={height}>
-          <BasicGridDemo />
+          <BasicGridDemo theme={theme} />
         </DemoContainer>
       </Route>
       <Route path="/demos/kitchen-sink">
@@ -24,7 +28,12 @@ export function App() {
       </Route>
       <Route path="/demos/theming">
         <DemoContainer height={height}>
-          <ThemingDemo />
+          <ThemingDemo theme={theme} />
+        </DemoContainer>
+      </Route>
+      <Route path="/demos/global-search">
+        <DemoContainer height={height}>
+          <GlobalSearchDemo theme={theme} />
         </DemoContainer>
       </Route>
     </>

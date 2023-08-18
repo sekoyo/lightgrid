@@ -10,6 +10,7 @@ import { cls } from 'src/utils/cls'
 import { dedent } from 'src/utils/dedent'
 
 import styles from './DocTypography.module.css'
+import { useTheme } from './ThemeProvider'
 
 export const H1 = (props: ParentProps) => <h1 class={styles.h1}>{props.children}</h1>
 export const H2 = (props: ParentProps) => <h2 class={styles.h2}>{props.children}</h2>
@@ -69,14 +70,14 @@ export const VGroup = (props: ParentProps<{ justifyEnd?: boolean }>) => (
 )
 
 export const IFrame = (attrs: JSX.IframeHTMLAttributes<HTMLIFrameElement>) => {
+  const { state } = useTheme()
   return (
     <div class={styles.iframeContainer}>
       <iframe
         {...attrs}
         class={cls(styles.iframe, attrs.class)}
-        src={`${
-          (attrs.src || '') +
-          (typeof attrs.height === 'number' ? `?height=${attrs.height}` : '')
+        src={`${attrs.src || ''}?theme=${state.theme}${
+          typeof attrs.height === 'number' ? `&height=${attrs.height}` : ''
         }`}
       />
     </div>

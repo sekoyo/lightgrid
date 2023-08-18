@@ -11,19 +11,23 @@
   appearance: none;
   border-radius: 0.5em;
   border: none;
-  background: rgb(23, 24, 24);
   padding: 0.5em 1em;
   font-family: inherit;
   font-size: 0.75em;
-  color: inherit;
+  background-color: var(--secondaryBtnBg);
+  color: var(--secondaryTextColor);
 
   &:not(:disabled):hover {
     cursor: pointer;
-    filter: brightness(1.5);
+    background-color: color-mix(in srgb, var(--secondaryBtnBg) 95%, white);
+  }
+  &[data-active='true']:not(:disabled):hover {
+    background-color: color-mix(in srgb, var(--primaryBtnBg) 95%, white);
   }
 
   &[data-active='true'] {
-    background: rgb(69 69 146);
+    background: var(--primaryBtnBg);
+    color: var(--primaryTextColor);
   }
 }
 

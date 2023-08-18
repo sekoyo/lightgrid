@@ -1,5 +1,9 @@
 ## Todo
 
+- Bug: Vert scroll is causing horizontal scroll, in iframe at least (see Global Search)
+  Only solution is custom overlay scroll so never have this scroll madness imo, AG grid does it too
+  Maybe standalone web component, even sep published package
+
 ### Docs
 
 - Do theming with an object so it's strongly typed and makes upgrading for users much easier
@@ -9,6 +13,7 @@
 - Add JSDocs to types
 - Legal page
 - Lazily load iframe demos based on visibility?
+- Iframe loading spinner
 
 ### Post MVP
 

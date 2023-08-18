@@ -1,5 +1,10 @@
-import { GroupedColumns } from '@lightfin/datagrid'
+import {
+  GroupedColumns,
+  darkTheme,
+  lightTheme,
+} from '@lightfin/datagrid'
 import { DataGrid } from '@lightfin/react-datagrid'
+import { DemoProps } from './types'
 import { animalData, Animal } from './data/animals'
 
 import '@lightfin/datagrid/dist/styles.css'
@@ -32,12 +37,13 @@ const columns: GroupedColumns<Animal, React.ReactNode> = [
   },
 ]
 
-export default function Demo() {
+export default function Demo({ theme }: DemoProps) {
   return (
     <DataGrid<Animal>
       columns={columns}
       data={animalData}
       getRowId={d => d.animal}
+      theme={theme === 'light' ? lightTheme : darkTheme}
     />
   )
 }
