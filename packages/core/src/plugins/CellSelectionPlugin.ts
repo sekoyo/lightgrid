@@ -188,16 +188,16 @@ export class CellSelectionPlugin<T, R> extends GridPlugin<T, R> {
   }
 
   isInSelectableArea = (windowX: number, windowY: number) =>
-    windowX < this.mgr.$viewportWidth() - this.mgr.$scrollbarWidth() &&
+    windowX < this.mgr.$viewportWidth() - this.mgr.$horizontalScrollSize() &&
     windowY > this.mgr.$headerHeight() &&
-    windowY < this.mgr.$viewportHeight() - this.mgr.$scrollbarHeight()
+    windowY < this.mgr.$viewportHeight() - this.mgr.$horizontalScrollSize()
 
   scrollX = effect(() => {
     if (this.$autoScrollX()) {
       const id = setInterval(() => {
         const maxScroll =
           this.mgr.$derivedCols().size -
-          (this.mgr.$viewportWidth() - this.mgr.$scrollbarWidth())
+          (this.mgr.$viewportWidth() - this.mgr.$horizontalScrollSize())
         const scrollLeft = clamp(this.mgr.$scrollX() + this.scrollXStep, 0, maxScroll)
         this.mgr.$scrollX.set(scrollLeft)
         this.mgr.scrollLeft(scrollLeft)
@@ -211,7 +211,7 @@ export class CellSelectionPlugin<T, R> extends GridPlugin<T, R> {
       const id = setInterval(() => {
         const maxScroll =
           this.mgr.$derivedRows().size -
-          (this.mgr.$viewportHeight() - this.mgr.$scrollbarHeight())
+          (this.mgr.$viewportHeight() - this.mgr.$horizontalScrollSize())
         const scrollTop = clamp(this.mgr.$scrollY() + this.scrollYStep, 0, maxScroll)
         this.mgr.$scrollY.set(scrollTop)
         this.mgr.scrollTop(scrollTop)
@@ -381,7 +381,7 @@ export class CellSelectionPlugin<T, R> extends GridPlugin<T, R> {
     }
 
     // This seems a bit complex, is there a better way?
-    const scrollbarWidth = this.mgr.$scrollbarWidth()
+    const scrollbarWidth = this.mgr.$horizontalScrollSize()
     const mainXWidth = this.mgr.$viewportWidth() - (startSize + endSize)
     const colEndY = scrollbarWidth + col.offset + col.size - scrollX
 
@@ -413,7 +413,7 @@ export class CellSelectionPlugin<T, R> extends GridPlugin<T, R> {
     }
 
     // This seems a bit complex, is there a better way?
-    const scrollbarHeight = this.mgr.$scrollbarHeight()
+    const scrollbarHeight = this.mgr.$horizontalScrollSize()
     const mainYHeight =
       this.mgr.$viewportHeight() - (this.mgr.$headerHeight() + startSize + endSize)
     const rowEndY = scrollbarHeight + row.offset + row.size - scrollY

@@ -26,13 +26,13 @@ import {
   deriveColumns,
   deriveRows,
   flatMapColumns,
+  getColDepth,
   getColumnWindow,
   getNextSortDirection,
   getRowWindow,
   getScrollBarSize,
   isColumnGroup,
   updateColumn,
-  willScrollbarsAppear,
 } from './utils'
 import type { ColumnResizePlugin, SetColResizeData } from './plugins/ColumnResizePlugin'
 import type { ColumnReorderPlugin, SetColReorderKey } from './plugins/ColumnReorderPlugin'
@@ -138,9 +138,10 @@ export class GridManager<T, R> {
     return this.$data().slice().sort(createMultiSort($comparators()))
   })
 
-  $derivedCols = computed(() => deriveColumns(this.$columns(), this.$viewportWidth()))
+  // Has to be calculated first so that we can calc rows and know if they overflow since
+  // vscrollbars will affect available width for derivedCols (and their fractional sizing)
+  $headerHeight = computed(() => getColDepth(this.$columns()) * this.$headerRowHeight())
 
-  $headerHeight = computed(() => this.$derivedCols().headerRows * this.$headerRowHeight())
   $derivedStartRows = computed(() =>
     deriveRows(
       AreaPos.Start,
@@ -191,20 +192,19 @@ export class GridManager<T, R> {
   })
 
   $contentHeight = computed(() => this.$headerHeight() + this.$derivedRows().size)
-  $hasScroll = computed(() =>
-    willScrollbarsAppear(
-      this.$viewportWidth(),
-      this.$viewportHeight(),
-      this.$derivedCols().size,
-      this.$contentHeight(),
-      this.scrollbarSize
-    )
+
+  $verticalScrollSize = computed(() =>
+    this.$contentHeight() > this.$viewportHeight() ? this.scrollbarSize : 0
   )
-  $scrollbarWidth = computed(() =>
-    this.$hasScroll().hasHScroll ? this.scrollbarSize : 0
+
+  $derivedCols = computed(() =>
+    deriveColumns(this.$columns(), this.$viewportWidth() - this.$verticalScrollSize())
   )
-  $scrollbarHeight = computed(() =>
-    this.$hasScroll().hasVScroll ? this.scrollbarSize : 0
+
+  $horizontalScrollSize = computed(() =>
+    this.$derivedCols().size > this.$viewportWidth() - this.$verticalScrollSize()
+      ? this.scrollbarSize
+      : 0
   )
 
   // -- Column window.
@@ -269,7 +269,7 @@ export class GridManager<T, R> {
         columns: derivedCols.end.itemsWithGrouping,
         colAreaPos: AreaPos.End,
         headerRowHeight,
-        left: this.$viewportWidth() - this.$scrollbarWidth() - derivedCols.end.size,
+        left: this.$viewportWidth() - this.$horizontalScrollSize() - derivedCols.end.size,
         width: derivedCols.end.size,
         height: headerHeight,
       },
@@ -303,8 +303,10 @@ export class GridManager<T, R> {
       this.$viewportWidth() - derivedCols.start.size - derivedCols.end.size
     const middleHeight =
       this.$viewportHeight() - derivedRows.middle.startOffset - derivedRows.end.size
-    const endX = this.$viewportWidth() - derivedCols.end.size - this.$scrollbarWidth()
-    const endY = this.$viewportHeight() - derivedRows.end.size - this.$scrollbarHeight()
+    const endX =
+      this.$viewportWidth() - derivedCols.end.size - this.$horizontalScrollSize()
+    const endY =
+      this.$viewportHeight() - derivedRows.end.size - this.$horizontalScrollSize()
 
     // Main
     if (derivedRows.middle.size) {
@@ -535,8 +537,8 @@ export class GridManager<T, R> {
     effect(() => props.onHeadersChanged(this.$headerAreas()))
     effect(() =>
       props.onViewportChanged({
-        width: this.$viewportWidth() - this.$scrollbarWidth(),
-        height: this.$viewportHeight() - this.$scrollbarHeight(),
+        width: this.$viewportWidth() - this.$verticalScrollSize(),
+        height: this.$viewportHeight() - this.$horizontalScrollSize(),
       })
     )
     effect(() => props.onContentHeightChanged(this.$contentHeight()))

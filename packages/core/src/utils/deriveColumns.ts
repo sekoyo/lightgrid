@@ -8,6 +8,7 @@ import {
   AreaPos,
 } from '../types'
 import { isColumnGroup } from './isTypes'
+import { toNearestHalf } from './numbers'
 
 const defaultFr = 1
 const defaultAbs = 100
@@ -119,19 +120,22 @@ function getDerivedWidth(
   minWidth = defaultFrMinWidth
 ) {
   const width = maybeWidth ?? '1fr'
+  let res: number
 
   if (typeof width === 'number') {
-    return width
+    res = width
   } else if (width.endsWith('fr')) {
     const n = parseFloat(width)
     // Problem: How to handle underflow?
-    return Math.max(
+    res = Math.max(
       minWidth,
       ((n ?? defaultFr) / totalFractions) * (viewportWidth - totalAbsolutes)
     )
   } else {
-    return parseFloat(width) || defaultAbs
+    res = parseFloat(width) || defaultAbs
   }
+
+  return toNearestHalf(res)
 }
 
 const createEmptyColResults: <T, R>() => DerivedColsResult<T, R> = () => ({
@@ -180,6 +184,10 @@ export function deriveColumns<T, R>(
   const s = sumAndDivideCols(columns)
   const o = createEmptyColResults<T, R>()
 
+  // If abs doesn't overflow we have to make sure total size doesn't
+  // slightly exceed width due to precision/rounding.
+  const absOverflows = s.totalAbsolutes >= viewportWidth
+
   function recurseColumns(
     levelColumns: GroupedColumns<T, R>,
     colResult: DerivedColResult<T, R>,
@@ -213,13 +221,18 @@ export function deriveColumns<T, R>(
           })
         }
       } else {
-        const size = getDerivedWidth(
+        let size = getDerivedWidth(
           viewportWidth,
           s.totalAbsolutes,
           s.totalFractions,
           column.width,
           column.minWidth
         )
+        // If abs is under vp width then ensure fractional columns don't slightly
+        // overflow due to rounding.
+        if (!absOverflows && sectionOffset.current + size > viewportWidth) {
+          size = viewportWidth - sectionOffset.current
+        }
         const c: DerivedColumn<T, R> = {
           ...column,
           size,

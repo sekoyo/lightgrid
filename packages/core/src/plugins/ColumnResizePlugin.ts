@@ -69,7 +69,7 @@ export class ColumnResizePlugin<T, R> extends GridPlugin<T, R> {
     if (colAreaPos === AreaPos.Middle) {
       left = this.mgr.$derivedCols().middle.startOffset + left - this.mgr.$scrollX()
     } else if (colAreaPos === AreaPos.End) {
-      left += this.mgr.$derivedCols().end.startOffset - this.mgr.$scrollbarWidth()
+      left += this.mgr.$derivedCols().end.startOffset - this.mgr.$horizontalScrollSize()
     }
 
     this.mgr.setColResizeData({ colAreaPos, left })
