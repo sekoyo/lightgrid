@@ -1,9 +1,17 @@
 body.dark {
+  --textColor: rgba(255, 255, 255, 0.96);
+  --textColorSecondary: rgba(255, 255, 255, 0.65);
+  --textColorTertiary: rgba(255, 255, 255, 0.45);
   --inputBg: #232323;
+  --outlineColor: #6161c0;
 }
 
 body.light {
+  --textColor: rgba(0, 0, 0, 0.96);
+  --textColorSecondary: rgba(0, 0, 0, 0.6);
+  --textColorTertiary: rgba(0, 0, 0, 0.4);
   --inputBg: #f2f2f2;
+  --outlineColor: #6161c0;
 }
 
 *,

@@ -2,14 +2,12 @@
 
 ### Docs
 
-- Do theming with an object so it's strongly typed and makes upgrading for users much easier
-- More user friendly version of `GroupedColumns<Animal, React.ReactNode>` for each framework
-- Add copy CodeBlock btn to code component + extract out to own file
-- Can we consume TS Props in docs? Perhaps by compiling to JSON?
-- Add JSDocs to types
+- Can we consume JSDOC/TS Props in docs? Perhaps by compiling to JSON? (including theme obj)
 - Legal page
 - Lazily load iframe demos based on visibility?
 - Iframe loading spinner
+- More user friendly version of `GroupedColumns<Animal, React.ReactNode>` for each framework?
+- Fullscreen option for demos/source code
 
 ### Post MVP
 
@@ -21,7 +19,6 @@
 - Column filtering (a header renderer provided by us)
 - Row re-ordering
 - SolidJS support
-- Find a good TS throttle
 - Safely limit row/col window range?
 - Sorting group column (https://www.ag-grid.com/javascript-data-grid/row-sorting/#custom-sorting-groups-example)
 - When sorting col at edge auto scroll

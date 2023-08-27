@@ -20,7 +20,7 @@ export default function Doc() {
       <Section>
         <P>
           The datagrid comes with a light and a dark theme, but you can override all or
-          part of it via the <Code>theme</Code> prop.
+          part of them via the <Code>theme</Code> prop.
         </P>
         <CodeBlock lang="typescript">{`
           import { darkTheme, lightTheme, type Theme } from '@lightfin/datagrid'

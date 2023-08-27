@@ -11,8 +11,8 @@ export default function Doc() {
       <H1>Global search / filtering</H1>
       <Section>
         <P>
-          State is controlled by you via props. You can create your own input and filter
-          the <Code>data</Code> prop.
+          Data and state is controlled by you via props. You can create your own input and
+          filter the <Code>data</Code> prop.
         </P>
       </Section>
       <Section>

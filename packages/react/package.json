@@ -17,6 +17,7 @@
   },
   "devDependencies": {
     "@lightfin/datagrid": "*",
+    "@types/lodash-es": "^4.17.8",
     "@types/react": "^18.2.17",
     "@types/react-dom": "^18.2.7",
     "@typescript-eslint/eslint-plugin": "^6.2.0",
@@ -32,6 +33,7 @@
     "vite-plugin-svgr": "^3.2.0"
   },
   "dependencies": {
+    "lodash-es": "^4.17.21",
     "vite-tsconfig-paths": "^4.2.0",
     "wouter": "^2.11.0"
   }
