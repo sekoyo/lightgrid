@@ -21,6 +21,7 @@ function sumAndDivideCols<T, R>(columns: GroupedColumns<T, R>) {
   let totalAbsolutes = 0
   let totalFractions = 0
   let totalDepth = 1
+  let minFractionalSize = 0
 
   function recurse(
     levelColumns: GroupedColumns<T, R>,
@@ -84,6 +85,7 @@ function sumAndDivideCols<T, R>(columns: GroupedColumns<T, R>) {
           totalAbsolutes += width
         } else if (width.endsWith('fr')) {
           totalFractions += parseFloat(width) ?? defaultFr
+          minFractionalSize += column.minWidth ?? defaultFrMinWidth
         } else {
           totalAbsolutes += parseFloat(width) ?? defaultAbs
         }
@@ -109,6 +111,7 @@ function sumAndDivideCols<T, R>(columns: GroupedColumns<T, R>) {
     totalDepth,
     totalAbsolutes,
     totalFractions,
+    minFractionalSize,
   }
 }
 
@@ -186,7 +189,8 @@ export function deriveColumns<T, R>(
 
   // If abs doesn't overflow we have to make sure total size doesn't
   // slightly exceed width due to precision/rounding.
-  const absOverflows = s.totalAbsolutes >= viewportWidth
+  const willStretchToVP = s.minFractionalSize + s.totalAbsolutes < viewportWidth
+  let frSizeRemaining = willStretchToVP ? viewportWidth - s.totalAbsolutes : Infinity
 
   function recurseColumns(
     levelColumns: GroupedColumns<T, R>,
@@ -209,6 +213,7 @@ export function deriveColumns<T, R>(
             rowIndex + 1,
             sectionOffset
           )
+          // Column group is the size of its children
           const size = sectionOffset.current - savedOffset
           levelDerivedCols.push({
             ...column,
@@ -228,11 +233,19 @@ export function deriveColumns<T, R>(
           column.width,
           column.minWidth
         )
-        // If abs is under vp width then ensure fractional columns don't slightly
-        // overflow due to rounding.
-        if (!absOverflows && sectionOffset.current + size > viewportWidth) {
-          size = viewportWidth - sectionOffset.current
+
+        // If fractional + absolutes don't exceed the viewport then ensure that
+        // fractional columns don't exceed the max available space (absolute - viewportWidth)
+        // as the floating point rounding can slightly exceed and cause a scrollbar.
+        if (
+          willStretchToVP &&
+          typeof column.width === 'string' &&
+          column.width?.endsWith('fr')
+        ) {
+          size = Math.min(size, frSizeRemaining)
+          frSizeRemaining = Math.max(0, frSizeRemaining - size)
         }
+
         const c: DerivedColumn<T, R> = {
           ...column,
           size,

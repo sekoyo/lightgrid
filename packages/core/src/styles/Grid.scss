@@ -16,6 +16,7 @@
   border: 1px solid var(--lfgBorderColor);
   overflow: hidden;
   color: var(--lfgTextColor);
+  background: var(--lfgCellBg, var(--lfgBg));
 
   // Used in getScrollbarSize else on touch devices it will
   // come back as 0 since they are overlays by default. But

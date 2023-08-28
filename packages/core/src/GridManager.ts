@@ -194,7 +194,9 @@ export class GridManager<T, R> {
   $contentHeight = computed(() => this.$headerHeight() + this.$derivedRows().size)
 
   $verticalScrollSize = computed(() =>
-    this.$contentHeight() > this.$viewportHeight() ? this.scrollbarSize : 0
+    this.$viewportHeight() && this.$contentHeight() > this.$viewportHeight()
+      ? this.scrollbarSize
+      : 0
   )
 
   $derivedCols = computed(() =>
@@ -202,6 +204,7 @@ export class GridManager<T, R> {
   )
 
   $horizontalScrollSize = computed(() =>
+    this.$viewportWidth() &&
     this.$derivedCols().size > this.$viewportWidth() - this.$verticalScrollSize()
       ? this.scrollbarSize
       : 0

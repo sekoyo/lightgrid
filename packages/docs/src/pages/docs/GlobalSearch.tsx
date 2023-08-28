@@ -27,7 +27,7 @@ export default function Doc() {
                     import.meta.env.VITE_REACT_DEMO_BASE_URL
                   }/demos/global-search`}
                   demoSrc={import('/../react/src/demos/GlobalSearchDemo.tsx?raw')}
-                  height={362}
+                  height={407}
                 />
               ),
             },
@@ -40,7 +40,7 @@ export default function Doc() {
                     import.meta.env.VITE_REACT_DEMO_BASE_URL
                   }/demos/global-search`}
                   demoSrc={import('/../react/src/demos/GlobalSearchDemo.tsx?raw')}
-                  height={362}
+                  height={407}
                 />
               ),
             },
@@ -48,11 +48,11 @@ export default function Doc() {
         </Tabs>
       </Section>
       <HGroup justifyEnd>
-        <PageButton href="/docs/guides/setup" secondaryLabel="Previous">
-          Setup
+        <PageButton href="/docs/guides/theming" secondaryLabel="Previous">
+          Theming
         </PageButton>
-        <PageButton href="/docs/guides/global-search" secondaryLabel="Next">
-          Global Search
+        <PageButton href="/docs/guides/async-data" secondaryLabel="Next">
+          Async Data
         </PageButton>
       </HGroup>
     </div>

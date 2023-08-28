@@ -36,6 +36,11 @@ export default function Doc() {
           }
           <DataGrid theme={myCustomTheme}>
         `}</CodeBlock>
+        <P>
+          If you prefer you can also style directly with CSS Variables by prepending the
+          theme property names with <Code>--lfg</Code> and capitalizing the first letter.
+          For example <Code>--lfgHeaderCellBg</Code>.
+        </P>
       </Section>
       <Section>
         <Tabs activeTabId={state.activeTabId} onTabPress={changeTab}>

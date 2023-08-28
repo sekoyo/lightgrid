@@ -11,6 +11,7 @@ const IntroDoc = lazy(() => import('./docs/Intro'))
 const Setup = lazy(() => import('./docs/Setup'))
 const Theming = lazy(() => import('./docs/Theming'))
 const GlobalSearch = lazy(() => import('./docs/GlobalSearch'))
+const AsyncData = lazy(() => import('./docs/AsyncData'))
 
 function getDocPage(slug?: string) {
   switch (slug) {
@@ -20,6 +21,8 @@ function getDocPage(slug?: string) {
       return <Theming />
     case 'guides/global-search':
       return <GlobalSearch />
+    case 'guides/async-data':
+      return <AsyncData />
     default:
       // TODO: Change to 404
       return <IntroDoc />
@@ -73,7 +76,7 @@ export function Docs() {
               {sectionItem('guides/setup', 'Setup')}
               {sectionItem('guides/theming', 'Theming')}
               {sectionItem('guides/global-search', 'Global search')}
-              {sectionItem('guides/loading-indicator', 'Loading indicator')}
+              {sectionItem('guides/async-data', 'Async Data')}
               {sectionItem('guides/pagination', 'Pagination')}
             </ul>
             <ul class={styles.docSection}>
