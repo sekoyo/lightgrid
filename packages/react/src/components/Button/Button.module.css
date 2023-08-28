@@ -1,0 +1,27 @@
+.button {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  appearance: none;
+  background-color: var(--primaryBtnBg);
+  border-radius: 4px;
+  border: none;
+  padding: 0.5em 1em;
+  font-family: inherit;
+  font-size: 0.875em;
+  color: var(--primaryBtnTextColor);
+
+  &:not(:disabled):hover {
+    cursor: pointer;
+    background-color: color-mix(in srgb, var(--primaryBtnBg) 95%, white);
+  }
+
+  &:disabled {
+    opacity: 0.4;
+  }
+
+  svg {
+    flex-shrink: 0;
+    height: 16px;
+  }
+}

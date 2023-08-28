@@ -8,6 +8,7 @@ import { animalData, Animal, animalColumns } from './data/animals'
 
 import '@lightfin/datagrid/dist/styles.css'
 import styles from './GlobalSearchDemo.module.css'
+import { Input } from '../components/Input'
 
 const filterData = throttle(
   (filter: string) =>
@@ -34,10 +35,9 @@ export default function Demo({ theme }: DemoProps) {
   return (
     <>
       <div className={styles.searchContainer}>
-        <input
+        <Input
           type="search"
           placeholder="Search"
-          className={styles.searchInput}
           onChange={e => setFilter(e.currentTarget.value)}
         />
       </div>

@@ -25,77 +25,11 @@ export default function Doc() {
           you do this is up to you, once the data is fetched you just need to update your{' '}
           <Code>data</Code> prop.
         </P>
-        <Tabs activeTabId={state.activeTabId} onTabPress={changeTab}>
-          {[
-            {
-              id: 'react',
-              label: 'React',
-              component: (
-                <CodeBlock lang="bash">{`
-                npm install @lightfin/react-datagrid
-                yarn add @lightfin/react-datagrid
-                pnpm add @lightfin/react-datagrid
-              `}</CodeBlock>
-              ),
-            },
-            {
-              id: 'solid',
-              label: 'Solid',
-              component: (
-                <CodeBlock lang="bash">{`
-                npm install @lightfin/solid-datagrid
-                yarn add @lightfin/solid-datagrid
-                pnpm add @lightfin/solid-datagrid
-              `}</CodeBlock>
-              ),
-            },
-          ]}
-        </Tabs>
+        <P>
+          You can also provide your own loading overlay via the{' '}
+          <Code>loadingOverlay</Code> prop.
+        </P>
       </Section>
-      <Section>
-        <P>Include the Datagrid component</P>
-        <Tabs activeTabId={state.activeTabId} onTabPress={changeTab}>
-          {[
-            {
-              id: 'react',
-              label: 'React',
-              component: (
-                <CodeBlock lang="bash">{`
-                import { Datagrid } from '@lightfin/react-datagrid'
-              `}</CodeBlock>
-              ),
-            },
-            {
-              id: 'solid',
-              label: 'Solid',
-              component: (
-                <CodeBlock lang="bash">{`
-              import { Datagrid } from '@lightfin/solid-datagrid'
-              `}</CodeBlock>
-              ),
-            },
-          ]}
-        </Tabs>
-      </Section>
-      <Section>
-        <P>Include the CSS</P>
-        <CodeBlock lang="typescript">{`
-        import '@lightfin/datagrid/dist/styles.css'
-      `}</CodeBlock>
-      </Section>
-      <P>All grids must define three things</P>
-      <OL>
-        <LI>
-          <strong>Data</strong> an array of data to render each row with
-        </LI>
-        <LI>
-          <strong>Columns</strong> the grid columns
-        </LI>
-        <LI>
-          <strong>Row ID</strong> a unique ID for each row
-        </LI>
-      </OL>
-      <P>These three props get us a simple, read-only table</P>
       <Tabs activeTabId={state.activeTabId} onTabPress={changeTab}>
         {[
           {
@@ -103,9 +37,9 @@ export default function Doc() {
             label: 'React',
             component: (
               <Demo
-                demoUrl={`${import.meta.env.VITE_REACT_DEMO_BASE_URL}/demos/basic-grid`}
-                demoSrc={import('/../react/src/demos/BasicGridDemo.tsx?raw')}
-                height={362}
+                demoUrl={`${import.meta.env.VITE_REACT_DEMO_BASE_URL}/demos/async-data`}
+                demoSrc={import('/../react/src/demos/AsyncDataDemo.tsx?raw')}
+                height={405}
               />
             ),
           },
@@ -114,9 +48,9 @@ export default function Doc() {
             label: 'Solid',
             component: (
               <Demo
-                demoUrl={`${import.meta.env.VITE_REACT_DEMO_BASE_URL}/demos/basic-grid`}
-                demoSrc={import('/../react/src/demos/BasicGridDemo.tsx?raw')}
-                height={362}
+                demoUrl={`${import.meta.env.VITE_REACT_DEMO_BASE_URL}/demos/async-data`}
+                demoSrc={import('/../react/src/demos/AsyncDataDemo.tsx?raw')}
+                height={405}
               />
             ),
           },

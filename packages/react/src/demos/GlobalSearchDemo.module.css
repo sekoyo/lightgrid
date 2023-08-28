@@ -1,19 +1,4 @@
 .searchContainer {
   padding: 1px;
-}
-
-.searchInput {
-  padding: 0.5em 0.75em;
-  font-family: inherit;
-  font-size: inherit;
-  color: inherit;
-  border: none;
-  border-radius: 4px;
-  background: var(--inputBg);
-  color: var(--textColor);
   margin-bottom: 0.5em;
-
-  &:focus {
-    outline: 1px solid var(--outlineColor);
-  }
 }

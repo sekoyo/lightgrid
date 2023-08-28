@@ -10,6 +10,7 @@ const BasicGridDemo = lazy(() => import('./demos/BasicGridDemo'))
 const KitchenSinkDemo = lazy(() => import('./demos/KitchenSinkDemo'))
 const ThemingDemo = lazy(() => import('./demos/ThemingDemo'))
 const GlobalSearchDemo = lazy(() => import('./demos/GlobalSearchDemo'))
+const AsyncDataDemo = lazy(() => import('./demos/AsyncDataDemo'))
 
 document.body.classList.add(theme)
 
@@ -34,6 +35,11 @@ export function App() {
       <Route path="/demos/global-search">
         <DemoContainer height={height}>
           <GlobalSearchDemo theme={theme} />
+        </DemoContainer>
+      </Route>
+      <Route path="/demos/async-data">
+        <DemoContainer height={height}>
+          <AsyncDataDemo theme={theme} />
         </DemoContainer>
       </Route>
     </>

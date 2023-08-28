@@ -67,6 +67,7 @@ interface DataGridProps<T> {
   enableCellSelection?: boolean
   enableColumnResize?: boolean
   enableColumnReorder?: boolean
+  loadingOverlay?: React.ReactNode
   className?: string
   style?: React.CSSProperties
 }
@@ -90,6 +91,7 @@ export function DataGrid<T>({
   enableCellSelection,
   enableColumnResize,
   enableColumnReorder,
+  loadingOverlay,
   className,
   style,
 }: DataGridProps<T>) {
@@ -268,6 +270,11 @@ export function DataGrid<T>({
           )}
         </div>
       </div>
+      {loadingOverlay && (
+        <div className="lfg-loading-overlay" style={{ top: headerHeight }}>
+          {loadingOverlay}
+        </div>
+      )}
     </div>
   )
 }

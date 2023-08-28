@@ -23,7 +23,7 @@
   padding: 0.5em;
   font-family: inherit;
   font-size: 0.75em;
-  color: var(--secondaryTextColor);
+  color: var(--secondaryBtnTextColor);
 
   &:not(:disabled) {
     cursor: pointer;

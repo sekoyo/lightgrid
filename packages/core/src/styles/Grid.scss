@@ -166,4 +166,11 @@
     pointer-events: none;
     background-color: var(--lfgColResizeColor);
   }
+
+  &-loading-overlay {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
 }

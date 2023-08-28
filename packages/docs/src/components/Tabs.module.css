@@ -15,7 +15,7 @@
   font-family: inherit;
   font-size: 0.75em;
   background-color: var(--secondaryBtnBg);
-  color: var(--secondaryTextColor);
+  color: var(--secondaryBtnTextColor);
 
   &:not(:disabled):hover {
     cursor: pointer;

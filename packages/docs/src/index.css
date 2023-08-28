@@ -13,7 +13,7 @@ body.dark {
   --primaryBtnBg: rgb(69, 69, 146);
   --primaryBtnTextColor: var(--textColor);
   --secondaryBtnBg: rgb(23, 24, 24);
-  --secondaryTextColor: var(--textColorSecondary);
+  --secondaryBtnTextColor: var(--textColorSecondary);
 }
 
 body.light {
@@ -32,7 +32,7 @@ body.light {
   --primaryBtnBg: rgb(104 104 222);
   --primaryTextColor: white;
   --secondaryBtnBg: rgb(227 231 238);
-  --secondaryTextColor: var(--textColor);
+  --secondaryBtnTextColor: var(--textColor);
 }
 
 *,
