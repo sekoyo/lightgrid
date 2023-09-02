@@ -239,8 +239,8 @@ export function deriveColumns<T, R>(
         // as the floating point rounding can slightly exceed and cause a scrollbar.
         if (
           willStretchToVP &&
-          typeof column.width === 'string' &&
-          column.width?.endsWith('fr')
+          (!column.width || // If empty then it's 1fr by default
+            (typeof column.width === 'string' && column.width?.endsWith('fr')))
         ) {
           size = Math.min(size, frSizeRemaining)
           frSizeRemaining = Math.max(0, frSizeRemaining - size)

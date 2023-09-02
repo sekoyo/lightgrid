@@ -8,6 +8,16 @@
 - Iframe loading spinner
 - More user friendly version of `GroupedColumns<Animal, React.ReactNode>` for each framework?
 - Fullscreen option for demos/source code
+- Lazy loading guide
+- Scroll to position
+
+https://github.com/jdorfman/awesome-json-datasets
+https://catalog.data.gov/dataset/?res_format=JSON
+https://www.kaggle.com/datasets
+
+Good for master-details (prizes in details)
+
+- https://api.nobelprize.org/v1/laureate.json
 
 ### Post MVP
 

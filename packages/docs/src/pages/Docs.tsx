@@ -12,6 +12,7 @@ const Setup = lazy(() => import('./docs/Setup'))
 const Theming = lazy(() => import('./docs/Theming'))
 const GlobalSearch = lazy(() => import('./docs/GlobalSearch'))
 const AsyncData = lazy(() => import('./docs/AsyncData'))
+const Pagination = lazy(() => import('./docs/Pagination'))
 
 function getDocPage(slug?: string) {
   switch (slug) {
@@ -23,6 +24,8 @@ function getDocPage(slug?: string) {
       return <GlobalSearch />
     case 'guides/async-data':
       return <AsyncData />
+    case 'guides/pagination':
+      return <Pagination />
     default:
       // TODO: Change to 404
       return <IntroDoc />

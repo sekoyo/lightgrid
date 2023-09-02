@@ -1,0 +1,16 @@
+.pageControlContainer {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.pageControls {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  margin: 0.5em 0;
+}
+
+.pageControls input {
+  width: 60px;
+}

@@ -11,6 +11,7 @@ const KitchenSinkDemo = lazy(() => import('./demos/KitchenSinkDemo'))
 const ThemingDemo = lazy(() => import('./demos/ThemingDemo'))
 const GlobalSearchDemo = lazy(() => import('./demos/GlobalSearchDemo'))
 const AsyncDataDemo = lazy(() => import('./demos/AsyncDataDemo'))
+const FinitePaginationDemo = lazy(() => import('./demos/FinitePaginationDemo'))
 
 document.body.classList.add(theme)
 
@@ -40,6 +41,11 @@ export function App() {
       <Route path="/demos/async-data">
         <DemoContainer height={height}>
           <AsyncDataDemo theme={theme} />
+        </DemoContainer>
+      </Route>
+      <Route path="/demos/finite-pagination">
+        <DemoContainer height={height}>
+          <FinitePaginationDemo theme={theme} />
         </DemoContainer>
       </Route>
     </>
