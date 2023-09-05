@@ -38,7 +38,7 @@ export default function Demo({ theme }: DemoProps) {
         getRowId={d => d.animal}
         theme={theme === 'light' ? lightTheme : darkTheme}
         loadingOverlay={
-          data.length === 0 ? (
+          data.length === 0 && (
             <div
               style={{
                 width: '100%',
@@ -54,7 +54,7 @@ export default function Demo({ theme }: DemoProps) {
             >
               Loading, please wait...
             </div>
-          ) : undefined
+          )
         }
       />
     </>

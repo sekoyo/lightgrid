@@ -12,6 +12,7 @@ const ThemingDemo = lazy(() => import('./demos/ThemingDemo'))
 const GlobalSearchDemo = lazy(() => import('./demos/GlobalSearchDemo'))
 const AsyncDataDemo = lazy(() => import('./demos/AsyncDataDemo'))
 const FinitePaginationDemo = lazy(() => import('./demos/FinitePaginationDemo'))
+const InfinitePaginationDemo = lazy(() => import('./demos/InfinitePaginationDemo'))
 
 document.body.classList.add(theme)
 
@@ -46,6 +47,11 @@ export function App() {
       <Route path="/demos/finite-pagination">
         <DemoContainer height={height}>
           <FinitePaginationDemo theme={theme} />
+        </DemoContainer>
+      </Route>
+      <Route path="/demos/infinite-pagination">
+        <DemoContainer height={height}>
+          <InfinitePaginationDemo theme={theme} />
         </DemoContainer>
       </Route>
     </>

@@ -57,8 +57,8 @@ export default function Doc() {
         ]}
       </Tabs>
       <HGroup justifyEnd>
-        <PageButton href="/docs" secondaryLabel="Previous">
-          Intro
+        <PageButton href="/docs/guides/global-search" secondaryLabel="Previous">
+          Global Search
         </PageButton>
         <PageButton href="/docs/guides/theming" secondaryLabel="Next">
           Theming

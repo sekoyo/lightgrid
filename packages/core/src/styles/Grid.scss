@@ -167,10 +167,19 @@
     background-color: var(--lfgColResizeColor);
   }
 
+  &-overlay {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+  }
+
   &-loading-overlay {
     position: absolute;
     left: 0;
     right: 0;
     bottom: 0;
+    pointer-events: none;
   }
 }

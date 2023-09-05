@@ -64,7 +64,7 @@ importers:
         version: 1.66.1
       ts-jest:
         specifier: ^29.1.1
-        version: 29.1.1(@babel/core@7.22.5)(jest@29.6.4)(typescript@5.2.2)
+        version: 29.1.1(@babel/core@7.22.11)(jest@29.6.4)(typescript@5.2.2)
       tslib:
         specifier: ^2.6.2
         version: 2.6.2
@@ -105,6 +105,9 @@ importers:
 
   packages/react:
     dependencies:
+      cancelable-promise:
+        specifier: ^4.3.1
+        version: 4.3.1
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
@@ -2123,6 +2126,10 @@ packages:
     resolution: {integrity: sha512-Gmy6FhYlCY7uOElZUSbxo2UCDH8owEk996gkbrpsgGtrJLM3J7jGxl9Ic7Qwwj4ivOE5AWZWRMecDdF7hqGjFA==}
     engines: {node: '>=10'}
     dev: true
+
+  /cancelable-promise@4.3.1:
+    resolution: {integrity: sha512-A/8PwLk/T7IJDfUdQ68NR24QHa8rIlnN/stiJEBo6dmVUkD4K14LswG0w3VwdeK/o7qOwRUR1k2MhK5Rpy2m7A==}
+    dev: false
 
   /caniuse-lite@1.0.30001492:
     resolution: {integrity: sha512-2efF8SAZwgAX1FJr87KWhvuJxnGJKOnctQa8xLOskAXNXq8oiuqgl6u1kk3fFpsp3GgvzlRjiK1sl63hNtFADw==}
@@ -4203,7 +4210,7 @@ packages:
       typescript: 5.2.2
     dev: true
 
-  /ts-jest@29.1.1(@babel/core@7.22.5)(jest@29.6.4)(typescript@5.2.2):
+  /ts-jest@29.1.1(@babel/core@7.22.11)(jest@29.6.4)(typescript@5.2.2):
     resolution: {integrity: sha512-D6xjnnbP17cC85nliwGiL+tpoKN0StpgE0TeOjXQTU6MVCfsB4v7aW05CgQ/1OywGb0x/oy9hHFnN+sczTiRaA==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     hasBin: true
@@ -4224,7 +4231,7 @@ packages:
       esbuild:
         optional: true
     dependencies:
-      '@babel/core': 7.22.5
+      '@babel/core': 7.22.11
       bs-logger: 0.2.6
       fast-json-stable-stringify: 2.1.0
       jest: 29.6.4(@types/node@20.5.8)

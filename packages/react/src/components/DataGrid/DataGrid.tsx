@@ -268,13 +268,13 @@ export function DataGrid<T>({
           {!!(enableColumnResize && colResizeData) && (
             <div className="lfg-resizer-marker" style={{ left: colResizeData.left }} />
           )}
+          {loadingOverlay && (
+            <div className="lfg-loading-overlay" style={{ top: headerHeight }}>
+              {loadingOverlay}
+            </div>
+          )}
         </div>
       </div>
-      {loadingOverlay && (
-        <div className="lfg-loading-overlay" style={{ top: headerHeight }}>
-          {loadingOverlay}
-        </div>
-      )}
     </div>
   )
 }
