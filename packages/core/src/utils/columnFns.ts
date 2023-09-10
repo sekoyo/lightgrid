@@ -1,10 +1,10 @@
 import type { ColumnOrGroup, GroupedColumns, ItemId } from '../types'
 import { isColumnGroup } from './isTypes'
 
-export function flatMapColumns<T, R, O>(
-  columns: GroupedColumns<T, R>,
-  mapFn: (c: ColumnOrGroup<T, R>) => O,
-  filterFn: (c: ColumnOrGroup<T, R>) => boolean = () => true
+export function flatMapColumns<T, N, O>(
+  columns: GroupedColumns<T, N>,
+  mapFn: (c: ColumnOrGroup<T, N>) => O,
+  filterFn: (c: ColumnOrGroup<T, N>) => boolean = () => true
 ): O[] {
   return columns.reduce((mappedColumns, c) => {
     if (filterFn(c)) {
@@ -18,11 +18,11 @@ export function flatMapColumns<T, R, O>(
 }
 
 // Minimizes new objects and early exits
-export function updateColumn<T, R>(
-  topLvlCols: GroupedColumns<T, R>,
-  newColumn: ColumnOrGroup<T, R>
+export function updateColumn<T, N>(
+  topLvlCols: GroupedColumns<T, N>,
+  newColumn: ColumnOrGroup<T, N>
 ) {
-  function update(columns: GroupedColumns<T, R>) {
+  function update(columns: GroupedColumns<T, N>) {
     for (let i = 0; i < columns.length; i++) {
       const column = columns[i]
       if (column.key === newColumn.key) {
@@ -41,10 +41,10 @@ export function updateColumn<T, R>(
   return update(topLvlCols.slice())
 }
 
-export function findColumn<T, R>(
-  columns: GroupedColumns<T, R>,
+export function findColumn<T, N>(
+  columns: GroupedColumns<T, N>,
   columnKey: ItemId
-): ColumnOrGroup<T, R> | undefined {
+): ColumnOrGroup<T, N> | undefined {
   for (const c of columns) {
     if (c.key === columnKey) return c
 

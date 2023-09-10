@@ -21,9 +21,9 @@ function rowValuesToCSV(rowValues: string[][]) {
     .join('\n')
 }
 
-function getCellValues<T, R>(
+function getCellValues<T, N>(
   selection: CellSelection,
-  colResult: DerivedColResult<T, R>,
+  colResult: DerivedColResult<T, N>,
   rowResult: DerivedRowResult<T>,
   csvRows: string[][]
 ) {
@@ -75,29 +75,29 @@ function getCellValues<T, R>(
   }
 }
 
-export async function copySelection<T, R>(
+export async function copySelection<T, N>(
   selection: CellSelection,
-  derivedCols: DerivedColsResult<T, R>,
+  derivedCols: DerivedColsResult<T, N>,
   derivedRows: DerivedRowsResult<T>
 ) {
   const values: string[][] = []
 
   if (derivedRows.start.size) {
-    getCellValues<T, R>(selection, derivedCols.start, derivedRows.start, values)
-    getCellValues<T, R>(selection, derivedCols.middle, derivedRows.start, values)
-    getCellValues<T, R>(selection, derivedCols.end, derivedRows.start, values)
+    getCellValues<T, N>(selection, derivedCols.start, derivedRows.start, values)
+    getCellValues<T, N>(selection, derivedCols.middle, derivedRows.start, values)
+    getCellValues<T, N>(selection, derivedCols.end, derivedRows.start, values)
   }
 
   if (derivedRows.middle.size) {
-    getCellValues<T, R>(selection, derivedCols.start, derivedRows.middle, values)
-    getCellValues<T, R>(selection, derivedCols.middle, derivedRows.middle, values)
-    getCellValues<T, R>(selection, derivedCols.end, derivedRows.middle, values)
+    getCellValues<T, N>(selection, derivedCols.start, derivedRows.middle, values)
+    getCellValues<T, N>(selection, derivedCols.middle, derivedRows.middle, values)
+    getCellValues<T, N>(selection, derivedCols.end, derivedRows.middle, values)
   }
 
   if (derivedRows.end.size) {
-    getCellValues<T, R>(selection, derivedCols.start, derivedRows.end, values)
-    getCellValues<T, R>(selection, derivedCols.middle, derivedRows.end, values)
-    getCellValues<T, R>(selection, derivedCols.end, derivedRows.end, values)
+    getCellValues<T, N>(selection, derivedCols.start, derivedRows.end, values)
+    getCellValues<T, N>(selection, derivedCols.middle, derivedRows.end, values)
+    getCellValues<T, N>(selection, derivedCols.end, derivedRows.end, values)
   }
 
   const csvStr = rowValuesToCSV(values) + '\n'

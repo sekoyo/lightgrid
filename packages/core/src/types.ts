@@ -1,48 +1,102 @@
+/** Sort direction passed to `column.createSortComparator` */
 export enum SortDirection {
   Desc = -1,
   Asc = 1,
 }
+
+/** Value for column.pin */
 export type ColumnPin = 'start' | 'end'
+
+/**
+ * The source that is requesting a column value, which can be a cell, the clipboard, or
+ * the default sorting function.
+ */
 export enum ValueSource {
-  Render,
+  Cell,
   Clipboard,
   Sort,
 }
 
+/** The type for column keys and row IDs. */
 export type ItemId = string | number
 
-// Raw from user
-export interface ColumnGroup<T, R> {
+/**
+ * A column group definition which consists of a header and one or more columns or sub
+ * groups in the children array.
+ */
+export interface ColumnGroup<T, N> {
+  /** A unique key for this column group. */
   key: ItemId
-  header?: R
-  children: GroupedColumns<T, R>
+  /** The header text or node for this column group. */
+  header?: N
+
+  children: GroupedColumns<T, N>
   pin?: ColumnPin
 }
 
+/**
+ * The sort comparator function returned by column.createSortComparator used to sort the
+ * column. If none is provided a default comparator is used.
+ */
 export type Comparator<T> = (a: T, b: T) => number
 
-export interface Column<T, R> {
+/** The column definition for each column in the `columns` prop. */
+export interface Column<T, N> {
+  /** A unique key for this column. */
   key: ItemId
-  header?: R
+  /** The header text or node for this column. */
+  header?: N
+  /**
+   * The column width. Can be `"10px"` or `10` (pixels), or `"0.5fr"` (fractional unit).
+   * Defaults to `"1fr"`.
+   */
   width?: number | string
+  /** The minimum width this column can be, in pixels. Defaults to `100`. */
   minWidth?: number
-  getValue: (row: T, source?: ValueSource) => any
+  /**
+   * Should return the value for the cell. You can return different values depending on
+   * the `source` param.
+   */
+  getValue: (row: T, source: ValueSource) => any
+  /**
+   * Whether this column can be sorted or not. You must implement the `onColumnsChange`
+   * prop for sorting to work.
+   */
   sortable?: boolean
+  /** The current sort direction of this column (or undefined for no sort) */
   sortDirection?: SortDirection
+  /**
+   * Given the sort direction, returns a custom comparator function. If not defined then
+   * the default comparator is used.
+   */
   createSortComparator?: (sortDirection: SortDirection) => Comparator<T>
+  /**
+   * The sort priority when multiple columns are sorted. Lower is higher priority. By
+   * default it's based on the order that columns are clicked.
+   */
   sortPriority?: number
-  filter?: R
+  /** TODO */
+  filter?: N
+  /**
+   * Pin this column to the left (`"start"`) or right (`"end"`) if you wish it to always
+   * be visible even if the user scrolls.
+   */
   pin?: ColumnPin
-  cellComponent?: (props: CellComponentProps<T, R>) => R
+  /**
+   * A function given a `props` object with the item and column, which should return the
+   * cell value/node.
+   */
+  cellComponent?: (column: DerivedColumn<T, N>, item: T) => N
 }
 
-export type ColumnOrGroup<T, R> = ColumnGroup<T, R> | Column<T, R>
+export type ColumnOrGroup<T, N> = ColumnGroup<T, N> | Column<T, N>
 
-export type GroupedColumns<T, R> = ColumnOrGroup<T, R>[]
+/** An array which can contain a mix of columns which can also be nested under groups */
+export type GroupedColumns<T, N> = ColumnOrGroup<T, N>[]
 
 // Derived for internal use
-export interface DerivedColumnGroup<T, R> extends ColumnGroup<T, R> {
-  children: GroupedDerivedColumns<T, R>
+export interface DerivedColumnGroup<T, N> extends ColumnGroup<T, N> {
+  children: GroupedDerivedColumns<T, N>
   size: number
   offset: number
   rowSpan: number
@@ -50,7 +104,7 @@ export interface DerivedColumnGroup<T, R> extends ColumnGroup<T, R> {
   rowIndex: number
 }
 
-export interface DerivedColumn<T, R> extends Column<T, R> {
+export interface DerivedColumn<T, N> extends Column<T, N> {
   size: number
   offset: number
   rowSpan: number
@@ -58,39 +112,56 @@ export interface DerivedColumn<T, R> extends Column<T, R> {
   rowIndex: number
 }
 
-export type DerivedColumnOrGroup<T, R> = DerivedColumnGroup<T, R> | DerivedColumn<T, R>
+export type DerivedColumnOrGroup<T, N> = DerivedColumnGroup<T, N> | DerivedColumn<T, N>
 
-export type GroupedDerivedColumns<T, R> = DerivedColumnOrGroup<T, R>[]
+export type GroupedDerivedColumns<T, N> = DerivedColumnOrGroup<T, N>[]
 
-export interface DerivedColResult<T, R> {
+export interface DerivedColResult<T, N> {
   areaPos: AreaPos
-  itemsWithGrouping: GroupedDerivedColumns<T, R>
-  items: DerivedColumn<T, R>[]
+  itemsWithGrouping: GroupedDerivedColumns<T, N>
+  items: DerivedColumn<T, N>[]
   size: number
   startOffset: number
   startIndexOffset: number
   firstWithSize: boolean
 }
 
-export interface DerivedColsResult<T, R> {
-  start: DerivedColResult<T, R>
-  middle: DerivedColResult<T, R>
-  end: DerivedColResult<T, R>
+export interface DerivedColsResult<T, N> {
+  start: DerivedColResult<T, N>
+  middle: DerivedColResult<T, N>
+  end: DerivedColResult<T, N>
   size: number
   itemCount: number
   headerRows: number
 }
 
+/**
+ * What you should return in the `getRowMeta` function prop to describe the row's height
+ * and optionally if it has a row details section.
+ */
 export interface RowMeta {
+  /**
+   * The height of the row in pixels. When `getRowMeta` is not defined row heights will
+   * default to `40`.
+   */
   height: number
+  /** Optionally return true if this row has a row details section. */
   hasDetails?: boolean
 }
 
+/**
+ * The row details meta returned in the `getRowDetailsMeta` function prop for providing
+ * the the row details height in pixels. If `getRowDetailsMeta` isn't specified row
+ * details rows will be 160px.
+ */
 export interface RowDetailsMeta {
+  /** The row details section height in pixels. */
   height: number
 }
 
+/** The signature of the `getRowMeta` function prop. */
 export type GetRowMeta<T> = (item: T) => RowMeta
+/** The signature of the `getRowDetailsMeta` function prop. */
 export type GetRowDetailsMeta<T> = (item: T) => RowDetailsMeta
 
 // Derived for internal use
@@ -127,22 +198,26 @@ export interface DerivedRowsResult<T> {
   itemCount: number
 }
 
-export interface CellComponentProps<T, R> {
-  item: T
-  column: DerivedColumn<T, R>
-}
-
+/** The row state to specify which rows have their details section expanded. */
 export interface RowStateItem {
+  /** True if the row details are expanded. */
   detailsExpanded?: boolean
 }
 
+/** Row state object keyed by row ID. */
 export type RowState = Record<ItemId, RowStateItem>
 
+/**
+ * Signature of `onRowStateChange` callback which should be implemented when using row
+ * details.
+ */
 export type OnRowStateChange = (itemId: ItemId, item: RowStateItem) => void
 
+/** Signature of function which returns a unique row ID per row. */
 export type GetRowId<T> = (item: T) => ItemId
 
-export type RenderRowDetails<T, R> = (item: T) => R
+/** Renders the row details and returns a node. */
+export type RenderRowDetails<T, N> = (item: T) => N
 
 export type GridRange = [startIndex: number, endIndex: number]
 
@@ -168,7 +243,7 @@ export enum BodyAreaId {
   BottomEnd,
 }
 
-export interface BodyAreaDesc<T, R> {
+export interface BodyAreaDesc<T, N> {
   id: string
   windowX: number
   windowY: number
@@ -176,15 +251,15 @@ export interface BodyAreaDesc<T, R> {
   windowHeight: number
   width: number
   height: number
-  colResult: DerivedColResult<T, R>
+  colResult: DerivedColResult<T, N>
   rowResult: DerivedRowResult<T>
   pinnedX: boolean
   pinnedY: boolean
   lastY: boolean
 }
 
-export interface HeaderAreaDesc<T, R> {
-  columns: GroupedDerivedColumns<T, R>
+export interface HeaderAreaDesc<T, N> {
+  columns: GroupedDerivedColumns<T, N>
   colAreaPos: AreaPos
   headerRowHeight: number
   left: number

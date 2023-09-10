@@ -24,8 +24,8 @@ export const canUseDOM = Boolean(
   typeof window !== 'undefined' && window.document && window.document.createElement
 )
 
-export const getColumnOffset = <T, R>(
-  r: DerivedColumnGroup<T, R> | DerivedColumn<T, R>
+export const getColumnOffset = <T, N>(
+  r: DerivedColumnGroup<T, N> | DerivedColumn<T, N>
 ) => r.offset
 export const getRowOffset = <T>(r: DerivedRow<T>) => r.offset
 

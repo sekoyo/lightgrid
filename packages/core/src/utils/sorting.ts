@@ -1,4 +1,4 @@
-import { Comparator, SortDirection } from '../types'
+import { Column, Comparator, SortDirection, ValueSource } from '../types'
 
 export function getNextSortDirection(currSortDirection?: SortDirection) {
   switch (currSortDirection) {
@@ -24,10 +24,10 @@ function localeCompare(a: string, b: string) {
 }
 
 export const createDefaultSortComparator =
-  <T>(getValue: (data: T) => unknown, sortDirection: SortDirection) =>
+  <T>(getValue: Column<T, any>['getValue'], sortDirection: SortDirection) =>
   (a: T, b: T) => {
-    const va = getValue(a)
-    const vb = getValue(b)
+    const va = getValue(a, ValueSource.Sort)
+    const vb = getValue(b, ValueSource.Sort)
     return typeof va === 'string' && typeof vb === 'string'
       ? sortDirection * localeCompare(va, vb)
       : sortDirection * (Number(va) - Number(vb))

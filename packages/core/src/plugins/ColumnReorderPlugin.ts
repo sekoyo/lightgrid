@@ -23,8 +23,8 @@ enum PointerSide {
   Right,
 }
 
-export class ColumnReorderPlugin<T, R> extends GridPlugin<T, R> {
-  colToMove?: ColumnOrGroup<T, R>
+export class ColumnReorderPlugin<T, N> extends GridPlugin<T, N> {
+  colToMove?: ColumnOrGroup<T, N>
   colToMoveChildKeys: ItemId[] = []
   lastOverColumnKey?: ItemId
   lastPointerSide = PointerSide.None
@@ -72,7 +72,7 @@ export class ColumnReorderPlugin<T, R> extends GridPlugin<T, R> {
     this.colToMoveChildKeys = []
   }
 
-  onPointerDown = (e: PointerEvent, column: DerivedColumnOrGroup<T, R>) => {
+  onPointerDown = (e: PointerEvent, column: DerivedColumnOrGroup<T, N>) => {
     if (!this.mgr.onColumnsChange) {
       console.error('onColumnsChange prop is required to enable column reordering')
       return
@@ -104,7 +104,7 @@ export class ColumnReorderPlugin<T, R> extends GridPlugin<T, R> {
   onPointerEnter = (
     el: Element,
     clientX: number,
-    overColumn: DerivedColumnOrGroup<T, R>
+    overColumn: DerivedColumnOrGroup<T, N>
   ) => {
     this.checkShouldMoveColumn(el, clientX, overColumn)
   }
@@ -112,7 +112,7 @@ export class ColumnReorderPlugin<T, R> extends GridPlugin<T, R> {
   onPointerMove = (
     el: Element,
     clientX: number,
-    overColumn: DerivedColumnOrGroup<T, R>
+    overColumn: DerivedColumnOrGroup<T, N>
   ) => {
     this.checkShouldMoveColumnThrottled(el, clientX, overColumn)
   }
@@ -120,7 +120,7 @@ export class ColumnReorderPlugin<T, R> extends GridPlugin<T, R> {
   checkShouldMoveColumn = (
     el: Element,
     clientX: number,
-    overColumn: DerivedColumnOrGroup<T, R>
+    overColumn: DerivedColumnOrGroup<T, N>
   ) => {
     if (
       this.colToMove &&
@@ -159,61 +159,67 @@ export class ColumnReorderPlugin<T, R> extends GridPlugin<T, R> {
   checkShouldMoveColumnThrottled = throttle(this.checkShouldMoveColumn, 100)
 
   moveColumn(
-    columns: GroupedColumns<T, R>,
-    colToMove: ColumnOrGroup<T, R>,
+    columns: GroupedColumns<T, N>,
+    colToMove: ColumnOrGroup<T, N>,
     adjacentColKey: ItemId,
     pointerSide: PointerSide
-  ): GroupedColumns<T, R> {
-    return columns.reduce((nextCols, col) => {
-      if (colToMove.key === col.key) {
-        // Filter out the column to move
-        return nextCols
-      }
-
-      if (adjacentColKey === col.key) {
-        const colToMoveCopy = Object.assign({}, colToMove)
-        colToMoveCopy.pin = col.pin
-
-        if (isColumnGroup(colToMoveCopy)) {
-          colToMoveCopy.children = this.removePinFromChildren(colToMoveCopy.children)
+  ): GroupedColumns<T, N> {
+    return columns.reduce(
+      (nextCols, col) => {
+        if (colToMove.key === col.key) {
+          // Filter out the column to move
+          return nextCols
         }
 
-        if (pointerSide === PointerSide.Left) {
+        if (adjacentColKey === col.key) {
+          const colToMoveCopy = Object.assign({}, colToMove)
+          colToMoveCopy.pin = col.pin
+
+          if (isColumnGroup(colToMoveCopy)) {
+            colToMoveCopy.children = this.removePinFromChildren(colToMoveCopy.children)
+          }
+
+          if (pointerSide === PointerSide.Left) {
+            nextCols.push(colToMoveCopy)
+            nextCols.push(col)
+          } else {
+            nextCols.push(col)
+            nextCols.push(colToMoveCopy)
+          }
+        } else if (isColumnGroup(col)) {
+          const colToMoveCopy = Object.assign({}, col)
+          colToMoveCopy.children = this.moveColumn(
+            col.children,
+            colToMove,
+            adjacentColKey,
+            pointerSide
+          )
           nextCols.push(colToMoveCopy)
-          nextCols.push(col)
         } else {
           nextCols.push(col)
-          nextCols.push(colToMoveCopy)
         }
-      } else if (isColumnGroup(col)) {
-        const colToMoveCopy = Object.assign({}, col)
-        colToMoveCopy.children = this.moveColumn(
-          col.children,
-          colToMove,
-          adjacentColKey,
-          pointerSide
-        )
-        nextCols.push(colToMoveCopy)
-      } else {
-        nextCols.push(col)
-      }
 
-      return nextCols
-    }, [] as GroupedColumns<T, R>)
+        return nextCols
+      },
+      [] as GroupedColumns<T, N>
+    )
   }
 
-  removePinFromChildren(columns: GroupedColumns<T, R>) {
-    return columns.reduce((nextColumns, column) => {
-      const columnCopy = Object.assign({}, column)
-      delete columnCopy.pin
+  removePinFromChildren(columns: GroupedColumns<T, N>) {
+    return columns.reduce(
+      (nextColumns, column) => {
+        const columnCopy = Object.assign({}, column)
+        delete columnCopy.pin
 
-      if (isColumnGroup(columnCopy)) {
-        columnCopy.children = this.removePinFromChildren(columnCopy.children)
-      }
+        if (isColumnGroup(columnCopy)) {
+          columnCopy.children = this.removePinFromChildren(columnCopy.children)
+        }
 
-      nextColumns.push(columnCopy)
-      return nextColumns
-    }, [] as GroupedColumns<T, R>)
+        nextColumns.push(columnCopy)
+        return nextColumns
+      },
+      [] as GroupedColumns<T, N>
+    )
   }
 
   checkBoundsActions = throttle((clientX: number, clientY: number) => {

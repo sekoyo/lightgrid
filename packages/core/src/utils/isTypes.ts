@@ -7,28 +7,28 @@ import {
   DerivedRowResult,
 } from '../types'
 
-export function isColResult<T, R>(
-  colOrRowResult: DerivedColResult<T, R> | DerivedRowResult<T>
-): colOrRowResult is DerivedColResult<T, R> {
-  if ((colOrRowResult as DerivedColResult<T, R>).items) {
+export function isColResult<T, N>(
+  colOrRowResult: DerivedColResult<T, N> | DerivedRowResult<T>
+): colOrRowResult is DerivedColResult<T, N> {
+  if ((colOrRowResult as DerivedColResult<T, N>).items) {
     return true
   }
   return false
 }
-export function isRowResult<T, R>(
-  colOrRowResult: DerivedColResult<T, R> | DerivedRowResult<T>
+export function isRowResult<T, N>(
+  colOrRowResult: DerivedColResult<T, N> | DerivedRowResult<T>
 ): colOrRowResult is DerivedRowResult<T> {
   return !isColResult(colOrRowResult)
 }
 
-export function isColumnGroup<T, R>(
-  column: ColumnGroup<T, R> | Column<T, R>
-): column is ColumnGroup<T, R> {
-  return Array.isArray((column as ColumnGroup<T, R>).children)
+export function isColumnGroup<T, N>(
+  column: ColumnGroup<T, N> | Column<T, N>
+): column is ColumnGroup<T, N> {
+  return Array.isArray((column as ColumnGroup<T, N>).children)
 }
 
-export function isDerivedColumnGroup<T, R>(
-  column: DerivedColumnOrGroup<T, R>
-): column is DerivedColumnGroup<T, R> {
-  return Array.isArray((column as DerivedColumnGroup<T, R>).children)
+export function isDerivedColumnGroup<T, N>(
+  column: DerivedColumnOrGroup<T, N>
+): column is DerivedColumnGroup<T, N> {
+  return Array.isArray((column as DerivedColumnGroup<T, N>).children)
 }

@@ -12,7 +12,7 @@ import { HeaderCell } from './HeaderCell'
 
 interface HeaderAreaProps<T> {
   mgr: GridManager<T, React.ReactNode>
-  columns: GroupedDerivedColumns<T, R>
+  columns: GroupedDerivedColumns<T, N>
   colAreaPos: AreaPos
   headerRowHeight: number
   left: number
@@ -36,7 +36,7 @@ export function HeaderArea<T>({
   colReorderKey,
 }: HeaderAreaProps<T>) {
   const renderColumns = useCallback(
-    (groupCols: GroupedDerivedColumns<T, R>) => {
+    (groupCols: GroupedDerivedColumns<T, N>) => {
       return (
         <>
           {groupCols.map(column => (

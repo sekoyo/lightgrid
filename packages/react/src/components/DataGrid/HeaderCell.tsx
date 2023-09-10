@@ -13,7 +13,7 @@ import { R } from './types'
 
 interface HeaderCellProps<T> {
   mgr: GridManager<T, React.ReactNode>
-  column: DerivedColumnOrGroup<T, R>
+  column: DerivedColumnOrGroup<T, N>
   colAreaPos: AreaPos
   headerRowHeight: number
   enableColumnResize?: boolean

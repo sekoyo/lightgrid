@@ -4,10 +4,10 @@ import { GridManager } from '../GridManager'
 import { GridPlugin } from '../GridPlugin'
 import { clamp, copySelection } from '../utils'
 
-export class CellSelectionPlugin<T, R> extends GridPlugin<T, R> {
+export class CellSelectionPlugin<T, N> extends GridPlugin<T, N> {
   rect?: DOMRect
 
-  startArea?: BodyAreaDesc<T, R>
+  startArea?: BodyAreaDesc<T, N>
   startCell?: CellPosition
   setStartCell: (pos: CellPosition | undefined) => void
 
@@ -21,7 +21,7 @@ export class CellSelectionPlugin<T, R> extends GridPlugin<T, R> {
   stepFactor = 0.1
 
   constructor(
-    mgr: GridManager<T, R>,
+    mgr: GridManager<T, N>,
     setStartCell: (pos: CellPosition | undefined) => void,
     setSelection: (sel: CellSelection | undefined) => void
   ) {

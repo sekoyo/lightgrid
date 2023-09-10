@@ -40,30 +40,30 @@ import type { CellSelectionPlugin } from './plugins/CellSelectionPlugin'
 
 type Viewport = { width: number; height: number }
 
-interface GridManagerStaticProps<T, R> {
+interface GridManagerStaticProps<T, N> {
   getRowId: GetRowId<T>
   getRowMeta: GetRowMeta<T>
   getRowDetailsMeta: GetRowDetailsMeta<T>
-  renderRowDetails: RenderRowDetails<T, R>
+  renderRowDetails: RenderRowDetails<T, N>
   setStartCell: (cellPosition: CellPosition | undefined) => void
   setSelection: (cellSelection: CellSelection | undefined) => void
   setColResizeData: SetColResizeData
   setColReorderKey: SetColReorderKey
-  onColumnsChange?: (columns: GroupedColumns<T, R>) => void
+  onColumnsChange?: (columns: GroupedColumns<T, N>) => void
   onDataChange?: (data: T[]) => void
   onRowStateChange: OnRowStateChange
-  onDerivedColumnsChange: (derivedCols: DerivedColsResult<T, R>) => void
-  onAreasChanged: (gridAreas: BodyAreaDesc<T, R>[]) => void
-  onHeadersChanged: (headerAreas: HeaderAreaDesc<T, R>[]) => void
+  onDerivedColumnsChange: (derivedCols: DerivedColsResult<T, N>) => void
+  onAreasChanged: (gridAreas: BodyAreaDesc<T, N>[]) => void
+  onHeadersChanged: (headerAreas: HeaderAreaDesc<T, N>[]) => void
   onViewportChanged: ({ width, height }: Viewport) => void
   onContentHeightChanged: (value: number) => void
   onHeaderHeightChanged: (value: number) => void
-  onMiddleColsChange: (cols: DerivedColumn<T, R>[]) => void
+  onMiddleColsChange: (cols: DerivedColumn<T, N>[]) => void
   onMiddleRowsChange: (rows: DerivedRow<T>[]) => void
 }
 
-interface GridManagerDynamicProps<T, R> {
-  columns: GroupedColumns<T, R>
+interface GridManagerDynamicProps<T, N> {
+  columns: GroupedColumns<T, N>
   headerRowHeight: number
   data: T[]
   pinnedTopData: T[]
@@ -74,7 +74,7 @@ interface GridManagerDynamicProps<T, R> {
   enableColumnReorder?: boolean
 }
 
-export class GridManager<T, R> {
+export class GridManager<T, N> {
   gridEl?: HTMLDivElement
   scrollEl?: HTMLDivElement
   viewportEl?: HTMLDivElement
@@ -86,23 +86,23 @@ export class GridManager<T, R> {
   getRowId: GetRowId<T>
   getRowMeta: GetRowMeta<T>
   getRowDetailsMeta: GetRowDetailsMeta<T>
-  renderRowDetails: RenderRowDetails<T, R>
+  renderRowDetails: RenderRowDetails<T, N>
   setStartCell: (cellPosition: CellPosition | undefined) => void
   setSelection: (cellSelection: CellSelection | undefined) => void
   setColResizeData: SetColResizeData
   setColReorderKey: SetColReorderKey
-  onColumnsChange?: (columns: GroupedColumns<T, R>) => void
+  onColumnsChange?: (columns: GroupedColumns<T, N>) => void
   onDataChange?: (data: T[]) => void
   onRowStateChange: OnRowStateChange
 
-  cellSelectionPlugin?: CellSelectionPlugin<T, R>
-  columnResizePlugin?: ColumnResizePlugin<T, R>
-  columnReorderPlugin?: ColumnReorderPlugin<T, R>
+  cellSelectionPlugin?: CellSelectionPlugin<T, N>
+  columnResizePlugin?: ColumnResizePlugin<T, N>
+  columnReorderPlugin?: ColumnReorderPlugin<T, N>
 
   // Dynamic props
   $viewportWidth = signal(0)
   $viewportHeight = signal(0)
-  $columns = signal<GroupedColumns<T, R>>([])
+  $columns = signal<GroupedColumns<T, N>>([])
   $headerRowHeight = signal(0)
   $data = signal<T[]>([])
   $pinnedTopData = signal<T[]>([])
@@ -117,7 +117,7 @@ export class GridManager<T, R> {
     const $comparators = computed(() =>
       flatMapColumns(
         this.$columns(),
-        c => c as Column<T, R>,
+        c => c as Column<T, N>,
         c => Boolean(!isColumnGroup(c) && c.sortable && c.sortDirection)
       )
         .sort((a, b) => (a.sortPriority ?? 0) - (b.sortPriority ?? 0))
@@ -125,7 +125,6 @@ export class GridManager<T, R> {
           if (c.createSortComparator) {
             return c.createSortComparator(c.sortDirection!)
           }
-
           return createDefaultSortComparator(c.getValue, c.sortDirection!)
         })
     )
@@ -252,7 +251,7 @@ export class GridManager<T, R> {
     this.$derivedRows().middle.items.slice(this.$rowWindow()[0], this.$rowWindow()[1] + 1)
   )
 
-  $headerAreas = computed<HeaderAreaDesc<T, R>[]>(() => {
+  $headerAreas = computed<HeaderAreaDesc<T, N>[]>(() => {
     const derivedCols = this.$derivedCols()
     const headerRowHeight = this.$headerRowHeight()
     const headerHeight = this.$headerHeight()
@@ -290,10 +289,10 @@ export class GridManager<T, R> {
 
   // -- Grid areas (pushed in render order)
   $areas = computed(() => {
-    const byRender: BodyAreaDesc<T, R>[] = []
-    const byCol: BodyAreaDesc<T, R>[][] = []
+    const byRender: BodyAreaDesc<T, N>[] = []
+    const byCol: BodyAreaDesc<T, N>[][] = []
 
-    const addToCol = (colIndex: number, rowIndex: number, area: BodyAreaDesc<T, R>) => {
+    const addToCol = (colIndex: number, rowIndex: number, area: BodyAreaDesc<T, N>) => {
       if (!byCol[colIndex]) {
         byCol[colIndex] = []
       }
@@ -314,7 +313,7 @@ export class GridManager<T, R> {
     // Main
     if (derivedRows.middle.size) {
       if (derivedCols.middle.size) {
-        const area: BodyAreaDesc<T, R> = {
+        const area: BodyAreaDesc<T, N> = {
           id: 'mainMiddle',
           windowX: derivedCols.middle.startOffset,
           windowY: derivedRows.middle.startOffset,
@@ -332,7 +331,7 @@ export class GridManager<T, R> {
         addToCol(AreaPos.Middle, AreaPos.Middle, area)
       }
       if (derivedCols.end.size) {
-        const area: BodyAreaDesc<T, R> = {
+        const area: BodyAreaDesc<T, N> = {
           id: 'mainEnd',
           windowX: endX,
           windowY: derivedRows.middle.startOffset,
@@ -350,7 +349,7 @@ export class GridManager<T, R> {
         addToCol(AreaPos.End, AreaPos.Middle, area)
       }
       if (derivedCols.start.size) {
-        const area: BodyAreaDesc<T, R> = {
+        const area: BodyAreaDesc<T, N> = {
           id: 'mainStart',
           windowX: 0,
           windowY: derivedRows.middle.startOffset,
@@ -372,7 +371,7 @@ export class GridManager<T, R> {
     // Top
     if (derivedRows.start.size) {
       if (derivedCols.middle.size) {
-        const area: BodyAreaDesc<T, R> = {
+        const area: BodyAreaDesc<T, N> = {
           id: 'topMiddle',
           windowX: derivedCols.middle.startOffset,
           windowY: derivedRows.start.startOffset,
@@ -390,7 +389,7 @@ export class GridManager<T, R> {
         addToCol(AreaPos.Middle, AreaPos.Start, area)
       }
       if (derivedCols.end.size) {
-        const area: BodyAreaDesc<T, R> = {
+        const area: BodyAreaDesc<T, N> = {
           id: 'topEnd',
           windowX: endX,
           windowY: derivedRows.start.startOffset,
@@ -408,7 +407,7 @@ export class GridManager<T, R> {
         addToCol(AreaPos.End, AreaPos.Start, area)
       }
       if (derivedCols.start.size) {
-        const area: BodyAreaDesc<T, R> = {
+        const area: BodyAreaDesc<T, N> = {
           id: 'topStart',
           windowX: 0,
           windowY: derivedRows.start.startOffset,
@@ -430,7 +429,7 @@ export class GridManager<T, R> {
     // Bottom
     if (derivedRows.end.size) {
       if (derivedCols.middle.size) {
-        const area: BodyAreaDesc<T, R> = {
+        const area: BodyAreaDesc<T, N> = {
           id: 'bottomMiddle',
           windowX: derivedCols.middle.startOffset,
           windowY: endY,
@@ -448,7 +447,7 @@ export class GridManager<T, R> {
         addToCol(AreaPos.Middle, AreaPos.End, area)
       }
       if (derivedCols.end.size) {
-        const area: BodyAreaDesc<T, R> = {
+        const area: BodyAreaDesc<T, N> = {
           id: 'bottomEnd',
           windowX: endX,
           windowY: endY,
@@ -466,7 +465,7 @@ export class GridManager<T, R> {
         addToCol(AreaPos.End, AreaPos.End, area)
       }
       if (derivedCols.start.size) {
-        const area: BodyAreaDesc<T, R> = {
+        const area: BodyAreaDesc<T, N> = {
           id: 'bottomStart',
           windowX: 0,
           windowY: endY,
@@ -492,7 +491,7 @@ export class GridManager<T, R> {
   $scrollY = signal(0)
   $scrollX = signal(0)
 
-  constructor(props: GridManagerStaticProps<T, R>) {
+  constructor(props: GridManagerStaticProps<T, N>) {
     this.getRowId = props.getRowId
     this.getRowMeta = props.getRowMeta
     this.getRowDetailsMeta = props.getRowDetailsMeta
@@ -575,7 +574,7 @@ export class GridManager<T, R> {
     }
   }
 
-  update(props: GridManagerDynamicProps<T, R>) {
+  update(props: GridManagerDynamicProps<T, N>) {
     this.$columns.set(props.columns)
     this.$headerRowHeight.set(props.headerRowHeight)
     this.$data.set(props.data)
@@ -610,7 +609,7 @@ export class GridManager<T, R> {
     this.$viewportHeight.set(contentRect.height)
   }, 30)
 
-  changeSort(column: DerivedColumn<T, R>) {
+  changeSort(column: DerivedColumn<T, N>) {
     if (!this.onColumnsChange) {
       console.error('onColumnsChange prop is required to enable column sorting')
       return
@@ -652,6 +651,6 @@ export class GridManager<T, R> {
   }
 }
 
-export function createGridManager<T, R>(props: GridManagerStaticProps<T, R>) {
+export function createGridManager<T, N>(props: GridManagerStaticProps<T, N>) {
   return root(() => new GridManager(props))
 }

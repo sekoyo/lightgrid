@@ -77,7 +77,7 @@ body.dark {
   .token.selector,
   .token.important,
   .token.atrule {
-    color: rgb(238 216 65);
+    color: #f6d62b;
   }
 
   .token.operator,
@@ -135,7 +135,7 @@ body.dark {
   }
 
   .token.function {
-    color: rgb(238 216 65);
+    color: #f6d62b;
   }
 
   .token.regex {

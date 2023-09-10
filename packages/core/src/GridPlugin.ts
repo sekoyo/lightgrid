@@ -3,10 +3,10 @@ import { type GridManager } from './GridManager'
 import { type CellPosition, type BodyAreaDesc, AreaPos } from './types'
 import { binarySearch } from './utils'
 
-export abstract class GridPlugin<T, R> {
-  mgr: GridManager<T, R>
+export abstract class GridPlugin<T, N> {
+  mgr: GridManager<T, N>
 
-  constructor(mgr: GridManager<T, R>) {
+  constructor(mgr: GridManager<T, N>) {
     this.mgr = mgr
   }
   mount?(): void
@@ -33,7 +33,7 @@ export abstract class GridPlugin<T, R> {
   }
 
   getCellInAreaFromPoint(
-    area: BodyAreaDesc<T, R>,
+    area: BodyAreaDesc<T, N>,
     windowX: number,
     windowY: number
   ): CellPosition {

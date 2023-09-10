@@ -5,10 +5,10 @@ import { expoSearchGreater } from './expoSearchGreater'
 
 const MAX_OVERSCAN = 300
 
-export function getColumnWindow<T, R>(
+export function getColumnWindow<T, N>(
   viewportSize: number,
   scrollLeft: number,
-  columns: GroupedDerivedColumns<T, R>
+  columns: GroupedDerivedColumns<T, N>
 ): GridRange {
   const overscan = Math.min(viewportSize / 2, MAX_OVERSCAN)
   const xStart = Math.max(0, scrollLeft - overscan)

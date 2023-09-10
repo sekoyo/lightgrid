@@ -8,7 +8,7 @@ import { DefaultCellComponent } from './DefaultCellComponent'
 
 interface CellProps<T> {
   mgr: GridManager<T, React.ReactNode>
-  column: DerivedColumn<T, R>
+  column: DerivedColumn<T, N>
   // Passing in item instead of `row: DerivedRow<T>` means that if data changes
   // and rows are re-derived, only cells with a changed item will re-render.
   item: T
@@ -78,7 +78,7 @@ export function CellNoMemo<T>({
           <DownArrow />
         </IconButton>
       )}
-      {column.cellComponent?.({ column, item: item }) || (
+      {column.cellComponent?.(column, item) || (
         <DefaultCellComponent column={column} item={item} />
       )}
     </div>

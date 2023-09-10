@@ -17,10 +17,10 @@ export type ColResizeData = {
 
 export type SetColResizeData = (colReorderKey: ColResizeData | undefined) => void
 
-export class ColumnResizePlugin<T, R> extends GridPlugin<T, R> {
+export class ColumnResizePlugin<T, N> extends GridPlugin<T, N> {
   startClientX = 0
   startClientY = 0
-  column?: DerivedColumnOrGroup<T, R>
+  column?: DerivedColumnOrGroup<T, N>
   colAreaPos?: AreaPos
 
   unmount() {
@@ -28,7 +28,7 @@ export class ColumnResizePlugin<T, R> extends GridPlugin<T, R> {
     window.removeEventListener('pointerup', this.onWindowPointerUp)
   }
 
-  rangeBoundDiff(column: DerivedColumnOrGroup<T, R>, diffX: number) {
+  rangeBoundDiff(column: DerivedColumnOrGroup<T, N>, diffX: number) {
     const minWidth = isColumnGroup(column)
       ? defaultColGroupWidth
       : column.minWidth ?? defaultAbsMinWidth
@@ -42,7 +42,7 @@ export class ColumnResizePlugin<T, R> extends GridPlugin<T, R> {
 
   onPointerDown = (
     e: PointerEvent,
-    column: DerivedColumnOrGroup<T, R>,
+    column: DerivedColumnOrGroup<T, N>,
     colAreaPos: AreaPos
   ) => {
     if (!this.mgr.onColumnsChange) {
@@ -86,11 +86,11 @@ export class ColumnResizePlugin<T, R> extends GridPlugin<T, R> {
     this.mgr.setColResizeData(undefined)
   }
 
-  getGroupUpdates(group: DerivedColumnGroup<T, R>, newSize: number) {
+  getGroupUpdates(group: DerivedColumnGroup<T, N>, newSize: number) {
     const columnUpdates = new Map<string | number, number>()
 
     function recursiveUpdate(
-      currentGroup: DerivedColumnGroup<T, R>,
+      currentGroup: DerivedColumnGroup<T, N>,
       currentNewSize: number
     ) {
       for (let i = 0; i < currentGroup.children.length; i++) {
@@ -111,8 +111,8 @@ export class ColumnResizePlugin<T, R> extends GridPlugin<T, R> {
     return columnUpdates
   }
 
-  updateColumnWidth(colOrGroup: DerivedColumnOrGroup<T, R>, newSize: number) {
-    const nextColumns: GroupedColumns<T, R> = [...this.mgr.$columns()]
+  updateColumnWidth(colOrGroup: DerivedColumnOrGroup<T, N>, newSize: number) {
+    const nextColumns: GroupedColumns<T, N> = [...this.mgr.$columns()]
     const isUpdatingGroup = isDerivedColumnGroup(colOrGroup)
     let columnUpdates: Map<string | number, number>
 
@@ -122,7 +122,7 @@ export class ColumnResizePlugin<T, R> extends GridPlugin<T, R> {
       columnUpdates = new Map([[colOrGroup.key, newSize]])
     }
 
-    function recursiveUpdate(currentGroup: GroupedColumns<T, R>) {
+    function recursiveUpdate(currentGroup: GroupedColumns<T, N>) {
       for (let i = 0; i < currentGroup.length; i++) {
         const colOrGroup = currentGroup[i]
 

@@ -3,9 +3,9 @@ import {
   useEffect,
   useRef,
   useState,
-  type CSSProperties,
   useCallback,
   useMemo,
+  type CSSProperties,
 } from 'react'
 import {
   cls,
@@ -107,15 +107,15 @@ export function DataGrid<T>({
   onRowStateChangeRef.current = onRowStateChange
 
   const [derivedCols, setDerivedCols] =
-    useState<DerivedColsResult<T, R>>(emptyDerivedColsResult)
-  const [gridAreas, setBodyAreas] = useState<BodyAreaDesc<T, R>[]>([])
-  const [headerAreas, setHeaderAreas] = useState<HeaderAreaDesc<T, R>[]>([])
+    useState<DerivedColsResult<T, N>>(emptyDerivedColsResult)
+  const [gridAreas, setBodyAreas] = useState<BodyAreaDesc<T, N>[]>([])
+  const [headerAreas, setHeaderAreas] = useState<HeaderAreaDesc<T, N>[]>([])
   const [viewport, setViewport] = useState({ width: 0, height: 0 })
   const [scrollLeft, setScrollLeft] = useState(0)
   const [scrollTop, setScrollTop] = useState(0)
   const [contentHeight, setContentHeight] = useState(0)
   const [headerHeight, setHeaderHeight] = useState(0)
-  const [middleCols, setMiddleCols] = useState<DerivedColumn<T, R>[]>([])
+  const [middleCols, setMiddleCols] = useState<DerivedColumn<T, N>[]>([])
   const [middleRows, setMiddleRows] = useState<DerivedRow<T>[]>([])
   const [startCell, setStartCell] = useState<CellPosition>()
   const [selection, setSelection] = useState<CellSelection>()
@@ -124,7 +124,7 @@ export function DataGrid<T>({
 
   // Grid manager instance and props that don't change
   const [mgr] = useState(() =>
-    createGridManager<T, R>({
+    createGridManager<T, N>({
       getRowId,
       getRowMeta,
       getRowDetailsMeta,
@@ -205,7 +205,7 @@ export function DataGrid<T>({
         '--lfgDirection': direction,
         minHeight: headerHeight,
         ...style,
-      } as CSSProperties),
+      }) as CSSProperties,
     [themeObj, direction, headerHeight, style]
   )
 

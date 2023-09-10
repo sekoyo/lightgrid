@@ -14,20 +14,20 @@ const defaultFr = 1
 const defaultAbs = 100
 const defaultFrMinWidth = 100
 
-function sumAndDivideCols<T, R>(columns: GroupedColumns<T, R>) {
-  const leftColumns: GroupedColumns<T, R> = []
-  const middleColumns: GroupedColumns<T, R> = []
-  const rightColumns: GroupedColumns<T, R> = []
+function sumAndDivideCols<T, N>(columns: GroupedColumns<T, N>) {
+  const leftColumns: GroupedColumns<T, N> = []
+  const middleColumns: GroupedColumns<T, N> = []
+  const rightColumns: GroupedColumns<T, N> = []
   let totalAbsolutes = 0
   let totalFractions = 0
   let totalDepth = 1
   let minFractionalSize = 0
 
   function recurse(
-    levelColumns: GroupedColumns<T, R>,
-    levelStartColumns: GroupedColumns<T, R>,
-    levelMiddleColumns: GroupedColumns<T, R>,
-    levelEndColumns: GroupedColumns<T, R>,
+    levelColumns: GroupedColumns<T, N>,
+    levelStartColumns: GroupedColumns<T, N>,
+    levelMiddleColumns: GroupedColumns<T, N>,
+    levelEndColumns: GroupedColumns<T, N>,
     parentPin?: ColumnPin,
     depth = 1
   ) {
@@ -40,7 +40,7 @@ function sumAndDivideCols<T, R>(columns: GroupedColumns<T, R>) {
       const pin = column.pin || parentPin
 
       if (isColumnGroup(column)) {
-        const children: GroupedColumns<T, R> = []
+        const children: GroupedColumns<T, N> = []
         const columnWithoutChildren = {
           ...column,
           children,
@@ -141,7 +141,7 @@ function getDerivedWidth(
   return toNearestHalf(res)
 }
 
-const createEmptyColResults: <T, R>() => DerivedColsResult<T, R> = () => ({
+const createEmptyColResults: <T, N>() => DerivedColsResult<T, N> = () => ({
   start: {
     areaPos: AreaPos.Start,
     itemsWithGrouping: [],
@@ -176,16 +176,16 @@ const createEmptyColResults: <T, R>() => DerivedColsResult<T, R> = () => ({
 
 const noColumns = createEmptyColResults<any, any>()
 
-export function deriveColumns<T, R>(
-  columns: GroupedColumns<T, R>,
+export function deriveColumns<T, N>(
+  columns: GroupedColumns<T, N>,
   viewportWidth: number
-): DerivedColsResult<T, R> {
+): DerivedColsResult<T, N> {
   if (viewportWidth === 0) {
     return noColumns
   }
 
   const s = sumAndDivideCols(columns)
-  const o = createEmptyColResults<T, R>()
+  const o = createEmptyColResults<T, N>()
 
   // If abs doesn't overflow we have to make sure total size doesn't
   // slightly exceed width due to precision/rounding.
@@ -193,9 +193,9 @@ export function deriveColumns<T, R>(
   let frSizeRemaining = willStretchToVP ? viewportWidth - s.totalAbsolutes : Infinity
 
   function recurseColumns(
-    levelColumns: GroupedColumns<T, R>,
-    colResult: DerivedColResult<T, R>,
-    levelDerivedCols: GroupedDerivedColumns<T, R>,
+    levelColumns: GroupedColumns<T, N>,
+    colResult: DerivedColResult<T, N>,
+    levelDerivedCols: GroupedDerivedColumns<T, N>,
     colIndexOffset = 0,
     rowIndex = 0,
     sectionOffset = { current: 0 }
@@ -246,7 +246,7 @@ export function deriveColumns<T, R>(
           frSizeRemaining = Math.max(0, frSizeRemaining - size)
         }
 
-        const c: DerivedColumn<T, R> = {
+        const c: DerivedColumn<T, N> = {
           ...column,
           size,
           offset: sectionOffset.current,

@@ -6,12 +6,13 @@ import {
   OnRowStateChange,
   RowState,
   RowStateItem,
+  ValueSource,
 } from '@lightfin/datagrid'
 import { DataGrid } from '@lightfin/react-datagrid'
 
 import '@lightfin/datagrid/dist/styles.css'
 
-type R = React.ReactNode
+type N = React.ReactNode
 
 interface Details {
   name: string
@@ -36,8 +37,8 @@ const middleCols = new Array(100).fill(0).map(() => ({
   getValue,
 }))
 
-function CustomCell({ item, column }: CellComponentProps<Item, R>) {
-  return <strong>{column.getValue(item)}</strong>
+function CustomCell({ item, column }: CellComponentProps<Item, N>) {
+  return <strong>{column.getValue(item, ValueSource.Cell)}</strong>
 }
 
 export default function Demo() {
@@ -96,7 +97,7 @@ export default function Demo() {
     })
   }
 
-  const [columns, setColumns] = useState<GroupedColumns<Item, R>>(
+  const [columns, setColumns] = useState<GroupedColumns<Item, N>>(
     () => [
       {
         key: 'b',
@@ -145,8 +146,8 @@ export default function Demo() {
         width: '1fr',
         sortable: true,
         getValue: () => today.getFullYear(),
-        cellComponent: props => (
-          <CustomCell column={props.column} item={props.item} />
+        cellComponent: (column, item) => (
+          <CustomCell column={column} item={item} />
         ),
       },
     ]

@@ -19,13 +19,13 @@ import { Cell } from './Cell'
 
 interface GridAreaProps<T> {
   mgr: GridManager<T, React.ReactNode>
-  area: BodyAreaDesc<T, R>
-  columns: DerivedColumn<T, R>[]
+  area: BodyAreaDesc<T, N>
+  columns: DerivedColumn<T, N>[]
   rows: DerivedRow<T>[]
   rowState: RowState
   onRowStateChangeRef: React.MutableRefObject<OnRowStateChange>
   detailsWidth: number
-  renderRowDetailsRef: React.MutableRefObject<RenderRowDetails<T, R>>
+  renderRowDetailsRef: React.MutableRefObject<RenderRowDetails<T, N>>
   selection?: CellSelection
   selectionStartCell?: CellPosition
   isFirstColumnGroup: boolean
