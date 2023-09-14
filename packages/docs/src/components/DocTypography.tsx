@@ -100,3 +100,7 @@ export const CodeBlock = (props: { children: string; lang?: string; class?: stri
     </pre>
   )
 }
+
+export const Table = (props: ParentProps) => (
+  <table class={styles.table}>{props.children}</table>
+)

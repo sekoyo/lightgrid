@@ -10,6 +10,7 @@
 - Fullscreen option for demos/source code
 - Lazy loading guide
 - Scroll to position
+- Add # to H1,H2 etc
 
 https://github.com/jdorfman/awesome-json-datasets
 https://catalog.data.gov/dataset/?res_format=JSON

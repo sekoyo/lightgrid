@@ -6,7 +6,6 @@ export enum SortDirection {
 
 /** Value for column.pin */
 export type ColumnPin = 'start' | 'end'
-
 /**
  * The source that is requesting a column value, which can be a cell, the clipboard, or
  * the default sorting function.
@@ -20,17 +19,26 @@ export enum ValueSource {
 /** The type for column keys and row IDs. */
 export type ItemId = string | number
 
+export interface CellComponentProps<T, N> {
+  column: DerivedColumn<T, N>
+  item: T
+}
+
 /**
  * A column group definition which consists of a header and one or more columns or sub
  * groups in the children array.
  */
 export interface ColumnGroup<T, N> {
-  /** A unique key for this column group. */
+  /** A unique key for this column group. Do not use an array index. */
   key: ItemId
   /** The header text or node for this column group. */
   header?: N
-
+  /** The columns and groups under this group. */
   children: GroupedColumns<T, N>
+  /**
+   * Pin this column to the left (`"start"`) or right (`"end"`) if you wish it to always
+   * be visible even if the user scrolls.
+   */
   pin?: ColumnPin
 }
 
@@ -42,7 +50,7 @@ export type Comparator<T> = (a: T, b: T) => number
 
 /** The column definition for each column in the `columns` prop. */
 export interface Column<T, N> {
-  /** A unique key for this column. */
+  /** A unique key for this column. Do not use an array index. */
   key: ItemId
   /** The header text or node for this column. */
   header?: N
@@ -75,16 +83,14 @@ export interface Column<T, N> {
    * default it's based on the order that columns are clicked.
    */
   sortPriority?: number
-  /** TODO */
-  filter?: N
   /**
    * Pin this column to the left (`"start"`) or right (`"end"`) if you wish it to always
    * be visible even if the user scrolls.
    */
   pin?: ColumnPin
   /**
-   * A function given a `props` object with the item and column, which should return the
-   * cell value/node.
+   * A function given a the current column and row item returns the cell node to be
+   * rendered. If not specified will try to render the result of `getValue` as a string.
    */
   cellComponent?: (column: DerivedColumn<T, N>, item: T) => N
 }

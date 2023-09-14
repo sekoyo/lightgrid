@@ -110,3 +110,23 @@
 .codePre {
   max-height: 100%;
 }
+
+.table {
+  width: 100%;
+  border-spacing: 0;
+  border-collapse: collapse;
+  font-size: 0.875em;
+
+  th,
+  td {
+    border: 1px solid var(--borderColor);
+    padding: 0.5em;
+  }
+
+  th {
+    text-align: start;
+  }
+
+  td {
+  }
+}

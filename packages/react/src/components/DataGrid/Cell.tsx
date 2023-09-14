@@ -3,8 +3,8 @@ import { DerivedColumn, GridManager, ItemId, RowStateItem } from '@lightfin/data
 
 import { DownArrow } from '../Icons'
 import { IconButton } from '../IconButton'
-import { R } from './types'
 import { DefaultCellComponent } from './DefaultCellComponent'
+import type { N } from './types'
 
 interface CellProps<T> {
   mgr: GridManager<T, React.ReactNode>
