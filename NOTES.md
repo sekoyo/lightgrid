@@ -22,6 +22,8 @@ Good for master-details (prizes in details)
 
 ### Post MVP
 
+- Check reorder scrolls
+- Paste CSV/XLS into grid
 - Include instructions to use from CDN
 - Row resizing
 - Pasting tabular data into multiple selected cells

@@ -20,10 +20,10 @@
     "@types/lodash-es": "^4.17.9",
     "@types/react": "^18.2.21",
     "@types/react-dom": "^18.2.7",
-    "@typescript-eslint/eslint-plugin": "^6.5.0",
-    "@typescript-eslint/parser": "^6.5.0",
+    "@typescript-eslint/eslint-plugin": "^6.7.0",
+    "@typescript-eslint/parser": "^6.7.0",
     "@vitejs/plugin-react": "^4.0.4",
-    "eslint": "^8.48.0",
+    "eslint": "^8.49.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.3",
     "react": "^18.2.0",
@@ -35,7 +35,7 @@
   "dependencies": {
     "cancelable-promise": "^4.3.1",
     "lodash-es": "^4.17.21",
-    "vite-tsconfig-paths": "^4.2.0",
+    "vite-tsconfig-paths": "^4.2.1",
     "wouter": "^2.11.0"
   }
 }
