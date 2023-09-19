@@ -38,7 +38,7 @@ export default function Doc() {
             component: (
               <Demo
                 demoUrl={`${import.meta.env.VITE_REACT_DEMO_BASE_URL}/demos/async-data`}
-                demoSrc={import('/../react/src/demos/AsyncDataDemo.tsx?raw')}
+                demoSrc={import('/../react/src/demos/AsyncData.tsx?raw')}
                 height={405}
               />
             ),
@@ -49,7 +49,7 @@ export default function Doc() {
             component: (
               <Demo
                 demoUrl={`${import.meta.env.VITE_REACT_DEMO_BASE_URL}/demos/async-data`}
-                demoSrc={import('/../react/src/demos/AsyncDataDemo.tsx?raw')}
+                demoSrc={import('/../react/src/demos/AsyncData.tsx?raw')}
                 height={405}
               />
             ),

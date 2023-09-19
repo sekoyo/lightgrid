@@ -51,7 +51,7 @@ export default function Doc() {
               component: (
                 <Demo
                   demoUrl={`${import.meta.env.VITE_REACT_DEMO_BASE_URL}/demos/theming`}
-                  demoSrc={import('/../react/src/demos/ThemingDemo.tsx?raw')}
+                  demoSrc={import('/../react/src/demos/Theming.tsx?raw')}
                   height={362}
                 />
               ),
@@ -62,7 +62,7 @@ export default function Doc() {
               component: (
                 <Demo
                   demoUrl={`${import.meta.env.VITE_REACT_DEMO_BASE_URL}/demos/theming`}
-                  demoSrc={import('/../react/src/demos/ThemingDemo.tsx?raw')}
+                  demoSrc={import('/../react/src/demos/Theming.tsx?raw')}
                   height={362}
                 />
               ),

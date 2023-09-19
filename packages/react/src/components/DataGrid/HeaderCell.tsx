@@ -31,6 +31,7 @@ export function HeaderCell<T>({
   colReorderKey,
 }: HeaderCellProps<T>) {
   const sortable = !isDerivedColumnGroup(column) && column.sortable
+  const label = column.header || column.key
   return (
     <div
       className="lfg-header-cell"
@@ -64,7 +65,12 @@ export function HeaderCell<T>({
       }
     >
       <div className="lfg-header-cell-inner">
-        <div className="lfg-header-cell-label">{column.header || column.key}</div>
+        <div
+          className="lfg-header-cell-label"
+          title={typeof label === 'string' ? label : undefined}
+        >
+          {label}
+        </div>
         {!isColumnGroup(column) &&
           column.sortDirection &&
           (column.sortDirection === SortDirection.Asc ? (

@@ -6,13 +6,14 @@ const params = new URLSearchParams(window.location.search)
 const height = Number(params.get('height')) || 800
 const theme = params.get('theme') === 'light' ? 'light' : 'dark'
 
-const BasicGridDemo = lazy(() => import('./demos/BasicGridDemo'))
-const KitchenSinkDemo = lazy(() => import('./demos/KitchenSinkDemo'))
-const ThemingDemo = lazy(() => import('./demos/ThemingDemo'))
-const GlobalSearchDemo = lazy(() => import('./demos/GlobalSearchDemo'))
-const AsyncDataDemo = lazy(() => import('./demos/AsyncDataDemo'))
-const FinitePaginationDemo = lazy(() => import('./demos/FinitePaginationDemo'))
-const InfinitePaginationDemo = lazy(() => import('./demos/InfinitePaginationDemo'))
+const BasicGridDemo = lazy(() => import('./demos/BasicGrid'))
+const KitchenSinkDemo = lazy(() => import('./demos/KitchenSink'))
+const ThemingDemo = lazy(() => import('./demos/Theming'))
+const GlobalSearchDemo = lazy(() => import('./demos/GlobalSearch'))
+const AsyncDataDemo = lazy(() => import('./demos/AsyncData'))
+const FinitePaginationDemo = lazy(() => import('./demos/FinitePagination'))
+const InfinitePaginationDemo = lazy(() => import('./demos/InfinitePagination'))
+const ColumnGroupingDemo = lazy(() => import('./demos/ColumnGrouping'))
 
 document.body.classList.add(theme)
 
@@ -52,6 +53,11 @@ export function App() {
       <Route path="/demos/infinite-pagination">
         <DemoContainer height={height}>
           <InfinitePaginationDemo theme={theme} />
+        </DemoContainer>
+      </Route>
+      <Route path="/demos/column-grouping">
+        <DemoContainer height={height}>
+          <ColumnGroupingDemo theme={theme} />
         </DemoContainer>
       </Route>
     </>

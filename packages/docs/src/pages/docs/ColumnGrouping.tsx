@@ -1,4 +1,4 @@
-import { Code, H1, P, PageButton, HGroup, Section } from 'src/components/DocTypography'
+import { Code, H1, P, PageButton, HGroup, Section, A } from 'src/components/DocTypography'
 import { useFrameworkTabs } from 'src/components/FrameworkTabContext'
 import { Tabs } from 'src/components/Tabs'
 import { Demo } from 'src/components/Demo'
@@ -11,8 +11,10 @@ export default function Doc() {
       <H1>Column Grouping</H1>
       <Section>
         <P>
-          Data and state is controlled by you via props. You can create your own input and
-          filter the <Code>data</Code> prop.
+          The <Code>columns</Code> prop can be an array of column or column groups, and
+          groups can also be nested. See{' '}
+          <A href="/docs/columns/defining-columns">Defining Columns</A> for a definition
+          of both.
         </P>
       </Section>
       <Section>
@@ -25,8 +27,8 @@ export default function Doc() {
                 <Demo
                   demoUrl={`${
                     import.meta.env.VITE_REACT_DEMO_BASE_URL
-                  }/demos/global-search`}
-                  demoSrc={import('/../react/src/demos/GlobalSearchDemo.tsx?raw')}
+                  }/demos/column-grouping`}
+                  demoSrc={import('/../react/src/demos/ColumnGrouping.tsx?raw')}
                   height={407}
                 />
               ),
@@ -38,8 +40,8 @@ export default function Doc() {
                 <Demo
                   demoUrl={`${
                     import.meta.env.VITE_REACT_DEMO_BASE_URL
-                  }/demos/global-search`}
-                  demoSrc={import('/../react/src/demos/GlobalSearchDemo.tsx?raw')}
+                  }/demos/column-grouping`}
+                  demoSrc={import('/../react/src/demos/ColumnGrouping.tsx?raw')}
                   height={407}
                 />
               ),

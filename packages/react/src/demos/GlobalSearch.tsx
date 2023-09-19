@@ -7,7 +7,7 @@ import { DemoProps } from './types'
 import { animalData, Animal, animalColumns } from './data/animals'
 
 import '@lightfin/datagrid/dist/styles.css'
-import styles from './GlobalSearchDemo.module.css'
+import styles from './GlobalSearch.module.css'
 import { Input } from '../components/Input'
 
 const filterData = throttle(

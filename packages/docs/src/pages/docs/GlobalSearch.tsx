@@ -26,7 +26,7 @@ export default function Doc() {
                   demoUrl={`${
                     import.meta.env.VITE_REACT_DEMO_BASE_URL
                   }/demos/global-search`}
-                  demoSrc={import('/../react/src/demos/GlobalSearchDemo.tsx?raw')}
+                  demoSrc={import('/../react/src/demos/GlobalSearch.tsx?raw')}
                   height={407}
                 />
               ),
@@ -39,7 +39,7 @@ export default function Doc() {
                   demoUrl={`${
                     import.meta.env.VITE_REACT_DEMO_BASE_URL
                   }/demos/global-search`}
-                  demoSrc={import('/../react/src/demos/GlobalSearchDemo.tsx?raw')}
+                  demoSrc={import('/../react/src/demos/GlobalSearch.tsx?raw')}
                   height={407}
                 />
               ),

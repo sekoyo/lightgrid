@@ -99,7 +99,7 @@ export default function Doc() {
             component: (
               <Demo
                 demoUrl={`${import.meta.env.VITE_REACT_DEMO_BASE_URL}/demos/basic-grid`}
-                demoSrc={import('/../react/src/demos/BasicGridDemo.tsx?raw')}
+                demoSrc={import('/../react/src/demos/BasicGrid.tsx?raw')}
                 height={362}
               />
             ),
@@ -110,7 +110,7 @@ export default function Doc() {
             component: (
               <Demo
                 demoUrl={`${import.meta.env.VITE_REACT_DEMO_BASE_URL}/demos/basic-grid`}
-                demoSrc={import('/../react/src/demos/BasicGridDemo.tsx?raw')}
+                demoSrc={import('/../react/src/demos/BasicGrid.tsx?raw')}
                 height={362}
               />
             ),

@@ -6,7 +6,7 @@ import { DemoProps } from './types'
 import { Person, peopleColumns, peopleData } from './data/people'
 
 import '@lightfin/datagrid/dist/styles.css'
-import styles from './InfinitePaginationDemo.module.css'
+import styles from './InfinitePagination.module.css'
 
 const itemsPerPage = 50
 

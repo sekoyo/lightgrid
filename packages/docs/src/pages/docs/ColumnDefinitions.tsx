@@ -107,7 +107,7 @@ export default function Doc() {
 
   return (
     <div>
-      <H1>Column Definitions</H1>
+      <H1>Defining Columns</H1>
       <Section>
         <P>
           Columns (and column groups) are passed in via the{' '}

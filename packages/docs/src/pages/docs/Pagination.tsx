@@ -43,7 +43,7 @@ export default function Doc() {
                 demoUrl={`${
                   import.meta.env.VITE_REACT_DEMO_BASE_URL
                 }/demos/finite-pagination`}
-                demoSrc={import('/../react/src/demos/FinitePaginationDemo.tsx?raw')}
+                demoSrc={import('/../react/src/demos/FinitePagination.tsx?raw')}
                 height={420}
               />
             ),
@@ -56,7 +56,7 @@ export default function Doc() {
                 demoUrl={`${
                   import.meta.env.VITE_REACT_DEMO_BASE_URL
                 }/demos/finite-pagination`}
-                demoSrc={import('/../react/src/demos/FinitePaginationDemo.tsx?raw')}
+                demoSrc={import('/../react/src/demos/FinitePagination.tsx?raw')}
                 height={420}
               />
             ),
@@ -82,7 +82,7 @@ export default function Doc() {
                 demoUrl={`${
                   import.meta.env.VITE_REACT_DEMO_BASE_URL
                 }/demos/infinite-pagination`}
-                demoSrc={import('/../react/src/demos/InfinitePaginationDemo.tsx?raw')}
+                demoSrc={import('/../react/src/demos/InfinitePagination.tsx?raw')}
                 height={420}
               />
             ),
@@ -95,7 +95,7 @@ export default function Doc() {
                 demoUrl={`${
                   import.meta.env.VITE_REACT_DEMO_BASE_URL
                 }/demos/infinite-pagination`}
-                demoSrc={import('/../react/src/demos/InfinitePaginationDemo.tsx?raw')}
+                demoSrc={import('/../react/src/demos/InfinitePagination.tsx?raw')}
                 height={420}
               />
             ),
