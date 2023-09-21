@@ -19,12 +19,14 @@ import {
   RenderRowDetails,
   RowState,
   Column,
+  ItemId,
 } from './types'
 import {
   createDefaultSortComparator,
   createMultiSort,
   deriveColumns,
   deriveRows,
+  findColumn,
   flatMapColumns,
   getColDepth,
   getColumnWindow,
@@ -32,6 +34,7 @@ import {
   getRowWindow,
   getScrollBarSize,
   isColumnGroup,
+  mapColumns,
   updateColumn,
 } from './utils'
 import type { ColumnResizePlugin, SetColResizeData } from './plugins/ColumnResizePlugin'
@@ -69,6 +72,7 @@ interface GridManagerDynamicProps<T, N> {
   pinnedTopData: T[]
   pinnedBottomData: T[]
   rowState: RowState
+  multiSort?: boolean
   enableCellSelection?: boolean
   enableColumnResize?: boolean
   enableColumnReorder?: boolean
@@ -108,33 +112,47 @@ export class GridManager<T, N> {
   $pinnedTopData = signal<T[]>([])
   $pinnedBottomData = signal<T[]>([])
   $rowState = signal<RowState>({})
+  $multiSort = signal(false)
   $enableCellSelection = signal(false)
   $enableColumnResize = signal(false)
   $enableColumnReorder = signal(false)
 
   // Derived values
-  $derivedData = computed(() => {
-    const $comparators = computed(() =>
-      flatMapColumns(
-        this.$columns(),
-        c => c as Column<T, N>,
-        c => Boolean(!isColumnGroup(c) && c.sortable && c.sortDirection)
-      )
-        .sort((a, b) => (a.sortPriority ?? 0) - (b.sortPriority ?? 0))
-        .map(c => {
-          if (c.createSortComparator) {
-            return c.createSortComparator(c.sortDirection!)
-          }
-          return createDefaultSortComparator(c.getValue, c.sortDirection!)
-        })
+  $sortedColumn = computed(() =>
+    findColumn(this.$columns(), c => Boolean(c.sortable && c.sortDirection))
+  )
+  $comparators = computed(() =>
+    flatMapColumns(
+      this.$columns(),
+      c => c as Column<T, N>,
+      c => Boolean(!isColumnGroup(c) && c.sortable && c.sortDirection)
     )
+      .sort((a, b) => (a.sortPriority ?? 0) - (b.sortPriority ?? 0))
+      .map(c => {
+        if (c.createSortComparator) {
+          return c.createSortComparator(c.sortDirection!)
+        }
+        return createDefaultSortComparator(c.getValue, c.sortDirection!)
+      })
+  )
+  $derivedData = computed(() => {
+    if (!this.$multiSort()) {
+      const sortedColumn = this.$sortedColumn()
+      if (!sortedColumn) {
+        return this.$data()
+      }
+      const comparator =
+        sortedColumn.createSortComparator?.(sortedColumn.sortDirection!) ||
+        createDefaultSortComparator(sortedColumn.getValue, sortedColumn.sortDirection!)
 
-    // Sort data
-    if (!$comparators().length) {
-      return this.$data()
+      return this.$data().slice().sort(comparator)
+    } else {
+      if (!this.$comparators().length) {
+        return this.$data()
+      }
+
+      return this.$data().slice().sort(createMultiSort(this.$comparators()))
     }
-
-    return this.$data().slice().sort(createMultiSort($comparators()))
   })
 
   // Has to be calculated first so that we can calc rows and know if they overflow since
@@ -581,6 +599,7 @@ export class GridManager<T, N> {
     this.$pinnedTopData.set(props.pinnedTopData)
     this.$pinnedBottomData.set(props.pinnedBottomData)
     this.$rowState.set(props.rowState)
+    this.$multiSort.set(props.multiSort || false)
     this.$enableCellSelection.set(props.enableCellSelection || false)
     this.$enableColumnResize.set(props.enableColumnResize || false)
     this.$enableColumnReorder.set(props.enableColumnReorder || false)
@@ -609,20 +628,33 @@ export class GridManager<T, N> {
     this.$viewportHeight.set(contentRect.height)
   }, 30)
 
-  changeSort(column: DerivedColumn<T, N>) {
+  changeSort(columnKey: ItemId) {
     if (!this.onColumnsChange) {
       console.error('onColumnsChange prop is required to enable column sorting')
       return
     }
 
-    const nextSortDirection = getNextSortDirection(column.sortDirection)
+    const multiSort = this.$multiSort()
 
     // Update columns, we derived sorting columns and sort the data once
     // we receive new $columns
-    const nextColumns = updateColumn(this.$columns(), {
-      ...column,
-      sortDirection: nextSortDirection,
-      sortPriority: Date.now(),
+    const nextColumns = mapColumns(this.$columns(), column => {
+      if (!isColumnGroup(column)) {
+        if (columnKey === column.key) {
+          return {
+            ...column,
+            sortDirection: getNextSortDirection(column.sortDirection),
+            sortPriority: Date.now(),
+          }
+        } else if (!multiSort && column.sortDirection) {
+          // In single sort mode unsort other columns
+          return {
+            ...column,
+            sortDirection: undefined,
+          }
+        }
+      }
+      return column
     })
 
     this.onColumnsChange(nextColumns)

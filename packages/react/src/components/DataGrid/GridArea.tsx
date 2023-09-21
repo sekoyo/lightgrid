@@ -13,7 +13,7 @@ import {
   GridManager,
 } from '@lightfin/datagrid'
 
-import { R } from './types'
+import { N } from './types'
 import { GridDetailRows } from './GridDetailRows'
 import { Cell } from './Cell'
 

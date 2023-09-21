@@ -9,7 +9,7 @@ import {
 } from '@lightfin/datagrid'
 import { ReactComponent as SortAscendingIcon } from '@lightfin/datagrid/dist/assets/sort-ascending.svg'
 import { ReactComponent as SortDescendingIcon } from '@lightfin/datagrid/dist/assets/sort-descending.svg'
-import { R } from './types'
+import { N } from './types'
 
 interface HeaderCellProps<T> {
   mgr: GridManager<T, React.ReactNode>
@@ -45,7 +45,7 @@ export function HeaderCell<T>({
           column.rowIndex * headerRowHeight
         }px)`,
       }}
-      onClick={sortable ? () => mgr.changeSort(column) : undefined}
+      onClick={sortable ? () => mgr.changeSort(column.key) : undefined}
       onPointerDown={
         enableColumnReorder
           ? e => mgr.columnReorderPlugin?.onPointerDown(e.nativeEvent, column)

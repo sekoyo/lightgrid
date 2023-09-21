@@ -35,7 +35,7 @@ import {
   themeToCSSObj,
 } from '@lightfin/datagrid'
 import '@lightfin/datagrid/dist/styles.css'
-import { R } from './types'
+import { N } from './types'
 import { HeaderArea } from './HeaderArea'
 import { GridArea } from './GridArea'
 
@@ -48,6 +48,7 @@ const defaultRowDetailsRenderer = () => (
   <div>Define a `renderRowDetails` to customize this</div>
 )
 
+// TODO: JSDoc these props
 interface DataGridProps<T> {
   columns: GroupedColumns<T, React.ReactNode>
   onColumnsChange?: (columnns: GroupedColumns<T, React.ReactNode>) => void
@@ -64,6 +65,7 @@ interface DataGridProps<T> {
   onRowStateChange?: OnRowStateChange
   direction?: 'ltr' | 'rtl'
   theme?: Theme
+  multiSort?: boolean
   enableCellSelection?: boolean
   enableColumnResize?: boolean
   enableColumnReorder?: boolean
@@ -88,6 +90,7 @@ export function DataGrid<T>({
   onRowStateChange = noop,
   direction,
   theme = darkTheme,
+  multiSort,
   enableCellSelection,
   enableColumnResize,
   enableColumnReorder,
@@ -156,6 +159,7 @@ export function DataGrid<T>({
       pinnedTopData,
       pinnedBottomData,
       rowState,
+      multiSort,
       enableCellSelection,
       enableColumnResize,
       enableColumnReorder,
@@ -168,6 +172,7 @@ export function DataGrid<T>({
     pinnedTopData,
     pinnedBottomData,
     rowState,
+    multiSort,
     enableCellSelection,
     enableColumnResize,
     enableColumnReorder,

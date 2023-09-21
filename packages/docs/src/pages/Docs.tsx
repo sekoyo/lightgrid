@@ -15,6 +15,7 @@ const AsyncData = lazy(() => import('./docs/AsyncData'))
 const Pagination = lazy(() => import('./docs/Pagination'))
 const ColumnDefinitions = lazy(() => import('./docs/ColumnDefinitions'))
 const ColumnGrouping = lazy(() => import('./docs/ColumnGrouping'))
+const RowSorting = lazy(() => import('./docs/RowSorting'))
 
 function getDocPage(slug?: string) {
   switch (slug) {
@@ -32,6 +33,8 @@ function getDocPage(slug?: string) {
       return <ColumnDefinitions />
     case 'columns/grouping':
       return <ColumnGrouping />
+    case 'rows/row-sorting':
+      return <RowSorting />
     default:
       // TODO: Change to 404
       return <IntroDoc />
@@ -92,7 +95,6 @@ export function Docs() {
               <li class={styles.sectionTitle}>Columns</li>
               {sectionItem('columns/defining-columns', 'Defining Columns')}
               {sectionItem('columns/grouping', 'Grouping')}
-              {sectionItem('columns/sorting', 'Sorting')}
               {sectionItem('columns/filtering', 'Filtering')}
               {sectionItem('columns/pinning', 'Pinning', true)}
               {sectionItem('columns/reszing', 'Resizing', true)}
@@ -101,6 +103,7 @@ export function Docs() {
             <ul class={styles.docSection}>
               <li class={styles.sectionTitle}>Rows</li>
               {sectionItem('rows/row-data', 'Row data')}
+              {sectionItem('rows/row-sorting', 'Row Sorting')}
               {sectionItem('rows/hierarchical-data', 'Hierarchical data')}
               {sectionItem('rows/pinning', 'Pinning', true)}
               {sectionItem('rows/row-details', 'Row details', true)}

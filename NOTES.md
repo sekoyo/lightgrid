@@ -2,14 +2,14 @@
 
 ### Docs
 
-- Can we consume JSDOC/TS Props in docs? Perhaps by compiling to JSON? (including theme obj)
+- More user friendly version of `GroupedColumns<Animal, React.ReactNode>` for each framework?
+  Have it as an option to import `<T, N>` ones from framework package without the N
+- Simpler sort icon
 - Legal page
 - Lazily load iframe demos based on visibility?
 - Iframe loading spinner
-- More user friendly version of `GroupedColumns<Animal, React.ReactNode>` for each framework?
 - Fullscreen option for demos/source code
-- Lazy loading guide
-- Scroll to position
+- Scroll to position + docs
 - Add # to H1,H2 etc
 
 https://github.com/jdorfman/awesome-json-datasets
@@ -41,3 +41,4 @@ Good for master-details (prizes in details)
 
 - Clicking in row details selects closest parent cell. Don't change selection on item details clicks.
 - Only highlight column @ col reorder when pointermove happens
+- At certain widths, calced with is underlapping. Particularly noticeable with header on light theme.

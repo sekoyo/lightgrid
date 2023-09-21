@@ -14,6 +14,8 @@ const AsyncDataDemo = lazy(() => import('./demos/AsyncData'))
 const FinitePaginationDemo = lazy(() => import('./demos/FinitePagination'))
 const InfinitePaginationDemo = lazy(() => import('./demos/InfinitePagination'))
 const ColumnGroupingDemo = lazy(() => import('./demos/ColumnGrouping'))
+const RowSortingDemo = lazy(() => import('./demos/RowSorting'))
+const MultiRowSortingDemo = lazy(() => import('./demos/MultiRowSorting'))
 
 document.body.classList.add(theme)
 
@@ -58,6 +60,16 @@ export function App() {
       <Route path="/demos/column-grouping">
         <DemoContainer height={height}>
           <ColumnGroupingDemo theme={theme} />
+        </DemoContainer>
+      </Route>
+      <Route path="/demos/row-sorting">
+        <DemoContainer height={height}>
+          <RowSortingDemo theme={theme} />
+        </DemoContainer>
+      </Route>
+      <Route path="/demos/multi-col-row-sorting">
+        <DemoContainer height={height}>
+          <MultiRowSortingDemo theme={theme} />
         </DemoContainer>
       </Route>
     </>

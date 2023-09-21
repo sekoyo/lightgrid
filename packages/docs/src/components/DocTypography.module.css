@@ -130,3 +130,13 @@
   td {
   }
 }
+
+.messageBox {
+  padding: 1em;
+  border-radius: 4px;
+  border: 1px solid var(--borderColor);
+  &[data-level='info'] {
+    background: var(--messageBoxInfoBg);
+    color: var(--messageBoxInfoColor);
+  }
+}

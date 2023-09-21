@@ -14,6 +14,8 @@ body.dark {
   --primaryBtnTextColor: var(--textColor);
   --secondaryBtnBg: rgb(23, 24, 24);
   --secondaryBtnTextColor: var(--textColorSecondary);
+  --messageBoxInfoBg: black;
+  --messageBoxInfoColor: var(--textColorSecondary);
 }
 
 body.light {
@@ -33,6 +35,8 @@ body.light {
   --primaryTextColor: white;
   --secondaryBtnBg: rgb(227 231 238);
   --secondaryBtnTextColor: var(--textColor);
+  --messageBoxInfoBg: black;
+  --messageBoxInfoColor: white;
 }
 
 *,

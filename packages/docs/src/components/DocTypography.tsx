@@ -104,3 +104,9 @@ export const CodeBlock = (props: { children: string; lang?: string; class?: stri
 export const Table = (props: ParentProps) => (
   <table class={styles.table}>{props.children}</table>
 )
+
+export const MessageBox = (props: ParentProps<{ level: 'info' | 'warning' }>) => (
+  <div class={styles.messageBox} data-level={props.level}>
+    {props.children}
+  </div>
+)

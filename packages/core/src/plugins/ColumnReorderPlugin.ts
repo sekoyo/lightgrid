@@ -6,7 +6,12 @@ import type {
   GroupedColumns,
   ItemId,
 } from '../types'
-import { findColumn, flatMapColumns, isColumnGroup, updateColumn } from '../utils'
+import {
+  findColumnOrGroupByKey,
+  flatMapColumns,
+  isColumnGroup,
+  updateColumn,
+} from '../utils'
 import { GridPlugin } from '../GridPlugin'
 
 export type SetColReorderKey = (colReorderKey: ItemId | undefined) => void
@@ -82,7 +87,7 @@ export class ColumnReorderPlugin<T, N> extends GridPlugin<T, N> {
       return
     }
 
-    this.colToMove = findColumn(this.mgr.$columns(), column.key)
+    this.colToMove = findColumnOrGroupByKey(this.mgr.$columns(), column.key)
 
     if (!this.colToMove) {
       return

@@ -7,7 +7,7 @@ import {
   isDerivedColumnGroup,
 } from '@lightfin/datagrid'
 
-import { R } from './types'
+import { N } from './types'
 import { HeaderCell } from './HeaderCell'
 
 interface HeaderAreaProps<T> {

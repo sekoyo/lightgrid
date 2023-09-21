@@ -73,6 +73,7 @@
   }
 
   &-sort-indicator {
+    flex-shrink: 0;
     pointer-events: none;
     width: 12px;
     height: 12px;
