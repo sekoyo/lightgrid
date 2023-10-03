@@ -9,7 +9,7 @@ export const lightTheme: Theme = {
   headerBorderColor: 'rgb(228 226 204)',
   headerInnerBorderColor: 'rgb(200 194 131)',
   headerTextColor: 'black',
-  borderColor: 'rgb(255 255 255)',
+  borderColor: 'rgb(233 233 240)',
   textColor: 'rgba(0, 0, 0, 0.96)',
   scrollTrack: '#ebebeb',
   scrollThumb: '#b7b7b7',

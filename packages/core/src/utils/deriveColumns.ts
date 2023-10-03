@@ -172,6 +172,7 @@ const createEmptyColResults: <T, N>() => DerivedColsResult<T, N> = () => ({
   size: 0,
   itemCount: 0,
   headerRows: 0,
+  hasFilters: false,
 })
 
 const noColumns = createEmptyColResults<any, any>()
@@ -184,13 +185,13 @@ export function deriveColumns<T, N>(
     return noColumns
   }
 
-  const s = sumAndDivideCols(columns)
-  const o = createEmptyColResults<T, N>()
+  const summed = sumAndDivideCols(columns)
+  const out = createEmptyColResults<T, N>()
 
   // If abs doesn't overflow we have to make sure total size doesn't
   // slightly exceed width due to precision/rounding.
-  const willStretchToVP = s.minFractionalSize + s.totalAbsolutes < viewportWidth
-  let frSizeRemaining = willStretchToVP ? viewportWidth - s.totalAbsolutes : Infinity
+  const willStretchToVP = summed.minFractionalSize + summed.totalAbsolutes < viewportWidth
+  let frSizeRemaining = willStretchToVP ? viewportWidth - summed.totalAbsolutes : Infinity
 
   function recurseColumns(
     levelColumns: GroupedColumns<T, N>,
@@ -228,8 +229,8 @@ export function deriveColumns<T, N>(
       } else {
         let size = getDerivedWidth(
           viewportWidth,
-          s.totalAbsolutes,
-          s.totalFractions,
+          summed.totalAbsolutes,
+          summed.totalFractions,
           column.width,
           column.minWidth
         )
@@ -251,12 +252,16 @@ export function deriveColumns<T, N>(
           size,
           offset: sectionOffset.current,
           rowIndex,
-          rowSpan: s.totalDepth - rowIndex,
+          rowSpan: summed.totalDepth - rowIndex,
           colIndex: colIndexOffset + i,
+        }
+
+        if (c.filterComponent) {
+          out.hasFilters = true
         }
         levelDerivedCols.push(c)
         colResult.items.push(c)
-        o.size += size
+        out.size += size
         sectionOffset.current += size
         colResult.size += size
       }
@@ -265,33 +270,40 @@ export function deriveColumns<T, N>(
     return levelDerivedCols
   }
 
-  recurseColumns(s.leftColumns, o.start, o.start.itemsWithGrouping)
+  recurseColumns(summed.leftColumns, out.start, out.start.itemsWithGrouping)
 
-  const startLastIdx = o.start.items.length ? o.start.items.at(-1)!.colIndex + 1 : 0
-  recurseColumns(s.middleColumns, o.middle, o.middle.itemsWithGrouping, startLastIdx)
+  const startLastIdx = out.start.items.length ? out.start.items.at(-1)!.colIndex + 1 : 0
+  recurseColumns(
+    summed.middleColumns,
+    out.middle,
+    out.middle.itemsWithGrouping,
+    startLastIdx
+  )
 
-  const middleLastIdx = o.middle.items.length ? o.middle.items.at(-1)!.colIndex + 1 : 0
-  recurseColumns(s.rightColumns, o.end, o.end.itemsWithGrouping, middleLastIdx)
+  const middleLastIdx = out.middle.items.length
+    ? out.middle.items.at(-1)!.colIndex + 1
+    : 0
+  recurseColumns(summed.rightColumns, out.end, out.end.itemsWithGrouping, middleLastIdx)
 
   // So we know what column area to render row item details (which span all areas) in
-  if (o.start.size) {
-    o.start.firstWithSize = true
-  } else if (!o.start.size && o.middle.size) {
-    o.middle.firstWithSize = true
-  } else if (!o.start.size && !o.middle.size) {
-    o.end.firstWithSize = true
+  if (out.start.size) {
+    out.start.firstWithSize = true
+  } else if (!out.start.size && out.middle.size) {
+    out.middle.firstWithSize = true
+  } else if (!out.start.size && !out.middle.size) {
+    out.end.firstWithSize = true
   }
 
   // Column index offsets to calc absolute column indexes
-  o.middle.startIndexOffset = o.start.items.length
-  o.end.startIndexOffset = o.start.items.length + o.middle.items.length
+  out.middle.startIndexOffset = out.start.items.length
+  out.end.startIndexOffset = out.start.items.length + out.middle.items.length
 
   // Starting offsets for column areas (in pixels)
-  o.middle.startOffset = o.start.size
-  o.end.startOffset = viewportWidth - o.end.size
+  out.middle.startOffset = out.start.size
+  out.end.startOffset = viewportWidth - out.end.size
 
-  o.itemCount = o.start.items.length + o.middle.items.length + o.end.items.length
-  o.headerRows = s.totalDepth
+  out.itemCount = out.start.items.length + out.middle.items.length + out.end.items.length
+  out.headerRows = summed.totalDepth
 
-  return o
+  return out
 }

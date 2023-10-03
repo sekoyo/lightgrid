@@ -7,5 +7,13 @@ export interface CellComponentProps<T, N> {
 }
 
 export function DefaultCellComponent<T>({ item, column }: CellComponentProps<T, N>) {
-  return <div className="lfg-default-cell">{column.getValue(item, ValueSource.Cell)}</div>
+  const value = column.getValue(item, ValueSource.Cell)
+  return (
+    <div
+      className="lfg-default-cell"
+      title={typeof value === 'string' ? value : undefined}
+    >
+      {value}
+    </div>
+  )
 }

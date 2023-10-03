@@ -8,15 +8,16 @@ import {
   type RowMeta,
 } from './types'
 
-export const defaultHeaderRowHeight = 40
-export const defaultRowHeight = 40
-export const defaultRowDetailsHeight = 160
+export const DEFAULT_HEADER_ROW_HEIGHT = 40
+export const DEFAULT_FILTER_ROW_HEIGHT = 40
+export const DEFAULT_ROW_HEIGHT = 40
+export const DEFAULT_ROW_DETAILS_HEIGHT = 160
 
-export const defaultRowMeta: RowMeta = { height: defaultRowHeight }
-export const defaultGetRowMeta = () => defaultRowMeta
+export const DEFAULT_ROW_META: RowMeta = { height: DEFAULT_ROW_HEIGHT }
+export const DEFAULT_GET_ROW_META = () => DEFAULT_ROW_META
 
 export const defaultGetRowDetailsMeta = (item: any) => ({
-  height: defaultRowDetailsHeight,
+  height: DEFAULT_ROW_DETAILS_HEIGHT,
   details: item,
 })
 
@@ -29,7 +30,7 @@ export const getColumnOffset = <T, N>(
 ) => r.offset
 export const getRowOffset = <T>(r: DerivedRow<T>) => r.offset
 
-export const emptyDerivedColResult: DerivedColResult<any, any> = {
+export const EMPTY_DERIVED_COL_RESULT: DerivedColResult<any, any> = {
   areaPos: AreaPos.Start,
   itemsWithGrouping: [],
   items: [],
@@ -39,25 +40,12 @@ export const emptyDerivedColResult: DerivedColResult<any, any> = {
   firstWithSize: false,
 }
 
-export const emptyDerivedColsResult: DerivedColsResult<any, any> = {
-  start: { ...emptyDerivedColResult, areaPos: AreaPos.Start },
-  middle: { ...emptyDerivedColResult, areaPos: AreaPos.Middle },
-  end: { ...emptyDerivedColResult, areaPos: AreaPos.End },
+export const EMPTY_DERIVED_COLS_RESULT: DerivedColsResult<any, any> = {
+  start: { ...EMPTY_DERIVED_COL_RESULT, areaPos: AreaPos.Start },
+  middle: { ...EMPTY_DERIVED_COL_RESULT, areaPos: AreaPos.Middle },
+  end: { ...EMPTY_DERIVED_COL_RESULT, areaPos: AreaPos.End },
   size: 0,
   itemCount: 0,
   headerRows: 0,
+  hasFilters: false,
 }
-
-// export const emptyDerivedRowResult: DerivedRowResult<any> = {
-//   items: [],
-//   itemDetails: [],
-//   size: 0,
-//   startOffset: 0,
-//   startIndexOffset: 0,
-// }
-
-// export const emptyDerivedRowsResult: DerivedRowsResult<any> = {
-//   start: emptyDerivedRowResult,
-//   middle: emptyDerivedRowResult,
-//   end: emptyDerivedRowResult,
-// }

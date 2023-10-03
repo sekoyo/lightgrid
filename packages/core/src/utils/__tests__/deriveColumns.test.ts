@@ -3,9 +3,7 @@ import { deriveColumns } from '../deriveColumns'
 import { AreaPos, DerivedColsResult } from '../../types'
 
 test('deriveColumns', () => {
-  const noop = () => {
-    /**/
-  }
+  const noop = () => {}
   const res = deriveColumns(
     [
       {
@@ -187,6 +185,7 @@ test('deriveColumns', () => {
     size: 1000,
     itemCount: 6,
     headerRows: 2,
+    hasFilters: false,
   }
 
   expect(res).toEqual(expectedRes)

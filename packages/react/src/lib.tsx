@@ -1,1 +1,1 @@
-export { DataGrid } from './components/DataGrid'
+export * from './components/DataGrid'

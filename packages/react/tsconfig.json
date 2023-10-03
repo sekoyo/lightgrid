@@ -20,7 +20,9 @@
     "noFallthroughCasesInSwitch": true,
     "paths": {
       "@lightfin/react-datagrid": ["./src/lib"]
-    }
+    },
+
+    "baseUrl": "."
   },
   "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }]

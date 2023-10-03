@@ -22,7 +22,6 @@
     background: var(--lfgHeaderCellBg, var(--lfgCellBg, var(--lfgBg)));
     padding: 6px var(--lfgCellHPadding);
     direction: var(--lfgDirection);
-    // outline: 1px solid var(--lfgHeaderBorderColor, var(--lfgBorderColor));
     color: var(--lfgHeaderTextColor);
     font-weight: bold;
 
@@ -87,5 +86,49 @@
     bottom: 0;
     width: 6px;
     cursor: col-resize;
+  }
+
+  &-filters {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--lfgBg);
+    border-bottom: 1px solid var(--lfgHeaderBorderColor, var(--lfgBorderColor));
+
+    &-v-borders {
+      &::after,
+      &::before {
+        content: '';
+        display: block;
+        position: absolute;
+        background: var(--lfgBorderColor);
+      }
+    }
+
+    &-v-borders::before {
+      width: 1px;
+      top: 0px;
+      bottom: -1px;
+      left: -1px;
+    }
+
+    &-v-borders::after {
+      width: 1px;
+      top: 0px;
+      bottom: -1px;
+      right: -1px;
+    }
+  }
+
+  &-filter {
+    position: absolute;
+    bottom: 0;
+    direction: var(--lfgDirection);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    // color: var(--lfgHeaderTextColor);
+    padding: 0 4px;
   }
 }

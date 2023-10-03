@@ -1,11 +1,12 @@
 import { useCallback, useEffect, useState } from 'react'
 import { darkTheme, lightTheme } from '@lightfin/datagrid'
 import { DataGrid } from '@lightfin/react-datagrid'
+
+import { Button } from 'src/components/Button'
 import { DemoProps } from './types'
 import { animalData, animalColumns, Animal } from './data/animals'
 
 import '@lightfin/datagrid/dist/styles.css'
-import { Button } from '../components/Button'
 
 export default function Demo({ theme }: DemoProps) {
   const [data, setData] = useState<Animal[]>([])

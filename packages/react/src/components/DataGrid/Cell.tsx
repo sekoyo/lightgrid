@@ -1,8 +1,8 @@
 import { memo } from 'react'
 import { DerivedColumn, GridManager, ItemId, RowStateItem } from '@lightfin/datagrid'
 
-import { DownArrow } from '../Icons'
 import { IconButton } from '../IconButton'
+import { DownArrowIcon } from '../Icons'
 import { DefaultCellComponent } from './DefaultCellComponent'
 import type { N } from './types'
 
@@ -75,7 +75,7 @@ export function CellNoMemo<T>({
           }
           onClick={() => onExpandToggle(rowId)}
         >
-          <DownArrow />
+          <DownArrowIcon />
         </IconButton>
       )}
       {column.cellComponent?.(column, item) || (

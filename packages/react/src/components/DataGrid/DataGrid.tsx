@@ -12,9 +12,8 @@ import {
   createGridManager,
   darkTheme,
   defaultGetRowDetailsMeta,
-  defaultGetRowMeta,
-  defaultHeaderRowHeight,
-  emptyDerivedColsResult,
+  DEFAULT_GET_ROW_META,
+  EMPTY_DERIVED_COLS_RESULT,
   BodyAreaDesc,
   CellSelection,
   CellPosition,
@@ -28,6 +27,7 @@ import {
   HeaderAreaDesc,
   ItemId,
   GroupedColumns,
+  OnFiltersChange,
   OnRowStateChange,
   RenderRowDetails,
   RowState,
@@ -52,7 +52,9 @@ const defaultRowDetailsRenderer = () => (
 interface DataGridProps<T> {
   columns: GroupedColumns<T, React.ReactNode>
   onColumnsChange?: (columnns: GroupedColumns<T, React.ReactNode>) => void
+  onFiltersChange?: OnFiltersChange<T, N>
   headerRowHeight?: number
+  filterRowHeight?: number
   getRowId: GetRowId<T>
   getRowMeta?: GetRowMeta<T>
   getRowDetailsMeta?: GetRowDetailsMeta<T>
@@ -77,9 +79,11 @@ interface DataGridProps<T> {
 export function DataGrid<T>({
   columns,
   onColumnsChange,
-  headerRowHeight = defaultHeaderRowHeight,
+  onFiltersChange = noop,
+  headerRowHeight,
+  filterRowHeight,
   getRowId,
-  getRowMeta = defaultGetRowMeta,
+  getRowMeta = DEFAULT_GET_ROW_META,
   getRowDetailsMeta = defaultGetRowDetailsMeta,
   data,
   onDataChange,
@@ -102,15 +106,17 @@ export function DataGrid<T>({
   const scrollEl = useRef<HTMLDivElement>(null)
   const viewportEl = useRef<HTMLDivElement>(null)
 
-  // We can't trust that the user will memoize these so we
-  // assume they never change.
+  // We can't trust that the user will memoize these.
   const renderRowDetailsRef = useRef(renderRowDetails)
   renderRowDetailsRef.current = renderRowDetails
   const onRowStateChangeRef = useRef(onRowStateChange)
   onRowStateChangeRef.current = onRowStateChange
+  const onFiltersChangeRef = useRef(onFiltersChange)
+  onFiltersChangeRef.current = onFiltersChange
 
-  const [derivedCols, setDerivedCols] =
-    useState<DerivedColsResult<T, N>>(emptyDerivedColsResult)
+  const [derivedCols, setDerivedCols] = useState<DerivedColsResult<T, N>>(
+    EMPTY_DERIVED_COLS_RESULT
+  )
   const [gridAreas, setBodyAreas] = useState<BodyAreaDesc<T, N>[]>([])
   const [headerAreas, setHeaderAreas] = useState<HeaderAreaDesc<T, N>[]>([])
   const [viewport, setViewport] = useState({ width: 0, height: 0 })
@@ -155,6 +161,7 @@ export function DataGrid<T>({
     mgr.update({
       columns,
       headerRowHeight,
+      filterRowHeight,
       data,
       pinnedTopData,
       pinnedBottomData,
@@ -168,6 +175,7 @@ export function DataGrid<T>({
     mgr,
     columns,
     headerRowHeight,
+    filterRowHeight,
     data,
     pinnedTopData,
     pinnedBottomData,
@@ -255,12 +263,15 @@ export function DataGrid<T>({
               />
             ))}
             {headerAreas.map(headerArea => (
-              <HeaderArea
+              <HeaderArea<T>
                 key={headerArea.colAreaPos}
                 mgr={mgr}
                 columns={headerArea.columns}
+                flatColumns={headerArea.flatColumns}
                 colAreaPos={headerArea.colAreaPos}
                 headerRowHeight={headerArea.headerRowHeight}
+                filterRowHeight={headerArea.filterRowHeight}
+                onFiltersChangeRef={onFiltersChangeRef}
                 left={headerArea.left}
                 width={headerArea.width}
                 height={headerArea.height}

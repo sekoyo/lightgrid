@@ -48,6 +48,8 @@ export interface ColumnGroup<T, N> {
  */
 export type Comparator<T> = (a: T, b: T) => number
 
+export type FilterFn<T> = (item: T, value: any) => boolean
+
 /** The column definition for each column in the `columns` prop. */
 export interface Column<T, N> {
   /** A unique key for this column. Do not use an array index. */
@@ -93,6 +95,19 @@ export interface Column<T, N> {
    * rendered. If not specified will try to render the result of `getValue` as a string.
    */
   cellComponent?: (column: DerivedColumn<T, N>, item: T) => N
+  /**
+   * A component for filtering data on this column (e.g. a text input). Input state should
+   * be local (useState) and when you are ready to apply the filter (e.g. after a
+   * debounce), call `onChange` which will trigger a `onFiltersChange(columnKey, <value>)`
+   * callback on the DataGrid.
+   */
+  filterComponent?: (onChange: (value: any) => void) => N
+  /**
+   * When a filterComponent calls `onChange`, `onFiltersChange` prop receives `(column,
+   * value)`. So you can use `column.filterFn` to filter the item. Returning means `false`
+   * means filter the item out of the datagrid.
+   */
+  filterFn?: FilterFn<T>
 }
 
 export type ColumnOrGroup<T, N> = ColumnGroup<T, N> | Column<T, N>
@@ -139,6 +154,7 @@ export interface DerivedColsResult<T, N> {
   size: number
   itemCount: number
   headerRows: number
+  hasFilters: boolean
 }
 
 /**
@@ -214,6 +230,12 @@ export interface RowStateItem {
 export type RowState = Record<ItemId, RowStateItem>
 
 /**
+ * Signature of `onFiltersChange` callback which is called when a `filterComponent` in a
+ * column calls `onChange(<value>)`.
+ */
+export type OnFiltersChange<T, N> = (column: DerivedColumn<T, N>, value: any) => void
+
+/**
  * Signature of `onRowStateChange` callback which should be implemented when using row
  * details.
  */
@@ -266,8 +288,10 @@ export interface BodyAreaDesc<T, N> {
 
 export interface HeaderAreaDesc<T, N> {
   columns: GroupedDerivedColumns<T, N>
+  flatColumns: DerivedColumn<T, N>[]
   colAreaPos: AreaPos
   headerRowHeight: number
+  filterRowHeight: number
   left: number
   width: number
   height: number

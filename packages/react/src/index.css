@@ -1,7 +1,9 @@
 body.dark {
+  --bg: black;
   --textColor: rgba(255, 255, 255, 0.96);
   --textColorSecondary: rgba(255, 255, 255, 0.65);
   --textColorTertiary: rgba(255, 255, 255, 0.45);
+  --linkColor: #6284ff;
   --inputBg: #232323;
   --outlineColor: #6161c0;
   --primaryBtnBg: rgb(69, 69, 146);
@@ -11,9 +13,11 @@ body.dark {
 }
 
 body.light {
+  --bg: white;
   --textColor: rgba(0, 0, 0, 0.96);
   --textColorSecondary: rgba(0, 0, 0, 0.6);
   --textColorTertiary: rgba(0, 0, 0, 0.4);
+  --linkColor: rgb(35, 137, 247);
   --inputBg: #f2f2f2;
   --outlineColor: #6161c0;
   --primaryBtnBg: rgb(104 104 222);
@@ -40,4 +44,15 @@ body {
 
 #root {
   height: 100%;
+}
+body .range-slider {
+  height: 4px;
+}
+body .range-slider .range-slider__range {
+  background: var(--primaryBtnBg);
+}
+body .range-slider .range-slider__thumb {
+  width: 14px;
+  height: 14px;
+  background: var(--primaryBtnBg);
 }

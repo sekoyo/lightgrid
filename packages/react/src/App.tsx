@@ -14,6 +14,7 @@ const AsyncDataDemo = lazy(() => import('./demos/AsyncData'))
 const FinitePaginationDemo = lazy(() => import('./demos/FinitePagination'))
 const InfinitePaginationDemo = lazy(() => import('./demos/InfinitePagination'))
 const ColumnGroupingDemo = lazy(() => import('./demos/ColumnGrouping'))
+const ColumnFilteringDemo = lazy(() => import('./demos/ColumnFiltering'))
 const RowSortingDemo = lazy(() => import('./demos/RowSorting'))
 const MultiRowSortingDemo = lazy(() => import('./demos/MultiRowSorting'))
 
@@ -60,6 +61,11 @@ export function App() {
       <Route path="/demos/column-grouping">
         <DemoContainer height={height}>
           <ColumnGroupingDemo theme={theme} />
+        </DemoContainer>
+      </Route>
+      <Route path="/demos/column-filtering">
+        <DemoContainer height={height}>
+          <ColumnFilteringDemo theme={theme} />
         </DemoContainer>
       </Route>
       <Route path="/demos/row-sorting">

@@ -1,20 +1,26 @@
 import { Fragment, useCallback } from 'react'
 import {
   AreaPos,
-  GroupedDerivedColumns,
-  GridManager,
-  ItemId,
   isDerivedColumnGroup,
+  type DerivedColumn,
+  type GroupedDerivedColumns,
+  type GridManager,
+  type ItemId,
+  type OnFiltersChange,
 } from '@lightfin/datagrid'
 
 import { N } from './types'
 import { HeaderCell } from './HeaderCell'
+import { FilterCell } from './FilterCell'
 
 interface HeaderAreaProps<T> {
-  mgr: GridManager<T, React.ReactNode>
+  mgr: GridManager<T, N>
   columns: GroupedDerivedColumns<T, N>
+  flatColumns: DerivedColumn<T, N>[]
   colAreaPos: AreaPos
   headerRowHeight: number
+  filterRowHeight: number
+  onFiltersChangeRef: React.MutableRefObject<OnFiltersChange<T, N>>
   left: number
   width: number
   height: number
@@ -26,8 +32,11 @@ interface HeaderAreaProps<T> {
 export function HeaderArea<T>({
   mgr,
   columns,
+  flatColumns,
   colAreaPos,
   headerRowHeight,
+  filterRowHeight,
+  onFiltersChangeRef,
   left,
   width,
   height,
@@ -36,34 +45,76 @@ export function HeaderArea<T>({
   colReorderKey,
 }: HeaderAreaProps<T>) {
   const renderColumns = useCallback(
-    (groupCols: GroupedDerivedColumns<T, N>) => {
+    (
+      mgr: GridManager<T, React.ReactNode>,
+      groupCols: GroupedDerivedColumns<T, N>,
+      colAreaPos: AreaPos,
+      headerRowHeight: number,
+      enableColumnReorder?: boolean,
+      enableColumnResize?: boolean,
+      colReorderKey?: ItemId
+    ) => (
+      <>
+        {groupCols.map(column => (
+          <Fragment key={column.key}>
+            <HeaderCell
+              mgr={mgr}
+              column={column}
+              colAreaPos={colAreaPos}
+              headerRowHeight={headerRowHeight}
+              enableColumnResize={enableColumnResize}
+              enableColumnReorder={enableColumnReorder}
+              colReorderKey={colReorderKey}
+            />
+            {isDerivedColumnGroup(column) &&
+              renderColumns(
+                mgr,
+                column.children,
+                colAreaPos,
+                headerRowHeight,
+                enableColumnReorder,
+                enableColumnResize,
+                colReorderKey
+              )}
+          </Fragment>
+        ))}
+      </>
+    ),
+    []
+  )
+
+  const renderFilters = useCallback(
+    (
+      mgr: GridManager<T, React.ReactNode>,
+      flatColumns: DerivedColumn<T, N>[],
+      filterRowHeight: number
+    ) => {
+      if (!mgr.columnsHaveFilters()) {
+        return null
+      }
       return (
-        <>
-          {groupCols.map(column => (
-            <Fragment key={column.key}>
-              <HeaderCell
-                mgr={mgr}
-                column={column}
-                colAreaPos={colAreaPos}
-                headerRowHeight={headerRowHeight}
-                enableColumnResize={enableColumnResize}
-                enableColumnReorder={enableColumnReorder}
-                colReorderKey={colReorderKey}
-              />
-              {isDerivedColumnGroup(column) && renderColumns(column.children)}
-            </Fragment>
-          ))}
-        </>
+        <div className="lfg-header-filters" style={{ height: filterRowHeight }}>
+          {flatColumns.reduce((vnode, column) => {
+            if (column.filterComponent) {
+              vnode.push(
+                <FilterCell
+                  key={column.key}
+                  column={column}
+                  filterRowHeight={filterRowHeight}
+                >
+                  {column.filterComponent(value =>
+                    onFiltersChangeRef.current(column, value)
+                  )}
+                </FilterCell>
+              )
+            }
+            return vnode
+          }, [] as React.ReactNode[])}
+          <div className="lfg-header-filters-v-borders" />
+        </div>
       )
     },
-    [
-      colAreaPos,
-      colReorderKey,
-      enableColumnReorder,
-      enableColumnResize,
-      headerRowHeight,
-      mgr,
-    ]
+    [onFiltersChangeRef]
   )
 
   if (!columns.length) {
@@ -73,7 +124,16 @@ export function HeaderArea<T>({
   return (
     <div className="lfg-header-area">
       <div className="lfg-header-area-inner" style={{ left, width, height }}>
-        {renderColumns(columns)}
+        {renderColumns(
+          mgr,
+          columns,
+          colAreaPos,
+          headerRowHeight,
+          enableColumnReorder,
+          enableColumnResize,
+          colReorderKey
+        )}
+        {renderFilters(mgr, flatColumns, filterRowHeight)}
       </div>
     </div>
   )

@@ -1,5 +1,7 @@
 ## Todo
 
+- Change nth-child odd/even row bg to use numerical index due to virtualization issue
+
 ### Docs
 
 - More user friendly version of `GroupedColumns<Animal, React.ReactNode>` for each framework?
@@ -10,7 +12,7 @@
 - Iframe loading spinner
 - Fullscreen option for demos/source code
 - Scroll to position + docs
-- Add # to H1,H2 etc
+- Add bookmark # to H1,H2 etc
 
 https://github.com/jdorfman/awesome-json-datasets
 https://catalog.data.gov/dataset/?res_format=JSON

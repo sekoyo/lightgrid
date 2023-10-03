@@ -7,8 +7,8 @@ import {
   isColumnGroup,
   isDerivedColumnGroup,
 } from '@lightfin/datagrid'
-import { ReactComponent as SortAscendingIcon } from '@lightfin/datagrid/dist/assets/sort-ascending.svg'
-import { ReactComponent as SortDescendingIcon } from '@lightfin/datagrid/dist/assets/sort-descending.svg'
+import SortAscendingIcon from '@lightfin/datagrid/dist/assets/sort-ascending.svg?react'
+import SortDescendingIcon from '@lightfin/datagrid/dist/assets/sort-descending.svg?react'
 import { N } from './types'
 
 interface HeaderCellProps<T> {
@@ -31,7 +31,8 @@ export function HeaderCell<T>({
   colReorderKey,
 }: HeaderCellProps<T>) {
   const sortable = !isDerivedColumnGroup(column) && column.sortable
-  const label = column.header || column.key
+  const label = typeof column.header !== 'undefined' ? column.header : column.key
+  const isGroup = isColumnGroup(column)
   return (
     <div
       className="lfg-header-cell"
@@ -71,7 +72,7 @@ export function HeaderCell<T>({
         >
           {label}
         </div>
-        {!isColumnGroup(column) &&
+        {!isGroup &&
           column.sortDirection &&
           (column.sortDirection === SortDirection.Asc ? (
             <SortAscendingIcon className="lfg-header-sort-indicator" />

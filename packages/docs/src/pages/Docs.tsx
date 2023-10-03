@@ -15,6 +15,7 @@ const AsyncData = lazy(() => import('./docs/AsyncData'))
 const Pagination = lazy(() => import('./docs/Pagination'))
 const ColumnDefinitions = lazy(() => import('./docs/ColumnDefinitions'))
 const ColumnGrouping = lazy(() => import('./docs/ColumnGrouping'))
+const ColumnFiltering = lazy(() => import('./docs/ColumnFiltering'))
 const RowSorting = lazy(() => import('./docs/RowSorting'))
 
 function getDocPage(slug?: string) {
@@ -33,6 +34,8 @@ function getDocPage(slug?: string) {
       return <ColumnDefinitions />
     case 'columns/grouping':
       return <ColumnGrouping />
+    case 'columns/filtering':
+      return <ColumnFiltering />
     case 'rows/row-sorting':
       return <RowSorting />
     default:

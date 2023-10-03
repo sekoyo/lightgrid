@@ -1,14 +1,14 @@
 import { useMemo, useState } from 'react'
 import throttle from 'lodash-es/throttle'
-
 import { darkTheme, lightTheme } from '@lightfin/datagrid'
 import { DataGrid } from '@lightfin/react-datagrid'
+
+import { Input } from 'src/components/Input'
 import { DemoProps } from './types'
 import { animalData, Animal, animalColumns } from './data/animals'
 
 import '@lightfin/datagrid/dist/styles.css'
 import styles from './GlobalSearch.module.css'
-import { Input } from '../components/Input'
 
 const filterData = throttle(
   (filter: string) =>

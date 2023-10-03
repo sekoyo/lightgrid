@@ -28,18 +28,18 @@ import {
   deriveRows,
   findColumn,
   flatMapColumns,
-  getColDepth,
   getColumnWindow,
+  getHeaderHeight,
   getNextSortDirection,
   getRowWindow,
   getScrollBarSize,
   isColumnGroup,
   mapColumns,
-  updateColumn,
 } from './utils'
 import type { ColumnResizePlugin, SetColResizeData } from './plugins/ColumnResizePlugin'
 import type { ColumnReorderPlugin, SetColReorderKey } from './plugins/ColumnReorderPlugin'
 import type { CellSelectionPlugin } from './plugins/CellSelectionPlugin'
+import { DEFAULT_FILTER_ROW_HEIGHT, DEFAULT_HEADER_ROW_HEIGHT } from './constants'
 
 type Viewport = { width: number; height: number }
 
@@ -67,7 +67,8 @@ interface GridManagerStaticProps<T, N> {
 
 interface GridManagerDynamicProps<T, N> {
   columns: GroupedColumns<T, N>
-  headerRowHeight: number
+  headerRowHeight?: number
+  filterRowHeight?: number
   data: T[]
   pinnedTopData: T[]
   pinnedBottomData: T[]
@@ -108,6 +109,7 @@ export class GridManager<T, N> {
   $viewportHeight = signal(0)
   $columns = signal<GroupedColumns<T, N>>([])
   $headerRowHeight = signal(0)
+  $filterRowHeight = signal(0)
   $data = signal<T[]>([])
   $pinnedTopData = signal<T[]>([])
   $pinnedBottomData = signal<T[]>([])
@@ -157,7 +159,9 @@ export class GridManager<T, N> {
 
   // Has to be calculated first so that we can calc rows and know if they overflow since
   // vscrollbars will affect available width for derivedCols (and their fractional sizing)
-  $headerHeight = computed(() => getColDepth(this.$columns()) * this.$headerRowHeight())
+  $headerHeight = computed(() =>
+    getHeaderHeight(this.$columns(), this.$headerRowHeight(), this.$filterRowHeight())
+  )
 
   $derivedStartRows = computed(() =>
     deriveRows(
@@ -253,6 +257,12 @@ export class GridManager<T, N> {
       this.$colHeaderWindow()[1] + 1
     )
   )
+  $middleHeaderFlatCols = computed(() =>
+    this.$derivedCols().middle.items.slice(
+      this.$colHeaderWindow()[0],
+      this.$colHeaderWindow()[1] + 1
+    )
+  )
 
   // -- Row window.
   $midHeight = computed(
@@ -272,14 +282,17 @@ export class GridManager<T, N> {
   $headerAreas = computed<HeaderAreaDesc<T, N>[]>(() => {
     const derivedCols = this.$derivedCols()
     const headerRowHeight = this.$headerRowHeight()
+    const filterRowHeight = this.$filterRowHeight()
     const headerHeight = this.$headerHeight()
     // In render order
     return [
       {
         id: AreaPos.Middle,
         columns: this.$middleHeaderCols(),
+        flatColumns: this.$middleHeaderFlatCols(),
         colAreaPos: AreaPos.Middle,
         headerRowHeight,
+        filterRowHeight,
         left: derivedCols.start.size,
         width: derivedCols.middle.size + derivedCols.end.size,
         height: headerHeight,
@@ -287,8 +300,10 @@ export class GridManager<T, N> {
       {
         id: AreaPos.End,
         columns: derivedCols.end.itemsWithGrouping,
+        flatColumns: derivedCols.end.items,
         colAreaPos: AreaPos.End,
         headerRowHeight,
+        filterRowHeight,
         left: this.$viewportWidth() - this.$horizontalScrollSize() - derivedCols.end.size,
         width: derivedCols.end.size,
         height: headerHeight,
@@ -296,8 +311,10 @@ export class GridManager<T, N> {
       {
         id: AreaPos.Start,
         columns: derivedCols.start.itemsWithGrouping,
+        flatColumns: derivedCols.start.items,
         colAreaPos: AreaPos.Start,
         headerRowHeight,
+        filterRowHeight,
         left: 0,
         width: derivedCols.start.size,
         height: headerHeight,
@@ -594,7 +611,8 @@ export class GridManager<T, N> {
 
   update(props: GridManagerDynamicProps<T, N>) {
     this.$columns.set(props.columns)
-    this.$headerRowHeight.set(props.headerRowHeight)
+    this.$headerRowHeight.set(props.headerRowHeight ?? DEFAULT_HEADER_ROW_HEIGHT)
+    this.$filterRowHeight.set(props.filterRowHeight ?? DEFAULT_FILTER_ROW_HEIGHT)
     this.$data.set(props.data)
     this.$pinnedTopData.set(props.pinnedTopData)
     this.$pinnedBottomData.set(props.pinnedBottomData)
@@ -627,6 +645,10 @@ export class GridManager<T, N> {
     this.$viewportWidth.set(contentRect.width)
     this.$viewportHeight.set(contentRect.height)
   }, 30)
+
+  columnsHaveFilters() {
+    return this.$derivedCols().hasFilters
+  }
 
   changeSort(columnKey: ItemId) {
     if (!this.onColumnsChange) {

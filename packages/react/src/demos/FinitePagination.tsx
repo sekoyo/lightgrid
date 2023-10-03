@@ -2,13 +2,14 @@ import { useCallback, useEffect, useState } from 'react'
 import { cancelable } from 'cancelable-promise'
 import { darkTheme, lightTheme } from '@lightfin/datagrid'
 import { DataGrid } from '@lightfin/react-datagrid'
-import { Button } from '../components/Button'
-import { Input } from '../components/Input'
+
+import { Button } from 'src/components/Button'
+import { Input } from 'src/components/Input'
 import { DemoProps } from './types'
 import { Person, peopleColumns, peopleData } from './data/people'
 
 import '@lightfin/datagrid/dist/styles.css'
-import styles from './FinitePaginationDemo.module.css'
+import styles from './FinitePagination.module.css'
 
 // Our pretend server api
 const itemsPerPage = 50

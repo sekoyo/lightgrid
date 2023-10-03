@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useState } from 'react'
 import { darkTheme, lightTheme } from '@lightfin/datagrid'
 import { DataGrid } from '@lightfin/react-datagrid'
-import { Button } from '../components/Button'
+
+import { Button } from 'src/components/Button'
 import { DemoProps } from './types'
 import { Person, peopleColumns, peopleData } from './data/people'
 

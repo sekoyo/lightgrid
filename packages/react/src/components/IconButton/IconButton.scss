@@ -2,10 +2,8 @@
   appearance: none;
   background: transparent;
   border: none;
-  color: white;
+  color: var(--textColor);
   padding: 0;
-  width: 16px;
-  height: 16px;
   padding: 2px;
 
   &:not(:disabled) {

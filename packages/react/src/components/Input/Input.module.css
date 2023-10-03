@@ -1,4 +1,5 @@
 .input {
+  flex: 1;
   padding: 0.5em 0.75em;
   font-family: inherit;
   font-size: 0.875em;
@@ -7,6 +8,7 @@
   border-radius: 4px;
   background: var(--inputBg);
   color: var(--textColor);
+  max-width: 100%;
 
   &:focus {
     outline: 1px solid var(--outlineColor);
