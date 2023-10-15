@@ -48,7 +48,7 @@ export interface ColumnGroup<T, N> {
  */
 export type Comparator<T> = (a: T, b: T) => number
 
-export type FilterFn<T> = (item: T, value: any) => boolean
+export type FilterFn<T> = (item: T, filerValue: any) => boolean
 
 /** The column definition for each column in the `columns` prop. */
 export interface Column<T, N> {
@@ -104,8 +104,8 @@ export interface Column<T, N> {
   filterComponent?: (onChange: (value: any) => void) => N
   /**
    * When a filterComponent calls `onChange`, `onFiltersChange` prop receives `(column,
-   * value)`. So you can use `column.filterFn` to filter the item. Returning means `false`
-   * means filter the item out of the datagrid.
+   * value)`. So you can use `column.filterFn` to filter the item. Returning `false` means
+   * filter the item out of the datagrid.
    */
   filterFn?: FilterFn<T>
 }

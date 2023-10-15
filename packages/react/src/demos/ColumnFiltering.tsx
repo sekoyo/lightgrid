@@ -182,8 +182,8 @@ const gameColumns: GroupedColumns<Game, React.ReactNode> = [
     filterComponent: onChange => (
       <TextFilter type="number" onChange={onChange} />
     ),
-    filterFn: (item, value) =>
-      value ? item.id === Number(value) : true,
+    filterFn: (item, filterValue) =>
+      filterValue ? item.id === Number(filterValue) : true,
   },
   {
     key: 'title',
@@ -204,8 +204,8 @@ const gameColumns: GroupedColumns<Game, React.ReactNode> = [
     filterComponent: onChange => (
       <SelectFilter options={ignPlatforms} onChange={onChange} />
     ),
-    filterFn: (item, value) =>
-      value ? item.platform === value : true,
+    filterFn: (item, filterValue) =>
+      filterValue ? item.platform === filterValue : true,
   },
   {
     key: 'score',
@@ -215,9 +215,10 @@ const gameColumns: GroupedColumns<Game, React.ReactNode> = [
     filterComponent: onChange => (
       <RangeFilter min={0} max={10} onChange={onChange} />
     ),
-    filterFn: (item, values) =>
-      values?.length
-        ? item.score >= values[0] && item.score <= values[1]
+    filterFn: (item, filterValues) =>
+      filterValues?.length
+        ? item.score >= filterValues[0] &&
+          item.score <= filterValues[1]
         : true,
   },
   {
@@ -227,8 +228,8 @@ const gameColumns: GroupedColumns<Game, React.ReactNode> = [
     filterComponent: onChange => (
       <SelectFilter options={ignScorePhrases} onChange={onChange} />
     ),
-    filterFn: (item, value) =>
-      value ? item.scorePhrase === value : true,
+    filterFn: (item, filterValue) =>
+      filterValue ? item.scorePhrase === filterValue : true,
   },
   {
     key: 'genre',
@@ -238,7 +239,8 @@ const gameColumns: GroupedColumns<Game, React.ReactNode> = [
     filterComponent: onChange => (
       <SelectFilter options={ignGenres} onChange={onChange} />
     ),
-    filterFn: (item, value) => (value ? item.genre === value : true),
+    filterFn: (item, filterValue) =>
+      filterValue ? item.genre === filterValue : true,
   },
   {
     key: 'editorsChoice',
@@ -248,8 +250,8 @@ const gameColumns: GroupedColumns<Game, React.ReactNode> = [
     filterComponent: onChange => (
       <SelectFilter options={editorsChoices} onChange={onChange} />
     ),
-    filterFn: (item, value) =>
-      value ? item.editorsChoice === value : true,
+    filterFn: (item, filterValue) =>
+      filterValue ? item.editorsChoice === filterValue : true,
   },
   {
     key: 'release',
@@ -291,28 +293,32 @@ export default function Demo({ theme }: DemoProps) {
   // We save the value and the column.filterFn so that whenever a filter
   // changes we can apply all the filter functions to each row/item.
   const filterState = useRef<
-    Record<ItemId, { value: any; filterFn: FilterFn<Game> }>
+    Record<ItemId, { filterValue: any; filterFn: FilterFn<Game> }>
   >({})
 
   // Filter the data after a delay when a filter changes
-  const setFilter = useMemo(
+  const filterData = useMemo(
     () =>
-      debounce((column: DerivedColumn<Game, N>, value: string) => {
-        const state = Object.assign(filterState.current, {
-          [column.key]: {
-            value,
-            filterFn: column.filterFn,
-          },
-        })
+      debounce(
+        (column: DerivedColumn<Game, N>, filterValue: string) => {
+          const state = Object.assign(filterState.current, {
+            [column.key]: {
+              filterValue,
+              filterFn: column.filterFn,
+            },
+          })
 
-        setData(
-          gameData.filter(item =>
-            Object.values(state).every(
-              ({ value, filterFn }) => filterFn?.(item, value) ?? true
+          setData(
+            gameData.filter(item =>
+              Object.values(state).every(
+                ({ filterValue, filterFn }) =>
+                  filterFn?.(item, filterValue) ?? true
+              )
             )
           )
-        )
-      }, 100),
+        },
+        100
+      ),
     []
   )
 
@@ -322,7 +328,7 @@ export default function Demo({ theme }: DemoProps) {
       data={data}
       getRowId={d => d.id}
       theme={theme === 'light' ? lightTheme : darkTheme}
-      onFiltersChange={setFilter}
+      onFiltersChange={filterData}
     />
   )
 }

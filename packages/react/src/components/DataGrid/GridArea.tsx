@@ -78,7 +78,9 @@ export function GridAreaNoMemo<T>({
           <div
             key={row.rowId}
             role="row"
-            className="lfg-row"
+            className={`lfg-row ${
+              row.rowIndex % 2 === 0 ? 'lfg-row-even' : 'lfg-row-odd'
+            }`}
             style={{
               height: row.size,
               transform: `translateY(${row.offset}px)`,

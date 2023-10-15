@@ -12,7 +12,7 @@
     background: var(--lfg-pinned-cell-bg, var(--lfgCellBg, var(--lfgBg)));
   }
 
-  .lfg-row:nth-child(even) & {
+  .lfg-row-even & {
     background: var(--lfgEvenRowCellBg, var(--lfgCellBg, var(--lfgBg)));
   }
 
