@@ -17,11 +17,11 @@
   },
   "devDependencies": {
     "@lightfin/datagrid": "*",
-    "@types/lodash-es": "^4.17.9",
-    "@types/react": "^18.2.28",
+    "@types/lodash-es": "^4.17.10",
+    "@types/react": "^18.2.29",
     "@types/react-dom": "^18.2.13",
-    "@typescript-eslint/eslint-plugin": "^6.7.5",
-    "@typescript-eslint/parser": "^6.7.5",
+    "@typescript-eslint/eslint-plugin": "^6.8.0",
+    "@typescript-eslint/parser": "^6.8.0",
     "@vitejs/plugin-react": "^4.1.0",
     "eslint": "^8.51.0",
     "eslint-plugin-react-hooks": "^4.6.0",
@@ -29,7 +29,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "typescript": "^5.2.2",
-    "vite": "^4.4.11",
+    "vite": "^4.5.0",
     "vite-plugin-svgr": "^4.1.0"
   },
   "dependencies": {
@@ -37,6 +37,6 @@
     "lodash-es": "^4.17.21",
     "react-range-slider-input": "^3.0.7",
     "vite-tsconfig-paths": "^4.2.1",
-    "wouter": "^2.12.0"
+    "wouter": "^2.12.1"
   }
 }
