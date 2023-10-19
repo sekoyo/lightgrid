@@ -41,7 +41,7 @@ export const ExternalLink = (props: ParentProps<{ href: string }>) => (
   </a>
 )
 export const EIcon = () => (
-  <A href="/pricing" class={styles.eicon} aria-labelledby="Enterprise feature">
+  <A href="/pricing" class={styles.eicon} title="Enterprise feature">
     E
   </A>
 )

@@ -170,7 +170,8 @@ export class ColumnReorderPlugin<T, N> extends GridPlugin<T, N> {
     pointerSide: PointerSide
   ): GroupedColumns<T, N> {
     return columns.reduce(
-      (nextCols, col) => {
+      (nextCols, _col) => {
+        let col = _col
         if (colToMove.key === col.key) {
           // Filter out the column to move
           return nextCols
@@ -181,7 +182,19 @@ export class ColumnReorderPlugin<T, N> extends GridPlugin<T, N> {
           colToMoveCopy.pin = col.pin
 
           if (isColumnGroup(colToMoveCopy)) {
+            // When columns are re-derived the pin of the parent will be inherited
             colToMoveCopy.children = this.removePinFromChildren(colToMoveCopy.children)
+          }
+
+          // If the adjacent col was a group, we may need to filter out the moved col from it
+          if (isColumnGroup(col)) {
+            col = Object.assign({}, col)
+            col.children = this.moveColumn(
+              col.children,
+              colToMove,
+              adjacentColKey,
+              pointerSide
+            )
           }
 
           if (pointerSide === PointerSide.Left) {

@@ -34,7 +34,7 @@
     }
 
     &[data-moving-col='true'] {
-      background: var(--lfgColReorderBgColor);
+      background: var(--lfgColReorderHeaderBgColor, var(--lfgColReorderBgColor));
     }
 
     border-bottom: 1px solid var(--lfgHeaderBorderColor, var(--lfgBorderColor));

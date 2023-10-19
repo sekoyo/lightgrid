@@ -15,5 +15,6 @@ export type Theme = {
   cellSelectedBg: string
   cellStartCellBg: string
   colResizeColor: string
+  colReorderHeaderBgColor?: string
   colReorderBgColor: string
 }
