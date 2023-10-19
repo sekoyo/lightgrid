@@ -16,6 +16,7 @@ const InfinitePaginationDemo = lazy(() => import('./demos/InfinitePagination'))
 const ColumnGroupingDemo = lazy(() => import('./demos/ColumnGrouping'))
 const ColumnFilteringDemo = lazy(() => import('./demos/ColumnFiltering'))
 const ColumnPinningDemo = lazy(() => import('./demos/ColumnPinning'))
+const ColumnResizingDemo = lazy(() => import('./demos/ColumnResizing'))
 const RowSortingDemo = lazy(() => import('./demos/RowSorting'))
 const MultiRowSortingDemo = lazy(() => import('./demos/MultiRowSorting'))
 
@@ -72,6 +73,11 @@ export function App() {
       <Route path="/demos/column-pinning">
         <DemoContainer height={height}>
           <ColumnPinningDemo theme={theme} />
+        </DemoContainer>
+      </Route>
+      <Route path="/demos/column-resizing">
+        <DemoContainer height={height}>
+          <ColumnResizingDemo theme={theme} />
         </DemoContainer>
       </Route>
       <Route path="/demos/row-sorting">

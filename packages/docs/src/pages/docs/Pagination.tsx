@@ -19,14 +19,6 @@ export default function Doc() {
     <div>
       <H1>Pagination</H1>
       <Section>
-        <P>
-          Pagination is built by you, using your own components. Since the datagrid is
-          controlled you simply have to pass the updated data via the <Code>data</Code>{' '}
-          prop as new pages are loaded in.
-        </P>
-        <P>There are two types of pagination:</P>
-      </Section>
-      <Section>
         <H2>Finite pagination</H2>
         <P>
           When you know the length of your data you can use standard pagination navigation

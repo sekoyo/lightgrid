@@ -17,6 +17,7 @@ const ColumnDefinitions = lazy(() => import('./docs/ColumnDefinitions'))
 const ColumnGrouping = lazy(() => import('./docs/ColumnGrouping'))
 const ColumnFiltering = lazy(() => import('./docs/ColumnFiltering'))
 const ColumnPinning = lazy(() => import('./docs/ColumnPinning'))
+const ColumnResizing = lazy(() => import('./docs/ColumnResizing'))
 const RowSorting = lazy(() => import('./docs/RowSorting'))
 
 function getDocPage(slug?: string) {
@@ -39,6 +40,8 @@ function getDocPage(slug?: string) {
       return <ColumnFiltering />
     case 'columns/pinning':
       return <ColumnPinning />
+    case 'columns/resizing':
+      return <ColumnResizing />
     case 'rows/row-sorting':
       return <RowSorting />
     default:
@@ -103,7 +106,7 @@ export function Docs() {
               {sectionItem('columns/grouping', 'Grouping')}
               {sectionItem('columns/filtering', 'Filtering')}
               {sectionItem('columns/pinning', 'Pinning', true)}
-              {sectionItem('columns/reszing', 'Resizing', true)}
+              {sectionItem('columns/resizing', 'Resizing', true)}
               {sectionItem('columns/reordering', 'Reordering', true)}
             </ul>
             <ul class={styles.docSection}>

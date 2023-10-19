@@ -110,16 +110,8 @@ export default function Doc() {
       <H1>Defining Columns</H1>
       <Section>
         <P>
-          Columns (and column groups) are passed in via the{' '}
-          <Code>columns: {'GroupedColumns<T, N>'}</Code> array prop. Where <Code>T</Code>{' '}
-          is the shape of your row data and <Code>N</Code> is a node type for your chosen
-          framework (e.g. <Code>React.ReactNode</Code> for React or{' '}
-          <Code>JSX.Element</Code> for Solid).
-        </P>
-        <P>
           The only required props are <Code>key</Code> and <Code>getValue</Code>.
         </P>
-        <P>This can be a flat array of columns:</P>
         <Tabs activeTabId={state.activeTabId} onTabPress={changeTab}>
           {[
             {
@@ -138,14 +130,12 @@ export default function Doc() {
             },
           ]}
         </Tabs>
-        <P>Or, if you want to group columns you can define a nested structure:</P>
       </Section>
       <Section>
         <H2>Column Grouping</H2>
         <P>
-          Columns can also be grouped (and nested) using a{' '}
-          <Code>{'ColumnGroup<T, N>'}</Code> and its <Code>children: []</Code> array. For
-          a demo checkout <A href="/columns/grouping">Column Grouping</A>.
+          Columns can also be grouped using a <Code>children: []</Code> array. See{' '}
+          <A href="/columns/grouping">Column Grouping</A> for a demo.
         </P>
         <CodeBlock lang="typescript">{getNestedColSnippet()}</CodeBlock>
       </Section>
