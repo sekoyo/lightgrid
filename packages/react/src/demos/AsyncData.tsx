@@ -4,7 +4,7 @@ import { DataGrid } from '@lightfin/react-datagrid'
 
 import { Button } from 'src/components/Button'
 import { DemoProps } from './types'
-import { animalData, animalColumns, Animal } from './data/animals'
+import { animalData, columns, Animal } from './data/animals'
 
 import '@lightfin/datagrid/dist/styles.css'
 
@@ -34,7 +34,7 @@ export default function Demo({ theme }: DemoProps) {
         Simulate data loading
       </Button>
       <DataGrid<Animal>
-        columns={animalColumns}
+        columns={columns}
         data={data}
         getRowId={d => d.animal}
         theme={theme === 'light' ? lightTheme : darkTheme}

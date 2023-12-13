@@ -111,7 +111,7 @@ export default function Demo({ theme }: DemoProps) {
       <div className={styles.pageControlContainer}>
         <div className={styles.pageControls}>
           <Button
-            buttonType="secondary"
+            variant="secondary"
             disabled={page === 1}
             onClick={gotoPrevPage}
           >
@@ -119,7 +119,7 @@ export default function Demo({ theme }: DemoProps) {
           </Button>
           <Input type="number" value={page} onChange={onPageChange} />
           <Button
-            buttonType="secondary"
+            variant="secondary"
             disabled={page === pageCount}
             onClick={gotoNextPage}
           >

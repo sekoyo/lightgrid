@@ -222,7 +222,7 @@ export function deriveColumns<T, N>(
             size,
             offset: savedOffset,
             rowIndex,
-            rowSpan: 1,
+            headerRowSpan: 1,
             colIndex: colIndexOffset + i,
           })
         }
@@ -252,7 +252,7 @@ export function deriveColumns<T, N>(
           size,
           offset: sectionOffset.current,
           rowIndex,
-          rowSpan: summed.totalDepth - rowIndex,
+          headerRowSpan: summed.totalDepth - rowIndex,
           colIndex: colIndexOffset + i,
         }
 

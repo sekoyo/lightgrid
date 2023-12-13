@@ -44,7 +44,7 @@ const getFlatColSnippet = (framework: 'react' | 'solid') =>
         key: 'symbol',
         header: 'Symbol',
         getValue: d => d.symbol,
-        cellComponent: (column, item) => <CryptoSymbol symbol={d.symbol} />
+        cellComponent: ({ column, item }) => <CryptoSymbol symbol={d.symbol} />
       },
       {
         key: 'marketCap',
@@ -165,7 +165,10 @@ export default function Doc() {
               <td>{'(row: T, source: ValueSource) => any'}</td>
               <td>
                 Should return the value for the cell. You can return different values
-                depending on the <Code>source</Code> param.
+                depending on the <Code>source</Code> param. For example you might want to
+                return a formatted number when the source is <Code>ValueSource.Cell</Code>
+                , and an unformatted one when <Code>ValueSource.Clipboard</Code> or{' '}
+                <Code>ValueSource.Sort</Code>
               </td>
             </tr>
             <tr>
@@ -232,11 +235,11 @@ export default function Doc() {
             </tr>
             <tr>
               <td>cellComponent</td>
-              <td>{'(column: DerivedColumn<T, N>, item: T) => N'}</td>
+              <td>{'(props: CellComponentProps<T, N, S>) => N'}</td>
               <td>
-                A function given a the current column and row item returns the cell node
-                to be rendered. If not specified will try to render the result of{' '}
-                <Code>getValue</Code> as a string.
+                A function given a the current column, row item, and optionally row state
+                & setter, returns the cell node to be rendered. If not specified will
+                render the result of <Code>column.getValue(item, ValueSource.Cell)</Code>.
               </td>
             </tr>
           </tbody>
@@ -284,7 +287,7 @@ export default function Doc() {
         <PageButton href="/docs/guides/pagination" secondaryLabel="Previous">
           Pagination
         </PageButton>
-        <PageButton href="/docs/guides/global-search" secondaryLabel="Next">
+        <PageButton href="/docs/guides/global-filtering" secondaryLabel="Next">
           Grouping
         </PageButton>
       </HGroup>

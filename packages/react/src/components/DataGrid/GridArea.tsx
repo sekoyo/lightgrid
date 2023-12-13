@@ -1,4 +1,4 @@
-import { memo, useCallback } from 'react'
+import { memo, useCallback, useState } from 'react'
 import {
   CellPosition,
   CellSelection,
@@ -9,6 +9,7 @@ import {
   OnRowStateChange,
   RenderRowDetails,
   RowState,
+  StateSetter,
   isCellSelected,
   GridManager,
 } from '@lightfin/datagrid'
@@ -17,13 +18,31 @@ import { N } from './types'
 import { GridDetailRows } from './GridDetailRows'
 import { Cell } from './Cell'
 
+function getCellSize<T>(
+  span: number,
+  column: DerivedColumn<T, N>,
+  columns: DerivedColumn<T, N>[],
+  columnIndex: number,
+  areaWidth: number
+) {
+  if (span === -1) {
+    return areaWidth - column.offset
+  }
+  let size = column.size
+  for (let i = columnIndex + 1; i < columnIndex + span; i++) {
+    size += columns[i].size
+  }
+  return size
+}
+
 interface GridAreaProps<T> {
   mgr: GridManager<T, React.ReactNode>
   area: BodyAreaDesc<T, N>
   columns: DerivedColumn<T, N>[]
   rows: DerivedRow<T>[]
-  rowState: RowState
-  onRowStateChangeRef: React.MutableRefObject<OnRowStateChange>
+  rowState: RowState<any>
+  setRowState?: StateSetter<any>
+  onRowStateChangeRef: React.MutableRefObject<OnRowStateChange<any>>
   detailsWidth: number
   renderRowDetailsRef: React.MutableRefObject<RenderRowDetails<T, N>>
   selection?: CellSelection
@@ -39,6 +58,7 @@ export function GridAreaNoMemo<T>({
   columns,
   rows,
   rowState,
+  setRowState,
   onRowStateChangeRef,
   detailsWidth,
   renderRowDetailsRef,
@@ -48,11 +68,12 @@ export function GridAreaNoMemo<T>({
   colReorderKey,
   enableColumnReorder,
 }: GridAreaProps<T>) {
+  const [rowSpans] = useState(() => new Map<ItemId, number>())
   const onExpandToggle = useCallback(
     (rowId: ItemId) =>
       onRowStateChangeRef.current(rowId, {
         ...rowState[rowId],
-        detailsExpanded: !rowState[rowId]?.detailsExpanded,
+        expanded: !rowState[rowId]?.expanded,
       }),
     [rowState, onRowStateChangeRef]
   )
@@ -74,42 +95,80 @@ export function GridAreaNoMemo<T>({
           height: area.height,
         }}
       >
-        {rows.map(row => (
-          <div
-            key={row.rowId}
-            role="row"
-            className={`lfg-row ${
-              row.rowIndex % 2 === 0 ? 'lfg-row-even' : 'lfg-row-odd'
-            }`}
-            style={{
-              height: row.size,
-              transform: `translateY(${row.offset}px)`,
-            }}
-          >
-            {columns.map(column => (
-              <Cell<T>
-                key={column.key}
-                mgr={mgr}
-                column={column}
-                item={row.item}
-                rowId={row.rowId}
-                rowStateItem={rowState[row.rowId]}
-                hasExpandInCell={Boolean(row.hasDetails && column.colIndex === 0)}
-                pinnedX={area.pinnedX}
-                pinnedY={area.pinnedY}
-                colReorderKey={colReorderKey}
-                enableColumnReorder={enableColumnReorder}
-                selected={isCellSelected(column.colIndex, row.rowIndex, selection)}
-                selectionStart={Boolean(
-                  selectionStartCell &&
-                    selectionStartCell.colIndex === column.colIndex &&
-                    selectionStartCell.rowIndex === row.rowIndex
-                )}
-                onExpandToggle={onExpandToggle}
-              />
-            ))}
-          </div>
-        ))}
+        {rows.map(row => {
+          let skipColCount = 0
+          // rowSpan 1 means no skip, so we sub by 1.
+          const skipRowCount = (rowSpans.get(row.rowId) ?? 1) - 1
+          return (
+            <div
+              key={row.rowId}
+              role="row"
+              className={`lfg-row ${
+                row.rowIndex % 2 === 0 ? 'lfg-row-even' : 'lfg-row-odd'
+              }`}
+              style={{
+                height: row.size,
+                transform: `translateY(${row.offset}px)`,
+              }}
+            >
+              {columns.reduce((cells, column, i) => {
+                // Skip cells that are spanned into
+                if (skipColCount) {
+                  skipColCount--
+                  return cells
+                }
+                if (skipRowCount) {
+                  rowSpans.set(row.rowId, skipRowCount - 1)
+                  return cells
+                }
+                let span = 1
+                let size = column.size
+
+                if (column.colSpan) {
+                  span = Math.min(column.colSpan(row.item), columns.length - i)
+                  size = getCellSize(span, column, columns, i, area.width)
+                  if (span > 1) {
+                    skipColCount = span - 1
+                  } else if (span === -1) {
+                    skipColCount = Infinity
+                  }
+                }
+
+                if (column.rowSpan) {
+                  rowSpans.set(row.rowId, column.rowSpan(row.item))
+                }
+
+                cells.push(
+                  <Cell<T>
+                    key={column.key}
+                    mgr={mgr}
+                    column={column}
+                    item={row.item}
+                    rowId={row.rowId}
+                    rowStateItem={rowState[row.rowId]}
+                    setRowState={setRowState}
+                    hasExpandInCell={Boolean(row.hasDetails && column.colIndex === 0)}
+                    pinnedX={area.pinnedX}
+                    pinnedY={area.pinnedY}
+                    colReorderKey={colReorderKey}
+                    enableColumnReorder={enableColumnReorder}
+                    selected={isCellSelected(column.colIndex, row.rowIndex, selection)}
+                    selectionStart={Boolean(
+                      selectionStartCell &&
+                        selectionStartCell.colIndex === column.colIndex &&
+                        selectionStartCell.rowIndex === row.rowIndex
+                    )}
+                    width={size}
+                    zIndex={span === 1 ? undefined : 1}
+                    onExpandToggle={onExpandToggle}
+                  />
+                )
+
+                return cells
+              }, [] as JSX.Element[])}
+            </div>
+          )
+        })}
         {isFirstColumnGroup && area.rowResult.itemDetails ? (
           <GridDetailRows
             itemDetails={area.rowResult.itemDetails}

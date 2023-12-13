@@ -1,9 +1,13 @@
 ## Todo
 
-- Change nth-child odd/even row bg to use numerical index due to virtualization issue
+- Make (e) enterprise clickable with some info, maybe in a modal
+- Example with loading placeholders in cells
+- For expand rows have a expand/collapse all icon in header
+- Make style more minimal - use page BG colour on all but alt row bg
 
 ### Docs
 
+- col + row span docs
 - More user friendly version of `GroupedColumns<Animal, React.ReactNode>` for each framework?
   Have it as an option to import `<T, N>` ones from framework package without the N
 - Simpler sort icon
@@ -38,9 +42,15 @@ Good for master-details (prizes in details)
 - Sorting group column (https://www.ag-grid.com/javascript-data-grid/row-sorting/#custom-sorting-groups-example)
 - When sorting col at edge auto scroll
 - Write medium articles under Lightfin and link to Datagrid. e.g. one about Solid
+- Context menu
 
 ## Bugs
 
 - Clicking in row details selects closest parent cell. Don't change selection on item details clicks.
 - Only highlight column @ col reorder when pointermove happens
 - At certain widths, calced with is underlapping. Particularly noticeable with header on light theme.
+
+# Do and Donts
+
+- Use dn version of useState for columns: useState(() => {})
+- Wrap columns in hook in functional component

@@ -11,30 +11,28 @@ export type ColumnPin = 'start' | 'end'
  * the default sorting function.
  */
 export enum ValueSource {
+  /** During a cell rendering operation */
   Cell,
+  /** During a copy to clipboard operation */
   Clipboard,
+  /** During a sorting operation */
   Sort,
 }
 
 /** The type for column keys and row IDs. */
 export type ItemId = string | number
 
-export interface CellComponentProps<T, N> {
-  column: DerivedColumn<T, N>
-  item: T
-}
-
 /**
  * A column group definition which consists of a header and one or more columns or sub
  * groups in the children array.
  */
-export interface ColumnGroup<T, N> {
+export interface ColumnGroup<T, N, S = unknown> {
   /** A unique key for this column group. Do not use an array index. */
   key: ItemId
   /** The header text or node for this column group. */
   header?: N
   /** The columns and groups under this group. */
-  children: GroupedColumns<T, N>
+  children: GroupedColumns<T, N, S>
   /**
    * Pin this column to the left (`"start"`) or right (`"end"`) if you wish it to always
    * be visible even if the user scrolls.
@@ -50,8 +48,15 @@ export type Comparator<T> = (a: T, b: T) => number
 
 export type FilterFn<T> = (item: T, filerValue: any) => boolean
 
+export interface CellComponentProps<T, N, S = unknown> {
+  column: DerivedColumn<T, N>
+  item: T
+  rowStateItem: RowStateItem<S> | undefined
+  setRowState: StateSetter<RowState<S>> | undefined
+}
+
 /** The column definition for each column in the `columns` prop. */
-export interface Column<T, N> {
+export interface Column<T, N, S = unknown> {
   /** A unique key for this column. Do not use an array index. */
   key: ItemId
   /** The header text or node for this column. */
@@ -94,7 +99,7 @@ export interface Column<T, N> {
    * A function given a the current column and row item returns the cell node to be
    * rendered. If not specified will try to render the result of `getValue` as a string.
    */
-  cellComponent?: (column: DerivedColumn<T, N>, item: T) => N
+  cellComponent?: (props: CellComponentProps<T, N, S>) => N
   /**
    * A component for filtering data on this column (e.g. a text input). Input state should
    * be local (useState) and when you are ready to apply the filter (e.g. after a
@@ -108,38 +113,45 @@ export interface Column<T, N> {
    * filter the item out of the datagrid.
    */
   filterFn?: FilterFn<T>
+  /** Span over adjacent columns. -1 means span the whole grid. */
+  colSpan?: (item: T) => number
+  /** Span over adjacent rows. -1 means span the whole grid. */
+  rowSpan?: (item: T) => number
 }
 
-export type ColumnOrGroup<T, N> = ColumnGroup<T, N> | Column<T, N>
+export type ColumnOrGroup<T, N, S = unknown> = ColumnGroup<T, N, S> | Column<T, N, S>
 
 /** An array which can contain a mix of columns which can also be nested under groups */
-export type GroupedColumns<T, N> = ColumnOrGroup<T, N>[]
+export type GroupedColumns<T, N, S = unknown> = ColumnOrGroup<T, N, S>[]
 
 // Derived for internal use
-export interface DerivedColumnGroup<T, N> extends ColumnGroup<T, N> {
-  children: GroupedDerivedColumns<T, N>
+export interface DerivedColumnGroup<T, N, S = unknown>
+  extends Omit<ColumnGroup<T, N, S>, 'children'> {
+  children: GroupedDerivedColumns<T, N, S>
   size: number
   offset: number
-  rowSpan: number
+  headerRowSpan: number
   colIndex: number
   rowIndex: number
 }
 
-export interface DerivedColumn<T, N> extends Column<T, N> {
+export interface DerivedColumn<T, N, S = unknown> extends Column<T, N, S> {
   size: number
   offset: number
-  rowSpan: number
+  headerRowSpan: number
   colIndex: number
   rowIndex: number
 }
 
-export type DerivedColumnOrGroup<T, N> = DerivedColumnGroup<T, N> | DerivedColumn<T, N>
+export type DerivedColumnOrGroup<T, N, S = unknown> =
+  | DerivedColumnGroup<T, N, S>
+  | DerivedColumn<T, N>
 
-export type GroupedDerivedColumns<T, N> = DerivedColumnOrGroup<T, N>[]
+export type GroupedDerivedColumns<T, N, S = unknown> = DerivedColumnOrGroup<T, N, S>[]
 
-export interface DerivedColResult<T, N> {
+export interface DerivedColResult<T, N, S = unknown> {
   areaPos: AreaPos
-  itemsWithGrouping: GroupedDerivedColumns<T, N>
+  itemsWithGrouping: GroupedDerivedColumns<T, N, S>
   items: DerivedColumn<T, N>[]
   size: number
   startOffset: number
@@ -147,10 +159,10 @@ export interface DerivedColResult<T, N> {
   firstWithSize: boolean
 }
 
-export interface DerivedColsResult<T, N> {
-  start: DerivedColResult<T, N>
-  middle: DerivedColResult<T, N>
-  end: DerivedColResult<T, N>
+export interface DerivedColsResult<T, N, S = unknown> {
+  start: DerivedColResult<T, N, S>
+  middle: DerivedColResult<T, N, S>
+  end: DerivedColResult<T, N, S>
   size: number
   itemCount: number
   headerRows: number
@@ -221,13 +233,13 @@ export interface DerivedRowsResult<T> {
 }
 
 /** The row state to specify which rows have their details section expanded. */
-export interface RowStateItem {
+export type RowStateItem<S = unknown> = S & {
   /** True if the row details are expanded. */
-  detailsExpanded?: boolean
+  expanded?: boolean
 }
 
 /** Row state object keyed by row ID. */
-export type RowState = Record<ItemId, RowStateItem>
+export type RowState<S = unknown> = Record<ItemId, RowStateItem<S>>
 
 /**
  * Signature of `onFiltersChange` callback which is called when a `filterComponent` in a
@@ -239,7 +251,10 @@ export type OnFiltersChange<T, N> = (column: DerivedColumn<T, N>, value: any) =>
  * Signature of `onRowStateChange` callback which should be implemented when using row
  * details.
  */
-export type OnRowStateChange = (itemId: ItemId, item: RowStateItem) => void
+export type OnRowStateChange<S = unknown> = (
+  itemId: ItemId,
+  item: RowStateItem<S>
+) => void
 
 /** Signature of function which returns a unique row ID per row. */
 export type GetRowId<T> = (item: T) => ItemId
@@ -312,3 +327,6 @@ export enum Direction {
   Left,
   Right,
 }
+
+type Dispatch<A> = (value: A) => void
+export type StateSetter<S> = Dispatch<S | ((prevState: S) => S)>

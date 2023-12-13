@@ -146,7 +146,7 @@ export default function Demo() {
         width: '1fr',
         sortable: true,
         getValue: () => today.getFullYear(),
-        cellComponent: (column, item) => (
+        cellComponent: ({ column, item }) => (
           <CustomCell column={column} item={item} />
         ),
       },

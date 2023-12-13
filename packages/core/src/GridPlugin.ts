@@ -1,6 +1,6 @@
 import { getColumnOffset, getRowOffset } from './constants'
 import { type GridManager } from './GridManager'
-import { type CellPosition, type BodyAreaDesc, AreaPos } from './types'
+import { type CellPosition, type BodyAreaDesc } from './types'
 import { binarySearch } from './utils'
 
 export abstract class GridPlugin<T, N> {
@@ -83,6 +83,6 @@ export abstract class GridPlugin<T, N> {
   }
 
   getRowPosFromIndex(colIndex: number) {
-    this.getColResultFromIndex(colIndex).areaPos
+    return this.getColResultFromIndex(colIndex).areaPos
   }
 }

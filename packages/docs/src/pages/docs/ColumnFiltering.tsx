@@ -12,7 +12,7 @@ export default function Doc() {
       <Section>
         <P>
           If you want to search across all columns see{' '}
-          <A href="/docs/guides/global-search">Global Search</A>
+          <A href="/docs/guides/global-filtering">Global Search</A>
         </P>
         <Tabs activeTabId={state.activeTabId} onTabPress={changeTab}>
           {[

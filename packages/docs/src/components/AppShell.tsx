@@ -2,7 +2,7 @@ import type { ParentProps } from 'solid-js'
 import { A } from '@solidjs/router'
 
 import { ContentContainer } from './ContentContainer'
-import { LightfinDatagridLogo } from './LightfinDatagridLogo'
+import { LightgridLogo } from './LightgridLogo'
 import { ThemeSwitcher } from './ThemeSwitcher'
 
 import styles from './AppShell.module.css'
@@ -14,7 +14,7 @@ export function AppShell(props: ParentProps) {
       <header class={styles.header}>
         <ContentContainer class="h-flex p-2 gap-1">
           <A href="/" class={styles.logoLink}>
-            <LightfinDatagridLogo class={styles.logo} />
+            <LightgridLogo class={styles.logo} />
           </A>
           <div class="h-flex gap-2">
             <nav class={styles.nav}>

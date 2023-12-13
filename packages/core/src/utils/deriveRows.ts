@@ -40,7 +40,7 @@ export function deriveRows<T>(
     items.push(derivedRow)
     offset += meta.height
 
-    if (meta.hasDetails && rowState[rowId]?.detailsExpanded) {
+    if (meta.hasDetails && rowState[rowId]?.expanded) {
       const detailsMeta = getRowDetailsMeta(item)
 
       const detailsRow: DerivedDetailRow<T> = {

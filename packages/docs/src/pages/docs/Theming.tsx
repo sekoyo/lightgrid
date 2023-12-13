@@ -74,7 +74,7 @@ export default function Doc() {
         <PageButton href="/docs/guides/setup" secondaryLabel="Previous">
           Setup
         </PageButton>
-        <PageButton href="/docs/guides/global-search" secondaryLabel="Next">
+        <PageButton href="/docs/guides/global-filtering" secondaryLabel="Next">
           Global Search
         </PageButton>
       </HGroup>

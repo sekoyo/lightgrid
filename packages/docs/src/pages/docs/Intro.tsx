@@ -3,10 +3,10 @@ import { A, EIcon, H1, P, PageButton, HGroup } from 'src/components/DocTypograph
 export default function Intro() {
   return (
     <div>
-      <H1>Lightfin Datagrid</H1>
+      <H1>Lightgrid</H1>
       <P>
-        Lightfin Datagrid is a component for representing tabular data with a focus on
-        being lightweight and performant but also full featured.
+        Lightgrid is a component for representing tabular data with a focus on being
+        lightweight and performant but also full featured.
       </P>
       <P>
         It's headless, meaning the grid core is framework agnostic, while the UI framework

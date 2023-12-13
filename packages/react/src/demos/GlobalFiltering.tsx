@@ -5,10 +5,10 @@ import { DataGrid } from '@lightfin/react-datagrid'
 
 import { Input } from 'src/components/Input'
 import { DemoProps } from './types'
-import { animalData, Animal, animalColumns } from './data/animals'
+import { animalData, Animal, columns } from './data/animals'
 
 import '@lightfin/datagrid/dist/styles.css'
-import styles from './GlobalSearch.module.css'
+import styles from './GlobalFiltering.module.css'
 
 const filterData = throttle(
   (filter: string) =>
@@ -42,7 +42,7 @@ export default function Demo({ theme }: DemoProps) {
         />
       </div>
       <DataGrid<Animal>
-        columns={animalColumns}
+        columns={columns}
         data={filteredData}
         getRowId={d => d.animal}
         theme={theme === 'light' ? lightTheme : darkTheme}

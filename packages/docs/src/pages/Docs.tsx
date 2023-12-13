@@ -10,7 +10,7 @@ import styles from './Docs.module.css'
 const IntroDoc = lazy(() => import('./docs/Intro'))
 const Setup = lazy(() => import('./docs/Setup'))
 const Theming = lazy(() => import('./docs/Theming'))
-const GlobalSearch = lazy(() => import('./docs/GlobalSearch'))
+const GlobalFiltering = lazy(() => import('./docs/GlobalFiltering'))
 const AsyncData = lazy(() => import('./docs/AsyncData'))
 const Pagination = lazy(() => import('./docs/Pagination'))
 const ColumnDefinitions = lazy(() => import('./docs/ColumnDefinitions'))
@@ -20,15 +20,17 @@ const ColumnPinning = lazy(() => import('./docs/ColumnPinning'))
 const ColumnResizing = lazy(() => import('./docs/ColumnResizing'))
 const ColumnReordering = lazy(() => import('./docs/ColumnReordering'))
 const RowSorting = lazy(() => import('./docs/RowSorting'))
+const RowGrouping = lazy(() => import('./docs/RowGrouping'))
 
 function getDocPage(slug?: string) {
+  console.log('getDocPage', slug)
   switch (slug) {
     case 'guides/setup':
       return <Setup />
     case 'guides/theming':
       return <Theming />
-    case 'guides/global-search':
-      return <GlobalSearch />
+    case 'guides/global-filtering':
+      return <GlobalFiltering />
     case 'guides/async-data':
       return <AsyncData />
     case 'guides/pagination':
@@ -47,6 +49,8 @@ function getDocPage(slug?: string) {
       return <ColumnReordering />
     case 'rows/row-sorting':
       return <RowSorting />
+    case 'rows/grouping':
+      return <RowGrouping />
     default:
       // TODO: Change to 404
       return <IntroDoc />
@@ -74,7 +78,7 @@ export function Docs() {
       </A>
     </li>
   )
-
+  console.log({ location })
   return (
     <AppShell>
       <div class={styles.layout}>
@@ -84,7 +88,7 @@ export function Docs() {
             <ul class={styles.docSection}>
               <li>
                 <A
-                  href={`/docs/`}
+                  href="/docs/"
                   class={cls(
                     styles.sectionItem,
                     (location.pathname === '/docs' || location.pathname === '/docs/') &&
@@ -99,7 +103,7 @@ export function Docs() {
               <li class={styles.sectionTitle}>Guides</li>
               {sectionItem('guides/setup', 'Setup')}
               {sectionItem('guides/theming', 'Theming')}
-              {sectionItem('guides/global-search', 'Global search')}
+              {sectionItem('guides/global-filtering', 'Global filtering (search)')}
               {sectionItem('guides/async-data', 'Async Data')}
               {sectionItem('guides/pagination', 'Pagination')}
             </ul>
@@ -114,11 +118,10 @@ export function Docs() {
             </ul>
             <ul class={styles.docSection}>
               <li class={styles.sectionTitle}>Rows</li>
-              {sectionItem('rows/row-data', 'Row data')}
               {sectionItem('rows/row-sorting', 'Row Sorting')}
-              {sectionItem('rows/hierarchical-data', 'Hierarchical data')}
+              {sectionItem('rows/grouping', 'Grouping')}
               {sectionItem('rows/pinning', 'Pinning', true)}
-              {sectionItem('rows/row-details', 'Row details', true)}
+              {sectionItem('rows/details-row', 'Details Row', true)}
             </ul>
             <ul class={styles.docSection}>
               <li class={styles.sectionTitle}>Cells</li>

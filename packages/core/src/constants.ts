@@ -16,7 +16,7 @@ export const DEFAULT_ROW_DETAILS_HEIGHT = 160
 export const DEFAULT_ROW_META: RowMeta = { height: DEFAULT_ROW_HEIGHT }
 export const DEFAULT_GET_ROW_META = () => DEFAULT_ROW_META
 
-export const defaultGetRowDetailsMeta = (item: any) => ({
+export const DEFAULT_GET_ROW_DETAILS_META = (item: any) => ({
   height: DEFAULT_ROW_DETAILS_HEIGHT,
   details: item,
 })

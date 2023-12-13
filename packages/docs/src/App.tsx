@@ -1,5 +1,5 @@
 import { createEffect, type Component } from 'solid-js'
-import { Route, Routes } from '@solidjs/router'
+import { Route } from '@solidjs/router'
 
 import { Home } from 'src/pages/Homes'
 import { Docs } from 'src/pages/Docs'
@@ -12,10 +12,10 @@ const App: Component = () => {
     document.body.classList.add(state.theme)
   })
   return (
-    <Routes>
+    <>
       <Route path="/" component={Home} />
       <Route path="/docs/*slug" component={Docs} />
-    </Routes>
+    </>
   )
 }
 

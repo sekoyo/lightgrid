@@ -8,7 +8,7 @@ export default function Doc() {
 
   return (
     <div>
-      <H1>Global search / filtering</H1>
+      <H1>Global filtering (search)</H1>
       <Section>
         <P>
           Data and state is controlled by you via props. You can create your own input and
@@ -25,8 +25,8 @@ export default function Doc() {
                 <Demo
                   demoUrl={`${
                     import.meta.env.VITE_REACT_DEMO_BASE_URL
-                  }/demos/global-search`}
-                  demoSrc={import('/../react/src/demos/GlobalSearch.tsx?raw')}
+                  }/demos/global-filtering`}
+                  demoSrc={import('/../react/src/demos/GlobalFiltering.tsx?raw')}
                   height={407}
                 />
               ),
@@ -38,8 +38,8 @@ export default function Doc() {
                 <Demo
                   demoUrl={`${
                     import.meta.env.VITE_REACT_DEMO_BASE_URL
-                  }/demos/global-search`}
-                  demoSrc={import('/../react/src/demos/GlobalSearch.tsx?raw')}
+                  }/demos/global-filtering`}
+                  demoSrc={import('/../react/src/demos/GlobalFiltering.tsx?raw')}
                   height={407}
                 />
               ),

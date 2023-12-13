@@ -31,7 +31,7 @@ export function HeaderCell<T>({
   colReorderKey,
 }: HeaderCellProps<T>) {
   const sortable = !isDerivedColumnGroup(column) && column.sortable
-  const label = typeof column.header !== 'undefined' ? column.header : column.key
+  const label = column.header !== undefined ? column.header : column.key
   const isGroup = isColumnGroup(column)
   return (
     <div
@@ -41,7 +41,7 @@ export function HeaderCell<T>({
       role={sortable ? 'button' : undefined}
       style={{
         width: column.size,
-        height: column.rowSpan * headerRowHeight,
+        height: column.headerRowSpan * headerRowHeight,
         transform: `translate(${column.offset}px, ${
           column.rowIndex * headerRowHeight
         }px)`,

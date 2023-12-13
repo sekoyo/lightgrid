@@ -1,12 +1,15 @@
 import { DerivedColumn, ValueSource } from '@lightfin/datagrid'
 import { N } from './types'
 
-export interface CellComponentProps<T, N> {
+export interface DefaultCellComponentProps<T, N> {
   column: DerivedColumn<T, N>
   item: T
 }
 
-export function DefaultCellComponent<T>({ item, column }: CellComponentProps<T, N>) {
+export function DefaultCellComponent<T>({
+  item,
+  column,
+}: DefaultCellComponentProps<T, N>) {
   const value = column.getValue(item, ValueSource.Cell)
   return (
     <div

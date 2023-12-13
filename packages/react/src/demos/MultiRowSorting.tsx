@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import {
-  Column,
+  // Column,
   GroupedColumns,
-  isColumnGroup,
+  // isColumnGroup,
   darkTheme,
   lightTheme,
 } from '@lightfin/datagrid'

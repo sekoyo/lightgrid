@@ -9,7 +9,7 @@ const theme = params.get('theme') === 'light' ? 'light' : 'dark'
 const BasicGridDemo = lazy(() => import('./demos/BasicGrid'))
 const KitchenSinkDemo = lazy(() => import('./demos/KitchenSink'))
 const ThemingDemo = lazy(() => import('./demos/Theming'))
-const GlobalSearchDemo = lazy(() => import('./demos/GlobalSearch'))
+const GlobalFilteringDemo = lazy(() => import('./demos/GlobalFiltering'))
 const AsyncDataDemo = lazy(() => import('./demos/AsyncData'))
 const FinitePaginationDemo = lazy(() => import('./demos/FinitePagination'))
 const InfinitePaginationDemo = lazy(() => import('./demos/InfinitePagination'))
@@ -20,6 +20,7 @@ const ColumnResizingDemo = lazy(() => import('./demos/ColumnResizing'))
 const ColumnReorderingDemo = lazy(() => import('./demos/ColumnReordering'))
 const RowSortingDemo = lazy(() => import('./demos/RowSorting'))
 const MultiRowSortingDemo = lazy(() => import('./demos/MultiRowSorting'))
+const RowGroupingDemo = lazy(() => import('./demos/RowGrouping'))
 
 document.body.classList.add(theme)
 
@@ -41,9 +42,9 @@ export function App() {
           <ThemingDemo theme={theme} />
         </DemoContainer>
       </Route>
-      <Route path="/demos/global-search">
+      <Route path="/demos/global-filtering">
         <DemoContainer height={height}>
-          <GlobalSearchDemo theme={theme} />
+          <GlobalFilteringDemo theme={theme} />
         </DemoContainer>
       </Route>
       <Route path="/demos/async-data">
@@ -94,6 +95,11 @@ export function App() {
       <Route path="/demos/multi-col-row-sorting">
         <DemoContainer height={height}>
           <MultiRowSortingDemo theme={theme} />
+        </DemoContainer>
+      </Route>
+      <Route path="/demos/row-grouping">
+        <DemoContainer height={height}>
+          <RowGroupingDemo theme={theme} />
         </DemoContainer>
       </Route>
     </>

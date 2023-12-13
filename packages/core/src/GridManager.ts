@@ -54,7 +54,7 @@ interface GridManagerStaticProps<T, N> {
   setColReorderKey: SetColReorderKey
   onColumnsChange?: (columns: GroupedColumns<T, N>) => void
   onDataChange?: (data: T[]) => void
-  onRowStateChange: OnRowStateChange
+  onRowStateChange: OnRowStateChange<any>
   onDerivedColumnsChange: (derivedCols: DerivedColsResult<T, N>) => void
   onAreasChanged: (gridAreas: BodyAreaDesc<T, N>[]) => void
   onHeadersChanged: (headerAreas: HeaderAreaDesc<T, N>[]) => void
@@ -66,7 +66,7 @@ interface GridManagerStaticProps<T, N> {
 }
 
 interface GridManagerDynamicProps<T, N> {
-  columns: GroupedColumns<T, N>
+  columns: GroupedColumns<T, N, any>
   headerRowHeight?: number
   filterRowHeight?: number
   data: T[]
@@ -98,7 +98,7 @@ export class GridManager<T, N> {
   setColReorderKey: SetColReorderKey
   onColumnsChange?: (columns: GroupedColumns<T, N>) => void
   onDataChange?: (data: T[]) => void
-  onRowStateChange: OnRowStateChange
+  onRowStateChange: OnRowStateChange<any>
 
   cellSelectionPlugin?: CellSelectionPlugin<T, N>
   columnResizePlugin?: ColumnResizePlugin<T, N>
@@ -130,12 +130,11 @@ export class GridManager<T, N> {
       c => Boolean(!isColumnGroup(c) && c.sortable && c.sortDirection)
     )
       .sort((a, b) => (a.sortPriority ?? 0) - (b.sortPriority ?? 0))
-      .map(c => {
-        if (c.createSortComparator) {
-          return c.createSortComparator(c.sortDirection!)
-        }
-        return createDefaultSortComparator(c.getValue, c.sortDirection!)
-      })
+      .map(
+        c =>
+          c.createSortComparator?.(c.sortDirection!) ||
+          createDefaultSortComparator(c.getValue, c.sortDirection!)
+      )
   )
   $derivedData = computed(() => {
     if (!this.$multiSort()) {

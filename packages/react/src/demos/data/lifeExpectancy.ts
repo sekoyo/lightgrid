@@ -1,5 +1,5 @@
 import { GroupedColumns, ValueSource } from '@lightfin/datagrid'
-import rawData from './lifeExpectancy.json'
+import rawData from './life_expectancy.json'
 
 export interface LifeExpectancy {
   country: string

@@ -11,7 +11,7 @@ import {
   cls,
   createGridManager,
   darkTheme,
-  defaultGetRowDetailsMeta,
+  DEFAULT_GET_ROW_DETAILS_META,
   DEFAULT_GET_ROW_META,
   EMPTY_DERIVED_COLS_RESULT,
   BodyAreaDesc,
@@ -33,6 +33,7 @@ import {
   RowState,
   Theme,
   themeToCSSObj,
+  StateSetter,
 } from '@lightfin/datagrid'
 import '@lightfin/datagrid/dist/styles.css'
 import { N } from './types'
@@ -40,7 +41,7 @@ import { HeaderArea } from './HeaderArea'
 import { GridArea } from './GridArea'
 
 const emptyData: any[] = []
-const emptyRowState: RowState = {}
+const emptyRowState: RowState<any> = {}
 const noop = () => {
   /**/
 }
@@ -49,9 +50,9 @@ const defaultRowDetailsRenderer = () => (
 )
 
 // TODO: JSDoc these props
-interface DataGridProps<T> {
-  columns: GroupedColumns<T, React.ReactNode>
-  onColumnsChange?: (columnns: GroupedColumns<T, React.ReactNode>) => void
+interface DataGridProps<T, S> {
+  columns: GroupedColumns<T, N, S>
+  onColumnsChange?: (columnns: GroupedColumns<T, N>) => void
   onFiltersChange?: OnFiltersChange<T, N>
   headerRowHeight?: number
   filterRowHeight?: number
@@ -62,21 +63,22 @@ interface DataGridProps<T> {
   onDataChange?: (data: T[]) => void
   pinnedTopData?: T[]
   pinnedBottomData?: T[]
-  rowState?: RowState
-  renderRowDetails?: RenderRowDetails<T, React.ReactNode>
-  onRowStateChange?: OnRowStateChange
+  rowState?: RowState<S>
+  setRowState?: StateSetter<RowState<S>>
+  renderRowDetails?: RenderRowDetails<T, N>
+  onRowStateChange?: OnRowStateChange<S>
   direction?: 'ltr' | 'rtl'
   theme?: Theme
   multiSort?: boolean
   enableCellSelection?: boolean
   enableColumnResize?: boolean
   enableColumnReorder?: boolean
-  loadingOverlay?: React.ReactNode
+  loadingOverlay?: N
   className?: string
   style?: React.CSSProperties
 }
 
-export function DataGrid<T>({
+export function DataGrid<T, S = unknown>({
   columns,
   onColumnsChange,
   onFiltersChange = noop,
@@ -84,12 +86,13 @@ export function DataGrid<T>({
   filterRowHeight,
   getRowId,
   getRowMeta = DEFAULT_GET_ROW_META,
-  getRowDetailsMeta = defaultGetRowDetailsMeta,
+  getRowDetailsMeta = DEFAULT_GET_ROW_DETAILS_META,
   data,
   onDataChange,
   pinnedTopData = emptyData,
   pinnedBottomData = emptyData,
   rowState = emptyRowState,
+  setRowState,
   renderRowDetails = defaultRowDetailsRenderer,
   onRowStateChange = noop,
   direction,
@@ -101,7 +104,7 @@ export function DataGrid<T>({
   loadingOverlay,
   className,
   style,
-}: DataGridProps<T>) {
+}: DataGridProps<T, S>) {
   const gridEl = useRef<HTMLDivElement>(null)
   const scrollEl = useRef<HTMLDivElement>(null)
   const viewportEl = useRef<HTMLDivElement>(null)
@@ -252,6 +255,7 @@ export function DataGrid<T>({
                 columns={area.pinnedX ? area.colResult.items : middleCols}
                 rows={area.pinnedY ? area.rowResult.items : middleRows}
                 rowState={rowState}
+                setRowState={setRowState}
                 onRowStateChangeRef={onRowStateChangeRef}
                 detailsWidth={viewport.width}
                 renderRowDetailsRef={renderRowDetailsRef}

@@ -1,10 +1,16 @@
 import { memo } from 'react'
-import { DerivedColumn, GridManager, ItemId, RowStateItem } from '@lightfin/datagrid'
+import {
+  DerivedColumn,
+  GridManager,
+  ItemId,
+  RowStateItem,
+  StateSetter,
+} from '@lightfin/datagrid'
 
 import { IconButton } from '../IconButton'
 import { DownArrowIcon } from '../Icons'
-import { DefaultCellComponent } from './DefaultCellComponent'
 import type { N } from './types'
+import { DefaultCellComponent } from './DefaultCellComponent'
 
 interface CellProps<T> {
   mgr: GridManager<T, React.ReactNode>
@@ -13,7 +19,8 @@ interface CellProps<T> {
   // and rows are re-derived, only cells with a changed item will re-render.
   item: T
   rowId: ItemId
-  rowStateItem: RowStateItem | undefined
+  rowStateItem: RowStateItem<any> | undefined
+  setRowState?: StateSetter<any>
   hasExpandInCell: boolean
   pinnedX: boolean
   pinnedY: boolean
@@ -21,6 +28,8 @@ interface CellProps<T> {
   enableColumnReorder?: boolean
   selected: boolean
   selectionStart: boolean
+  width: number
+  zIndex?: number
   onExpandToggle: (rowId: ItemId) => void
 }
 
@@ -30,6 +39,7 @@ export function CellNoMemo<T>({
   item,
   rowId,
   rowStateItem,
+  setRowState,
   hasExpandInCell,
   pinnedX,
   pinnedY,
@@ -37,6 +47,8 @@ export function CellNoMemo<T>({
   selected,
   selectionStart,
   enableColumnReorder,
+  width,
+  zIndex,
   onExpandToggle,
 }: CellProps<T>) {
   return (
@@ -50,8 +62,9 @@ export function CellNoMemo<T>({
       data-reordering={!!colReorderKey}
       data-moving-col={column.key === colReorderKey}
       style={{
-        width: column.size,
+        width,
         transform: `translateX(${column.offset}px)`,
+        zIndex,
       }}
       onPointerEnter={
         enableColumnReorder && colReorderKey
@@ -70,15 +83,15 @@ export function CellNoMemo<T>({
         <IconButton
           title="Expand row details"
           className="lfg-cell-details-btn"
-          style={
-            rowStateItem?.detailsExpanded ? undefined : { transform: 'rotate(270deg)' }
-          }
+          style={rowStateItem?.expanded ? undefined : { transform: 'rotate(270deg)' }}
           onClick={() => onExpandToggle(rowId)}
         >
           <DownArrowIcon />
         </IconButton>
       )}
-      {column.cellComponent?.(column, item) || (
+      {column.cellComponent ? (
+        column.cellComponent({ column, item, rowStateItem, setRowState })
+      ) : (
         <DefaultCellComponent column={column} item={item} />
       )}
     </div>

@@ -2,14 +2,14 @@ import { cls } from '@lightfin/datagrid'
 import styles from './Button.module.css'
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  buttonType?: 'primary' | 'secondary' | 'ghost'
+  variant?: 'primary' | 'secondary' | 'ghost'
 }
 
-export function Button({ buttonType = 'primary', ...attrs }: ButtonProps) {
+export function Button({ variant = 'primary', ...attrs }: ButtonProps) {
   return (
     <button
       type="button"
-      data-type={buttonType}
+      data-type={variant}
       {...attrs}
       className={cls(styles.button, attrs.className)}
     />
