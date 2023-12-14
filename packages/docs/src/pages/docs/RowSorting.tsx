@@ -127,11 +127,11 @@ export default function Doc() {
         </Tabs>
       </Section>
       <HGroup justifyEnd>
-        <PageButton href="/docs/rows/row-data" secondaryLabel="Previous">
-          Row data
+        <PageButton href="/docs/columns/reordering" secondaryLabel="Previous">
+          Column Reordering
         </PageButton>
-        <PageButton href="/docs/rows/hierarchical-data" secondaryLabel="Next">
-          Hierarchical Data
+        <PageButton href="/docs/rows/grouping" secondaryLabel="Next">
+          Row Grouping
         </PageButton>
       </HGroup>
     </div>

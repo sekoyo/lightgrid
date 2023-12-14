@@ -35,7 +35,7 @@ export function HeaderCell<T>({
   const isGroup = isColumnGroup(column)
   return (
     <div
-      className="lfg-header-cell"
+      className="lg-header-cell"
       data-reordering={!!colReorderKey}
       data-moving-col={column.key === colReorderKey}
       role={sortable ? 'button' : undefined}
@@ -65,9 +65,9 @@ export function HeaderCell<T>({
           : undefined
       }
     >
-      <div className="lfg-header-cell-inner">
+      <div className="lg-header-cell-inner">
         <div
-          className="lfg-header-cell-label"
+          className="lg-header-cell-label"
           title={typeof label === 'string' ? label : undefined}
         >
           {label}
@@ -75,14 +75,14 @@ export function HeaderCell<T>({
         {!isGroup &&
           column.sortDirection &&
           (column.sortDirection === SortDirection.Asc ? (
-            <SortAscendingIcon className="lfg-header-sort-indicator" />
+            <SortAscendingIcon className="lg-header-sort-indicator" />
           ) : (
-            <SortDescendingIcon className="lfg-header-sort-indicator" />
+            <SortDescendingIcon className="lg-header-sort-indicator" />
           ))}
       </div>
       {enableColumnResize && (
         <div
-          className="lfg-header-grip-resizer"
+          className="lg-header-grip-resizer"
           role="button"
           aria-labelledby="resize handle"
           onPointerDown={e => {

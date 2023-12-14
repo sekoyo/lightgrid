@@ -1,27 +1,27 @@
-.lfg-cell {
+.lg-cell {
   position: absolute;
   height: 100%;
   contain: strict;
   display: flex;
   align-items: center;
-  direction: var(--lfgDirection);
-  background: var(--lfgCellBg, var(--lfgBg));
+  direction: var(--lgDirection);
+  background: var(--lgCellBg, var(--lgBg));
 
   &[data-pinned-x='true'],
   &[data-pinned-y='true'] {
-    background: var(--lfg-pinned-cell-bg, var(--lfgCellBg, var(--lfgBg)));
+    background: var(--lg-pinned-cell-bg, var(--lgCellBg, var(--lgBg)));
   }
 
-  .lfg-row-even & {
-    background: var(--lfgEvenRowCellBg, var(--lfgCellBg, var(--lfgBg)));
+  .lg-row-even & {
+    background: var(--lgEvenRowCellBg, var(--lgCellBg, var(--lgBg)));
   }
 
   &[data-selected='true'] {
-    background: var(--lfgCellSelectedBg);
+    background: var(--lgCellSelectedBg);
   }
 
   &[data-selection-start='true'] {
-    background: var(--lfgCellStartCellBg);
+    background: var(--lgCellStartCellBg);
   }
 
   &[data-reordering='true'] * {
@@ -29,7 +29,7 @@
   }
 
   &[data-moving-col='true'] {
-    background: var(--lfgColReorderBgColor);
+    background: var(--lgColReorderBgColor);
   }
 
   &-details-btn {
@@ -37,9 +37,9 @@
   }
 }
 
-.lfg-default-cell {
+.lg-default-cell {
   align-items: center;
-  padding: 0 var(--lfgCellHPadding);
+  padding: 0 var(--lgCellHPadding);
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;

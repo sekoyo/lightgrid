@@ -8,7 +8,7 @@ export function IconButton({ size, ...attrs }: IconButtonProps) {
   return (
     <button
       {...attrs}
-      className={`lfg-icon-btn ${attrs.className}`}
+      className={`lg-icon-btn ${attrs.className}`}
       style={
         size || attrs.style
           ? {

@@ -83,10 +83,10 @@ export function GridAreaNoMemo<T>({
   }
 
   return (
-    <div className="lfg-area" data-borderbottom={!area.lastY}>
+    <div className="lg-area">
       <div
         role="rowgroup"
-        className="lfg-area-inner"
+        className="lg-area-inner"
         style={{
           position: area.pinnedX || area.pinnedY ? 'sticky' : 'absolute',
           [area.pinnedX && !area.pinnedY ? 'marginTop' : 'top']: area.windowY,
@@ -103,8 +103,8 @@ export function GridAreaNoMemo<T>({
             <div
               key={row.rowId}
               role="row"
-              className={`lfg-row ${
-                row.rowIndex % 2 === 0 ? 'lfg-row-even' : 'lfg-row-odd'
+              className={`lg-row ${
+                row.rowIndex % 2 === 0 ? 'lg-row-even' : 'lg-row-odd'
               }`}
               style={{
                 height: row.size,
@@ -176,8 +176,8 @@ export function GridAreaNoMemo<T>({
             renderRowDetails={renderRowDetailsRef.current}
           />
         ) : undefined}
-        <div className="lfg-area-h-borders" />
-        <div className="lfg-area-v-borders" />
+        <div className="lg-area-h-borders" data-borderbottom={!area.lastY} />
+        <div className="lg-area-v-borders" />
       </div>
     </div>
   )

@@ -1,4 +1,4 @@
-.lfg-header {
+.lg-header {
   &-area {
     position: absolute;
     top: 0;
@@ -19,10 +19,10 @@
     position: absolute;
     display: flex;
     align-items: center;
-    background: var(--lfgHeaderCellBg, var(--lfgCellBg, var(--lfgBg)));
-    padding: 6px var(--lfgCellHPadding);
-    direction: var(--lfgDirection);
-    color: var(--lfgHeaderTextColor);
+    background: var(--lgHeaderCellBg, var(--lgCellBg, var(--lgBg)));
+    padding: 6px var(--lgCellHPadding);
+    direction: var(--lgDirection);
+    color: var(--lgHeaderTextColor);
     font-weight: bold;
 
     &[role='button'] {
@@ -34,10 +34,10 @@
     }
 
     &[data-moving-col='true'] {
-      background: var(--lfgColReorderHeaderBgColor, var(--lfgColReorderBgColor));
+      background: var(--lgColReorderHeaderBgColor, var(--lgColReorderBgColor));
     }
 
-    border-bottom: 1px solid var(--lfgHeaderBorderColor, var(--lfgBorderColor));
+    border-bottom: 1px solid var(--lgHeaderBorderColor, var(--lgBorderColor));
     &::before,
     &::after {
       content: '';
@@ -46,8 +46,8 @@
       position: absolute;
       height: calc(100% - (10% + 16px));
       background: var(
-        --lfgHeaderInnerBorderColor,
-        var(--lfgHeaderBorderColor, var(--lfgBorderColor))
+        --lgHeaderInnerBorderColor,
+        var(--lgHeaderBorderColor, var(--lgBorderColor))
       );
     }
     &::before {
@@ -76,7 +76,7 @@
     pointer-events: none;
     width: 12px;
     height: 12px;
-    color: var(--lfgHeaderTextColor);
+    color: var(--lgHeaderTextColor);
   }
 
   &-grip-resizer {
@@ -93,8 +93,8 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: var(--lfgBg);
-    border-bottom: 1px solid var(--lfgHeaderBorderColor, var(--lfgBorderColor));
+    background: var(--lgBg);
+    border-bottom: 1px solid var(--lgHeaderBorderColor, var(--lgBorderColor));
 
     &-v-borders {
       &::after,
@@ -102,7 +102,7 @@
         content: '';
         display: block;
         position: absolute;
-        background: var(--lfgBorderColor);
+        background: var(--lgBorderColor);
       }
     }
 
@@ -124,11 +124,11 @@
   &-filter {
     position: absolute;
     bottom: 0;
-    direction: var(--lfgDirection);
+    direction: var(--lgDirection);
     display: flex;
     align-items: center;
     justify-content: center;
-    // color: var(--lfgHeaderTextColor);
+    // color: var(--lgHeaderTextColor);
     padding: 0 4px;
   }
 }

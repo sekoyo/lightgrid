@@ -10,7 +10,7 @@ interface FilterCellProps<T> {
 export function FilterCell<T>({ column, filterRowHeight, children }: FilterCellProps<T>) {
   return (
     <div
-      className="lfg-header-filter"
+      className="lg-header-filter"
       style={{
         width: column.size,
         height: filterRowHeight,

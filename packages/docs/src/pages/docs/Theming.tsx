@@ -38,8 +38,8 @@ export default function Doc() {
         `}</CodeBlock>
         <P>
           If you prefer you can also style directly with CSS Variables by prepending the
-          theme property names with <Code>--lfg</Code> and capitalizing the first letter.
-          For example <Code>--lfgHeaderCellBg</Code>.
+          theme property names with <Code>--lg</Code> and capitalizing the first letter.
+          For example <Code>--lgHeaderCellBg</Code>.
         </P>
       </Section>
       <Section>

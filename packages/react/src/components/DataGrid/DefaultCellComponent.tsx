@@ -13,7 +13,7 @@ export function DefaultCellComponent<T>({
   const value = column.getValue(item, ValueSource.Cell)
   return (
     <div
-      className="lfg-default-cell"
+      className="lg-default-cell"
       title={typeof value === 'string' ? value : undefined}
     >
       {value}

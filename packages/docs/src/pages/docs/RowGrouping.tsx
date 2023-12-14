@@ -128,7 +128,7 @@ export default function Doc() {
           Defining Columns
         </PageButton>
         <PageButton href="/docs/columns/sorting" secondaryLabel="Next">
-          Sorting
+          Column Sorting
         </PageButton>
       </HGroup>
     </div>

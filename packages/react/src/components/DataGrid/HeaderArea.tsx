@@ -93,7 +93,7 @@ export function HeaderArea<T>({
         return null
       }
       return (
-        <div className="lfg-header-filters" style={{ height: filterRowHeight }}>
+        <div className="lg-header-filters" style={{ height: filterRowHeight }}>
           {flatColumns.reduce((vnode, column) => {
             if (column.filterComponent) {
               vnode.push(
@@ -110,7 +110,7 @@ export function HeaderArea<T>({
             }
             return vnode
           }, [] as React.ReactNode[])}
-          <div className="lfg-header-filters-v-borders" />
+          <div className="lg-header-filters-v-borders" />
         </div>
       )
     },
@@ -122,8 +122,8 @@ export function HeaderArea<T>({
   }
 
   return (
-    <div className="lfg-header-area">
-      <div className="lfg-header-area-inner" style={{ left, width, height }}>
+    <div className="lg-header-area">
+      <div className="lg-header-area-inner" style={{ left, width, height }}>
         {renderColumns(
           mgr,
           columns,

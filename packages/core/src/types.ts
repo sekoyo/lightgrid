@@ -185,8 +185,8 @@ export interface RowMeta {
 
 /**
  * The row details meta returned in the `getRowDetailsMeta` function prop for providing
- * the the row details height in pixels. If `getRowDetailsMeta` isn't specified row
- * details rows will be 160px.
+ * the the row details height in pixels. If `getRowDetailsMeta` isn't specified, detail
+ * rows will be 160px.
  */
 export interface RowDetailsMeta {
   /** The row details section height in pixels. */

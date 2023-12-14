@@ -43,6 +43,7 @@ Good for master-details (prizes in details)
 - When sorting col at edge auto scroll
 - Write medium articles under Lightfin and link to Datagrid. e.g. one about Solid
 - Context menu
+- Automate doc page navigation buttons (prev/next)
 
 ## Bugs
 

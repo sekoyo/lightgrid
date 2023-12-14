@@ -54,7 +54,7 @@ export function CellNoMemo<T>({
   return (
     <div
       role="cell"
-      className="lfg-cell"
+      className="lg-cell"
       data-pinned-x={pinnedX}
       data-pinned-y={pinnedY}
       data-selected={selected}
@@ -82,7 +82,7 @@ export function CellNoMemo<T>({
       {hasExpandInCell && (
         <IconButton
           title="Expand row details"
-          className="lfg-cell-details-btn"
+          className="lg-cell-details-btn"
           style={rowStateItem?.expanded ? undefined : { transform: 'rotate(270deg)' }}
           onClick={() => onExpandToggle(rowId)}
         >

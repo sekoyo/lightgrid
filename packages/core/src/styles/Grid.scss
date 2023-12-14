@@ -1,5 +1,5 @@
-.lfg {
-  --lfgCellHPadding: 1em;
+.lg {
+  --lgCellHPadding: 1em;
 
   *,
   *::before,
@@ -12,11 +12,11 @@
   width: 100%;
   height: 100%;
   flex: 1;
-  border-radius: var(--lfgBorderRadius);
-  border: 1px solid var(--lfgBorderColor);
+  border-radius: var(--lgBorderRadius);
+  border: 1px solid var(--lgBorderColor);
   overflow: hidden;
-  color: var(--lfgTextColor);
-  background: var(--lfgCellBg, var(--lfgBg));
+  color: var(--lgTextColor);
+  background: var(--lgCellBg, var(--lgBg));
 
   // Used in getScrollbarSize else on touch devices it will
   // come back as 0 since they are overlays by default. But
@@ -24,7 +24,7 @@
   // it unfortunately means the scrollbar will always be visible
   // and never a nice overlay on phones/laptops.
   &-scroll {
-    scrollbar-color: var(--lfgScrollThumb) var(--lfgScrollTrack);
+    scrollbar-color: var(--lgScrollThumb) var(--lgScrollTrack);
 
     // Size
     &::-webkit-scrollbar {
@@ -34,22 +34,22 @@
 
     // Track
     &::-webkit-scrollbar-track {
-      background: var(--lfgScrollTrack);
+      background: var(--lgScrollTrack);
     }
     &::-webkit-scrollbar-corner {
-      background: var(--lfgScrollTrack);
+      background: var(--lgScrollTrack);
     }
 
     // Handle
     &::-webkit-scrollbar-thumb {
-      background: var(--lfgScrollThumb);
+      background: var(--lgScrollThumb);
       border-radius: 8px;
-      border: 3px solid var(--lfgScrollTrack);
+      border: 3px solid var(--lgScrollTrack);
     }
 
     // Handle on hover
     &::-webkit-scrollbar-thumb:hover {
-      background: var(--lfgScrollThumbHover);
+      background: var(--lgScrollThumbHover);
     }
   }
 
@@ -103,7 +103,7 @@
         content: '';
         display: block;
         position: absolute;
-        background: var(--lfgBorderColor);
+        background: var(--lgBorderColor);
       }
     }
 
@@ -128,7 +128,7 @@
       right: -1px;
     }
 
-    &-h-borders::after[data-borderbottom='true'] {
+    &-h-borders[data-borderbottom='true']::after {
       height: 1px;
       bottom: -1px;
       left: -1px;
@@ -147,8 +147,8 @@
       left: 0;
       width: 100%;
       height: 100%;
-      outline: 1px solid var(--lfgBorderColor);
-      background: var(--lfgCellBg, var(--lfgBg));
+      outline: 1px solid var(--lgBorderColor);
+      background: var(--lgCellBg, var(--lgBg));
     }
   }
 
@@ -171,7 +171,7 @@
     z-index: 2;
     width: 1px;
     pointer-events: none;
-    background-color: var(--lfgColResizeColor);
+    background-color: var(--lgColResizeColor);
   }
 
   &-overlay {

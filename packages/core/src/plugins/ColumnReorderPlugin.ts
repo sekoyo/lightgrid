@@ -324,11 +324,11 @@ class DragLabel {
     }
 
     const el = document.createElement('div')
-    el.classList.add('lfg-drag-label')
+    el.classList.add('lg-drag-label')
 
     const style = document.createElement('style')
     style.textContent = `
-      .lfg-drag-label {
+      .lg-drag-label {
         pointer-events: none;
         position: absolute;
         left: -100vw;
@@ -341,7 +341,7 @@ class DragLabel {
         border-radius: 3px;
         color: black;
       }
-      .lfg-drag-label svg {
+      .lg-drag-label svg {
         width: 16px;
       }
     `

@@ -218,7 +218,7 @@ export function DataGrid<T, S = unknown>({
     () =>
       ({
         ...themeObj,
-        '--lfgDirection': direction,
+        '--lgDirection': direction,
         minHeight: headerHeight,
         ...style,
       }) as CSSProperties,
@@ -228,23 +228,23 @@ export function DataGrid<T, S = unknown>({
   return (
     <div
       ref={gridEl}
-      className={cls('lfg', className)}
+      className={cls('lg', className)}
       role="table"
       tabIndex={0}
       style={mergedStyle}
     >
-      <div ref={scrollEl} className="lfg-canvas lfg-scroll" onScroll={onScroll}>
+      <div ref={scrollEl} className="lg-canvas lg-scroll" onScroll={onScroll}>
         <div
-          className="lfg-grid-sizer"
+          className="lg-grid-sizer"
           style={{ width: derivedCols.size, height: contentHeight }}
         />
         <div
           ref={viewportEl}
-          className="lfg-viewport"
+          className="lg-viewport"
           style={{ width: viewport.width, height: viewport.height }}
         >
           <div
-            className="lfg-view"
+            className="lg-view"
             style={{ width: derivedCols.size, height: contentHeight }}
           >
             {gridAreas.map(area => (
@@ -286,10 +286,10 @@ export function DataGrid<T, S = unknown>({
             ))}
           </div>
           {!!(enableColumnResize && colResizeData) && (
-            <div className="lfg-resizer-marker" style={{ left: colResizeData.left }} />
+            <div className="lg-resizer-marker" style={{ left: colResizeData.left }} />
           )}
           {loadingOverlay && (
-            <div className="lfg-loading-overlay" style={{ top: headerHeight }}>
+            <div className="lg-loading-overlay" style={{ top: headerHeight }}>
               {loadingOverlay}
             </div>
           )}

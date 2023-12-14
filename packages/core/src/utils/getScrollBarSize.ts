@@ -5,7 +5,7 @@ export function getScrollBarSize() {
     return 0
   }
   const el = document.createElement('div')
-  el.classList.add('lfg-scroll')
+  el.classList.add('lg-scroll')
   el.style.setProperty('overflow', 'scroll')
   el.style.setProperty('visibility', 'hidden')
   el.style.setProperty('position', 'absolute')

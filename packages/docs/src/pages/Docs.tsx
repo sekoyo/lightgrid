@@ -21,6 +21,7 @@ const ColumnResizing = lazy(() => import('./docs/ColumnResizing'))
 const ColumnReordering = lazy(() => import('./docs/ColumnReordering'))
 const RowSorting = lazy(() => import('./docs/RowSorting'))
 const RowGrouping = lazy(() => import('./docs/RowGrouping'))
+const RowPinning = lazy(() => import('./docs/RowPinning'))
 
 function getDocPage(slug?: string) {
   console.log('getDocPage', slug)
@@ -51,6 +52,8 @@ function getDocPage(slug?: string) {
       return <RowSorting />
     case 'rows/grouping':
       return <RowGrouping />
+    case 'rows/pinning':
+      return <RowPinning />
     default:
       // TODO: Change to 404
       return <IntroDoc />
@@ -121,7 +124,7 @@ export function Docs() {
               {sectionItem('rows/row-sorting', 'Row Sorting')}
               {sectionItem('rows/grouping', 'Grouping')}
               {sectionItem('rows/pinning', 'Pinning', true)}
-              {sectionItem('rows/details-row', 'Details Row', true)}
+              {sectionItem('rows/detail-rows', 'Detai Rows', true)}
             </ul>
             <ul class={styles.docSection}>
               <li class={styles.sectionTitle}>Cells</li>
