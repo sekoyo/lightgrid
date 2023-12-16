@@ -1,5 +1,5 @@
 .lg {
-  --lgCellHPadding: 1em;
+  --lgCellHPadding: 0.75em;
 
   *,
   *::before,
@@ -93,6 +93,7 @@
       pointer-events: auto;
     }
 
+    // TODO: Can we solve it better? e.g. 1 more div around rows
     // All this faff instead of outline on &-inner is so that
     // we can have a conditional border on the bottom when the
     // content is too short.

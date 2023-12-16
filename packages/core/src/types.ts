@@ -247,15 +247,6 @@ export type RowState<S = unknown> = Record<ItemId, RowStateItem<S>>
  */
 export type OnFiltersChange<T, N> = (column: DerivedColumn<T, N>, value: any) => void
 
-/**
- * Signature of `onRowStateChange` callback which should be implemented when using row
- * details.
- */
-export type OnRowStateChange<S = unknown> = (
-  itemId: ItemId,
-  item: RowStateItem<S>
-) => void
-
 /** Signature of function which returns a unique row ID per row. */
 export type GetRowId<T> = (item: T) => ItemId
 

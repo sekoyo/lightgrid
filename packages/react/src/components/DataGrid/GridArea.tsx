@@ -1,4 +1,4 @@
-import { memo, useCallback, useState } from 'react'
+import { memo } from 'react'
 import {
   CellPosition,
   CellSelection,
@@ -6,7 +6,6 @@ import {
   DerivedRow,
   BodyAreaDesc,
   ItemId,
-  OnRowStateChange,
   RenderRowDetails,
   RowState,
   StateSetter,
@@ -42,7 +41,6 @@ interface GridAreaProps<T> {
   rows: DerivedRow<T>[]
   rowState: RowState<any>
   setRowState?: StateSetter<any>
-  onRowStateChangeRef: React.MutableRefObject<OnRowStateChange<any>>
   detailsWidth: number
   renderRowDetailsRef: React.MutableRefObject<RenderRowDetails<T, N>>
   selection?: CellSelection
@@ -59,7 +57,6 @@ export function GridAreaNoMemo<T>({
   rows,
   rowState,
   setRowState,
-  onRowStateChangeRef,
   detailsWidth,
   renderRowDetailsRef,
   selection,
@@ -68,19 +65,11 @@ export function GridAreaNoMemo<T>({
   colReorderKey,
   enableColumnReorder,
 }: GridAreaProps<T>) {
-  const [rowSpans] = useState(() => new Map<ItemId, number>())
-  const onExpandToggle = useCallback(
-    (rowId: ItemId) =>
-      onRowStateChangeRef.current(rowId, {
-        ...rowState[rowId],
-        expanded: !rowState[rowId]?.expanded,
-      }),
-    [rowState, onRowStateChangeRef]
-  )
-
   if (!rows.length || !columns.length) {
     return null
   }
+
+  const rowSpans = new Map<ItemId, number>()
 
   return (
     <div className="lg-area">
@@ -97,7 +86,7 @@ export function GridAreaNoMemo<T>({
       >
         {rows.map(row => {
           let skipColCount = 0
-          // rowSpan 1 means no skip, so we sub by 1.
+          // rowSpan 1 - 1 = 0 based (easier to work with)
           const skipRowCount = (rowSpans.get(row.rowId) ?? 1) - 1
           return (
             <div
@@ -144,10 +133,8 @@ export function GridAreaNoMemo<T>({
                     mgr={mgr}
                     column={column}
                     item={row.item}
-                    rowId={row.rowId}
                     rowStateItem={rowState[row.rowId]}
                     setRowState={setRowState}
-                    hasExpandInCell={Boolean(row.hasDetails && column.colIndex === 0)}
                     pinnedX={area.pinnedX}
                     pinnedY={area.pinnedY}
                     colReorderKey={colReorderKey}
@@ -160,7 +147,6 @@ export function GridAreaNoMemo<T>({
                     )}
                     width={size}
                     zIndex={span === 1 ? undefined : 1}
-                    onExpandToggle={onExpandToggle}
                   />
                 )
 

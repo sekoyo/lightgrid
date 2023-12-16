@@ -28,7 +28,6 @@ import {
   ItemId,
   GroupedColumns,
   OnFiltersChange,
-  OnRowStateChange,
   RenderRowDetails,
   RowState,
   Theme,
@@ -66,7 +65,6 @@ interface DataGridProps<T, S> {
   rowState?: RowState<S>
   setRowState?: StateSetter<RowState<S>>
   renderRowDetails?: RenderRowDetails<T, N>
-  onRowStateChange?: OnRowStateChange<S>
   direction?: 'ltr' | 'rtl'
   theme?: Theme
   multiSort?: boolean
@@ -94,7 +92,6 @@ export function DataGrid<T, S = unknown>({
   rowState = emptyRowState,
   setRowState,
   renderRowDetails = defaultRowDetailsRenderer,
-  onRowStateChange = noop,
   direction,
   theme = darkTheme,
   multiSort,
@@ -112,8 +109,6 @@ export function DataGrid<T, S = unknown>({
   // We can't trust that the user will memoize these.
   const renderRowDetailsRef = useRef(renderRowDetails)
   renderRowDetailsRef.current = renderRowDetails
-  const onRowStateChangeRef = useRef(onRowStateChange)
-  onRowStateChangeRef.current = onRowStateChange
   const onFiltersChangeRef = useRef(onFiltersChange)
   onFiltersChangeRef.current = onFiltersChange
 
@@ -145,7 +140,6 @@ export function DataGrid<T, S = unknown>({
       setSelection,
       setColResizeData,
       setColReorderKey,
-      onRowStateChange,
       onColumnsChange,
       onDataChange,
       onDerivedColumnsChange: setDerivedCols,
@@ -256,7 +250,6 @@ export function DataGrid<T, S = unknown>({
                 rows={area.pinnedY ? area.rowResult.items : middleRows}
                 rowState={rowState}
                 setRowState={setRowState}
-                onRowStateChangeRef={onRowStateChangeRef}
                 detailsWidth={viewport.width}
                 renderRowDetailsRef={renderRowDetailsRef}
                 enableColumnReorder={enableColumnReorder}

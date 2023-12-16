@@ -18,12 +18,13 @@ export function GridDetailRows<T>({
           key={detailRow.rowId}
           className="lg-detail-row"
           style={{
-            width,
             height: detailRow.size,
             transform: `translateY(${detailRow.offset}px)`,
           }}
         >
-          <div className="lg-detail-row-inner">{renderRowDetails(detailRow.item)}</div>
+          <div className="lg-detail-row-inner" style={{ width }}>
+            {renderRowDetails(detailRow.item)}
+          </div>
         </div>
       ))}
     </>

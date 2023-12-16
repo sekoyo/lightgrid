@@ -19,7 +19,7 @@ export default function Doc() {
     <div>
       <H1>Setup</H1>
       <Section>
-        <P>Install the datagrid package for your framework</P>
+        <P>Install the core package and the one for your framework</P>
         <Tabs activeTabId={state.activeTabId} onTabPress={changeTab}>
           {[
             {
@@ -27,6 +27,10 @@ export default function Doc() {
               label: 'React',
               component: (
                 <CodeBlock lang="bash">{`
+                npm install @lightfin/datagrid
+                yarn add @lightfin/datagrid
+                pnpm add @lightfin/datagrid
+
                 npm install @lightfin/react-datagrid
                 yarn add @lightfin/react-datagrid
                 pnpm add @lightfin/react-datagrid
@@ -38,6 +42,10 @@ export default function Doc() {
               label: 'Solid',
               component: (
                 <CodeBlock lang="bash">{`
+                npm install @lightfin/datagrid
+                yarn add @lightfin/datagrid
+                pnpm add @lightfin/datagrid
+
                 npm install @lightfin/solid-datagrid
                 yarn add @lightfin/solid-datagrid
                 pnpm add @lightfin/solid-datagrid

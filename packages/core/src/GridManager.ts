@@ -15,7 +15,6 @@ import {
   BodyAreaDesc,
   GroupedColumns,
   HeaderAreaDesc,
-  OnRowStateChange,
   RenderRowDetails,
   RowState,
   Column,
@@ -54,7 +53,6 @@ interface GridManagerStaticProps<T, N> {
   setColReorderKey: SetColReorderKey
   onColumnsChange?: (columns: GroupedColumns<T, N>) => void
   onDataChange?: (data: T[]) => void
-  onRowStateChange: OnRowStateChange<any>
   onDerivedColumnsChange: (derivedCols: DerivedColsResult<T, N>) => void
   onAreasChanged: (gridAreas: BodyAreaDesc<T, N>[]) => void
   onHeadersChanged: (headerAreas: HeaderAreaDesc<T, N>[]) => void
@@ -98,7 +96,6 @@ export class GridManager<T, N> {
   setColReorderKey: SetColReorderKey
   onColumnsChange?: (columns: GroupedColumns<T, N>) => void
   onDataChange?: (data: T[]) => void
-  onRowStateChange: OnRowStateChange<any>
 
   cellSelectionPlugin?: CellSelectionPlugin<T, N>
   columnResizePlugin?: ColumnResizePlugin<T, N>
@@ -532,7 +529,6 @@ export class GridManager<T, N> {
     this.renderRowDetails = props.renderRowDetails
     this.onColumnsChange = props.onColumnsChange
     this.onDataChange = props.onDataChange
-    this.onRowStateChange = props.onRowStateChange
 
     this.setStartCell = props.setStartCell
     this.setSelection = props.setSelection

@@ -7,8 +7,6 @@ import {
   StateSetter,
 } from '@lightfin/datagrid'
 
-import { IconButton } from '../IconButton'
-import { DownArrowIcon } from '../Icons'
 import type { N } from './types'
 import { DefaultCellComponent } from './DefaultCellComponent'
 
@@ -18,10 +16,8 @@ interface CellProps<T> {
   // Passing in item instead of `row: DerivedRow<T>` means that if data changes
   // and rows are re-derived, only cells with a changed item will re-render.
   item: T
-  rowId: ItemId
   rowStateItem: RowStateItem<any> | undefined
   setRowState?: StateSetter<any>
-  hasExpandInCell: boolean
   pinnedX: boolean
   pinnedY: boolean
   colReorderKey?: ItemId
@@ -30,17 +26,14 @@ interface CellProps<T> {
   selectionStart: boolean
   width: number
   zIndex?: number
-  onExpandToggle: (rowId: ItemId) => void
 }
 
 export function CellNoMemo<T>({
   mgr,
   column,
   item,
-  rowId,
   rowStateItem,
   setRowState,
-  hasExpandInCell,
   pinnedX,
   pinnedY,
   colReorderKey,
@@ -49,7 +42,6 @@ export function CellNoMemo<T>({
   enableColumnReorder,
   width,
   zIndex,
-  onExpandToggle,
 }: CellProps<T>) {
   return (
     <div
@@ -79,16 +71,6 @@ export function CellNoMemo<T>({
           : undefined
       }
     >
-      {hasExpandInCell && (
-        <IconButton
-          title="Expand row details"
-          className="lg-cell-details-btn"
-          style={rowStateItem?.expanded ? undefined : { transform: 'rotate(270deg)' }}
-          onClick={() => onExpandToggle(rowId)}
-        >
-          <DownArrowIcon />
-        </IconButton>
-      )}
       {column.cellComponent ? (
         column.cellComponent({ column, item, rowStateItem, setRowState })
       ) : (
