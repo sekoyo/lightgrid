@@ -24,6 +24,7 @@ const RowGrouping = lazy(() => import('./docs/RowGrouping'))
 const RowPinning = lazy(() => import('./docs/RowPinning'))
 const DetailRows = lazy(() => import('./docs/DetailRows'))
 const CellEditing = lazy(() => import('./docs/CellEditing'))
+const CellSelection = lazy(() => import('./docs/CellSelection'))
 
 function getDocPage(slug?: string) {
   switch (slug) {
@@ -59,6 +60,8 @@ function getDocPage(slug?: string) {
       return <DetailRows />
     case 'cells/editing':
       return <CellEditing />
+    case 'cells/selection':
+      return <CellSelection />
     default:
       // TODO: Change to 404
       return <IntroDoc />
@@ -111,13 +114,13 @@ export function Docs() {
               <li class={styles.sectionTitle}>Guides</li>
               {sectionItem('guides/setup', 'Setup')}
               {sectionItem('guides/theming', 'Theming')}
-              {sectionItem('guides/global-filtering', 'Global filtering (search)')}
+              {sectionItem('guides/global-filtering', 'Global search')}
               {sectionItem('guides/async-data', 'Async Data')}
               {sectionItem('guides/pagination', 'Pagination')}
             </ul>
             <ul class={styles.docSection}>
               <li class={styles.sectionTitle}>Columns</li>
-              {sectionItem('columns/defining-columns', 'Defining Columns')}
+              {sectionItem('columns/defining-columns', 'Defining columns')}
               {sectionItem('columns/grouping', 'Grouping')}
               {sectionItem('columns/filtering', 'Filtering')}
               {sectionItem('columns/pinning', 'Pinning', true)}

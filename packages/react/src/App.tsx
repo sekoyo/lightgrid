@@ -24,6 +24,7 @@ const RowGroupingDemo = lazy(() => import('./demos/RowGrouping'))
 const RowPinningDemo = lazy(() => import('./demos/RowPinning'))
 const DetailRowsDemo = lazy(() => import('./demos/DetailRows'))
 const CellEditingDemo = lazy(() => import('./demos/CellEditing'))
+const CellSelectionDemo = lazy(() => import('./demos/CellSelection'))
 
 document.body.classList.add(theme)
 
@@ -118,6 +119,11 @@ export function App() {
       <Route path="/demos/cell-editing">
         <DemoContainer height={height}>
           <CellEditingDemo theme={theme} />
+        </DemoContainer>
+      </Route>
+      <Route path="/demos/cell-selection">
+        <DemoContainer height={height}>
+          <CellSelectionDemo theme={theme} />
         </DemoContainer>
       </Route>
     </>
