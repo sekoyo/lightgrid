@@ -1,6 +1,7 @@
 import { memo } from 'react'
 import {
   DerivedColumn,
+  DerivedRow,
   GridManager,
   ItemId,
   RowStateItem,
@@ -15,7 +16,7 @@ interface CellProps<T> {
   column: DerivedColumn<T, N>
   // Passing in item instead of `row: DerivedRow<T>` means that if data changes
   // and rows are re-derived, only cells with a changed item will re-render.
-  item: T
+  row: DerivedRow<T>
   rowStateItem: RowStateItem<any> | undefined
   setRowState?: StateSetter<any>
   pinnedX: boolean
@@ -31,7 +32,7 @@ interface CellProps<T> {
 export function CellNoMemo<T>({
   mgr,
   column,
-  item,
+  row,
   rowStateItem,
   setRowState,
   pinnedX,
@@ -72,9 +73,15 @@ export function CellNoMemo<T>({
       }
     >
       {column.cellComponent ? (
-        column.cellComponent({ column, item, rowStateItem, setRowState })
+        column.cellComponent({
+          column,
+          item: row.item,
+          rowIndex: row.rowIndex,
+          rowStateItem,
+          setRowState,
+        })
       ) : (
-        <DefaultCellComponent column={column} item={item} />
+        <DefaultCellComponent column={column} item={row.item} />
       )}
     </div>
   )

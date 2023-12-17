@@ -5,7 +5,9 @@ import {
   lightTheme,
 } from '@lightfin/datagrid'
 import { DataGrid } from '@lightfin/react-datagrid'
+import { Input } from 'src/components/Input'
 import { DemoProps } from './types'
+import { GhostButton } from './GhostButton'
 
 import '@lightfin/datagrid/dist/styles.css'
 
@@ -25,14 +27,42 @@ const data: Person[] = [
   },
 ]
 
-function TextEditor({
+function InputEditor({
+  type,
   value,
   onCommit,
 }: {
+  type?: React.InputHTMLAttributes<HTMLInputElement>['type']
   value: string
   onCommit: (newValue: string) => void
 }) {
-  return null
+  const [isEditing, setIsEditing] = useState(false)
+  const [tmpValue, setTmpValue] = useState(value)
+  const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      onCommit(tmpValue)
+      setIsEditing(false)
+    } else if (e.key === 'Escape') {
+      setIsEditing(false)
+    }
+  }
+
+  return isEditing ? (
+    <Input
+      autoFocus
+      type={type}
+      value={tmpValue}
+      onChange={e => setTmpValue(e.currentTarget.value)}
+      onKeyDown={onKeyDown}
+    />
+  ) : (
+    <GhostButton
+      title="Click to edit"
+      onDoubleClick={() => setIsEditing(true)}
+    >
+      {value}
+    </GhostButton>
+  )
 }
 
 export default function Demo({ theme }: DemoProps) {
@@ -44,18 +74,18 @@ export default function Demo({ theme }: DemoProps) {
         key: 'firstname',
         header: 'First Name',
         getValue: d => d.firstname,
-        cellComponent: ({ item }) => (
-          <TextEditor
+        cellComponent: ({ item, rowIndex }) => (
+          <InputEditor
             value={item.firstname}
-            onCommit={newValue => {
-              setPeople(p => ({
-                ...p,
-                [item.id]: {
-                  ...p[item.id],
+            onCommit={newValue =>
+              setPeople(p => {
+                p[rowIndex] = {
+                  ...p[rowIndex],
                   firstname: newValue,
-                },
-              }))
-            }}
+                }
+                return p.slice()
+              })
+            }
           />
         ),
       },
@@ -63,11 +93,41 @@ export default function Demo({ theme }: DemoProps) {
         key: 'lastname',
         header: 'Last Name',
         getValue: d => d.lastname,
+        cellComponent: ({ item, rowIndex }) => (
+          <InputEditor
+            value={item.lastname}
+            onCommit={newValue =>
+              setPeople(p => {
+                p[rowIndex] = {
+                  ...p[rowIndex],
+                  lastname: newValue,
+                }
+                return p.slice()
+              })
+            }
+          />
+        ),
       },
       {
         key: 'dob',
         header: 'Date of Birth',
-        getValue: d => d.dob,
+        getValue: d =>
+          d.dob ? new Date(d.dob).toLocaleDateString() : undefined,
+        cellComponent: ({ item, rowIndex }) => (
+          <InputEditor
+            type="date"
+            value={item.dob}
+            onCommit={newValue =>
+              setPeople(p => {
+                p[rowIndex] = {
+                  ...p[rowIndex],
+                  dob: newValue,
+                }
+                return p.slice()
+              })
+            }
+          />
+        ),
       },
     ],
     []
@@ -76,7 +136,7 @@ export default function Demo({ theme }: DemoProps) {
   return (
     <DataGrid<Person>
       columns={columns}
-      data={data}
+      data={people}
       getRowId={d => d.id}
       theme={theme === 'light' ? lightTheme : darkTheme}
     />

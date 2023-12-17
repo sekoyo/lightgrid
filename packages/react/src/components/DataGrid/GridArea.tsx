@@ -132,7 +132,7 @@ export function GridAreaNoMemo<T>({
                     key={column.key}
                     mgr={mgr}
                     column={column}
-                    item={row.item}
+                    row={row}
                     rowStateItem={rowState[row.rowId]}
                     setRowState={setRowState}
                     pinnedX={area.pinnedX}

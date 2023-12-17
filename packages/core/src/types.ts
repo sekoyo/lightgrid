@@ -53,6 +53,7 @@ export interface CellComponentProps<T, N, S = unknown> {
   item: T
   rowStateItem: RowStateItem<S> | undefined
   setRowState: StateSetter<RowState<S>> | undefined
+  rowIndex: number
 }
 
 /** The column definition for each column in the `columns` prop. */

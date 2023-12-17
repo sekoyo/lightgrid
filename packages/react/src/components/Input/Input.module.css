@@ -4,13 +4,14 @@
   font-family: inherit;
   font-size: 0.875em;
   color: inherit;
-  border: none;
+  border: 1px solid transparent;
   border-radius: 4px;
   background: var(--inputBg);
   color: var(--textColor);
   max-width: 100%;
 
   &:focus {
-    outline: 1px solid var(--outlineColor);
+    outline: none;
+    border-color: var(--outlineColor);
   }
 }

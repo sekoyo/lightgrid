@@ -6,6 +6,8 @@ import {
   HGroup,
   Section,
   CodeBlock,
+  OL,
+  LI,
 } from 'src/components/DocTypography'
 import { useFrameworkTabs } from 'src/components/FrameworkTabContext'
 import { Tabs } from 'src/components/Tabs'
@@ -20,24 +22,24 @@ export default function Doc() {
       <Section>
         <P>In order to show row details we need to:</P>
         <P>
-          <ol>
-            <li>
+          <OL>
+            <LI>
               Add an expansion column (<Code>columns</Code>)
-            </li>
-            <li>
+            </LI>
+            <LI>
               Tell the grid whether a row has a child details row (<Code>getRowMeta</Code>{' '}
               )
-            </li>
-            <li>
+            </LI>
+            <LI>
               Choose whatever you want to render in this details row (
               <Code>renderRowDetails</Code>)
-            </li>
-            <li>
+            </LI>
+            <LI>
               Pass in <Code>rowState</Code> and <Code>setRowState</Code> so that the grid
               knows whether to render a details row (expanded), and so our expansion
               column can toggle the expansion state.
-            </li>
-          </ol>
+            </LI>
+          </OL>
         </P>
         <Tabs activeTabId={state.activeTabId} onTabPress={changeTab}>
           {[
