@@ -23,6 +23,7 @@ const MultiRowSortingDemo = lazy(() => import('./demos/MultiRowSorting'))
 const RowGroupingDemo = lazy(() => import('./demos/RowGrouping'))
 const RowPinningDemo = lazy(() => import('./demos/RowPinning'))
 const DetailRowsDemo = lazy(() => import('./demos/DetailRows'))
+const CellEditingDemo = lazy(() => import('./demos/CellEditing'))
 
 document.body.classList.add(theme)
 
@@ -112,6 +113,11 @@ export function App() {
       <Route path="/demos/detail-rows">
         <DemoContainer height={height}>
           <DetailRowsDemo theme={theme} />
+        </DemoContainer>
+      </Route>
+      <Route path="/demos/cell-editing">
+        <DemoContainer height={height}>
+          <CellEditingDemo theme={theme} />
         </DemoContainer>
       </Route>
     </>

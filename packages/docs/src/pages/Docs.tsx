@@ -23,9 +23,9 @@ const RowSorting = lazy(() => import('./docs/RowSorting'))
 const RowGrouping = lazy(() => import('./docs/RowGrouping'))
 const RowPinning = lazy(() => import('./docs/RowPinning'))
 const DetailRows = lazy(() => import('./docs/DetailRows'))
+const CellEditing = lazy(() => import('./docs/CellEditing'))
 
 function getDocPage(slug?: string) {
-  console.log('getDocPage', slug)
   switch (slug) {
     case 'guides/setup':
       return <Setup />
@@ -49,7 +49,7 @@ function getDocPage(slug?: string) {
       return <ColumnResizing />
     case 'columns/reordering':
       return <ColumnReordering />
-    case 'rows/row-sorting':
+    case 'rows/sorting':
       return <RowSorting />
     case 'rows/grouping':
       return <RowGrouping />
@@ -57,6 +57,8 @@ function getDocPage(slug?: string) {
       return <RowPinning />
     case 'rows/detail-rows':
       return <DetailRows />
+    case 'cells/editing':
+      return <CellEditing />
     default:
       // TODO: Change to 404
       return <IntroDoc />
@@ -124,15 +126,15 @@ export function Docs() {
             </ul>
             <ul class={styles.docSection}>
               <li class={styles.sectionTitle}>Rows</li>
-              {sectionItem('rows/row-sorting', 'Row Sorting')}
+              {sectionItem('rows/sorting', 'Row Sorting')}
               {sectionItem('rows/grouping', 'Grouping')}
               {sectionItem('rows/pinning', 'Pinning', true)}
               {sectionItem('rows/detail-rows', 'Detail Rows', true)}
             </ul>
             <ul class={styles.docSection}>
               <li class={styles.sectionTitle}>Cells</li>
-              {sectionItem('cells/cell-editing', 'Cell editing')}
-              {sectionItem('cells/cell-selection', 'Cell selection', true)}
+              {sectionItem('cells/editing', 'Cell editing')}
+              {sectionItem('cells/selection', 'Cell selection', true)}
             </ul>
             <a
               class={styles.toTopBtn}

@@ -69,11 +69,11 @@ export const columns: GroupedColumns<Laureate, React.ReactNode> = [
     header: 'Firstname',
     getValue: d => d.firstname,
     cellComponent: ({ item }) => (
-      <>
+      <div style={{ padding: '0 var(--lgCellHPadding)' }}>
         {item.firstname} ({item.prizes.length})
-      </>
+      </div>
     ),
-    width: 160,
+    width: 180,
   },
   {
     key: 'surname',

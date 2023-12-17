@@ -59,7 +59,6 @@ interface DataGridProps<T, S> {
   getRowMeta?: GetRowMeta<T>
   getRowDetailsMeta?: GetRowDetailsMeta<T>
   data: T[]
-  onDataChange?: (data: T[]) => void
   pinnedTopData?: T[]
   pinnedBottomData?: T[]
   rowState?: RowState<S>
@@ -86,7 +85,6 @@ export function DataGrid<T, S = unknown>({
   getRowMeta = DEFAULT_GET_ROW_META,
   getRowDetailsMeta = DEFAULT_GET_ROW_DETAILS_META,
   data,
-  onDataChange,
   pinnedTopData = emptyData,
   pinnedBottomData = emptyData,
   rowState = emptyRowState,
@@ -141,7 +139,6 @@ export function DataGrid<T, S = unknown>({
       setColResizeData,
       setColReorderKey,
       onColumnsChange,
-      onDataChange,
       onDerivedColumnsChange: setDerivedCols,
       onAreasChanged: setBodyAreas,
       onHeadersChanged: setHeaderAreas,

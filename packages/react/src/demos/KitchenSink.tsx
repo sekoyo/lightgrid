@@ -3,7 +3,6 @@ import {
   CellComponentProps,
   GroupedColumns,
   ItemId,
-  OnRowStateChange,
   RowState,
   RowStateItem,
   ValueSource,
@@ -168,7 +167,6 @@ export default function Demo() {
         columns={columns}
         onColumnsChange={setColumns}
         rowState={rowState}
-        onRowStateChange={onRowStateChange}
         getRowId={item => item.id}
         getRowMeta={item => ({
           height: 30,
