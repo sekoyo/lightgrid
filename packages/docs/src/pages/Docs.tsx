@@ -19,9 +19,11 @@ const ColumnFiltering = lazy(() => import('./docs/ColumnFiltering'))
 const ColumnPinning = lazy(() => import('./docs/ColumnPinning'))
 const ColumnResizing = lazy(() => import('./docs/ColumnResizing'))
 const ColumnReordering = lazy(() => import('./docs/ColumnReordering'))
+const ColumnSpanning = lazy(() => import('./docs/ColumnSpanning'))
 const RowSorting = lazy(() => import('./docs/RowSorting'))
 const RowGrouping = lazy(() => import('./docs/RowGrouping'))
 const RowPinning = lazy(() => import('./docs/RowPinning'))
+const RowSpanning = lazy(() => import('./docs/RowSpanning'))
 const DetailRows = lazy(() => import('./docs/DetailRows'))
 const CellEditing = lazy(() => import('./docs/CellEditing'))
 const CellSelection = lazy(() => import('./docs/CellSelection'))
@@ -50,6 +52,8 @@ function getDocPage(slug?: string) {
       return <ColumnResizing />
     case 'columns/reordering':
       return <ColumnReordering />
+    case 'columns/spanning':
+      return <ColumnSpanning />
     case 'rows/sorting':
       return <RowSorting />
     case 'rows/grouping':
@@ -58,6 +62,8 @@ function getDocPage(slug?: string) {
       return <RowPinning />
     case 'rows/detail-rows':
       return <DetailRows />
+    case 'rows/spanning':
+      return <RowSpanning />
     case 'cells/editing':
       return <CellEditing />
     case 'cells/selection':
@@ -66,6 +72,27 @@ function getDocPage(slug?: string) {
       // TODO: Change to 404
       return <IntroDoc />
   }
+}
+
+interface SectionItemProps {
+  path: string
+  label: string
+  isEnterprise?: boolean
+}
+
+function SectionItem(props: SectionItemProps) {
+  return (
+    <li>
+      <A
+        href={`/docs/${props.path}`}
+        class={styles.sectionItem}
+        activeClass={styles.sectionItemActive}
+      >
+        {props.label}
+        {props.isEnterprise && <EIcon />}
+      </A>
+    </li>
+  )
 }
 
 export function Docs() {
@@ -77,19 +104,6 @@ export function Docs() {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
-  const sectionItem = (path: string, label: string, isEnterprise?: boolean) => (
-    <li>
-      <A
-        href={`/docs/${path}`}
-        class={styles.sectionItem}
-        activeClass={styles.sectionItemActive}
-      >
-        {label}
-        {isEnterprise && <EIcon />}
-      </A>
-    </li>
-  )
-  console.log({ location })
   return (
     <AppShell>
       <div class={styles.layout}>
@@ -112,32 +126,34 @@ export function Docs() {
             </ul>
             <ul class={styles.docSection}>
               <li class={styles.sectionTitle}>Guides</li>
-              {sectionItem('guides/setup', 'Setup')}
-              {sectionItem('guides/theming', 'Theming')}
-              {sectionItem('guides/global-filtering', 'Global search')}
-              {sectionItem('guides/async-data', 'Async Data')}
-              {sectionItem('guides/pagination', 'Pagination')}
+              <SectionItem path="guides/setup" label="Setup" />
+              <SectionItem path="guides/theming" label="Theming" />
+              <SectionItem path="guides/global-filtering" label="Global search" />
+              <SectionItem path="guides/async-data" label="Async Data" />
+              <SectionItem path="guides/pagination" label="Pagination" />
             </ul>
             <ul class={styles.docSection}>
               <li class={styles.sectionTitle}>Columns</li>
-              {sectionItem('columns/defining-columns', 'Defining columns')}
-              {sectionItem('columns/grouping', 'Grouping')}
-              {sectionItem('columns/filtering', 'Filtering')}
-              {sectionItem('columns/pinning', 'Pinning', true)}
-              {sectionItem('columns/resizing', 'Resizing', true)}
-              {sectionItem('columns/reordering', 'Reordering', true)}
+              <SectionItem path="columns/defining-columns" label="Defining columns" />
+              <SectionItem path="columns/grouping" label="Grouping" />
+              <SectionItem path="columns/filtering" label="Filtering" />
+              <SectionItem path="columns/pinning" label="Pinning" isEnterprise />
+              <SectionItem path="columns/resizing" label="Resizing" isEnterprise />
+              <SectionItem path="columns/reordering" label="Reordering" isEnterprise />
+              <SectionItem path="columns/spanning" label="Column Spanning" isEnterprise />
             </ul>
             <ul class={styles.docSection}>
               <li class={styles.sectionTitle}>Rows</li>
-              {sectionItem('rows/sorting', 'Row Sorting')}
-              {sectionItem('rows/grouping', 'Grouping')}
-              {sectionItem('rows/pinning', 'Pinning', true)}
-              {sectionItem('rows/detail-rows', 'Detail Rows', true)}
+              <SectionItem path="rows/sorting" label="Row Sorting" />
+              <SectionItem path="rows/grouping" label="Grouping" />
+              <SectionItem path="rows/pinning" label="Pinning" isEnterprise />
+              <SectionItem path="rows/detail-rows" label="Detail Rows" isEnterprise />
+              <SectionItem path="rows/spanning" label="Row Spanning" isEnterprise />
             </ul>
             <ul class={styles.docSection}>
               <li class={styles.sectionTitle}>Cells</li>
-              {sectionItem('cells/editing', 'Cell editing')}
-              {sectionItem('cells/selection', 'Cell selection', true)}
+              <SectionItem path="cells/editing" label="Cell editing" />
+              <SectionItem path="cells/selection" label="Cell selection" isEnterprise />
             </ul>
             <a
               class={styles.toTopBtn}

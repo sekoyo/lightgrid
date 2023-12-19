@@ -7,18 +7,18 @@ https://www.kaggle.com/datasets
 Good for master-details (prizes in details)
 https://api.nobelprize.org/v1/laureate.json
 
-- Extract row details expand rendering out of grid
-- For expand rows have a expand/collapse all icon in header
-- Make (e) enterprise clickable with some info, maybe in a modal
+- Add colspan/rowspan to column definition docs
 - Style improvements
-- col + row span docs
-- Legal page
 - Lazily load iframe demos based on visibility?
 - Iframe loading spinner
 - Fullscreen option for demos/source code
 - Scroll to row / col + docs
 - Add bookmark # to H1,H2 etc
 - SolidJS support
+- Home page
+- Pricing page
+- Legal page
+- // TODO: Change to 404 return <IntroDoc />
 
 ### Post MVP
 
@@ -29,6 +29,7 @@ https://api.nobelprize.org/v1/laureate.json
 - Move col sort icon to abs and put in padding area
 - Allow user to programmatically scroll to a row/col
 - Example with loading placeholders in cells
+- Make (e) enterprise clickable with some info, maybe in a modal
 - Cell editing (a cell renderer provided by us)
 - Row re-ordering with drag'n'drop
 - Safely limit row/col window range?
@@ -38,6 +39,8 @@ https://api.nobelprize.org/v1/laureate.json
 - Automate doc page navigation buttons (prev/next)
 - More user friendly version of `GroupedColumns<Animal, React.ReactNode>` for each framework?
   Have it as an option to import `<T, N>` ones from framework package without the N?
+- Add expand/collapse to header of expand cols
+- Consider how left/right/tab could edit adjacent cells
 
 ## Bugs
 

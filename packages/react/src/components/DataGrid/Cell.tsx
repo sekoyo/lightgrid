@@ -26,6 +26,7 @@ interface CellProps<T> {
   selected: boolean
   selectionStart: boolean
   width: number
+  height: number
   zIndex?: number
 }
 
@@ -42,6 +43,7 @@ export function CellNoMemo<T>({
   selectionStart,
   enableColumnReorder,
   width,
+  height,
   zIndex,
 }: CellProps<T>) {
   return (
@@ -56,6 +58,7 @@ export function CellNoMemo<T>({
       data-moving-col={column.key === colReorderKey}
       style={{
         width,
+        height,
         transform: `translateX(${column.offset}px)`,
         zIndex,
       }}

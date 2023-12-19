@@ -17,7 +17,7 @@ let collatorLocale: string
 function localeCompare(a: string, b: string) {
   const navLang = navigator?.language || 'en-US'
   if (!collator || navLang !== collatorLocale) {
-    collator = new Intl.Collator(navigator?.language || 'en-US')
+    collator = new Intl.Collator(navLang)
     collatorLocale = navLang
   }
   return collator.compare(a, b)

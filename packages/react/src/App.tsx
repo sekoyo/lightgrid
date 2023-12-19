@@ -7,7 +7,6 @@ const height = Number(params.get('height')) || 800
 const theme = params.get('theme') === 'light' ? 'light' : 'dark'
 
 const BasicGridDemo = lazy(() => import('./demos/BasicGrid'))
-const KitchenSinkDemo = lazy(() => import('./demos/KitchenSink'))
 const ThemingDemo = lazy(() => import('./demos/Theming'))
 const GlobalFilteringDemo = lazy(() => import('./demos/GlobalFiltering'))
 const AsyncDataDemo = lazy(() => import('./demos/AsyncData'))
@@ -22,9 +21,11 @@ const RowSortingDemo = lazy(() => import('./demos/RowSorting'))
 const MultiRowSortingDemo = lazy(() => import('./demos/MultiRowSorting'))
 const RowGroupingDemo = lazy(() => import('./demos/RowGrouping'))
 const RowPinningDemo = lazy(() => import('./demos/RowPinning'))
+const RowSpanningDemo = lazy(() => import('./demos/RowSpanning'))
 const DetailRowsDemo = lazy(() => import('./demos/DetailRows'))
 const CellEditingDemo = lazy(() => import('./demos/CellEditing'))
 const CellSelectionDemo = lazy(() => import('./demos/CellSelection'))
+const ColumnSpanningDemo = lazy(() => import('./demos/ColumnSpanning'))
 
 document.body.classList.add(theme)
 
@@ -34,11 +35,6 @@ export function App() {
       <Route path="/demos/basic-grid">
         <DemoContainer height={height}>
           <BasicGridDemo theme={theme} />
-        </DemoContainer>
-      </Route>
-      <Route path="/demos/kitchen-sink">
-        <DemoContainer height={height}>
-          <KitchenSinkDemo />
         </DemoContainer>
       </Route>
       <Route path="/demos/theming">
@@ -91,6 +87,11 @@ export function App() {
           <ColumnReorderingDemo theme={theme} />
         </DemoContainer>
       </Route>
+      <Route path="/demos/column-spanning">
+        <DemoContainer height={height}>
+          <ColumnSpanningDemo theme={theme} />
+        </DemoContainer>
+      </Route>
       <Route path="/demos/row-sorting">
         <DemoContainer height={height}>
           <RowSortingDemo theme={theme} />
@@ -109,6 +110,11 @@ export function App() {
       <Route path="/demos/row-pinning">
         <DemoContainer height={height}>
           <RowPinningDemo theme={theme} />
+        </DemoContainer>
+      </Route>
+      <Route path="/demos/row-spanning">
+        <DemoContainer height={height}>
+          <RowSpanningDemo theme={theme} />
         </DemoContainer>
       </Route>
       <Route path="/demos/detail-rows">

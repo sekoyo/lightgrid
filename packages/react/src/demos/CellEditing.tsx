@@ -4,7 +4,7 @@ import {
   darkTheme,
   lightTheme,
 } from '@lightfin/datagrid'
-import { DataGrid } from '@lightfin/react-datagrid'
+import { DataGrid, N } from '@lightfin/react-datagrid'
 import { Input } from 'src/components/Input'
 import { DemoProps } from './types'
 import { GhostButton } from './GhostButton'
@@ -68,7 +68,7 @@ function InputEditor({
 export default function Demo({ theme }: DemoProps) {
   const [people, setPeople] = useState(data)
 
-  const columns = useMemo<GroupedColumns<Person, React.ReactNode>>(
+  const columns = useMemo<GroupedColumns<Person, N>>(
     () => [
       {
         key: 'firstname',

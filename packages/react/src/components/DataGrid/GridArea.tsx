@@ -17,7 +17,7 @@ import { N } from './types'
 import { GridDetailRows } from './GridDetailRows'
 import { Cell } from './Cell'
 
-function getCellSize<T>(
+function getCellWidth<T>(
   span: number,
   column: DerivedColumn<T, N>,
   columns: DerivedColumn<T, N>[],
@@ -30,6 +30,19 @@ function getCellSize<T>(
   let size = column.size
   for (let i = columnIndex + 1; i < columnIndex + span; i++) {
     size += columns[i].size
+  }
+  return size
+}
+
+function getCellHeight<T>(
+  span: number,
+  row: DerivedRow<T>,
+  rows: DerivedRow<T>[],
+  rowIndex: number
+) {
+  let size = row.size
+  for (let i = rowIndex + 1; i < rowIndex + span; i++) {
+    size += rows[i].size
   }
   return size
 }
@@ -84,9 +97,10 @@ export function GridAreaNoMemo<T>({
           height: area.height,
         }}
       >
-        {rows.map(row => {
+        {rows.map((row, ri) => {
           let skipColCount = 0
-          // rowSpan 1 - 1 = 0 based (easier to work with)
+          // -1 = zero based, easier to work with
+          const rowSpan = rowSpans.get(row.rowId) ?? 1
           const skipRowCount = (rowSpans.get(row.rowId) ?? 1) - 1
           return (
             <div
@@ -100,7 +114,7 @@ export function GridAreaNoMemo<T>({
                 transform: `translateY(${row.offset}px)`,
               }}
             >
-              {columns.reduce((cells, column, i) => {
+              {columns.reduce((cells, column, ci) => {
                 // Skip cells that are spanned into
                 if (skipColCount) {
                   skipColCount--
@@ -110,21 +124,25 @@ export function GridAreaNoMemo<T>({
                   rowSpans.set(row.rowId, skipRowCount - 1)
                   return cells
                 }
-                let span = 1
-                let size = column.size
 
+                let colSpan = 1
+                let width = column.size
                 if (column.colSpan) {
-                  span = Math.min(column.colSpan(row.item), columns.length - i)
-                  size = getCellSize(span, column, columns, i, area.width)
-                  if (span > 1) {
-                    skipColCount = span - 1
-                  } else if (span === -1) {
+                  colSpan = Math.min(column.colSpan(row.item), columns.length - ci)
+                  width = getCellWidth(colSpan, column, columns, ci, area.width)
+                  if (colSpan > 1) {
+                    skipColCount = colSpan - 1
+                  } else if (colSpan === -1) {
                     skipColCount = Infinity
                   }
                 }
 
+                let rowSpan = 1
+                let height = row.size
                 if (column.rowSpan) {
+                  rowSpan = Math.min(column.rowSpan(row.item), rows.length - ri)
                   rowSpans.set(row.rowId, column.rowSpan(row.item))
+                  height = getCellHeight(rowSpan, row, rows, ri)
                 }
 
                 cells.push(
@@ -145,8 +163,9 @@ export function GridAreaNoMemo<T>({
                         selectionStartCell.colIndex === column.colIndex &&
                         selectionStartCell.rowIndex === row.rowIndex
                     )}
-                    width={size}
-                    zIndex={span === 1 ? undefined : 1}
+                    width={width}
+                    height={height}
+                    zIndex={colSpan == 1 ? undefined : 1}
                   />
                 )
 
