@@ -13,8 +13,8 @@ export default function Doc() {
         <P>
           Column spanning is done by add a <Code>{`colSpan?: (item: T) => number`}</Code>{' '}
           function to a column definition. Anything greater than <Code>1</Code> will make
-          the cell for that column and row span into adjacent cells. <Code>-1</Code> means
-          span over all columns.
+          the cell span into adjacent cells. <Code>-1</Code> means span over all columns
+          in the grid area.
         </P>
         <Tabs activeTabId={state.activeTabId} onTabPress={changeTab}>
           {[

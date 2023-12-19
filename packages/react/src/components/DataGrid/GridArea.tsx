@@ -38,8 +38,12 @@ function getCellHeight<T>(
   span: number,
   row: DerivedRow<T>,
   rows: DerivedRow<T>[],
-  rowIndex: number
+  rowIndex: number,
+  areaHeight: number
 ) {
+  if (span === -1) {
+    return areaHeight - row.offset
+  }
   let size = row.size
   for (let i = rowIndex + 1; i < rowIndex + span; i++) {
     size += rows[i].size
@@ -82,7 +86,7 @@ export function GridAreaNoMemo<T>({
     return null
   }
 
-  const rowSpans = new Map<ItemId, number>()
+  const rowSpans = new Map<number, number>()
 
   return (
     <div className="lg-area">
@@ -99,9 +103,6 @@ export function GridAreaNoMemo<T>({
       >
         {rows.map((row, ri) => {
           let skipColCount = 0
-          // -1 = zero based, easier to work with
-          const rowSpan = rowSpans.get(row.rowId) ?? 1
-          const skipRowCount = (rowSpans.get(row.rowId) ?? 1) - 1
           return (
             <div
               key={row.rowId}
@@ -120,8 +121,10 @@ export function GridAreaNoMemo<T>({
                   skipColCount--
                   return cells
                 }
-                if (skipRowCount) {
-                  rowSpans.set(row.rowId, skipRowCount - 1)
+
+                let rowSkipCount: number | undefined
+                if (rowSpans.size && (rowSkipCount = rowSpans.get(column.colIndex))) {
+                  rowSpans.set(column.colIndex, rowSkipCount - 1)
                   return cells
                 }
 
@@ -141,8 +144,12 @@ export function GridAreaNoMemo<T>({
                 let height = row.size
                 if (column.rowSpan) {
                   rowSpan = Math.min(column.rowSpan(row.item), rows.length - ri)
-                  rowSpans.set(row.rowId, column.rowSpan(row.item))
-                  height = getCellHeight(rowSpan, row, rows, ri)
+                  height = getCellHeight(rowSpan, row, rows, ri, area.height)
+                  if (rowSpan > 1) {
+                    rowSpans.set(column.colIndex, rowSpan)
+                  } else if (rowSpan === -1) {
+                    rowSpans.set(column.colIndex, Infinity)
+                  }
                 }
 
                 cells.push(

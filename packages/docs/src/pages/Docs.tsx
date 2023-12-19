@@ -140,20 +140,20 @@ export function Docs() {
               <SectionItem path="columns/pinning" label="Pinning" isEnterprise />
               <SectionItem path="columns/resizing" label="Resizing" isEnterprise />
               <SectionItem path="columns/reordering" label="Reordering" isEnterprise />
-              <SectionItem path="columns/spanning" label="Column Spanning" isEnterprise />
+              <SectionItem path="columns/spanning" label="Spanning" isEnterprise />
             </ul>
             <ul class={styles.docSection}>
               <li class={styles.sectionTitle}>Rows</li>
-              <SectionItem path="rows/sorting" label="Row Sorting" />
+              <SectionItem path="rows/sorting" label="Sorting" />
               <SectionItem path="rows/grouping" label="Grouping" />
               <SectionItem path="rows/pinning" label="Pinning" isEnterprise />
               <SectionItem path="rows/detail-rows" label="Detail Rows" isEnterprise />
-              <SectionItem path="rows/spanning" label="Row Spanning" isEnterprise />
+              <SectionItem path="rows/spanning" label="Spanning" isEnterprise />
             </ul>
             <ul class={styles.docSection}>
               <li class={styles.sectionTitle}>Cells</li>
-              <SectionItem path="cells/editing" label="Cell editing" />
-              <SectionItem path="cells/selection" label="Cell selection" isEnterprise />
+              <SectionItem path="cells/editing" label="Editing" />
+              <SectionItem path="cells/selection" label="Selection" isEnterprise />
             </ul>
             <a
               class={styles.toTopBtn}
