@@ -7,7 +7,6 @@ https://www.kaggle.com/datasets
 Good for master-details (prizes in details)
 https://api.nobelprize.org/v1/laureate.json
 
-- Add colspan/rowspan to column definition docs
 - Style improvements
 - Lazily load iframe demos based on visibility?
 - Iframe loading spinner
@@ -19,6 +18,7 @@ https://api.nobelprize.org/v1/laureate.json
 - Pricing page
 - Legal page
 - // TODO: Change to 404 return <IntroDoc />
+- Enable text highlight if cell selection is off
 
 ### Post MVP
 
@@ -50,5 +50,5 @@ https://api.nobelprize.org/v1/laureate.json
 
 # Do and Donts
 
-- Use fn version of useState for columns: useState(() => {})
 - Wrap columns in hook in functional component
+- Use fn version of useState for columns: useState(() => {})

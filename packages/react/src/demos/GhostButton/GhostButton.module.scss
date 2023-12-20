@@ -13,4 +13,9 @@
   padding: 0.5em var(--lgCellHPadding);
   flex: 1;
   justify-content: flex-start;
+
+  &:focus {
+    outline: none;
+    border-color: var(--outlineColor);
+  }
 }

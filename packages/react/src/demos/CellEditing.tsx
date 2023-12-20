@@ -38,14 +38,6 @@ function InputEditor({
 }) {
   const [isEditing, setIsEditing] = useState(false)
   const [tmpValue, setTmpValue] = useState(value)
-  const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
-      onCommit(tmpValue)
-      setIsEditing(false)
-    } else if (e.key === 'Escape') {
-      setIsEditing(false)
-    }
-  }
 
   return isEditing ? (
     <Input
@@ -53,12 +45,26 @@ function InputEditor({
       type={type}
       value={tmpValue}
       onChange={e => setTmpValue(e.currentTarget.value)}
-      onKeyDown={onKeyDown}
+      onKeyDown={e => {
+        if (e.key === 'Enter') {
+          onCommit(tmpValue)
+          setIsEditing(false)
+        } else if (e.key === 'Escape') {
+          setIsEditing(false)
+        }
+      }}
+      onBlur={() => {
+        onCommit(tmpValue)
+        setIsEditing(false)
+      }}
     />
   ) : (
     <GhostButton
       title="Click to edit"
       onDoubleClick={() => setIsEditing(true)}
+      onFocus={() => {
+        setIsEditing(true)
+      }}
     >
       {value}
     </GhostButton>

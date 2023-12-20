@@ -5,7 +5,7 @@ body.dark {
   --textColorTertiary: rgba(255, 255, 255, 0.45);
   --linkColor: #6284ff;
   --inputBg: #232323;
-  --outlineColor: #6161c0;
+  --outlineColor: #038cf4;
   --primaryBtnBg: rgb(69, 69, 146);
   --primaryBtnTextColor: var(--textColor);
   --secondaryBtnBg: rgb(23, 24, 24);
