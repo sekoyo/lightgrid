@@ -1,4 +1,4 @@
-import { Fragment, useCallback } from 'react'
+import { Fragment, useCallback, memo } from 'react'
 import {
   AreaPos,
   isDerivedColumnGroup,
@@ -29,7 +29,7 @@ interface HeaderAreaProps<T> {
   colReorderKey?: ItemId
 }
 
-export function HeaderArea<T>({
+function _HeaderArea<T>({
   mgr,
   columns,
   flatColumns,
@@ -44,6 +44,8 @@ export function HeaderArea<T>({
   enableColumnReorder,
   colReorderKey,
 }: HeaderAreaProps<T>) {
+  const lastIndex = flatColumns.at(-1)?.colIndex ?? 0
+  console.log({ flatColumns, colAreaPos, lastIndex })
   const renderColumns = useCallback(
     (
       mgr: GridManager<T, React.ReactNode>,
@@ -65,6 +67,7 @@ export function HeaderArea<T>({
               enableColumnResize={enableColumnResize}
               enableColumnReorder={enableColumnReorder}
               colReorderKey={colReorderKey}
+              isLastInRow={column.colIndex + (column.headerColSpan - 1) === lastIndex}
             />
             {isDerivedColumnGroup(column) &&
               renderColumns(
@@ -80,7 +83,7 @@ export function HeaderArea<T>({
         ))}
       </>
     ),
-    []
+    [lastIndex]
   )
 
   const renderFilters = useCallback(
@@ -138,3 +141,6 @@ export function HeaderArea<T>({
     </div>
   )
 }
+
+const typedMemo: <T>(c: T) => T = memo
+export const HeaderArea = typedMemo(_HeaderArea)

@@ -1,5 +1,5 @@
 import { getColumnOffset } from '../constants'
-import { GroupedDerivedColumns, GridRange } from '../types'
+import { DerivedColumn, GridRange } from '../types'
 import { binarySearch } from './binarySearch'
 import { expoSearchGreater } from './expoSearchGreater'
 
@@ -8,7 +8,7 @@ const MAX_OVERSCAN = 300
 export function getColumnWindow<T, N>(
   viewportSize: number,
   scrollLeft: number,
-  columns: GroupedDerivedColumns<T, N>
+  columns: DerivedColumn<T, N>[]
 ): GridRange {
   const overscan = Math.min(viewportSize / 2, MAX_OVERSCAN)
   const xStart = Math.max(0, scrollLeft - overscan)

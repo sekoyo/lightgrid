@@ -19,6 +19,7 @@ interface HeaderCellProps<T> {
   enableColumnResize?: boolean
   enableColumnReorder?: boolean
   colReorderKey?: ItemId
+  isLastInRow?: boolean
 }
 
 export function HeaderCell<T>({
@@ -29,6 +30,7 @@ export function HeaderCell<T>({
   enableColumnResize,
   enableColumnReorder,
   colReorderKey,
+  isLastInRow,
 }: HeaderCellProps<T>) {
   const sortable = !isDerivedColumnGroup(column) && column.sortable
   const label = column.header !== undefined ? column.header : column.key
@@ -38,6 +40,7 @@ export function HeaderCell<T>({
       className="lg-header-cell"
       data-reordering={!!colReorderKey}
       data-moving-col={column.key === colReorderKey}
+      data-last-in-row={isLastInRow}
       role={sortable ? 'button' : undefined}
       style={{
         width: column.size,

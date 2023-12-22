@@ -239,11 +239,7 @@ export class GridManager<T, N> {
     this.$derivedCols().middle.items.slice(this.$colWindow()[0], this.$colWindow()[1] + 1)
   )
   $colHeaderWindow = computed(() =>
-    getColumnWindow(
-      this.$midWidth(),
-      this.$scrollX(),
-      this.$derivedCols().middle.itemsWithGrouping
-    )
+    getColumnWindow(this.$midWidth(), this.$scrollX(), this.$derivedCols().middle.items)
   )
   $middleHeaderCols = computed(() =>
     this.$derivedCols().middle.itemsWithGrouping.slice(
@@ -278,10 +274,11 @@ export class GridManager<T, N> {
     const headerRowHeight = this.$headerRowHeight()
     const filterRowHeight = this.$filterRowHeight()
     const headerHeight = this.$headerHeight()
+    const areas: HeaderAreaDesc<T, N>[] = []
+
     // In render order
-    return [
-      {
-        id: AreaPos.Middle,
+    if (this.$middleHeaderFlatCols().length) {
+      areas.push({
         columns: this.$middleHeaderCols(),
         flatColumns: this.$middleHeaderFlatCols(),
         colAreaPos: AreaPos.Middle,
@@ -290,9 +287,10 @@ export class GridManager<T, N> {
         left: derivedCols.start.size,
         width: derivedCols.middle.size + derivedCols.end.size,
         height: headerHeight,
-      },
-      {
-        id: AreaPos.End,
+      })
+    }
+    if (derivedCols.end.items.length) {
+      areas.push({
         columns: derivedCols.end.itemsWithGrouping,
         flatColumns: derivedCols.end.items,
         colAreaPos: AreaPos.End,
@@ -301,9 +299,10 @@ export class GridManager<T, N> {
         left: this.$viewportWidth() - this.$horizontalScrollSize() - derivedCols.end.size,
         width: derivedCols.end.size,
         height: headerHeight,
-      },
-      {
-        id: AreaPos.Start,
+      })
+    }
+    if (derivedCols.start.items.length) {
+      areas.push({
         columns: derivedCols.start.itemsWithGrouping,
         flatColumns: derivedCols.start.items,
         colAreaPos: AreaPos.Start,
@@ -312,8 +311,9 @@ export class GridManager<T, N> {
         left: 0,
         width: derivedCols.start.size,
         height: headerHeight,
-      },
-    ]
+      })
+    }
+    return areas
   })
 
   // -- Grid areas (pushed in render order)
@@ -531,6 +531,10 @@ export class GridManager<T, N> {
     this.setSelection = props.setSelection
     this.setColResizeData = props.setColResizeData
     this.setColReorderKey = props.setColReorderKey
+
+    effect(() => {
+      console.log('$derivedCols', this.$derivedCols())
+    })
 
     // Lazily load plugins
     effect(() => {

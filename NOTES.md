@@ -4,9 +4,6 @@ https://github.com/jdorfman/awesome-json-datasets
 https://catalog.data.gov/dataset/?res_format=JSON
 https://www.kaggle.com/datasets
 
-Good for master-details (prizes in details)
-https://api.nobelprize.org/v1/laureate.json
-
 - Style improvements
 - Lazily load iframe demos based on visibility?
 - Iframe loading spinner
@@ -18,7 +15,8 @@ https://api.nobelprize.org/v1/laureate.json
 - Pricing page
 - Legal page
 - // TODO: Change to 404 return <IntroDoc />
-- Enable text highlight if cell selection is off
+- Enable text selection if cell selection is off
+- Add Virtual Rows and Virtual Columns docs (just saying it's always on)
 
 ### Post MVP
 
@@ -45,7 +43,7 @@ https://api.nobelprize.org/v1/laureate.json
 ## Bugs
 
 - Clicking in row details selects closest parent cell. Don't change selection on item details clicks.
-- At certain widths, calced with is underlapping. Particularly noticeable with header on light theme.
+- At certain widths, calced width is underlapping. Particularly noticeable with header on light theme.
 - Extra col divider on right visible on http://localhost:8093/docs/guides/theming
 
 # Do and Donts

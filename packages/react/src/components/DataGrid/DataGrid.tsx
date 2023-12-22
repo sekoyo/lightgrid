@@ -279,7 +279,10 @@ export function DataGrid<T, S = unknown>({
             <div className="lg-resizer-marker" style={{ left: colResizeData.left }} />
           )}
           {loadingOverlay && (
-            <div className="lg-loading-overlay" style={{ top: headerHeight }}>
+            <div
+              className="lg-loading-overlay"
+              style={{ top: headerHeight, height: viewport.height - headerHeight }}
+            >
               {loadingOverlay}
             </div>
           )}

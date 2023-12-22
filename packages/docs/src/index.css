@@ -5,8 +5,8 @@ body.dark {
   --textColorTertiary: rgba(255, 255, 255, 0.45);
   --textActive: rgb(234, 205, 93);
   --borderColor: #353535;
-  --accentColor: #f6d62b;
-  --accentColorBg: var(--accentColor);
+  --brandColor: #f6d62b;
+  --enterpriseColor: #ff62be;
   --scrollTrack: #111;
   --scrollThumbColor: #3e3e3e;
   --scrollThumbHoverColor: #555;
@@ -25,9 +25,8 @@ body.light {
   --textColorTertiary: rgba(0, 0, 0, 0.4);
   --textActive: rgb(234, 205, 93);
   --borderColor: #353535;
-  --accentColor: #7a7ae2;
-  --accentColorBg: #fff7a2;
-  --accentColorBolt: #000;
+  --brandColor: black;
+  --enterpriseColor: #ff62be;
   --scrollTrack: #ebebeb;
   --scrollThumbColor: #b7b7b7;
   --scrollThumbHoverColor: #a4a4a4;

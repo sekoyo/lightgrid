@@ -131,6 +131,7 @@ export interface DerivedColumnGroup<T, N, S = unknown>
   children: GroupedDerivedColumns<T, N, S>
   size: number
   offset: number
+  headerColSpan: number
   headerRowSpan: number
   colIndex: number
   rowIndex: number
@@ -139,6 +140,7 @@ export interface DerivedColumnGroup<T, N, S = unknown>
 export interface DerivedColumn<T, N, S = unknown> extends Column<T, N, S> {
   size: number
   offset: number
+  headerColSpan: number
   headerRowSpan: number
   colIndex: number
   rowIndex: number

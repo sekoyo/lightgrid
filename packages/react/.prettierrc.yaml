@@ -4,3 +4,4 @@ endOfLine: 'lf'
 singleQuote: true
 arrowParens: 'avoid'
 semi: false
+plugins: ['prettier-plugin-jsdoc']

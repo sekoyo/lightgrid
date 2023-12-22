@@ -6,16 +6,17 @@ import {
   ItemId,
   darkTheme,
   lightTheme,
+  GroupedColumns,
 } from '@lightfin/datagrid'
 import { DataGrid, type N } from '@lightfin/react-datagrid'
 import RangeSlider from 'react-range-slider-input'
+
 import { DemoProps } from './types'
-import { GroupedColumns } from '@lightfin/datagrid'
 import { Input } from 'src/components/Input'
 import { Select } from 'src/components/Select'
 import { OpenLinkIcon, SliderIcon } from 'src/components/Icons'
 import { IconButton } from 'src/components/IconButton'
-import ignData from './data/igndata.json'
+import ignData from './data/ign_data.json'
 
 import '@lightfin/datagrid/dist/styles.css'
 import 'react-range-slider-input/dist/style.css'

@@ -199,29 +199,31 @@ export function deriveColumns<T, N>(
     levelDerivedCols: GroupedDerivedColumns<T, N>,
     colIndexOffset = 0,
     rowIndex = 0,
-    sectionOffset = { current: 0 }
+    descendantRef = { offset: 0, colCount: 0 }
   ) {
     for (let i = 0; i < levelColumns.length; i++) {
       const column = levelColumns[i]
       if (isColumnGroup(column)) {
         if (column.children.length) {
-          const savedOffset = sectionOffset.current
+          const savedOffset = descendantRef.offset
+          const savedColCount = descendantRef.colCount
           const children = recurseColumns(
             column.children,
             colResult,
             [],
             colIndexOffset + i,
             rowIndex + 1,
-            sectionOffset
+            descendantRef
           )
           // Column group is the size of its children
-          const size = sectionOffset.current - savedOffset
+          const size = descendantRef.offset - savedOffset
           levelDerivedCols.push({
             ...column,
             children,
             size,
             offset: savedOffset,
             rowIndex,
+            headerColSpan: descendantRef.colCount - savedColCount,
             headerRowSpan: 1,
             colIndex: colIndexOffset + i,
           })
@@ -250,8 +252,9 @@ export function deriveColumns<T, N>(
         const c: DerivedColumn<T, N> = {
           ...column,
           size,
-          offset: sectionOffset.current,
+          offset: descendantRef.offset,
           rowIndex,
+          headerColSpan: 1,
           headerRowSpan: summed.totalDepth - rowIndex,
           colIndex: colIndexOffset + i,
         }
@@ -262,7 +265,8 @@ export function deriveColumns<T, N>(
         levelDerivedCols.push(c)
         colResult.items.push(c)
         out.size += size
-        sectionOffset.current += size
+        descendantRef.offset += size
+        descendantRef.colCount += 1
         colResult.size += size
       }
     }

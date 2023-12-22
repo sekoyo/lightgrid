@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
-    "target": "ESNext",
-    "lib": ["DOM", "DOM.Iterable", "ESNext"],
-    "module": "ESNext",
+    "target": "es2022",
+    "lib": ["DOM", "DOM.Iterable", "es2022"],
+    "module": "ES2020",
     "skipLibCheck": true,
 
     /* Bundler mode */

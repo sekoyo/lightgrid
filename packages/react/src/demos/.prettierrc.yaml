@@ -1,6 +1,0 @@
-printWidth: 70
-trailingComma: "es5"
-endOfLine: "lf"
-singleQuote: true
-arrowParens: "avoid"
-semi: false

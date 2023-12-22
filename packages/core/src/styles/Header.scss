@@ -39,7 +39,7 @@
 
     border-bottom: 1px solid var(--lgHeaderBorderColor, var(--lgBorderColor));
     &::before,
-    &::after {
+    &:not([data-last-in-row='true'])::after {
       content: '';
       display: flex;
       width: 1px;
