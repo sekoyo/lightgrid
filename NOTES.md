@@ -7,7 +7,6 @@ https://www.kaggle.com/datasets
 - Style improvements
 - Lazily load iframe demos based on visibility?
 - Iframe loading spinner
-- Fullscreen option for demos/source code
 - Scroll to row / col + docs
 - Add bookmark # to H1,H2 etc
 - SolidJS support
@@ -17,6 +16,8 @@ https://www.kaggle.com/datasets
 - // TODO: Change to 404 return <IntroDoc />
 - Enable text selection if cell selection is off
 - Add Virtual Rows and Virtual Columns docs (just saying it's always on)
+- Make menu mobile VP friendly
+- Check on mobile VP
 
 ### Post MVP
 

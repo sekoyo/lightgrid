@@ -4,8 +4,8 @@
  * @author Ahmad Awais <https://twitter.com/MrAhmadAwais/>
  * @support Follow/tweet at https://twitter.com/MrAhmadAwais/
  */
-code[class*='language-'],
-pre[class*='language-'] {
+code[class*="language-"],
+pre[class*="language-"] {
   direction: ltr;
   text-align: left;
   white-space: pre;
@@ -19,45 +19,46 @@ pre[class*='language-'] {
   -moz-hyphens: none;
   -ms-hyphens: none;
   hyphens: none;
+  border-radius: 4px;
 
-  font-family: 'Operator Mono', 'Fira Code', Consolas, Monaco, 'Andale Mono',
-    'Ubuntu Mono', monospace;
+  font-family: "Operator Mono", "Fira Code", Consolas, Monaco, "Andale Mono",
+    "Ubuntu Mono", monospace;
   font-size: 0.875em;
   line-height: 1.375em;
 }
 
 body.dark {
-  code[class*='language-'],
-  pre[class*='language-'] {
+  code[class*="language-"],
+  pre[class*="language-"] {
     color: #fff;
   }
 
-  pre[class*='language-']::-moz-selection,
-  pre[class*='language-'] ::-moz-selection,
-  code[class*='language-']::-moz-selection,
-  code[class*='language-'] ::-moz-selection,
-  pre[class*='language-']::selection,
-  pre[class*='language-'] ::selection,
-  code[class*='language-']::selection,
-  code[class*='language-'] ::selection {
+  pre[class*="language-"]::-moz-selection,
+  pre[class*="language-"] ::-moz-selection,
+  code[class*="language-"]::-moz-selection,
+  code[class*="language-"] ::-moz-selection,
+  pre[class*="language-"]::selection,
+  pre[class*="language-"] ::selection,
+  code[class*="language-"]::selection,
+  code[class*="language-"] ::selection {
     color: inherit;
     background: #a599e9;
   }
 
   /* Code blocks. */
-  pre[class*='language-'] {
+  pre[class*="language-"] {
     padding: 1em;
-    margin: 0.5em 0;
+    margin: 0;
     overflow: auto;
   }
 
-  :not(pre) > code[class*='language-'],
-  pre[class*='language-'] {
+  :not(pre) > code[class*="language-"],
+  pre[class*="language-"] {
     background: #1e1e3f;
   }
 
   /* Inline code */
-  :not(pre) > code[class*='language-'] {
+  :not(pre) > code[class*="language-"] {
     padding: 0.1em;
     border-radius: 0.3em;
   }
@@ -188,12 +189,16 @@ body.dark {
 
   .line-highlight.line-highlight {
     margin-top: 36px;
-    background: linear-gradient(to right, rgba(179, 98, 255, 0.17), transparent);
+    background: linear-gradient(
+      to right,
+      rgba(179, 98, 255, 0.17),
+      transparent
+    );
   }
 
   .line-highlight.line-highlight:before,
   .line-highlight.line-highlight[data-end]:after {
-    content: '';
+    content: "";
   }
 }
 
@@ -203,29 +208,29 @@ body.light {
   * Based on Atom's One Light theme: https://github.com/atom/atom/tree/master/packages/one-light-syntax
   */
 
-  code[class*='language-'],
-  pre[class*='language-'] {
+  code[class*="language-"],
+  pre[class*="language-"] {
     background: hsl(0deg 0% 95.32%);
     color: hsl(230, 8%, 24%);
   }
 
   /* Selection */
-  code[class*='language-']::-moz-selection,
-  code[class*='language-'] *::-moz-selection,
-  pre[class*='language-'] *::-moz-selection {
+  code[class*="language-"]::-moz-selection,
+  code[class*="language-"] *::-moz-selection,
+  pre[class*="language-"] *::-moz-selection {
     background: hsl(230, 1%, 90%);
     color: inherit;
   }
 
-  code[class*='language-']::selection,
-  code[class*='language-'] *::selection,
-  pre[class*='language-'] *::selection {
+  code[class*="language-"]::selection,
+  code[class*="language-"] *::selection,
+  pre[class*="language-"] *::selection {
     background: hsl(230, 1%, 90%);
     color: inherit;
   }
 
   /* Code blocks */
-  pre[class*='language-'] {
+  pre[class*="language-"] {
     padding: 1em;
     margin: 0.5em 0;
     overflow: auto;
@@ -233,7 +238,7 @@ body.light {
   }
 
   /* Inline code */
-  :not(pre) > code[class*='language-'] {
+  :not(pre) > code[class*="language-"] {
     padding: 0.2em 0.3em;
     border-radius: 0.3em;
     white-space: normal;

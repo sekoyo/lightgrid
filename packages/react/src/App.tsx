@@ -3,7 +3,7 @@ import { Route } from 'wouter'
 import { DemoContainer } from './components/DemoContainer'
 
 const params = new URLSearchParams(window.location.search)
-const height = Number(params.get('height')) || 800
+const height = params.get('height') || '600px'
 const theme = params.get('theme') === 'light' ? 'light' : 'dark'
 
 const BasicGridDemo = lazy(() => import('./demos/BasicGrid'))

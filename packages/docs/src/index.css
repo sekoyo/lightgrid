@@ -5,6 +5,7 @@ body.dark {
   --textColorTertiary: rgba(255, 255, 255, 0.45);
   --textActive: rgb(234, 205, 93);
   --borderColor: #353535;
+  --focusColor: #038cf4;
   --brandColor: #f6d62b;
   --enterpriseColor: #f67f7f;
   --scrollTrack: #111;
@@ -25,6 +26,7 @@ body.light {
   --textColorTertiary: rgba(0, 0, 0, 0.4);
   --textActive: rgb(234, 205, 93);
   --borderColor: #353535;
+  --focusColor: #038cf4;
   --brandColor: black;
   --enterpriseColor: #f64f4f;
   --scrollTrack: #ebebeb;

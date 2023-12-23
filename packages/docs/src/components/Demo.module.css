@@ -1,15 +1,35 @@
 .container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.fullscreenContainer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: var(--bg);
+  padding: 1rem;
 }
 
 .code {
   overflow: auto;
 }
 
-.switchContainer {
+.demoActions {
+  display: flex;
+  justify-content: space-between;
+  gap: 1em;
+  margin-top: 12px;
+}
+
+.switchView {
   display: flex;
   justify-content: flex-end;
   gap: 1em;
-  margin-top: 0.5em;
+  height: 30px;
 }
 
 .switchBtn {
@@ -37,4 +57,9 @@
     flex-shrink: 0;
     height: 16px;
   }
+}
+
+.mainView {
+  flex: 1;
+  max-height: calc(100% - 30px - 12px);
 }

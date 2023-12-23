@@ -3,12 +3,18 @@
   background: transparent;
   border: none;
   color: inherit;
-  padding: 0;
-  width: 16px;
-  height: 16px;
-  padding: 2px;
+  padding: 4px;
+  border-radius: 4px;
 
   &:not(:disabled) {
     cursor: pointer;
+  }
+
+  &:focus {
+    outline: 1px solid var(--focusColor);
+  }
+
+  svg {
+    height: 14px;
   }
 }

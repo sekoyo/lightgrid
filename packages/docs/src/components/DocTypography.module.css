@@ -65,6 +65,7 @@
 }
 
 .iframeContainer {
+  flex: 1;
   display: flex;
 }
 .iframe {
@@ -110,6 +111,10 @@
 }
 .codePre {
   max-height: 100%;
+
+  code {
+    display: block;
+  }
 }
 
 .table {

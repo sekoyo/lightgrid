@@ -10,6 +10,6 @@
   max-width: 100%;
 
   &:focus {
-    outline: 1px solid var(--outlineColor);
+    outline: 1px solid var(--focusColor);
   }
 }

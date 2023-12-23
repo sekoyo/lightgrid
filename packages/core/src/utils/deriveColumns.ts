@@ -263,7 +263,6 @@ export function deriveColumns<T, N>(
           // Expand if last item and we need to stretch to VP but didn't quite make
           // it due to FR rounding.
           if (isLastCol && descendantRef.offset + size < viewportWidth) {
-            console.log('Changing from', size, viewportWidth - descendantRef.offset)
             size = viewportWidth - descendantRef.offset
           }
         }

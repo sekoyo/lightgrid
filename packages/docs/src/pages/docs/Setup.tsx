@@ -7,13 +7,13 @@ import {
   LI,
   OL,
   Section,
-} from 'src/components/DocTypography'
-import { useFrameworkTabs } from 'src/components/FrameworkTabContext'
-import { Tabs } from 'src/components/Tabs'
-import { Demo } from 'src/components/Demo'
+} from "src/components/DocTypography";
+import { useFrameworkTabs } from "src/components/FrameworkTabContext";
+import { Tabs } from "src/components/Tabs";
+import { Demo } from "src/components/Demo";
 
 export default function Doc() {
-  const { state, changeTab } = useFrameworkTabs()
+  const { state, changeTab } = useFrameworkTabs();
 
   return (
     <div>
@@ -23,8 +23,8 @@ export default function Doc() {
         <Tabs activeTabId={state.activeTabId} onTabPress={changeTab}>
           {[
             {
-              id: 'react',
-              label: 'React',
+              id: "react",
+              label: "React",
               component: (
                 <CodeBlock lang="bash">{`
                 npm install @lightfin/datagrid
@@ -38,8 +38,8 @@ export default function Doc() {
               ),
             },
             {
-              id: 'solid',
-              label: 'Solid',
+              id: "solid",
+              label: "Solid",
               component: (
                 <CodeBlock lang="bash">{`
                 npm install @lightfin/datagrid
@@ -60,8 +60,8 @@ export default function Doc() {
         <Tabs activeTabId={state.activeTabId} onTabPress={changeTab}>
           {[
             {
-              id: 'react',
-              label: 'React',
+              id: "react",
+              label: "React",
               component: (
                 <CodeBlock lang="bash">{`
                 import { Datagrid } from '@lightfin/react-datagrid'
@@ -69,8 +69,8 @@ export default function Doc() {
               ),
             },
             {
-              id: 'solid',
-              label: 'Solid',
+              id: "solid",
+              label: "Solid",
               component: (
                 <CodeBlock lang="bash">{`
               import { Datagrid } from '@lightfin/solid-datagrid'
@@ -102,24 +102,28 @@ export default function Doc() {
       <Tabs activeTabId={state.activeTabId} onTabPress={changeTab}>
         {[
           {
-            id: 'react',
-            label: 'React',
+            id: "react",
+            label: "React",
             component: (
               <Demo
-                demoUrl={`${import.meta.env.VITE_REACT_DEMO_BASE_URL}/demos/basic-grid`}
-                demoSrc={import('/../react/src/demos/BasicGrid.tsx?raw')}
-                height={362}
+                demoUrl={`${
+                  import.meta.env.VITE_REACT_DEMO_BASE_URL
+                }/demos/basic-grid`}
+                demoSrc={import("/../react/src/demos/BasicGrid.tsx?raw")}
+                height="362px"
               />
             ),
           },
           {
-            id: 'solid',
-            label: 'Solid',
+            id: "solid",
+            label: "Solid",
             component: (
               <Demo
-                demoUrl={`${import.meta.env.VITE_REACT_DEMO_BASE_URL}/demos/basic-grid`}
-                demoSrc={import('/../react/src/demos/BasicGrid.tsx?raw')}
-                height={362}
+                demoUrl={`${
+                  import.meta.env.VITE_REACT_DEMO_BASE_URL
+                }/demos/basic-grid`}
+                demoSrc={import("/../react/src/demos/BasicGrid.tsx?raw")}
+                height="362px"
               />
             ),
           },
@@ -134,5 +138,5 @@ export default function Doc() {
         </PageButton>
       </HGroup>
     </div>
-  )
+  );
 }

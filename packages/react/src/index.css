@@ -5,7 +5,7 @@ body.dark {
   --textColorTertiary: rgba(255, 255, 255, 0.45);
   --linkColor: #6284ff;
   --inputBg: #232323;
-  --outlineColor: #038cf4;
+  --focusColor: #038cf4;
   --primaryBtnBg: rgb(69, 69, 146);
   --primaryBtnTextColor: var(--textColor);
   --secondaryBtnBg: rgb(23, 24, 24);
@@ -20,7 +20,7 @@ body.light {
   --textColorTertiary: rgba(0, 0, 0, 0.4);
   --linkColor: rgb(35, 137, 247);
   --inputBg: #f2f2f2;
-  --outlineColor: #6161c0;
+  --focusColor: #6161c0;
   --primaryBtnBg: rgb(104 104 222);
   --primaryBtnTextColor: white;
   --secondaryBtnBg: rgb(227 231 238);
