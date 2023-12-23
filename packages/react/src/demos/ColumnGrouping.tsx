@@ -1,16 +1,10 @@
-import {
-  GroupedColumns,
-  darkTheme,
-  lightTheme,
-} from '@lightfin/datagrid'
+import { GroupedColumns, darkTheme, lightTheme } from '@lightfin/datagrid'
 import { DataGrid } from '@lightfin/react-datagrid'
 import { DemoProps } from './types'
 
 import '@lightfin/datagrid/dist/styles.css'
 
-const someData = new Array(10)
-  .fill('someValue')
-  .map((s, i) => `row ${i}: ${s}`)
+const someData = new Array(5).fill('someValue').map((s, i) => `row ${i}: ${s}`)
 
 const getValue = (s: string) => s
 

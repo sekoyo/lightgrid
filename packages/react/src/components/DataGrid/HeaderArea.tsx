@@ -45,7 +45,6 @@ function _HeaderArea<T>({
   colReorderKey,
 }: HeaderAreaProps<T>) {
   const lastIndex = flatColumns.at(-1)?.colIndex ?? 0
-  console.log({ flatColumns, colAreaPos, lastIndex })
   const renderColumns = useCallback(
     (
       mgr: GridManager<T, React.ReactNode>,

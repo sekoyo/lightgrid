@@ -532,9 +532,9 @@ export class GridManager<T, N> {
     this.setColResizeData = props.setColResizeData
     this.setColReorderKey = props.setColReorderKey
 
-    effect(() => {
-      console.log('$derivedCols', this.$derivedCols())
-    })
+    // effect(() => {
+    //   console.log('$derivedCols', this.$derivedCols())
+    // })
 
     // Lazily load plugins
     effect(() => {

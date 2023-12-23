@@ -6,7 +6,7 @@ body.dark {
   --textActive: rgb(234, 205, 93);
   --borderColor: #353535;
   --brandColor: #f6d62b;
-  --enterpriseColor: #ff62be;
+  --enterpriseColor: #f67f7f;
   --scrollTrack: #111;
   --scrollThumbColor: #3e3e3e;
   --scrollThumbHoverColor: #555;
@@ -26,9 +26,9 @@ body.light {
   --textActive: rgb(234, 205, 93);
   --borderColor: #353535;
   --brandColor: black;
-  --enterpriseColor: #ff62be;
+  --enterpriseColor: #f64f4f;
   --scrollTrack: #ebebeb;
-  --scrollThumbColor: #b7b7b7;
+  --scrollThumbColor: #c2c2c5;
   --scrollThumbHoverColor: #a4a4a4;
   --primaryBtnBg: rgb(104 104 222);
   --primaryTextColor: white;
@@ -72,7 +72,7 @@ html {
 
 body {
   margin: 0;
-  font-family: sans-serif;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 18px;
   color: var(--textColor);
   background-color: var(--bg);

@@ -22,6 +22,7 @@ function sumAndDivideCols<T, N>(columns: GroupedColumns<T, N>) {
   let totalFractions = 0
   let totalDepth = 1
   let minFractionalSize = 0
+  let totalColumns = 0
 
   function recurse(
     levelColumns: GroupedColumns<T, N>,
@@ -79,6 +80,8 @@ function sumAndDivideCols<T, N>(columns: GroupedColumns<T, N>) {
           )
         }
       } else {
+        totalColumns += 1
+
         // Tally total fractional and absolute widths
         const width = column.width ?? '1fr'
         if (typeof width === 'number') {
@@ -105,6 +108,7 @@ function sumAndDivideCols<T, N>(columns: GroupedColumns<T, N>) {
   recurse(columns, leftColumns, middleColumns, rightColumns)
 
   return {
+    totalColumns,
     leftColumns,
     middleColumns,
     rightColumns,
@@ -189,7 +193,7 @@ export function deriveColumns<T, N>(
   const out = createEmptyColResults<T, N>()
 
   // If abs doesn't overflow we have to make sure total size doesn't
-  // slightly exceed width due to precision/rounding.
+  // slightly under/overflow due to floating point rounding.
   const willStretchToVP = summed.minFractionalSize + summed.totalAbsolutes < viewportWidth
   let frSizeRemaining = willStretchToVP ? viewportWidth - summed.totalAbsolutes : Infinity
 
@@ -199,36 +203,44 @@ export function deriveColumns<T, N>(
     levelDerivedCols: GroupedDerivedColumns<T, N>,
     colIndexOffset = 0,
     rowIndex = 0,
-    descendantRef = { offset: 0, colCount: 0 }
+    descendantRef = { offset: 0, lastColIndex: 0 }
   ) {
     for (let i = 0; i < levelColumns.length; i++) {
       const column = levelColumns[i]
+
       if (isColumnGroup(column)) {
         if (column.children.length) {
           const savedOffset = descendantRef.offset
-          const savedColCount = descendantRef.colCount
+          const colIndex = colIndexOffset + i
           const children = recurseColumns(
             column.children,
             colResult,
             [],
-            colIndexOffset + i,
+            colIndex,
             rowIndex + 1,
             descendantRef
           )
           // Column group is the size of its children
           const size = descendantRef.offset - savedOffset
+
           levelDerivedCols.push({
             ...column,
             children,
             size,
             offset: savedOffset,
             rowIndex,
-            headerColSpan: descendantRef.colCount - savedColCount,
+            headerColSpan: descendantRef.lastColIndex - colIndex + 1,
             headerRowSpan: 1,
             colIndex: colIndexOffset + i,
           })
+
+          // Increment the column index if the group has more than 1 descendant column
+          colIndexOffset += descendantRef.lastColIndex - colIndex
         }
       } else {
+        const colIndex = colIndexOffset + i
+        const isLastCol = colIndex === summed.totalColumns - 1
+
         let size = getDerivedWidth(
           viewportWidth,
           summed.totalAbsolutes,
@@ -237,16 +249,23 @@ export function deriveColumns<T, N>(
           column.minWidth
         )
 
-        // If fractional + absolutes don't exceed the viewport then ensure that
-        // fractional columns don't exceed the max available space (absolute - viewportWidth)
-        // as the floating point rounding can slightly exceed and cause a scrollbar.
-        if (
-          willStretchToVP &&
-          (!column.width || // If empty then it's 1fr by default
-            (typeof column.width === 'string' && column.width?.endsWith('fr')))
-        ) {
-          size = Math.min(size, frSizeRemaining)
-          frSizeRemaining = Math.max(0, frSizeRemaining - size)
+        if (willStretchToVP) {
+          // Ensure that columns don't exceed viewport due to rounding if we are
+          // stretching to it.
+          if (
+            !column.width || // If empty then it's 1fr by default
+            (typeof column.width === 'string' && column.width.endsWith('fr'))
+          ) {
+            size = Math.min(size, frSizeRemaining)
+            frSizeRemaining = Math.max(0, frSizeRemaining - size)
+          }
+
+          // Expand if last item and we need to stretch to VP but didn't quite make
+          // it due to FR rounding.
+          if (isLastCol && descendantRef.offset + size < viewportWidth) {
+            console.log('Changing from', size, viewportWidth - descendantRef.offset)
+            size = viewportWidth - descendantRef.offset
+          }
         }
 
         const c: DerivedColumn<T, N> = {
@@ -256,7 +275,7 @@ export function deriveColumns<T, N>(
           rowIndex,
           headerColSpan: 1,
           headerRowSpan: summed.totalDepth - rowIndex,
-          colIndex: colIndexOffset + i,
+          colIndex,
         }
 
         if (c.filterComponent) {
@@ -266,7 +285,7 @@ export function deriveColumns<T, N>(
         colResult.items.push(c)
         out.size += size
         descendantRef.offset += size
-        descendantRef.colCount += 1
+        descendantRef.lastColIndex = colIndex
         colResult.size += size
       }
     }

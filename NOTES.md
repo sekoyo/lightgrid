@@ -20,7 +20,7 @@ https://www.kaggle.com/datasets
 
 ### Post MVP
 
-- Check reorder scrolls
+- Check re-order scrolls during drag on edges
 - Paste CSV/XLS into grid
 - Include instructions to use from CDN
 - Row resizing
@@ -28,7 +28,6 @@ https://www.kaggle.com/datasets
 - Allow user to programmatically scroll to a row/col
 - Example with loading placeholders in cells
 - Make (e) enterprise clickable with some info, maybe in a modal
-- Cell editing (a cell renderer provided by us)
 - Row re-ordering with drag'n'drop
 - Safely limit row/col window range?
 - When sorting col at edge auto scroll
@@ -43,8 +42,6 @@ https://www.kaggle.com/datasets
 ## Bugs
 
 - Clicking in row details selects closest parent cell. Don't change selection on item details clicks.
-- At certain widths, calced width is underlapping. Particularly noticeable with header on light theme.
-- Extra col divider on right visible on http://localhost:8093/docs/guides/theming
 
 # Do and Donts
 
