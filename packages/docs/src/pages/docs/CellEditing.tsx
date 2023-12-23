@@ -9,13 +9,13 @@ import {
   CodeBlock,
   OL,
   LI,
-} from 'src/components/DocTypography'
-import { useFrameworkTabs } from 'src/components/FrameworkTabContext'
-import { Tabs } from 'src/components/Tabs'
-import { Demo } from 'src/components/Demo'
+} from "src/components/DocTypography";
+import { useFrameworkTabs } from "src/components/FrameworkTabContext";
+import { Tabs } from "src/components/Tabs";
+import { Demo } from "src/components/Demo";
 
 export default function Doc() {
-  const { state, changeTab } = useFrameworkTabs()
+  const { state, changeTab } = useFrameworkTabs();
 
   return (
     <div>
@@ -28,37 +28,36 @@ export default function Doc() {
           <LI>Listens to double click</LI>
           <LI>On click, renders an edit cell</LI>
           <LI>
-            As the user types the edit state is kept internal to the cell. If the user
-            presses enter it is commited via <Code>onCommit</Code> which updates the data.
-            If the user presses Escape the changes are cancelled.
+            As the user types the edit state is kept internal to the cell. If
+            the user presses enter it is commited via <Code>onCommit</Code>{" "}
+            which updates the data. If the user presses Escape the changes are
+            cancelled.
           </LI>
           <LI>The cell then returns the read-only mode</LI>
         </OL>
         <Tabs activeTabId={state.activeTabId} onTabPress={changeTab}>
           {[
             {
-              id: 'react',
-              label: 'React',
+              id: "react",
+              label: "React",
               component: (
                 <Demo
                   demoUrl={`${
                     import.meta.env.VITE_REACT_DEMO_BASE_URL
                   }/demos/cell-editing`}
-                  demoSrc={import('/../react/src/demos/CellEditing.tsx?raw')}
-                  height={407}
+                  demoSrc={import("/../react/src/demos/CellEditing.tsx?raw")}
                 />
               ),
             },
             {
-              id: 'solid',
-              label: 'Solid',
+              id: "solid",
+              label: "Solid",
               component: (
                 <Demo
                   demoUrl={`${
                     import.meta.env.VITE_REACT_DEMO_BASE_URL
                   }/demos/cell-editing`}
-                  demoSrc={import('/../react/src/demos/CellEditing.tsx?raw')}
-                  height={407}
+                  demoSrc={import("/../react/src/demos/CellEditing.tsx?raw")}
                 />
               ),
             },
@@ -66,7 +65,10 @@ export default function Doc() {
         </Tabs>
       </Section>
       <HGroup justifyEnd>
-        <PageButton href="/docs/columns/defining-columns" secondaryLabel="Previous">
+        <PageButton
+          href="/docs/columns/defining-columns"
+          secondaryLabel="Previous"
+        >
           Defining Columns
         </PageButton>
         <PageButton href="/docs/columns/sorting" secondaryLabel="Next">
@@ -74,5 +76,5 @@ export default function Doc() {
         </PageButton>
       </HGroup>
     </div>
-  )
+  );
 }

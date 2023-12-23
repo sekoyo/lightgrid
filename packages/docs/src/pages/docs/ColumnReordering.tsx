@@ -1,44 +1,55 @@
-import { H1, P, PageButton, HGroup, Section, A, Code } from 'src/components/DocTypography'
-import { useFrameworkTabs } from 'src/components/FrameworkTabContext'
-import { Tabs } from 'src/components/Tabs'
-import { Demo } from 'src/components/Demo'
+import {
+  H1,
+  P,
+  PageButton,
+  HGroup,
+  Section,
+  A,
+  Code,
+} from "src/components/DocTypography";
+import { useFrameworkTabs } from "src/components/FrameworkTabContext";
+import { Tabs } from "src/components/Tabs";
+import { Demo } from "src/components/Demo";
 
 export default function Doc() {
-  const { state, changeTab } = useFrameworkTabs()
+  const { state, changeTab } = useFrameworkTabs();
 
   return (
     <div>
       <H1>Column Reordering</H1>
       <Section>
         <P>
-          You can enable resizing with the <Code>enableColumnResize</Code>. As with any
-          columns changes you should also implement <Code>onColumnsChange</Code>.
+          You can enable resizing with the <Code>enableColumnResize</Code>. As
+          with any columns changes you should also implement{" "}
+          <Code>onColumnsChange</Code>.
         </P>
         <Tabs activeTabId={state.activeTabId} onTabPress={changeTab}>
           {[
             {
-              id: 'react',
-              label: 'React',
+              id: "react",
+              label: "React",
               component: (
                 <Demo
                   demoUrl={`${
                     import.meta.env.VITE_REACT_DEMO_BASE_URL
                   }/demos/column-reordering`}
-                  demoSrc={import('/../react/src/demos/ColumnReordering.tsx?raw')}
-                  height={407}
+                  demoSrc={
+                    import("/../react/src/demos/ColumnReordering.tsx?raw")
+                  }
                 />
               ),
             },
             {
-              id: 'solid',
-              label: 'Solid',
+              id: "solid",
+              label: "Solid",
               component: (
                 <Demo
                   demoUrl={`${
                     import.meta.env.VITE_REACT_DEMO_BASE_URL
                   }/demos/column-reordering`}
-                  demoSrc={import('/../react/src/demos/ColumnReordering.tsx?raw')}
-                  height={407}
+                  demoSrc={
+                    import("/../react/src/demos/ColumnReordering.tsx?raw")
+                  }
                 />
               ),
             },
@@ -54,5 +65,5 @@ export default function Doc() {
         </PageButton>
       </HGroup>
     </div>
-  )
+  );
 }

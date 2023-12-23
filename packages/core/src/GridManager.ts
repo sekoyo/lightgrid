@@ -320,14 +320,6 @@ export class GridManager<T, N> {
   $areas = computed(() => {
     const byRender: BodyAreaDesc<T, N>[] = []
     const byCol: BodyAreaDesc<T, N>[][] = []
-
-    const addToCol = (colIndex: number, rowIndex: number, area: BodyAreaDesc<T, N>) => {
-      if (!byCol[colIndex]) {
-        byCol[colIndex] = []
-      }
-      byCol[colIndex][rowIndex] = area
-    }
-
     const derivedRows = this.$derivedRows()
     const derivedCols = this.$derivedCols()
     const middleWidth =
@@ -338,6 +330,10 @@ export class GridManager<T, N> {
       this.$viewportWidth() - derivedCols.end.size - this.$horizontalScrollSize()
     const endY =
       this.$viewportHeight() - derivedRows.end.size - this.$horizontalScrollSize()
+
+    const startColAreas: BodyAreaDesc<T, N>[] = []
+    const middleColAreas: BodyAreaDesc<T, N>[] = []
+    const endColAreas: BodyAreaDesc<T, N>[] = []
 
     // Main
     if (derivedRows.middle.size) {
@@ -357,7 +353,7 @@ export class GridManager<T, N> {
           lastY: !derivedCols.end.size,
         }
         byRender.push(area)
-        addToCol(AreaPos.Middle, AreaPos.Middle, area)
+        middleColAreas.push(area)
       }
       if (derivedCols.end.size) {
         const area: BodyAreaDesc<T, N> = {
@@ -375,7 +371,7 @@ export class GridManager<T, N> {
           lastY: !derivedCols.end.size,
         }
         byRender.push(area)
-        addToCol(AreaPos.End, AreaPos.Middle, area)
+        endColAreas.push(area)
       }
       if (derivedCols.start.size) {
         const area: BodyAreaDesc<T, N> = {
@@ -393,7 +389,7 @@ export class GridManager<T, N> {
           lastY: !derivedCols.end.size,
         }
         byRender.push(area)
-        addToCol(AreaPos.Start, AreaPos.Middle, area)
+        startColAreas.push(area)
       }
     }
 
@@ -415,7 +411,7 @@ export class GridManager<T, N> {
           lastY: !derivedCols.middle.size && !derivedCols.end.size,
         }
         byRender.push(area)
-        addToCol(AreaPos.Middle, AreaPos.Start, area)
+        middleColAreas.unshift(area)
       }
       if (derivedCols.end.size) {
         const area: BodyAreaDesc<T, N> = {
@@ -433,7 +429,7 @@ export class GridManager<T, N> {
           lastY: !derivedCols.middle.size && !derivedCols.end.size,
         }
         byRender.push(area)
-        addToCol(AreaPos.End, AreaPos.Start, area)
+        endColAreas.unshift(area)
       }
       if (derivedCols.start.size) {
         const area: BodyAreaDesc<T, N> = {
@@ -451,7 +447,7 @@ export class GridManager<T, N> {
           lastY: !derivedCols.middle.size && !derivedCols.end.size,
         }
         byRender.push(area)
-        addToCol(AreaPos.Start, AreaPos.Start, area)
+        startColAreas.unshift(area)
       }
     }
 
@@ -473,7 +469,7 @@ export class GridManager<T, N> {
           lastY: true,
         }
         byRender.push(area)
-        addToCol(AreaPos.Middle, AreaPos.End, area)
+        middleColAreas.push(area)
       }
       if (derivedCols.end.size) {
         const area: BodyAreaDesc<T, N> = {
@@ -491,7 +487,7 @@ export class GridManager<T, N> {
           lastY: true,
         }
         byRender.push(area)
-        addToCol(AreaPos.End, AreaPos.End, area)
+        endColAreas.push(area)
       }
       if (derivedCols.start.size) {
         const area: BodyAreaDesc<T, N> = {
@@ -509,8 +505,18 @@ export class GridManager<T, N> {
           lastY: true,
         }
         byRender.push(area)
-        addToCol(AreaPos.Start, AreaPos.End, area)
+        startColAreas.push(area)
       }
+    }
+
+    if (startColAreas.length) {
+      byCol.push(startColAreas)
+    }
+    if (middleColAreas.length) {
+      byCol.push(middleColAreas)
+    }
+    if (endColAreas.length) {
+      byCol.push(endColAreas)
     }
 
     return { byCol, byRender }
@@ -531,10 +537,6 @@ export class GridManager<T, N> {
     this.setSelection = props.setSelection
     this.setColResizeData = props.setColResizeData
     this.setColReorderKey = props.setColReorderKey
-
-    // effect(() => {
-    //   console.log('$derivedCols', this.$derivedCols())
-    // })
 
     // Lazily load plugins
     effect(() => {

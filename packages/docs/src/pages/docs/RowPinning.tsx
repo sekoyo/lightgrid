@@ -1,44 +1,49 @@
-import { Code, H1, P, PageButton, HGroup, Section } from 'src/components/DocTypography'
-import { useFrameworkTabs } from 'src/components/FrameworkTabContext'
-import { Tabs } from 'src/components/Tabs'
-import { Demo } from 'src/components/Demo'
+import {
+  Code,
+  H1,
+  P,
+  PageButton,
+  HGroup,
+  Section,
+} from "src/components/DocTypography";
+import { useFrameworkTabs } from "src/components/FrameworkTabContext";
+import { Tabs } from "src/components/Tabs";
+import { Demo } from "src/components/Demo";
 
 export default function Doc() {
-  const { state, changeTab } = useFrameworkTabs()
+  const { state, changeTab } = useFrameworkTabs();
 
   return (
     <div>
       <H1>Row Pinning</H1>
       <Section>
         <P>
-          Row pinning is done by passing row data to <Code>pinnedTopData</Code> and{' '}
-          <Code>pinnedBottomData</Code> props.
+          Row pinning is done by passing row data to <Code>pinnedTopData</Code>{" "}
+          and <Code>pinnedBottomData</Code> props.
         </P>
         <Tabs activeTabId={state.activeTabId} onTabPress={changeTab}>
           {[
             {
-              id: 'react',
-              label: 'React',
+              id: "react",
+              label: "React",
               component: (
                 <Demo
                   demoUrl={`${
                     import.meta.env.VITE_REACT_DEMO_BASE_URL
                   }/demos/row-pinning`}
-                  demoSrc={import('/../react/src/demos/RowPinning.tsx?raw')}
-                  height={407}
+                  demoSrc={import("/../react/src/demos/RowPinning.tsx?raw")}
                 />
               ),
             },
             {
-              id: 'solid',
-              label: 'Solid',
+              id: "solid",
+              label: "Solid",
               component: (
                 <Demo
                   demoUrl={`${
                     import.meta.env.VITE_REACT_DEMO_BASE_URL
                   }/demos/row-pinning`}
-                  demoSrc={import('/../react/src/demos/RowPinning.tsx?raw')}
-                  height={407}
+                  demoSrc={import("/../react/src/demos/RowPinning.tsx?raw")}
                 />
               ),
             },
@@ -54,5 +59,5 @@ export default function Doc() {
         </PageButton>
       </HGroup>
     </div>
-  )
+  );
 }

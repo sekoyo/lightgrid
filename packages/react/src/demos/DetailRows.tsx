@@ -2,13 +2,7 @@ import { useState } from 'react'
 import { RowState, darkTheme, lightTheme } from '@lightfin/datagrid'
 import { DataGrid } from '@lightfin/react-datagrid'
 import { DemoProps } from './types'
-import {
-  data,
-  columns,
-  prizeColumns,
-  Laureate,
-  Prize,
-} from './data/nobelPrize'
+import { data, columns, prizeColumns, Laureate, Prize } from './data/nobelPrize'
 
 import '@lightfin/datagrid/dist/styles.css'
 
@@ -40,9 +34,7 @@ export default function Demo({ theme }: DemoProps) {
           item.prizes.length * ROW_SIZE,
       })}
       renderRowDetails={item => (
-        <div
-          style={{ height: '100%', width: '100%', padding: '1em' }}
-        >
+        <div style={{ height: '100%', width: '100%', padding: '1em' }}>
           <DataGrid<Prize>
             data={item.prizes || []}
             getRowId={d => item.id + d.year}
@@ -53,6 +45,7 @@ export default function Demo({ theme }: DemoProps) {
       rowState={rowState}
       setRowState={setRowState}
       theme={theme === 'light' ? lightTheme : darkTheme}
+      enableCellSelection
     />
   )
 }

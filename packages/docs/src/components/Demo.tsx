@@ -19,7 +19,7 @@ interface DemoProps {
 
 export function Demo(props: DemoProps) {
   const [fullscreen, setFullscreen] = createSignal(false);
-  const height = () => (fullscreen() ? "100%" : props.height || "600px");
+  const height = () => (fullscreen() ? "100%" : props.height || "420px");
   const [src, setSrc] = createSignal("");
   const [view, setView] = createSignal<"demo" | "source">("demo");
 

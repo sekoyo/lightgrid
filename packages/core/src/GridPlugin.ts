@@ -15,15 +15,16 @@ export abstract class GridPlugin<T, N> {
 
   getBodyAreaFromPoint(windowX: number, windowY: number) {
     const areasByCol = this.mgr.$areas().byCol
+
     for (let i = 0; i < areasByCol.length; i++) {
-      const areas = areasByCol[i]
+      const areasByRow = areasByCol[i]
       if (
-        windowX >= areas[0].windowX &&
-        windowX <= areas[0].windowX + areas[0].windowWidth
+        windowX >= areasByRow[0].windowX &&
+        windowX <= areasByRow[0].windowX + areasByRow[0].windowWidth
       ) {
         // We found the column now find the row
-        for (let j = 0; j < areas.length; j++) {
-          const area = areas[j]
+        for (let j = 0; j < areasByRow.length; j++) {
+          const area = areasByRow[j]
           if (windowY >= area.windowY && windowY <= area.windowY + area.windowHeight) {
             return area
           }
