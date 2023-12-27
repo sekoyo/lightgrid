@@ -4,12 +4,7 @@ https://github.com/jdorfman/awesome-json-datasets
 https://catalog.data.gov/dataset/?res_format=JSON
 https://www.kaggle.com/datasets
 
-- Column Reordering: dragging col beyond iframe on right causes the col to fill whole header
-- Remove isFirstColumnGroup
-- Virtualize itemDetails
-- Add colSpan + rowSpan to 'Defining columns'
 - Style improvements
-  Row Pinning: would look better if scroll track was different shade to pinned bottom
 - Lazily load iframe demos based on visibility?
 - Iframe loading spinner
 - Scroll to row / col + docs
@@ -43,9 +38,11 @@ https://www.kaggle.com/datasets
   Have it as an option to import `<T, N>` ones from framework package without the N?
 - Add expand/collapse to header of expand cols
 - Consider how left/right/tab could edit adjacent cells
+- Virtualize itemDetails
 
 ## Bugs
 
+- ⛔️ Column Reordering: dragging col beyond iframe on right causes the col to fill whole header
 - Clicking in row details selects closest parent cell. Don't change selection on item details clicks.
 
 # Do and Donts

@@ -10,15 +10,15 @@ import {
   A,
   H3,
   Table,
-} from 'src/components/DocTypography'
-import { useFrameworkTabs } from 'src/components/FrameworkTabContext'
-import { Tabs } from 'src/components/Tabs'
+} from "src/components/DocTypography";
+import { useFrameworkTabs } from "src/components/FrameworkTabContext";
+import { Tabs } from "src/components/Tabs";
 
-const getFlatColSnippet = (framework: 'react' | 'solid') =>
+const getFlatColSnippet = (framework: "react" | "solid") =>
   `
     import { GroupedColumns, ValueSource } from '@lightfin/datagrid'
 
-    type N = ${framework === 'react' ? 'React.ReactNode' : 'JSX.Element'}
+    type N = ${framework === "react" ? "React.ReactNode" : "JSX.Element"}
 
     interface CryptoCurrency {
       rank: number,
@@ -63,7 +63,7 @@ const getFlatColSnippet = (framework: 'react' | 'solid') =>
           \`\${priceChange24h}%\` : d.priceChange24h,
       }
     ]
-  `
+  `;
 
 const getNestedColSnippet = () =>
   `
@@ -100,32 +100,37 @@ const getNestedColSnippet = () =>
         ]
       }
     ]
-  `
+  `;
 
 export default function Doc() {
-  const { state, changeTab } = useFrameworkTabs()
+  const { state, changeTab } = useFrameworkTabs();
 
   return (
     <div>
       <H1>Defining Columns</H1>
       <Section>
         <P>
-          The only required props are <Code>key</Code> and <Code>getValue</Code>.
+          The only required props are <Code>key</Code> and <Code>getValue</Code>
+          .
         </P>
         <Tabs activeTabId={state.activeTabId} onTabPress={changeTab}>
           {[
             {
-              id: 'react',
-              label: 'React',
+              id: "react",
+              label: "React",
               component: (
-                <CodeBlock lang="typescript">{getFlatColSnippet('react')}</CodeBlock>
+                <CodeBlock lang="typescript">
+                  {getFlatColSnippet("react")}
+                </CodeBlock>
               ),
             },
             {
-              id: 'solid',
-              label: 'Solid',
+              id: "solid",
+              label: "Solid",
               component: (
-                <CodeBlock lang="typescript">{getFlatColSnippet('solid')}</CodeBlock>
+                <CodeBlock lang="typescript">
+                  {getFlatColSnippet("solid")}
+                </CodeBlock>
               ),
             },
           ]}
@@ -134,8 +139,8 @@ export default function Doc() {
       <Section>
         <H2>Column Grouping</H2>
         <P>
-          Columns can also be grouped using a <Code>children: []</Code> array. See{' '}
-          <A href="/columns/grouping">Column Grouping</A> for a demo.
+          Columns can also be grouped using a <Code>children: []</Code> array.
+          See <A href="/columns/grouping">Column Grouping</A> for a demo.
         </P>
         <CodeBlock lang="typescript">{getNestedColSnippet()}</CodeBlock>
       </Section>
@@ -162,26 +167,29 @@ export default function Doc() {
               <td>
                 getValue <em>(required)</em>
               </td>
-              <td>{'(row: T, source: ValueSource) => any'}</td>
+              <td>{"(row: T, source: ValueSource) => any"}</td>
               <td>
-                Should return the value for the cell. You can return different values
-                depending on the <Code>source</Code> param. For example you might want to
-                return a formatted number when the source is <Code>ValueSource.Cell</Code>
-                , and an unformatted one when <Code>ValueSource.Clipboard</Code> or{' '}
+                Should return the value for the cell. You can return different
+                values depending on the <Code>source</Code> param. For example
+                you might want to return a formatted number when the source is{" "}
+                <Code>ValueSource.Cell</Code>, and an unformatted one when{" "}
+                <Code>ValueSource.Clipboard</Code> or{" "}
                 <Code>ValueSource.Sort</Code>
               </td>
             </tr>
             <tr>
               <td>header</td>
-              <td>{'<N>'} (Generic for framework node type, see examples above)</td>
+              <td>
+                {"<N>"} (Generic for framework node type, see examples above)
+              </td>
               <td>The header text or node for this column.</td>
             </tr>
             <tr>
               <td>width</td>
               <td>string ("100px" or "0.5fr") or number in pixels</td>
               <td>
-                The column width. Can be <Code>"10px"</Code> or <Code>10</Code> (pixels),
-                or <Code>"0.5fr"</Code>
+                The column width. Can be <Code>"10px"</Code> or <Code>10</Code>{" "}
+                (pixels), or <Code>"0.5fr"</Code>
                 (fractional unit). Defaults to <Code>"1fr"</Code>.
               </td>
             </tr>
@@ -189,7 +197,7 @@ export default function Doc() {
               <td>minWidth</td>
               <td>number in pixels</td>
               <td>
-                The minimum width this column can be, in pixels. Defaults to{' '}
+                The minimum width this column can be, in pixels. Defaults to{" "}
                 <Code>100</Code>.
               </td>
             </tr>
@@ -197,7 +205,7 @@ export default function Doc() {
               <td>sortable</td>
               <td>boolean</td>
               <td>
-                Whether this column can be sorted or not. You must implement the{' '}
+                Whether this column can be sorted or not. You must implement the{" "}
                 <Code>onColumnsChange</Code> prop for sorting to work.
               </td>
             </tr>
@@ -205,23 +213,25 @@ export default function Doc() {
               <td>sortDirection</td>
               <td>enum SortDirection</td>
               <td>
-                The current sort direction of this column (or undefined for no sort)
+                The current sort direction of this column (or undefined for no
+                sort)
               </td>
             </tr>
             <tr>
               <td>createSortComparator</td>
-              <td>{'(sortDirection: SortDirection) => Comparator<T>'}</td>
+              <td>{"(sortDirection: SortDirection) => Comparator<T>"}</td>
               <td>
-                Given the sort direction, returns a custom comparator function. If not
-                defined then the default comparator is used.
+                Given the sort direction, returns a custom comparator function.
+                If not defined then the default comparator is used.
               </td>
             </tr>
             <tr>
               <td>sortPriority</td>
               <td>number</td>
               <td>
-                The sort priority when multiple columns are sorted. Lower is higher
-                priority. By default it's based on the order that columns are clicked.
+                The sort priority when multiple columns are sorted. Lower is
+                higher priority. By default it's based on the order that columns
+                are clicked.
               </td>
             </tr>
             <tr>
@@ -229,17 +239,36 @@ export default function Doc() {
               <td>ColumnPin</td>
               <td>
                 Pin this column to the left (<Code>"start"</Code>) or right (
-                <Code>"end"</Code>) if you wish it to always be visible even if the user
-                scrolls.
+                <Code>"end"</Code>) if you wish it to always be visible even if
+                the user scrolls.
               </td>
             </tr>
             <tr>
               <td>cellComponent</td>
-              <td>{'(props: CellComponentProps<T, N, S>) => N'}</td>
+              <td>{"(props: CellComponentProps<T, N, S>) => N"}</td>
               <td>
-                A function given a the current column, row item, and optionally row state
-                & setter, returns the cell node to be rendered. If not specified will
-                render the result of <Code>column.getValue(item, ValueSource.Cell)</Code>.
+                A function given a the current column, row item, and optionally
+                row state & setter, returns the cell node to be rendered. If not
+                specified will render the result of{" "}
+                <Code>column.getValue(item, ValueSource.Cell)</Code>.
+              </td>
+            </tr>
+            <tr>
+              <td>colSpan</td>
+              <td>{"(item: T) => number"}</td>
+              <td>
+                Return a number greater than 1 to make a cell in this column
+                span into adjacent columns. Return -1 to span all remaining
+                columns in the grid area.
+              </td>
+            </tr>
+            <tr>
+              <td>rowSpan</td>
+              <td>{"(item: T) => number"}</td>
+              <td>
+                Return a number greater than 1 to make a cell in this column
+                span into adjacent rows. Return -1 to span all remaining rows in
+                the grid area.
               </td>
             </tr>
           </tbody>
@@ -259,16 +288,20 @@ export default function Doc() {
                 key <em>(required)</em>
               </td>
               <td>string | number</td>
-              <td>A unique key for this column group. Do not use an array index.</td>
+              <td>
+                A unique key for this column group. Do not use an array index.
+              </td>
             </tr>
             <tr>
               <td>header</td>
-              <td>{'<N>'} (Generic for framework node type, see examples above)</td>
+              <td>
+                {"<N>"} (Generic for framework node type, see examples above)
+              </td>
               <td>The header text or node for this column group.</td>
             </tr>
             <tr>
               <td>children</td>
-              <td>{'GroupedColumns<T, N>'}</td>
+              <td>{"GroupedColumns<T, N>"}</td>
               <td>The columns and groups under this group.</td>
             </tr>
             <tr>
@@ -276,8 +309,8 @@ export default function Doc() {
               <td>ColumnPin</td>
               <td>
                 Pin this column to the left (<Code>"start"</Code>) or right (
-                <Code>"end"</Code>) if you wish it to always be visible even if the user
-                scrolls.
+                <Code>"end"</Code>) if you wish it to always be visible even if
+                the user scrolls.
               </td>
             </tr>
           </tbody>
@@ -292,5 +325,5 @@ export default function Doc() {
         </PageButton>
       </HGroup>
     </div>
-  )
+  );
 }

@@ -11,7 +11,7 @@ export const darkTheme: Theme = {
   headerTextColor: 'black',
   borderColor: 'rgb(39, 39, 45)',
   textColor: 'white',
-  scrollTrack: '#111',
+  scrollTrack: '#0b0b0b',
   scrollThumb: '#3e3e3e',
   scrollThumbHover: '#555',
   cellSelectedBg: 'rgb(50, 48, 57)',
