@@ -47,7 +47,7 @@ function _HeaderArea<T>({
   const lastIndex = flatColumns.at(-1)?.colIndex ?? 0
   const renderColumns = useCallback(
     (
-      mgr: GridManager<T, React.ReactNode>,
+      mgr: GridManager<T, N>,
       groupCols: GroupedDerivedColumns<T, N>,
       colAreaPos: AreaPos,
       headerRowHeight: number,
@@ -87,7 +87,7 @@ function _HeaderArea<T>({
 
   const renderFilters = useCallback(
     (
-      mgr: GridManager<T, React.ReactNode>,
+      mgr: GridManager<T, N>,
       flatColumns: DerivedColumn<T, N>[],
       filterRowHeight: number
     ) => {

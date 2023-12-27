@@ -19,8 +19,6 @@ import {
   CellPosition,
   ColResizeData,
   DerivedColsResult,
-  DerivedColumn,
-  DerivedRow,
   GetRowDetailsMeta,
   GetRowId,
   GetRowMeta,
@@ -41,9 +39,7 @@ import { GridArea } from './GridArea'
 
 const emptyData: any[] = []
 const emptyRowState: RowState<any> = {}
-const noop = () => {
-  /**/
-}
+const noop = () => {}
 const defaultRowDetailsRenderer = () => (
   <div>Define a `renderRowDetails` to customize this</div>
 )
@@ -113,15 +109,13 @@ export function DataGrid<T, S = unknown>({
   const [derivedCols, setDerivedCols] = useState<DerivedColsResult<T, N>>(
     EMPTY_DERIVED_COLS_RESULT
   )
-  const [gridAreas, setBodyAreas] = useState<BodyAreaDesc<T, N>[]>([])
+  const [bodyAreas, setBodyAreas] = useState<BodyAreaDesc<T, N>[]>([])
   const [headerAreas, setHeaderAreas] = useState<HeaderAreaDesc<T, N>[]>([])
   const [viewport, setViewport] = useState({ width: 0, height: 0 })
   const [scrollLeft, setScrollLeft] = useState(0)
   const [scrollTop, setScrollTop] = useState(0)
   const [contentHeight, setContentHeight] = useState(0)
   const [headerHeight, setHeaderHeight] = useState(0)
-  const [middleCols, setMiddleCols] = useState<DerivedColumn<T, N>[]>([])
-  const [middleRows, setMiddleRows] = useState<DerivedRow<T>[]>([])
   const [startCell, setStartCell] = useState<CellPosition>()
   const [selection, setSelection] = useState<CellSelection>()
   const [colResizeData, setColResizeData] = useState<ColResizeData>()
@@ -145,8 +139,6 @@ export function DataGrid<T, S = unknown>({
       onViewportChanged: setViewport,
       onContentHeightChanged: setContentHeight,
       onHeaderHeightChanged: setHeaderHeight,
-      onMiddleColsChange: setMiddleCols,
-      onMiddleRowsChange: setMiddleRows,
     })
   )
 
@@ -238,13 +230,13 @@ export function DataGrid<T, S = unknown>({
             className="lg-view"
             style={{ width: derivedCols.size, height: contentHeight }}
           >
-            {gridAreas.map(area => (
+            {bodyAreas.map(area => (
               <GridArea
                 key={area.id}
                 mgr={mgr}
                 area={area}
-                columns={area.pinnedX ? area.colResult.items : middleCols}
-                rows={area.pinnedY ? area.rowResult.items : middleRows}
+                columns={area.colResult.items}
+                rows={area.rowResult.items}
                 rowState={rowState}
                 setRowState={setRowState}
                 detailsWidth={viewport.width}

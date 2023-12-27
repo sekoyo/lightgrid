@@ -45,7 +45,6 @@ export default function Demo({ theme }: DemoProps) {
       rowState={rowState}
       setRowState={setRowState}
       theme={theme === 'light' ? lightTheme : darkTheme}
-      enableCellSelection
     />
   )
 }

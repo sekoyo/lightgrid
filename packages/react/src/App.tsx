@@ -5,6 +5,7 @@ import { DemoContainer } from './components/DemoContainer'
 const params = new URLSearchParams(window.location.search)
 const height = params.get('height') || '600px'
 const theme = params.get('theme') === 'light' ? 'light' : 'dark'
+document.body.classList.add(theme)
 
 const BasicGridDemo = lazy(() => import('./demos/BasicGrid'))
 const ThemingDemo = lazy(() => import('./demos/Theming'))
@@ -26,8 +27,6 @@ const DetailRowsDemo = lazy(() => import('./demos/DetailRows'))
 const CellEditingDemo = lazy(() => import('./demos/CellEditing'))
 const CellSelectionDemo = lazy(() => import('./demos/CellSelection'))
 const ColumnSpanningDemo = lazy(() => import('./demos/ColumnSpanning'))
-
-document.body.classList.add(theme)
 
 export function App() {
   return (

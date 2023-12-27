@@ -157,7 +157,7 @@ export class ColumnReorderPlugin<T, N> extends GridPlugin<T, N> {
         pointerSide
       )
 
-      this.mgr.$columns.set(nextColumns)
+      this.mgr.$columns(nextColumns)
     }
   }
 

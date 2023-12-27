@@ -120,9 +120,11 @@ export default function Doc() {
             component: (
               <Demo
                 demoUrl={`${
-                  import.meta.env.VITE_REACT_DEMO_BASE_URL
+                  import.meta.env.VITE_SOLID_DEMO_BASE_URL
                 }/demos/basic-grid`}
-                demoSrc={import("/../react/src/demos/BasicGrid.tsx?raw")}
+                demoSrc={
+                  import("/../solid/src/routes/demos/basic-grid.tsx?raw")
+                }
                 height="362px"
               />
             ),

@@ -4,12 +4,16 @@ https://github.com/jdorfman/awesome-json-datasets
 https://catalog.data.gov/dataset/?res_format=JSON
 https://www.kaggle.com/datasets
 
+- Column Reordering: dragging col beyond iframe on right causes the col to fill whole header
+- Remove isFirstColumnGroup
+- Virtualize itemDetails
+- Add colSpan + rowSpan to 'Defining columns'
 - Style improvements
+  Row Pinning: would look better if scroll track was different shade to pinned bottom
 - Lazily load iframe demos based on visibility?
 - Iframe loading spinner
 - Scroll to row / col + docs
 - Add bookmark # to H1,H2 etc
-- SolidJS support
 - Home page
 - Pricing page
 - Legal page

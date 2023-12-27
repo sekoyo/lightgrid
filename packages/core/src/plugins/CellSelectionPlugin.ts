@@ -1,4 +1,4 @@
-import { signal, effect } from '@maverick-js/signals'
+import { observable, effect } from 'oby'
 import { AreaPos, CellPosition, CellSelection, Direction, BodyAreaDesc } from '../types'
 import { GridManager } from '../GridManager'
 import { GridPlugin } from '../GridPlugin'
@@ -14,8 +14,8 @@ export class CellSelectionPlugin<T, N> extends GridPlugin<T, N> {
   selection?: CellSelection
   setSelection: (sel: CellSelection | undefined) => void
 
-  $autoScrollX = signal(false)
-  $autoScrollY = signal(false)
+  $autoScrollX = observable(false)
+  $autoScrollY = observable(false)
   scrollXStep = 0
   scrollYStep = 0
   stepFactor = 0.1
@@ -152,14 +152,14 @@ export class CellSelectionPlugin<T, N> extends GridPlugin<T, N> {
       if (endWindowX < startArea.windowX) {
         // Left
         this.scrollXStep = (endWindowX - startArea.windowX) * this.stepFactor
-        this.$autoScrollX.set(true)
+        this.$autoScrollX(true)
       } else if (endWindowX > startArea.windowX + startArea.windowWidth) {
         // Right
         this.scrollXStep =
           (endWindowX - (startArea.windowX + startArea.windowWidth)) * this.stepFactor
-        this.$autoScrollX.set(true)
+        this.$autoScrollX(true)
       } else {
-        this.$autoScrollX.set(false)
+        this.$autoScrollX(false)
       }
     }
 
@@ -168,21 +168,21 @@ export class CellSelectionPlugin<T, N> extends GridPlugin<T, N> {
       if (endWindowY < startArea.windowY) {
         // Up
         this.scrollYStep = (endWindowY - startArea.windowY) * this.stepFactor
-        this.$autoScrollY.set(true)
+        this.$autoScrollY(true)
       } else if (endWindowY > startArea.windowY + startArea.windowHeight) {
         // Down
         this.scrollYStep =
           (endWindowY - (startArea.windowY + startArea.windowHeight)) * this.stepFactor
-        this.$autoScrollY.set(true)
+        this.$autoScrollY(true)
       } else {
-        this.$autoScrollY.set(false)
+        this.$autoScrollY(false)
       }
     }
   }
 
   onWindowMouseUp = () => {
-    this.$autoScrollX.set(false)
-    this.$autoScrollY.set(false)
+    this.$autoScrollX(false)
+    this.$autoScrollY(false)
     window.removeEventListener('mouseup', this.onWindowMouseUp)
     window.removeEventListener('mousemove', this.onWindowMouseMove)
   }
@@ -199,7 +199,7 @@ export class CellSelectionPlugin<T, N> extends GridPlugin<T, N> {
           this.mgr.$derivedCols().size -
           (this.mgr.$viewportWidth() - this.mgr.$horizontalScrollSize())
         const scrollLeft = clamp(this.mgr.$scrollX() + this.scrollXStep, 0, maxScroll)
-        this.mgr.$scrollX.set(scrollLeft)
+        this.mgr.$scrollX(scrollLeft)
         this.mgr.scrollLeft(scrollLeft)
       }, 10)
       return () => clearInterval(id)
@@ -213,7 +213,7 @@ export class CellSelectionPlugin<T, N> extends GridPlugin<T, N> {
           this.mgr.$derivedRows().size -
           (this.mgr.$viewportHeight() - this.mgr.$horizontalScrollSize())
         const scrollTop = clamp(this.mgr.$scrollY() + this.scrollYStep, 0, maxScroll)
-        this.mgr.$scrollY.set(scrollTop)
+        this.mgr.$scrollY(scrollTop)
         this.mgr.scrollTop(scrollTop)
       }, 10)
       return () => clearInterval(id)

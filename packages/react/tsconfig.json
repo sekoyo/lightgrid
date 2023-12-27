@@ -18,11 +18,11 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
+
+    "baseUrl": ".",
     "paths": {
       "@lightfin/react-datagrid": ["./src/lib"]
-    },
-
-    "baseUrl": "."
+    }
   },
   "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }]

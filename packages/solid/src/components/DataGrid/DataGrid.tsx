@@ -1,0 +1,258 @@
+'use client'
+import { createEffect, createSignal, createMemo, type JSX, For } from 'solid-js'
+import {
+  cls,
+  createGridManager,
+  darkTheme,
+  DEFAULT_GET_ROW_DETAILS_META,
+  DEFAULT_GET_ROW_META,
+  EMPTY_DERIVED_COLS_RESULT,
+  BodyAreaDesc,
+  CellSelection,
+  CellPosition,
+  ColResizeData,
+  DerivedColsResult,
+  GetRowDetailsMeta,
+  GetRowId,
+  GetRowMeta,
+  HeaderAreaDesc,
+  ItemId,
+  GroupedColumns,
+  OnFiltersChange,
+  RenderRowDetails,
+  RowState,
+  Theme,
+  themeToCSSObj,
+  StateSetter,
+} from '@lightfin/datagrid'
+import '@lightfin/datagrid/dist/styles.css'
+import { N } from './types'
+import { HeaderArea } from './HeaderArea'
+import { GridArea } from './GridArea'
+
+const emptyData: any[] = []
+const emptyRowState: RowState<any> = {}
+const noop = () => {}
+const defaultRowDetailsRenderer = () => (
+  <div>Define a `renderRowDetails` to customize this</div>
+)
+
+// TODO: JSDoc these props
+interface DataGridProps<T, S> {
+  columns: GroupedColumns<T, N, S>
+  onColumnsChange?: (columnns: GroupedColumns<T, N>) => void
+  onFiltersChange?: OnFiltersChange<T, N>
+  headerRowHeight?: number
+  filterRowHeight?: number
+  getRowId: GetRowId<T>
+  getRowMeta?: GetRowMeta<T>
+  getRowDetailsMeta?: GetRowDetailsMeta<T>
+  data: T[]
+  pinnedTopData?: T[]
+  pinnedBottomData?: T[]
+  rowState?: RowState<S>
+  setRowState?: StateSetter<RowState<S>>
+  renderRowDetails?: RenderRowDetails<T, N>
+  direction?: 'ltr' | 'rtl'
+  theme?: Theme
+  multiSort?: boolean
+  enableCellSelection?: boolean
+  enableColumnResize?: boolean
+  enableColumnReorder?: boolean
+  loadingOverlay?: N
+  className?: string
+  style?: JSX.CSSProperties
+}
+
+export function DataGrid<T, S = unknown>({
+  columns,
+  onColumnsChange,
+  onFiltersChange = noop,
+  headerRowHeight,
+  filterRowHeight,
+  getRowId,
+  getRowMeta = DEFAULT_GET_ROW_META,
+  getRowDetailsMeta = DEFAULT_GET_ROW_DETAILS_META,
+  data,
+  pinnedTopData = emptyData,
+  pinnedBottomData = emptyData,
+  rowState = emptyRowState,
+  setRowState,
+  renderRowDetails = defaultRowDetailsRenderer,
+  direction,
+  theme = darkTheme,
+  multiSort,
+  enableCellSelection,
+  enableColumnResize,
+  enableColumnReorder,
+  loadingOverlay,
+  className,
+  style,
+}: DataGridProps<T, S>) {
+  let gridEl: HTMLDivElement | undefined
+  let scrollEl: HTMLDivElement | undefined
+  let viewportEl: HTMLDivElement | undefined
+
+  const [derivedCols, setDerivedCols] = createSignal<DerivedColsResult<T, N>>(
+    EMPTY_DERIVED_COLS_RESULT
+  )
+  const [bodyAreas, setBodyAreas] = createSignal<BodyAreaDesc<T, N>[]>([])
+  const [headerAreas, setHeaderAreas] = createSignal<HeaderAreaDesc<T, N>[]>([])
+  const [viewport, setViewport] = createSignal({ width: 0, height: 0 })
+  const [scrollLeft, setScrollLeft] = createSignal(0)
+  const [scrollTop, setScrollTop] = createSignal(0)
+  const [contentHeight, setContentHeight] = createSignal(0)
+  const [headerHeight, setHeaderHeight] = createSignal(0)
+  const [startCell, setStartCell] = createSignal<CellPosition>()
+  const [selection, setSelection] = createSignal<CellSelection>()
+  const [colResizeData, setColResizeData] = createSignal<ColResizeData>()
+  const [colReorderKey, setColReorderKey] = createSignal<ItemId>()
+
+  // Grid manager instance and props that don't change
+  const mgr = createGridManager<T, N>({
+    getRowId,
+    getRowMeta,
+    getRowDetailsMeta,
+    renderRowDetails,
+    setStartCell,
+    setSelection,
+    setColResizeData,
+    setColReorderKey,
+    onColumnsChange,
+    onDerivedColumnsChange: setDerivedCols,
+    onAreasChanged: setBodyAreas,
+    onHeadersChanged: setHeaderAreas,
+    onViewportChanged: setViewport,
+    onContentHeightChanged: setContentHeight,
+    onHeaderHeightChanged: setHeaderHeight,
+  })
+
+  // Pass props which update to grid manager
+  createEffect(() => {
+    mgr.update({
+      columns,
+      headerRowHeight,
+      filterRowHeight,
+      data,
+      pinnedTopData,
+      pinnedBottomData,
+      rowState,
+      multiSort,
+      enableCellSelection,
+      enableColumnResize,
+      enableColumnReorder,
+    })
+  })
+
+  // Mount and unmount
+  createEffect(() => mgr.mount(gridEl!, scrollEl!, viewportEl!))
+
+  // Relay scroll events to actual viewport, this coordinates events
+  // with scroll, otherwise scrolling can move faster than reported events
+  createEffect(() => {
+    viewportEl!.scrollTo(scrollLeft(), scrollTop())
+  })
+
+  const onScroll: JSX.EventHandlerUnion<HTMLDivElement, Event> = e => {
+    const el = e.currentTarget
+    if (el instanceof HTMLElement) {
+      setScrollLeft(el.scrollLeft)
+      setScrollTop(el.scrollTop)
+      mgr.updateScroll(el.scrollLeft, el.scrollTop)
+    }
+  }
+
+  const themeObj = createMemo(() => themeToCSSObj(theme))
+  const mergedStyle = createMemo(
+    () =>
+      ({
+        ...themeObj(),
+        '--lgDirection': direction,
+        'min-height': `${headerHeight()}px`,
+        ...style,
+      }) as JSX.CSSProperties
+  )
+
+  return (
+    <div
+      ref={gridEl}
+      class={cls('lg', className)}
+      role="table"
+      tabIndex={0}
+      style={mergedStyle()}
+    >
+      <div ref={scrollEl} class="lg-canvas lg-scroll" onScroll={onScroll}>
+        <div
+          class="lg-grid-sizer"
+          style={{ width: `${derivedCols().size}px`, height: `${contentHeight()}px` }}
+        />
+        <div
+          ref={viewportEl}
+          class="lg-viewport"
+          style={{ width: `${viewport().width}px`, height: `${viewport().height}px` }}
+        >
+          <div
+            class="lg-view"
+            style={{ width: `${derivedCols().size}px`, height: `${contentHeight()}px` }}
+          >
+            <For each={bodyAreas()}>
+              {area => (
+                <GridArea
+                  mgr={mgr}
+                  area={area}
+                  columns={area.colResult.items}
+                  rows={area.rowResult.items}
+                  rowState={rowState}
+                  setRowState={setRowState}
+                  detailsWidth={viewport().width}
+                  renderRowDetails={renderRowDetails}
+                  enableColumnReorder={enableColumnReorder}
+                  selection={selection()}
+                  selectionStartCell={startCell()}
+                  isFirstColumnGroup={area.colResult.firstWithSize}
+                  colReorderKey={colReorderKey()}
+                />
+              )}
+            </For>
+            <For each={headerAreas()}>
+              {headerArea => (
+                <HeaderArea<T>
+                  mgr={mgr}
+                  columns={headerArea.columns}
+                  flatColumns={headerArea.flatColumns}
+                  colAreaPos={headerArea.colAreaPos}
+                  headerRowHeight={headerArea.headerRowHeight}
+                  filterRowHeight={headerArea.filterRowHeight}
+                  onFiltersChange={onFiltersChange}
+                  left={headerArea.left}
+                  width={headerArea.width}
+                  height={headerArea.height}
+                  enableColumnResize={enableColumnResize}
+                  enableColumnReorder={enableColumnReorder}
+                  colReorderKey={colReorderKey()}
+                />
+              )}
+            </For>
+          </div>
+          {!!(enableColumnResize && colResizeData()) && (
+            <div
+              class="lg-resizer-marker"
+              style={{ left: `${colResizeData()!.left}px` }}
+            />
+          )}
+          {loadingOverlay && (
+            <div
+              class="lg-loading-overlay"
+              style={{
+                top: `${headerHeight}px`,
+                height: `${viewport().height - headerHeight()}px`,
+              }}
+            >
+              {loadingOverlay}
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  )
+}

@@ -1,0 +1,806 @@
+[
+  {
+    "country": "Finland",
+    "happinessIndex": 7.8,
+    "globalRank": 1,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Denmark",
+    "happinessIndex": 7.59,
+    "globalRank": 2,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Iceland",
+    "happinessIndex": 7.53,
+    "globalRank": 3,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Israel",
+    "happinessIndex": 7.47,
+    "globalRank": 4,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Netherlands",
+    "happinessIndex": 7.4,
+    "globalRank": 5,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Sweden",
+    "happinessIndex": 7.4,
+    "globalRank": 6,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Norway",
+    "happinessIndex": 7.32,
+    "globalRank": 7,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Switzerland",
+    "happinessIndex": 7.24,
+    "globalRank": 8,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Luxembourg",
+    "happinessIndex": 7.23,
+    "globalRank": 9,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "New Zealand",
+    "happinessIndex": 7.12,
+    "globalRank": 10,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Austria",
+    "happinessIndex": 7.1,
+    "globalRank": 11,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Australia",
+    "happinessIndex": 7.09,
+    "globalRank": 12,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Canada",
+    "happinessIndex": 6.96,
+    "globalRank": 13,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Ireland",
+    "happinessIndex": 6.91,
+    "globalRank": 14,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Germany",
+    "happinessIndex": 6.89,
+    "globalRank": 15,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "USA",
+    "happinessIndex": 6.89,
+    "globalRank": 16,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Belgium",
+    "happinessIndex": 6.86,
+    "globalRank": 17,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Czechia",
+    "happinessIndex": 6.85,
+    "globalRank": 18,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "UK",
+    "happinessIndex": 6.8,
+    "globalRank": 19,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Lithuania",
+    "happinessIndex": 6.76,
+    "globalRank": 20,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "France",
+    "happinessIndex": 6.66,
+    "globalRank": 21,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Slovenia",
+    "happinessIndex": 6.65,
+    "globalRank": 22,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Costa Rica",
+    "happinessIndex": 6.61,
+    "globalRank": 23,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Romania",
+    "happinessIndex": 6.59,
+    "globalRank": 24,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Singapore",
+    "happinessIndex": 6.59,
+    "globalRank": 25,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "UA Emirates",
+    "happinessIndex": 6.57,
+    "globalRank": 26,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Uruguay",
+    "happinessIndex": 6.49,
+    "globalRank": 27,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Slovakia",
+    "happinessIndex": 6.47,
+    "globalRank": 28,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Estonia",
+    "happinessIndex": 6.46,
+    "globalRank": 29,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Saudi Arabia",
+    "happinessIndex": 6.46,
+    "globalRank": 30,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Spain",
+    "happinessIndex": 6.44,
+    "globalRank": 31,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Italy",
+    "happinessIndex": 6.4,
+    "globalRank": 32,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Chile",
+    "happinessIndex": 6.33,
+    "globalRank": 33,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Mexico",
+    "happinessIndex": 6.33,
+    "globalRank": 34,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Malta",
+    "happinessIndex": 6.3,
+    "globalRank": 35,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Nicaragua",
+    "happinessIndex": 6.26,
+    "globalRank": 36,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Panama",
+    "happinessIndex": 6.26,
+    "globalRank": 37,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Poland",
+    "happinessIndex": 6.26,
+    "globalRank": 38,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Latvia",
+    "happinessIndex": 6.21,
+    "globalRank": 39,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Bahrain",
+    "happinessIndex": 6.17,
+    "globalRank": 40,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Guatemala",
+    "happinessIndex": 6.15,
+    "globalRank": 41,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Kazakhstan",
+    "happinessIndex": 6.14,
+    "globalRank": 42,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Serbia",
+    "happinessIndex": 6.14,
+    "globalRank": 43,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Croatia",
+    "happinessIndex": 6.13,
+    "globalRank": 44,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Cyprus",
+    "happinessIndex": 6.13,
+    "globalRank": 45,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Japan",
+    "happinessIndex": 6.13,
+    "globalRank": 46,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Brazil",
+    "happinessIndex": 6.12,
+    "globalRank": 47,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "El Salvador",
+    "happinessIndex": 6.12,
+    "globalRank": 48,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Hungary",
+    "happinessIndex": 6.04,
+    "globalRank": 49,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Argentina",
+    "happinessIndex": 6.02,
+    "globalRank": 50,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Honduras",
+    "happinessIndex": 6.02,
+    "globalRank": 51,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Malaysia",
+    "happinessIndex": 6.01,
+    "globalRank": 52,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Uzbekistan",
+    "happinessIndex": 6.01,
+    "globalRank": 53,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Portugal",
+    "happinessIndex": 5.97,
+    "globalRank": 54,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "South Korea",
+    "happinessIndex": 5.95,
+    "globalRank": 55,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Greece",
+    "happinessIndex": 5.93,
+    "globalRank": 56,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Mauritius",
+    "happinessIndex": 5.9,
+    "globalRank": 57,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Mongolia",
+    "happinessIndex": 5.84,
+    "globalRank": 58,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Thailand",
+    "happinessIndex": 5.84,
+    "globalRank": 59,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Kyrgyzstan",
+    "happinessIndex": 5.83,
+    "globalRank": 60,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "China",
+    "happinessIndex": 5.82,
+    "globalRank": 61,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Moldova",
+    "happinessIndex": 5.82,
+    "globalRank": 62,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Vietnam",
+    "happinessIndex": 5.76,
+    "globalRank": 63,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Paraguay",
+    "happinessIndex": 5.74,
+    "globalRank": 64,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Montenegro",
+    "happinessIndex": 5.72,
+    "globalRank": 65,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Jamaica",
+    "happinessIndex": 5.7,
+    "globalRank": 66,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Bolivia",
+    "happinessIndex": 5.68,
+    "globalRank": 67,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Russia",
+    "happinessIndex": 5.66,
+    "globalRank": 68,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Bosnia & Herz.",
+    "happinessIndex": 5.63,
+    "globalRank": 69,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Colombia",
+    "happinessIndex": 5.63,
+    "globalRank": 70,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Domin. Rep.",
+    "happinessIndex": 5.57,
+    "globalRank": 71,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Ecuador",
+    "happinessIndex": 5.56,
+    "globalRank": 72,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Peru",
+    "happinessIndex": 5.53,
+    "globalRank": 73,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Philippines",
+    "happinessIndex": 5.52,
+    "globalRank": 74,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Bulgaria",
+    "happinessIndex": 5.47,
+    "globalRank": 75,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Nepal",
+    "happinessIndex": 5.36,
+    "globalRank": 76,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Armenia",
+    "happinessIndex": 5.34,
+    "globalRank": 77,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Algeria",
+    "happinessIndex": 5.33,
+    "globalRank": 78,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Tajikistan",
+    "happinessIndex": 5.33,
+    "globalRank": 79,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Hong Kong",
+    "happinessIndex": 5.31,
+    "globalRank": 80,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Albania",
+    "happinessIndex": 5.28,
+    "globalRank": 81,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Indonesia",
+    "happinessIndex": 5.28,
+    "globalRank": 82,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "R. of Congo",
+    "happinessIndex": 5.27,
+    "globalRank": 83,
+    "availableData": "2017 - 2022"
+  },
+  {
+    "country": "Somalia",
+    "happinessIndex": 5.27,
+    "globalRank": 84,
+    "availableData": "2016 - 2022"
+  },
+  {
+    "country": "North Macedonia",
+    "happinessIndex": 5.25,
+    "globalRank": 85,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Venezuela",
+    "happinessIndex": 5.21,
+    "globalRank": 86,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Georgia",
+    "happinessIndex": 5.11,
+    "globalRank": 87,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Laos",
+    "happinessIndex": 5.11,
+    "globalRank": 88,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Guinea",
+    "happinessIndex": 5.07,
+    "globalRank": 89,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Ukraine",
+    "happinessIndex": 5.07,
+    "globalRank": 90,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Ivory Coast",
+    "happinessIndex": 5.05,
+    "globalRank": 91,
+    "availableData": "2015 - 2022"
+  },
+  {
+    "country": "Gabon",
+    "happinessIndex": 5.03,
+    "globalRank": 92,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Nigeria",
+    "happinessIndex": 4.98,
+    "globalRank": 93,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Cameroon",
+    "happinessIndex": 4.97,
+    "globalRank": 94,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Mozambique",
+    "happinessIndex": 4.95,
+    "globalRank": 95,
+    "availableData": "2017 - 2022"
+  },
+  {
+    "country": "Iraq",
+    "happinessIndex": 4.94,
+    "globalRank": 96,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Palestine",
+    "happinessIndex": 4.91,
+    "globalRank": 97,
+    "availableData": "2017 - 2022"
+  },
+  {
+    "country": "Morocco",
+    "happinessIndex": 4.9,
+    "globalRank": 98,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Iran",
+    "happinessIndex": 4.88,
+    "globalRank": 99,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Senegal",
+    "happinessIndex": 4.86,
+    "globalRank": 100,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Mauritania",
+    "happinessIndex": 4.72,
+    "globalRank": 101,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Burkina Faso",
+    "happinessIndex": 4.64,
+    "globalRank": 102,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Namibia",
+    "happinessIndex": 4.63,
+    "globalRank": 103,
+    "availableData": "2016 - 2022"
+  },
+  {
+    "country": "Ghana",
+    "happinessIndex": 4.61,
+    "globalRank": 104,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Turkey",
+    "happinessIndex": 4.61,
+    "globalRank": 105,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Pakistan",
+    "happinessIndex": 4.56,
+    "globalRank": 106,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Niger",
+    "happinessIndex": 4.5,
+    "globalRank": 107,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Tunisia",
+    "happinessIndex": 4.5,
+    "globalRank": 108,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Kenya",
+    "happinessIndex": 4.49,
+    "globalRank": 109,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Sri Lanka",
+    "happinessIndex": 4.44,
+    "globalRank": 110,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Uganda",
+    "happinessIndex": 4.43,
+    "globalRank": 111,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Chad",
+    "happinessIndex": 4.4,
+    "globalRank": 112,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Cambodia",
+    "happinessIndex": 4.39,
+    "globalRank": 113,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Benin",
+    "happinessIndex": 4.37,
+    "globalRank": 114,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Burma",
+    "happinessIndex": 4.37,
+    "globalRank": 115,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Bangladesh",
+    "happinessIndex": 4.28,
+    "globalRank": 116,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Gambia",
+    "happinessIndex": 4.28,
+    "globalRank": 117,
+    "availableData": "2019 - 2022"
+  },
+  {
+    "country": "Mali",
+    "happinessIndex": 4.2,
+    "globalRank": 118,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Egypt",
+    "happinessIndex": 4.17,
+    "globalRank": 119,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Togo",
+    "happinessIndex": 4.14,
+    "globalRank": 120,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Jordan",
+    "happinessIndex": 4.12,
+    "globalRank": 121,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "India",
+    "happinessIndex": 4.04,
+    "globalRank": 122,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Liberia",
+    "happinessIndex": 4.04,
+    "globalRank": 123,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Madagascar",
+    "happinessIndex": 4.02,
+    "globalRank": 124,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Zambia",
+    "happinessIndex": 3.98,
+    "globalRank": 125,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Tanzania",
+    "happinessIndex": 3.69,
+    "globalRank": 126,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Comoros",
+    "happinessIndex": 3.55,
+    "globalRank": 127,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Malawi",
+    "happinessIndex": 3.5,
+    "globalRank": 128,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Botswana",
+    "happinessIndex": 3.44,
+    "globalRank": 129,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "DR Congo",
+    "happinessIndex": 3.21,
+    "globalRank": 130,
+    "availableData": "2017 - 2022"
+  },
+  {
+    "country": "Zimbabwe",
+    "happinessIndex": 3.2,
+    "globalRank": 131,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Sierra Leone",
+    "happinessIndex": 3.14,
+    "globalRank": 132,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Lebanon",
+    "happinessIndex": 2.39,
+    "globalRank": 133,
+    "availableData": "2013 - 2022"
+  },
+  {
+    "country": "Afghanistan",
+    "happinessIndex": 1.86,
+    "globalRank": 134,
+    "availableData": "2013 - 2022"
+  }
+]

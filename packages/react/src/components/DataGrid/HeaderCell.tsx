@@ -7,12 +7,11 @@ import {
   isColumnGroup,
   isDerivedColumnGroup,
 } from '@lightfin/datagrid'
-import SortAscendingIcon from '@lightfin/datagrid/dist/assets/sort-ascending.svg?react'
-import SortDescendingIcon from '@lightfin/datagrid/dist/assets/sort-descending.svg?react'
 import { N } from './types'
+import { SortAscendingIcon, SortDescendingIcon } from '../Icons'
 
 interface HeaderCellProps<T> {
-  mgr: GridManager<T, React.ReactNode>
+  mgr: GridManager<T, N>
   column: DerivedColumnOrGroup<T, N>
   colAreaPos: AreaPos
   headerRowHeight: number

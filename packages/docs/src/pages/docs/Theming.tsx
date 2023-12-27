@@ -6,21 +6,21 @@ import {
   PageButton,
   HGroup,
   Section,
-} from 'src/components/DocTypography'
-import { useFrameworkTabs } from 'src/components/FrameworkTabContext'
-import { Tabs } from 'src/components/Tabs'
-import { Demo } from 'src/components/Demo'
+} from "src/components/DocTypography";
+import { useFrameworkTabs } from "src/components/FrameworkTabContext";
+import { Tabs } from "src/components/Tabs";
+import { Demo } from "src/components/Demo";
 
 export default function Doc() {
-  const { state, changeTab } = useFrameworkTabs()
+  const { state, changeTab } = useFrameworkTabs();
 
   return (
     <div>
       <H1>Theming</H1>
       <Section>
         <P>
-          The datagrid comes with a light and a dark theme, but you can override all or
-          part of them via the <Code>theme</Code> prop.
+          The datagrid comes with a light and a dark theme, but you can override
+          all or part of them via the <Code>theme</Code> prop.
         </P>
         <CodeBlock lang="typescript">{`
           import { darkTheme, lightTheme, type Theme } from '@lightfin/datagrid'
@@ -41,24 +41,28 @@ export default function Doc() {
         <Tabs activeTabId={state.activeTabId} onTabPress={changeTab}>
           {[
             {
-              id: 'react',
-              label: 'React',
+              id: "react",
+              label: "React",
               component: (
                 <Demo
-                  demoUrl={`${import.meta.env.VITE_REACT_DEMO_BASE_URL}/demos/theming`}
-                  demoSrc={import('/../react/src/demos/Theming.tsx?raw')}
-                  height={362}
+                  demoUrl={`${
+                    import.meta.env.VITE_REACT_DEMO_BASE_URL
+                  }/demos/theming`}
+                  demoSrc={import("/../react/src/demos/Theming.tsx?raw")}
+                  height="362px"
                 />
               ),
             },
             {
-              id: 'solid',
-              label: 'Solid',
+              id: "solid",
+              label: "Solid",
               component: (
                 <Demo
-                  demoUrl={`${import.meta.env.VITE_REACT_DEMO_BASE_URL}/demos/theming`}
-                  demoSrc={import('/../react/src/demos/Theming.tsx?raw')}
-                  height={362}
+                  demoUrl={`${
+                    import.meta.env.VITE_REACT_DEMO_BASE_URL
+                  }/demos/theming`}
+                  demoSrc={import("/../react/src/demos/Theming.tsx?raw")}
+                  height="362px"
                 />
               ),
             },
@@ -74,5 +78,5 @@ export default function Doc() {
         </PageButton>
       </HGroup>
     </div>
-  )
+  );
 }

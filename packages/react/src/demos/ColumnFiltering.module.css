@@ -1,7 +1,6 @@
 .popoverBtn {
   position: relative;
 
-  /* &:focus-within .popover, */
   &:hover .popover {
     display: block;
   }

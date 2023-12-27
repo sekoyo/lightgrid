@@ -52,7 +52,7 @@ function getCellHeight<T>(
 }
 
 interface GridAreaProps<T> {
-  mgr: GridManager<T, React.ReactNode>
+  mgr: GridManager<T, N>
   area: BodyAreaDesc<T, N>
   columns: DerivedColumn<T, N>[]
   rows: DerivedRow<T>[]

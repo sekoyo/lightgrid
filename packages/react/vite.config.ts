@@ -2,21 +2,20 @@ import { resolve } from 'path'
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tsconfigPaths from 'vite-tsconfig-paths'
-import svgr from 'vite-plugin-svgr'
 
 // https://vitejs.dev/config/
 export default defineConfig({
   server: {
     port: 8094,
   },
-  plugins: [tsconfigPaths(), react(), svgr()],
+  plugins: [tsconfigPaths(), react()],
   build: {
     lib: {
       // Could also be a dictionary or array of multiple entry points
       entry: resolve(__dirname, 'src/lib.ts'),
-      name: 'ReactLightgrid',
+      name: 'LightgridReact',
       // the proper extensions will be added
-      fileName: 'react-lightgrid',
+      fileName: 'lightgrid-react',
     },
     rollupOptions: {
       // make sure to externalize deps that shouldn't be bundled

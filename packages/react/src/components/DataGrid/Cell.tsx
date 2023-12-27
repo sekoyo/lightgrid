@@ -12,7 +12,7 @@ import type { N } from './types'
 import { DefaultCellComponent } from './DefaultCellComponent'
 
 interface CellProps<T> {
-  mgr: GridManager<T, React.ReactNode>
+  mgr: GridManager<T, N>
   column: DerivedColumn<T, N>
   // Passing in item instead of `row: DerivedRow<T>` means that if data changes
   // and rows are re-derived, only cells with a changed item will re-render.

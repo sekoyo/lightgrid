@@ -12,27 +12,25 @@
   },
   "peerDependencies": {
     "@lightfin/datagrid": "*",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react": "^18.2.0"
   },
   "devDependencies": {
     "@lightfin/datagrid": "*",
     "@types/lodash-es": "^4.17.12",
-    "@types/react": "^18.2.43",
-    "@types/react-dom": "^18.2.17",
-    "@typescript-eslint/eslint-plugin": "^6.13.2",
-    "@typescript-eslint/parser": "^6.13.2",
+    "@types/react": "^18.2.45",
+    "@types/react-dom": "^18.2.18",
+    "@typescript-eslint/eslint-plugin": "^6.15.0",
+    "@typescript-eslint/parser": "^6.15.0",
     "@vitejs/plugin-react": "^4.2.1",
-    "eslint": "^8.55.0",
+    "eslint": "^8.56.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.5",
     "prettier": "^3.1.1",
-    "prettier-plugin-jsdoc": "^1.1.1",
+    "prettier-plugin-jsdoc": "^1.3.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "typescript": "^5.3.3",
-    "vite": "^5.0.7",
-    "vite-plugin-svgr": "^4.2.0"
+    "vite": "^5.0.10"
   },
   "dependencies": {
     "cancelable-promise": "^4.3.1",

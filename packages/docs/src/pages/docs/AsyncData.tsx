@@ -8,56 +8,63 @@ import {
   OL,
   Section,
   Code,
-} from 'src/components/DocTypography'
-import { useFrameworkTabs } from 'src/components/FrameworkTabContext'
-import { Tabs } from 'src/components/Tabs'
-import { Demo } from 'src/components/Demo'
+} from "src/components/DocTypography";
+import { useFrameworkTabs } from "src/components/FrameworkTabContext";
+import { Tabs } from "src/components/Tabs";
+import { Demo } from "src/components/Demo";
 
 export default function Doc() {
-  const { state, changeTab } = useFrameworkTabs()
+  const { state, changeTab } = useFrameworkTabs();
 
   return (
     <div>
       <H1>Async Data</H1>
       <Section>
         <P>
-          It's common to need to fetch data from an external source such as an API. How
-          you do this is up to you, once the data is fetched you just need to update your{' '}
-          <Code>data</Code> prop.
+          It's common to need to fetch data from an external source such as an
+          API. How you do this is up to you, once the data is fetched you just
+          need to update your <Code>data</Code> prop.
         </P>
         <P>
-          You can also provide your own loading overlay via the{' '}
+          You can also provide your own loading overlay via the{" "}
           <Code>loadingOverlay</Code> prop.
         </P>
       </Section>
       <Tabs activeTabId={state.activeTabId} onTabPress={changeTab}>
         {[
           {
-            id: 'react',
-            label: 'React',
+            id: "react",
+            label: "React",
             component: (
               <Demo
-                demoUrl={`${import.meta.env.VITE_REACT_DEMO_BASE_URL}/demos/async-data`}
-                demoSrc={import('/../react/src/demos/AsyncData.tsx?raw')}
-                height={405}
+                demoUrl={`${
+                  import.meta.env.VITE_REACT_DEMO_BASE_URL
+                }/demos/async-data`}
+                demoSrc={import("/../react/src/demos/AsyncData.tsx?raw")}
+                height="405px"
               />
             ),
           },
           {
-            id: 'solid',
-            label: 'Solid',
+            id: "solid",
+            label: "Solid",
             component: (
               <Demo
-                demoUrl={`${import.meta.env.VITE_REACT_DEMO_BASE_URL}/demos/async-data`}
-                demoSrc={import('/../react/src/demos/AsyncData.tsx?raw')}
-                height={405}
+                demoUrl={`${
+                  import.meta.env.VITE_REACT_DEMO_BASE_URL
+                }/demos/async-data`}
+                demoSrc={import("/../react/src/demos/AsyncData.tsx?raw")}
+                height="405px"
               />
             ),
           },
         ]}
       </Tabs>
       <HGroup justifyEnd>
-        <PageButton href="/docs/guides/global-filtering" secondaryLabel="Previous">
+        <PageButton
+          href="/docs/guides/global-filtering"
+          secondaryLabel="Previous"
+        >
           Global Search
         </PageButton>
         <PageButton href="/docs/guides/theming" secondaryLabel="Next">
@@ -65,5 +72,5 @@ export default function Doc() {
         </PageButton>
       </HGroup>
     </div>
-  )
+  );
 }
