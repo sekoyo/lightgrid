@@ -1,9 +1,5 @@
 import { useMemo, useState } from 'react'
-import {
-  GroupedColumns,
-  darkTheme,
-  lightTheme,
-} from '@lightfin/datagrid'
+import { GroupedColumns, darkTheme, lightTheme } from '@lightfin/datagrid'
 import { DataGrid, N } from '@lightfin/react-datagrid'
 import { Input } from 'src/components/Input'
 import { DemoProps } from './types'
@@ -50,6 +46,7 @@ function InputEditor({
           onCommit(tmpValue)
           setIsEditing(false)
         } else if (e.key === 'Escape') {
+          setTmpValue(value)
           setIsEditing(false)
         }
       }}
@@ -117,8 +114,7 @@ export default function Demo({ theme }: DemoProps) {
       {
         key: 'dob',
         header: 'Date of Birth',
-        getValue: d =>
-          d.dob ? new Date(d.dob).toLocaleDateString() : undefined,
+        getValue: d => (d.dob ? new Date(d.dob).toLocaleDateString() : undefined),
         cellComponent: ({ item, rowIndex }) => (
           <InputEditor
             type="date"

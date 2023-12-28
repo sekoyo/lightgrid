@@ -11,24 +11,22 @@ const getValue = (s: string) => s
 
 const groupedColumns: GroupedColumns<string, React.ReactNode> = [
   {
-    key: 'aNormalColumn',
-    header: 'Normal column',
-    getValue,
-  },
-  {
     key: 'groupA',
     children: [
       {
         key: 'groupA1',
         getValue,
+        width: 200,
       },
       {
         key: 'groupA2',
         getValue,
+        width: 200,
       },
       {
         key: 'groupA3',
         getValue,
+        width: 200,
       },
     ],
   },
@@ -38,6 +36,7 @@ const groupedColumns: GroupedColumns<string, React.ReactNode> = [
       {
         key: 'groupB1',
         getValue,
+        width: 200,
       },
       {
         key: 'groupB2',
@@ -45,14 +44,22 @@ const groupedColumns: GroupedColumns<string, React.ReactNode> = [
           {
             key: 'groupB2A',
             getValue,
+            width: 200,
           },
           {
             key: 'groupB2B',
             getValue,
+            width: 100,
           },
         ],
       },
     ],
+  },
+  {
+    key: 'aNormalColumn',
+    header: 'Normal column',
+    getValue,
+    width: 200,
   },
 ]
 

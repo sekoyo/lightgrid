@@ -244,14 +244,14 @@ export class ColumnReorderPlugin<T, N> extends GridPlugin<T, N> {
     const gridRect = this.mgr.gridEl!.getBoundingClientRect()
     const relativeX = clientX - gridRect.left
     const relativeY = clientY - gridRect.top
-    const pinAreaWidth = 24
+    const pinAreaBounds = 24 // 24px on edges = pin column
     let newPin: ColumnPin | undefined = undefined
 
-    if (relativeX > 0 && relativeX < pinAreaWidth) {
+    if (relativeX > 0 && relativeX < pinAreaBounds) {
       newPin = 'start'
       this.dragLabel.updateIcon(DragIcon.Pin)
     } else if (
-      relativeX > this.mgr.$viewportWidth() - pinAreaWidth &&
+      relativeX > this.mgr.$viewportWidth() - pinAreaBounds &&
       relativeX < this.mgr.$viewportWidth()
     ) {
       newPin = 'end'

@@ -156,6 +156,7 @@ export interface DerivedColResult<T, N, S = unknown> {
   areaPos: AreaPos
   itemsWithGrouping: GroupedDerivedColumns<T, N, S>
   items: DerivedColumn<T, N>[]
+  groupedByColIndex: GroupedDerivedColumns<T, N, S>
   size: number
   startOffset: number
   startIndexOffset: number

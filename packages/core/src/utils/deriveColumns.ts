@@ -1,3 +1,4 @@
+// This is a mess don't look at it. But at least it's 2n
 import {
   type ColumnPin,
   type GroupedColumns,
@@ -6,6 +7,7 @@ import {
   type DerivedColsResult,
   type DerivedColResult,
   AreaPos,
+  DerivedColumnGroup,
 } from '../types'
 import { isColumnGroup } from './isTypes'
 import { toNearestHalf } from './numbers'
@@ -150,6 +152,7 @@ const createEmptyColResults: <T, N>() => DerivedColsResult<T, N> = () => ({
     areaPos: AreaPos.Start,
     itemsWithGrouping: [],
     items: [],
+    groupedByColIndex: [],
     size: 0,
     startOffset: 0,
     startIndexOffset: 0,
@@ -159,6 +162,7 @@ const createEmptyColResults: <T, N>() => DerivedColsResult<T, N> = () => ({
     areaPos: AreaPos.Middle,
     itemsWithGrouping: [],
     items: [],
+    groupedByColIndex: [],
     size: 0,
     startOffset: 0,
     startIndexOffset: 0,
@@ -168,6 +172,7 @@ const createEmptyColResults: <T, N>() => DerivedColsResult<T, N> = () => ({
     areaPos: AreaPos.End,
     itemsWithGrouping: [],
     items: [],
+    groupedByColIndex: [],
     size: 0,
     startOffset: 0,
     startIndexOffset: 0,
@@ -201,6 +206,7 @@ export function deriveColumns<T, N>(
     levelColumns: GroupedColumns<T, N>,
     colResult: DerivedColResult<T, N>,
     levelDerivedCols: GroupedDerivedColumns<T, N>,
+    groupedByColIndex: GroupedDerivedColumns<T, N>,
     colIndexOffset = 0,
     rowIndex = 0,
     descendantRef = { offset: 0, lastColIndex: 0 }
@@ -216,23 +222,30 @@ export function deriveColumns<T, N>(
             column.children,
             colResult,
             [],
+            groupedByColIndex,
             colIndex,
             rowIndex + 1,
             descendantRef
           )
           // Column group is the size of its children
           const size = descendantRef.offset - savedOffset
+          const headerColSpan = descendantRef.lastColIndex - colIndex + 1
 
-          levelDerivedCols.push({
+          const colGroup: DerivedColumnGroup<T, N> = {
             ...column,
             children,
             size,
             offset: savedOffset,
             rowIndex,
-            headerColSpan: descendantRef.lastColIndex - colIndex + 1,
+            headerColSpan,
             headerRowSpan: 1,
             colIndex: colIndexOffset + i,
-          })
+          }
+
+          levelDerivedCols.push(colGroup)
+
+          // Add group by colIndex so it can be looked up for virtual window
+          groupedByColIndex[colIndex] = colGroup
 
           // Increment the column index if the group has more than 1 descendant column
           colIndexOffset += descendantRef.lastColIndex - colIndex
@@ -261,13 +274,15 @@ export function deriveColumns<T, N>(
           }
 
           // Expand if last item and we need to stretch to VP but didn't quite make
-          // it due to FR rounding.
-          if (isLastCol && descendantRef.offset + size < viewportWidth) {
+          // it due to FR rounding. This won't work for pinned columns since the offset
+          // will be relative to the pinned area, but doesn't matter as pinned area will
+          // be flush with the edge anyway.
+          if (!column.pin && isLastCol && descendantRef.offset + size < viewportWidth) {
             size = viewportWidth - descendantRef.offset
           }
         }
 
-        const c: DerivedColumn<T, N> = {
+        const col: DerivedColumn<T, N> = {
           ...column,
           size,
           offset: descendantRef.offset,
@@ -277,11 +292,17 @@ export function deriveColumns<T, N>(
           colIndex,
         }
 
-        if (c.filterComponent) {
+        if (col.filterComponent) {
           out.hasFilters = true
         }
-        levelDerivedCols.push(c)
-        colResult.items.push(c)
+
+        // Add non-grouped columns to be looked up the virtual window
+        if (rowIndex === 0) {
+          groupedByColIndex[colIndex] = col
+        }
+
+        levelDerivedCols.push(col)
+        colResult.items.push(col)
         out.size += size
         descendantRef.offset += size
         descendantRef.lastColIndex = colIndex
@@ -292,20 +313,32 @@ export function deriveColumns<T, N>(
     return levelDerivedCols
   }
 
-  recurseColumns(summed.leftColumns, out.start, out.start.itemsWithGrouping)
+  recurseColumns(
+    summed.leftColumns,
+    out.start,
+    out.start.itemsWithGrouping,
+    out.start.groupedByColIndex
+  )
 
   const startLastIdx = out.start.items.length ? out.start.items.at(-1)!.colIndex + 1 : 0
   recurseColumns(
     summed.middleColumns,
     out.middle,
     out.middle.itemsWithGrouping,
+    out.middle.groupedByColIndex,
     startLastIdx
   )
 
   const middleLastIdx = out.middle.items.length
     ? out.middle.items.at(-1)!.colIndex + 1
     : 0
-  recurseColumns(summed.rightColumns, out.end, out.end.itemsWithGrouping, middleLastIdx)
+  recurseColumns(
+    summed.rightColumns,
+    out.end,
+    out.end.itemsWithGrouping,
+    out.end.groupedByColIndex,
+    middleLastIdx
+  )
 
   // So we know what column area to render row item details (which span all areas) in
   if (out.start.size) {

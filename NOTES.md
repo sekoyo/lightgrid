@@ -42,7 +42,6 @@ https://www.kaggle.com/datasets
 
 ## Bugs
 
-- ⛔️ Column Reordering: dragging col beyond iframe on right causes the col to fill whole header
 - Clicking in row details selects closest parent cell. Don't change selection on item details clicks.
 
 # Do and Donts

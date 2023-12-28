@@ -17,6 +17,7 @@ import {
   RowState,
   Column,
   ItemId,
+  GroupedDerivedColumns,
 } from './types'
 import {
   createDefaultSortComparator,
@@ -222,6 +223,7 @@ export class GridManager<T, N> {
   )
 
   // -- Column window.
+  // Also `- $verticalScrollSize()` too but a bit of extra overscan is ok
   $midWidth = memo(
     () =>
       this.$viewportWidth() -
@@ -234,23 +236,43 @@ export class GridManager<T, N> {
   $middleCols = memo(() =>
     this.$derivedCols().middle.items.slice(this.$colWindow()[0], this.$colWindow()[1] + 1)
   )
-  $colHeaderWindow = memo(() =>
-    getColumnWindow(this.$midWidth(), this.$scrollX(), this.$derivedCols().middle.items)
-  )
+  // For simplicity & perf in common case this renders everything in a visible group, even if children
+  // of that group go off screen. I think in reality this is unlikely to be an issue unless groups are
+  // very wide with many child columns. Otherwise could slice out all but groups from groupedByColIndex
+  // but then we'd need to create a new tree of groups without them (array of references so not too bad)
   $middleHeaderCols = memo(() =>
-    this.$derivedCols().middle.itemsWithGrouping.slice(
-      this.$colHeaderWindow()[0],
-      this.$colHeaderWindow()[1] + 1
-    )
-  )
-  $middleHeaderFlatCols = memo(() =>
-    this.$derivedCols().middle.items.slice(
-      this.$colHeaderWindow()[0],
-      this.$colHeaderWindow()[1] + 1
+    this.$derivedCols().middle.groupedByColIndex.slice(
+      this.getFirstDefinedAsc(
+        this.$derivedCols().middle.groupedByColIndex,
+        this.$colWindow()[0]
+      ),
+      this.getFirstDefinedDesc(
+        this.$derivedCols().middle.groupedByColIndex,
+        this.$colWindow()[1]
+      ) + 1
     )
   )
 
+  getFirstDefinedAsc(colResult: GroupedDerivedColumns<T, N>, colIndex: number) {
+    for (let i = colIndex; i >= 0; i--) {
+      if (colResult[i]) {
+        return i
+      }
+    }
+    return 0
+  }
+
+  getFirstDefinedDesc(colResult: GroupedDerivedColumns<T, N>, colIndex: number) {
+    for (let i = colIndex; i < colResult.length; i++) {
+      if (colResult[i]) {
+        return i
+      }
+    }
+    return colResult.length - 1
+  }
+
   // -- Row window.
+  // Also `- $horizontalScrollSize()` too but a bit of extra overscan is ok
   $midHeight = memo(
     () =>
       this.$viewportHeight() -
@@ -273,10 +295,10 @@ export class GridManager<T, N> {
     const areas: HeaderAreaDesc<T, N>[] = []
 
     // In render order
-    if (this.$middleHeaderFlatCols().length) {
+    if (this.$middleCols().length) {
       areas.push({
         columns: this.$middleHeaderCols(),
-        flatColumns: this.$middleHeaderFlatCols(),
+        flatColumns: this.$middleCols(), // Remove
         colAreaPos: AreaPos.Middle,
         headerRowHeight,
         filterRowHeight,
@@ -288,7 +310,7 @@ export class GridManager<T, N> {
     if (derivedCols.end.items.length) {
       areas.push({
         columns: derivedCols.end.itemsWithGrouping,
-        flatColumns: derivedCols.end.items,
+        flatColumns: derivedCols.end.items, // Remove
         colAreaPos: AreaPos.End,
         headerRowHeight,
         filterRowHeight,
@@ -300,7 +322,7 @@ export class GridManager<T, N> {
     if (derivedCols.start.items.length) {
       areas.push({
         columns: derivedCols.start.itemsWithGrouping,
-        flatColumns: derivedCols.start.items,
+        flatColumns: derivedCols.start.items, // Remove
         colAreaPos: AreaPos.Start,
         headerRowHeight,
         filterRowHeight,

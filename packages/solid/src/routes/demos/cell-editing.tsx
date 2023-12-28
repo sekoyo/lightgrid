@@ -45,6 +45,7 @@ function InputEditor({
           onCommit(tmpValue())
           setIsEditing(false)
         } else if (e.key === 'Escape') {
+          setTmpValue(value)
           setIsEditing(false)
         }
       }}
