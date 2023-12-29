@@ -39,6 +39,7 @@ https://www.kaggle.com/datasets
 - Add expand/collapse to header of expand cols
 - Consider how left/right/tab could edit adjacent cells
 - Virtualize itemDetails
+- Col next to group border looks a bit weird
 
 ## Bugs
 

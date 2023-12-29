@@ -245,7 +245,9 @@ export function deriveColumns<T, N>(
           levelDerivedCols.push(colGroup)
 
           // Add group by colIndex so it can be looked up for virtual window
-          groupedByColIndex[colIndex] = colGroup
+          if (rowIndex === 0) {
+            groupedByColIndex[colIndex] = colGroup
+          }
 
           // Increment the column index if the group has more than 1 descendant column
           colIndexOffset += descendantRef.lastColIndex - colIndex

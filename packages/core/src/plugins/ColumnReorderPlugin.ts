@@ -157,7 +157,7 @@ export class ColumnReorderPlugin<T, N> extends GridPlugin<T, N> {
         pointerSide
       )
 
-      this.mgr.$columns(nextColumns)
+      this.mgr.onColumnsChange?.(nextColumns)
     }
   }
 
@@ -187,6 +187,7 @@ export class ColumnReorderPlugin<T, N> extends GridPlugin<T, N> {
           }
 
           // If the adjacent col was a group, we may need to filter out the moved col from it
+          // in the case of moving to another location in the same group
           if (isColumnGroup(col)) {
             col = Object.assign({}, col)
             col.children = this.moveColumn(
@@ -275,6 +276,7 @@ export class ColumnReorderPlugin<T, N> extends GridPlugin<T, N> {
         ...this.colToMove,
         pin: newPin,
       })
+      console.log('onColumnsChange')
       this.mgr.onColumnsChange?.(newColumns)
     }
   }, 150)
