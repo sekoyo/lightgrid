@@ -46,9 +46,11 @@ export default function Doc() {
             component: (
               <Demo
                 demoUrl={`${
-                  import.meta.env.VITE_REACT_DEMO_BASE_URL
+                  import.meta.env.VITE_SOLID_DEMO_BASE_URL
                 }/demos/finite-pagination`}
-                demoSrc={import("/../react/src/demos/FinitePagination.tsx?raw")}
+                demoSrc={
+                  import("/../solid/src/routes/demos/finite-pagination.tsx?raw")
+                }
                 height="420px"
               />
             ),
@@ -87,10 +89,12 @@ export default function Doc() {
             component: (
               <Demo
                 demoUrl={`${
-                  import.meta.env.VITE_REACT_DEMO_BASE_URL
+                  import.meta.env.VITE_SOLID_DEMO_BASE_URL
                 }/demos/infinite-pagination`}
                 demoSrc={
-                  import("/../react/src/demos/InfinitePagination.tsx?raw")
+                  import(
+                    "/../solid/src/routes/demos/infinite-pagination.tsx?raw"
+                  )
                 }
                 height="420px"
               />

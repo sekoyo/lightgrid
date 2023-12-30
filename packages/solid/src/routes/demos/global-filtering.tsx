@@ -8,7 +8,7 @@ import { animalData, Animal, columns } from 'src/demo-data/animals'
 import { DemoProps } from './types'
 
 import '@lightfin/datagrid/dist/styles.css'
-import styles from './GlobalFiltering.module.css'
+import styles from './global-filtering.module.css'
 
 const filterData = throttle(
   (filter: string) =>
@@ -24,9 +24,8 @@ const filterData = throttle(
   30
 )
 
-export default function Demo({ theme }: DemoProps) {
+export default function Demo(props: DemoProps) {
   const [filter, setFilter] = createSignal('')
-
   const filteredData = createMemo(() => filterData(filter().toLowerCase()) || [])
 
   return (
@@ -35,14 +34,14 @@ export default function Demo({ theme }: DemoProps) {
         <Input
           type="search"
           placeholder="Search"
-          onChange={e => setFilter(e.currentTarget.value)}
+          onInput={e => setFilter(e.currentTarget.value)}
         />
       </div>
       <DataGrid<Animal>
         columns={columns}
         data={filteredData()}
         getRowId={d => d.animal}
-        theme={theme === 'light' ? lightTheme : darkTheme}
+        theme={props.theme === 'light' ? lightTheme : darkTheme}
       />
     </>
   )

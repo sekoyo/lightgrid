@@ -12,7 +12,7 @@ const sortableColumns: GroupedColumns<LifeExpectancy, JSX.Element> = columns.map
   sortable: true,
 }))
 
-export default function Demo({ theme }: DemoProps) {
+export default function Demo(props: DemoProps) {
   const [columns, setColumns] = createSignal(sortableColumns)
   return (
     <DataGrid<LifeExpectancy>
@@ -21,7 +21,7 @@ export default function Demo({ theme }: DemoProps) {
       data={data}
       multiSort={true}
       getRowId={d => d.country + d.year}
-      theme={theme === 'light' ? lightTheme : darkTheme}
+      theme={props.theme === 'light' ? lightTheme : darkTheme}
     />
   )
 }

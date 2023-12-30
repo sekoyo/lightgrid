@@ -4,7 +4,12 @@ https://github.com/jdorfman/awesome-json-datasets
 https://catalog.data.gov/dataset/?res_format=JSON
 https://www.kaggle.com/datasets
 
+- On Column Filtering, filtering is losing input value on first change, and losing focus on others
+- Solid still on dark theme on light theme
 - Style improvements
+  Make col dragging colour nicer - sep. var for header part
+  Col resizing now that we don't have bars
+- Pressing up/down arrow on cell selection scrolls the page
 - Lazily load iframe demos based on visibility?
 - Iframe loading spinner
 - Scroll to row / col + docs
@@ -39,10 +44,10 @@ https://www.kaggle.com/datasets
 - Add expand/collapse to header of expand cols
 - Consider how left/right/tab could edit adjacent cells
 - Virtualize itemDetails
-- Col next to group border looks a bit weird
 
 ## Bugs
 
+- ⛔️ Missing rightmost column on Column Filtering
 - Clicking in row details selects closest parent cell. Don't change selection on item details clicks.
 
 # Do and Donts

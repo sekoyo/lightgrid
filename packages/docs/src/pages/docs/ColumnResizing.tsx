@@ -43,9 +43,11 @@ export default function Doc() {
               component: (
                 <Demo
                   demoUrl={`${
-                    import.meta.env.VITE_REACT_DEMO_BASE_URL
+                    import.meta.env.VITE_SOLID_DEMO_BASE_URL
                   }/demos/column-resizing`}
-                  demoSrc={import("/../react/src/demos/ColumnResizing.tsx?raw")}
+                  demoSrc={
+                    import("/../solid/src/routes/demos/column-resizing.tsx?raw")
+                  }
                 />
               ),
             },

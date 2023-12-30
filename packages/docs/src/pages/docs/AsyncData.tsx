@@ -51,9 +51,11 @@ export default function Doc() {
             component: (
               <Demo
                 demoUrl={`${
-                  import.meta.env.VITE_REACT_DEMO_BASE_URL
+                  import.meta.env.VITE_SOLID_DEMO_BASE_URL
                 }/demos/async-data`}
-                demoSrc={import("/../react/src/demos/AsyncData.tsx?raw")}
+                demoSrc={
+                  import("/../solid/src/routes/demos/async-data.tsx?raw")
+                }
                 height="405px"
               />
             ),

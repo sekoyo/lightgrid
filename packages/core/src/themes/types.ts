@@ -4,6 +4,7 @@ export type Theme = {
   cellBg: string
   evenRowCellBg: string
   headerCellBg: string
+  filterCellBg: string
   headerBorderColor: string
   headerInnerBorderColor: string
   headerTextColor: string

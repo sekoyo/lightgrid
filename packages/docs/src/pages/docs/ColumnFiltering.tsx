@@ -43,10 +43,12 @@ export default function Doc() {
               component: (
                 <Demo
                   demoUrl={`${
-                    import.meta.env.VITE_REACT_DEMO_BASE_URL
+                    import.meta.env.VITE_SOLID_DEMO_BASE_URL
                   }/demos/column-filtering`}
                   demoSrc={
-                    import("/../react/src/demos/ColumnFiltering.tsx?raw")
+                    import(
+                      "/../solid/src/routes/demos/column-filtering.tsx?raw"
+                    )
                   }
                 />
               ),

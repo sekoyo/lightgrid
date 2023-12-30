@@ -238,22 +238,22 @@ export class GridManager<T, N> {
   )
   // For simplicity & perf in common case this renders everything in a visible group, even if children
   // of that group go off screen. I think in reality this is unlikely to be an issue unless groups are
-  // very wide with many child columns. Otherwise could slice out all but groups from groupedByColIndex
+  // very wide with many child columns. Otherwise could slice out all but groups from topLevelByIndex
   // but then we'd need to create a new tree of groups without them (array of references so not too bad)
   $middleHeaderCols = memo(() =>
-    this.$derivedCols().middle.groupedByColIndex.slice(
-      this.getFirstDefinedAsc(
-        this.$derivedCols().middle.groupedByColIndex,
+    this.$derivedCols().middle.topLevelByIndex.slice(
+      this.getFirstDefinedRev(
+        this.$derivedCols().middle.topLevelByIndex,
         this.$colWindow()[0]
       ),
-      this.getFirstDefinedDesc(
-        this.$derivedCols().middle.groupedByColIndex,
+      this.getFirstDefinedFwd(
+        this.$derivedCols().middle.topLevelByIndex,
         this.$colWindow()[1]
       ) + 1
     )
   )
 
-  getFirstDefinedAsc(colResult: GroupedDerivedColumns<T, N>, colIndex: number) {
+  getFirstDefinedRev(colResult: GroupedDerivedColumns<T, N>, colIndex: number) {
     for (let i = colIndex; i >= 0; i--) {
       if (colResult[i]) {
         return i
@@ -262,7 +262,7 @@ export class GridManager<T, N> {
     return 0
   }
 
-  getFirstDefinedDesc(colResult: GroupedDerivedColumns<T, N>, colIndex: number) {
+  getFirstDefinedFwd(colResult: GroupedDerivedColumns<T, N>, colIndex: number) {
     for (let i = colIndex; i < colResult.length; i++) {
       if (colResult[i]) {
         return i
@@ -300,6 +300,7 @@ export class GridManager<T, N> {
         columns: this.$middleHeaderCols(),
         flatColumns: this.$middleCols(), // Remove
         colAreaPos: AreaPos.Middle,
+        headerRowCount: derivedCols.headerRowCount,
         headerRowHeight,
         filterRowHeight,
         left: derivedCols.start.size,
@@ -312,6 +313,7 @@ export class GridManager<T, N> {
         columns: derivedCols.end.itemsWithGrouping,
         flatColumns: derivedCols.end.items, // Remove
         colAreaPos: AreaPos.End,
+        headerRowCount: derivedCols.headerRowCount,
         headerRowHeight,
         filterRowHeight,
         left: this.$viewportWidth() - this.$horizontalScrollSize() - derivedCols.end.size,
@@ -324,6 +326,7 @@ export class GridManager<T, N> {
         columns: derivedCols.start.itemsWithGrouping,
         flatColumns: derivedCols.start.items, // Remove
         colAreaPos: AreaPos.Start,
+        headerRowCount: derivedCols.headerRowCount,
         headerRowHeight,
         filterRowHeight,
         left: 0,

@@ -64,7 +64,7 @@ function getExpandToggle(groupRow: GroupRow, rowState?: RowStateItem) {
   return true
 }
 
-export default function Demo({ theme }: DemoProps) {
+export default function Demo(props: DemoProps) {
   const [rowState, setRowState] = createSignal<RowState>({})
 
   const columns = createMemo<GroupedColumns<GroupRow | Medalist, N>>(
@@ -138,7 +138,7 @@ export default function Demo({ theme }: DemoProps) {
       getRowId={d => d.id}
       rowState={rowState()}
       setRowState={setRowState}
-      theme={theme === 'light' ? lightTheme : darkTheme}
+      theme={props.theme === 'light' ? lightTheme : darkTheme}
     />
   )
 }

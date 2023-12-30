@@ -59,9 +59,9 @@ export default function Doc() {
               component: (
                 <Demo
                   demoUrl={`${
-                    import.meta.env.VITE_REACT_DEMO_BASE_URL
+                    import.meta.env.VITE_SOLID_DEMO_BASE_URL
                   }/demos/theming`}
-                  demoSrc={import("/../react/src/demos/Theming.tsx?raw")}
+                  demoSrc={import("/../solid/src/routes/demos/theming.tsx?raw")}
                   height="362px"
                 />
               ),

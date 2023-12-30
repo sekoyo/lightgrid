@@ -1,6 +1,11 @@
-import { JSX, createSignal } from 'solid-js'
-import { GroupedColumns, darkTheme, lightTheme } from '@lightfin/datagrid'
-import { DataGrid } from '@lightfin/solid-datagrid'
+import { createSignal } from 'solid-js'
+import {
+  CellComponentProps,
+  GroupedColumns,
+  darkTheme,
+  lightTheme,
+} from '@lightfin/datagrid'
+import { DataGrid, N } from '@lightfin/solid-datagrid'
 import { DemoProps } from './types'
 
 import '@lightfin/datagrid/dist/styles.css'
@@ -9,26 +14,28 @@ const someData = new Array(10).fill('someValue').map((s, i) => `row ${i}: ${s}`)
 
 const getValue = (s: string) => s
 
-const groupedColumns: GroupedColumns<string, JSX.Element> = [
-  {
-    key: 'aNormalColumn',
-    header: 'Normal column',
-    getValue,
-  },
+const cellComponent = ({ column }: CellComponentProps<string, N>) => (
+  <span style={{ padding: '0 var(--lgCellHPadding)' }}>{column.key}</span>
+)
+
+const groupedColumns: GroupedColumns<string, N> = [
   {
     key: 'groupA',
     children: [
       {
         key: 'groupA1',
         getValue,
+        cellComponent,
       },
       {
         key: 'groupA2',
         getValue,
+        cellComponent,
       },
       {
         key: 'groupA3',
         getValue,
+        cellComponent,
       },
     ],
   },
@@ -38,6 +45,7 @@ const groupedColumns: GroupedColumns<string, JSX.Element> = [
       {
         key: 'groupB1',
         getValue,
+        cellComponent,
       },
       {
         key: 'groupB2',
@@ -45,18 +53,27 @@ const groupedColumns: GroupedColumns<string, JSX.Element> = [
           {
             key: 'groupB2A',
             getValue,
+            cellComponent,
           },
           {
             key: 'groupB2B',
             getValue,
+            cellComponent,
           },
         ],
       },
     ],
   },
+  {
+    key: 'aNormalColumn',
+    header: 'Normal column',
+    getValue,
+    cellComponent,
+    width: 140,
+  },
 ]
 
-export default function Demo({ theme }: DemoProps) {
+export default function Demo(props: DemoProps) {
   const [columns, setColumns] = createSignal(groupedColumns)
   return (
     <DataGrid<string>
@@ -65,7 +82,7 @@ export default function Demo({ theme }: DemoProps) {
       enableColumnReorder
       data={someData}
       getRowId={d => d}
-      theme={theme === 'light' ? lightTheme : darkTheme}
+      theme={props.theme === 'light' ? lightTheme : darkTheme}
     />
   )
 }

@@ -6,7 +6,7 @@ import { animalData, Animal, columns } from 'src/demo-data/animals'
 
 import '@lightfin/datagrid/dist/styles.css'
 
-export default function Demo({ theme }: DemoProps) {
+export default function Demo(props: DemoProps) {
   const [animalColumns, setAnimalColumns] = createSignal(columns)
   return (
     <DataGrid<Animal>
@@ -15,7 +15,7 @@ export default function Demo({ theme }: DemoProps) {
       getRowId={d => d.animal}
       enableColumnResize
       onColumnsChange={setAnimalColumns}
-      theme={theme === 'light' ? lightTheme : darkTheme}
+      theme={props.theme === 'light' ? lightTheme : darkTheme}
     />
   )
 }

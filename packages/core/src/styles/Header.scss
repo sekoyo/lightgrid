@@ -36,24 +36,28 @@
       background: var(--lgColReorderHeaderBgColor, var(--lgColReorderBgColor));
     }
 
-    border-bottom: 1px solid var(--lgHeaderBorderColor, var(--lgBorderColor));
-    &::before,
-    &:not([data-last-in-row='true'])::after {
-      content: '';
-      display: flex;
-      width: 1px;
-      position: absolute;
-      height: calc(100% - (10% + 18px));
-      background: var(
-        --lgHeaderInnerBorderColor,
-        var(--lgHeaderBorderColor, var(--lgBorderColor))
-      );
+    &[data-outline='true'] {
+      outline: 1px solid var(--lgHeaderBorderColor, var(--lgBorderColor));
     }
-    &::before {
-      left: -1px;
-    }
-    &::after {
-      right: -1px;
+
+    &[data-border='true'] {
+      &::before,
+      &::after {
+        content: '';
+        display: flex;
+        width: 1px;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        height: 100%;
+        background: var(--lgHeaderBorderColor, var(--lgBorderColor));
+      }
+      &::before {
+        left: -1px;
+      }
+      &::after {
+        right: -1px;
+      }
     }
   }
   &-cell-inner {
@@ -92,7 +96,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: var(--lgBg);
+    background: var(--lgFilterCellBg, var(--lgBg));
     border-bottom: 1px solid var(--lgHeaderBorderColor, var(--lgBorderColor));
 
     &-v-borders {

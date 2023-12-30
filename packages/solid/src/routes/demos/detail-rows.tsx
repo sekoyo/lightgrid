@@ -13,7 +13,7 @@ const PADDING_SIZE = 16
 const HEADER_ROW_SIZE = 40
 const ROW_SIZE = 40
 
-export default function Demo({ theme }: DemoProps) {
+export default function Demo(props: DemoProps) {
   const [rowState, setRowState] = createSignal<RowState>({})
   return (
     <DataGrid<Laureate>
@@ -44,7 +44,7 @@ export default function Demo({ theme }: DemoProps) {
       )}
       rowState={rowState()}
       setRowState={setRowState}
-      theme={theme === 'light' ? lightTheme : darkTheme}
+      theme={props.theme === 'light' ? lightTheme : darkTheme}
     />
   )
 }

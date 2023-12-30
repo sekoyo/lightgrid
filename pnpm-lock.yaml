@@ -112,8 +112,8 @@ importers:
         specifier: ^2.8.0
         version: 2.8.0(solid-js@1.8.7)(vite@5.0.10)
       vite-tsconfig-paths:
-        specifier: ^4.2.2
-        version: 4.2.2(typescript@5.3.3)(vite@5.0.10)
+        specifier: ^4.2.3
+        version: 4.2.3(typescript@5.3.3)(vite@5.0.10)
 
   packages/react:
     dependencies:
@@ -192,7 +192,7 @@ importers:
         version: 0.10.5(solid-js@1.8.7)
       '@solidjs/start':
         specifier: ^0.4.2
-        version: 0.4.2(solid-js@1.8.7)(vinxi@0.0.54)(vite@5.0.10)
+        version: 0.4.2(solid-js@1.8.7)(vinxi@0.0.59)(vite@5.0.10)
       cancelable-promise:
         specifier: ^4.3.1
         version: 4.3.1
@@ -206,8 +206,8 @@ importers:
         specifier: ^1.8.7
         version: 1.8.7
       vinxi:
-        specifier: ^0.0.54
-        version: 0.0.54
+        specifier: ^0.0.59
+        version: 0.0.59
     devDependencies:
       '@lightfin/datagrid':
         specifier: '*'
@@ -228,8 +228,8 @@ importers:
         specifier: ^1.3.0
         version: 1.3.0(prettier@3.1.1)
       vite-tsconfig-paths:
-        specifier: ^4.2.2
-        version: 4.2.2(typescript@5.3.3)(vite@5.0.10)
+        specifier: ^4.2.3
+        version: 4.2.3(typescript@5.3.3)(vite@5.0.10)
 
 packages:
 
@@ -1902,12 +1902,12 @@ packages:
       solid-js: 1.8.7
     dev: false
 
-  /@solidjs/start@0.4.2(solid-js@1.8.7)(vinxi@0.0.54)(vite@5.0.10):
+  /@solidjs/start@0.4.2(solid-js@1.8.7)(vinxi@0.0.59)(vite@5.0.10):
     resolution: {integrity: sha512-Ya7z78E6xzLLyUX5eUTHVum3LTf1SIkss1vHJ/hZ+UNkI2l81W66LkLZKwH3piF0b6+ZF8NoW7WEZ6T5ugW6ng==}
     dependencies:
-      '@vinxi/plugin-directives': 0.0.50(vinxi@0.0.54)
-      '@vinxi/server-components': 0.0.50(vinxi@0.0.54)
-      '@vinxi/server-functions': 0.0.51(vinxi@0.0.54)
+      '@vinxi/plugin-directives': 0.0.50(vinxi@0.0.59)
+      '@vinxi/server-components': 0.0.50(vinxi@0.0.59)
+      '@vinxi/server-functions': 0.0.51(vinxi@0.0.59)
       defu: 6.1.3
       seroval: 1.0.0
       seroval-plugins: 1.0.1(seroval@1.0.0)
@@ -2439,7 +2439,7 @@ packages:
       uqr: 0.1.2
     dev: false
 
-  /@vinxi/plugin-directives@0.0.50(vinxi@0.0.54):
+  /@vinxi/plugin-directives@0.0.50(vinxi@0.0.59):
     resolution: {integrity: sha512-mwbUgEz6725WG19g9HrQ8fcMSW1hWsMUgjTBxFoYzwNz8J5DShIxiyVgBDnxG3I06IaMtntJIwUVOE95M9mI5A==}
     peerDependencies:
       vinxi: ^0.0.54
@@ -2453,37 +2453,37 @@ packages:
       magicast: 0.2.11
       recast: 0.23.4
       tslib: 2.6.2
-      vinxi: 0.0.54
+      vinxi: 0.0.59
     dev: false
 
-  /@vinxi/server-components@0.0.50(vinxi@0.0.54):
+  /@vinxi/server-components@0.0.50(vinxi@0.0.59):
     resolution: {integrity: sha512-Fw4LBdEoyIvtBGMCUgdWOXiL5E+w3g6h2jAz+2LDoA4o9KUhsc2/Tn7C0d1Hptb1kJloNul9wXXjdvGg6JtP9Q==}
     peerDependencies:
       vinxi: ^0.0.54
     dependencies:
-      '@vinxi/plugin-directives': 0.0.50(vinxi@0.0.54)
+      '@vinxi/plugin-directives': 0.0.50(vinxi@0.0.59)
       acorn: 8.11.2
       acorn-loose: 8.4.0
       acorn-typescript: 1.4.12(acorn@8.11.2)
       astring: 1.8.6
       magicast: 0.2.11
       recast: 0.23.4
-      vinxi: 0.0.54
+      vinxi: 0.0.59
     dev: false
 
-  /@vinxi/server-functions@0.0.51(vinxi@0.0.54):
+  /@vinxi/server-functions@0.0.51(vinxi@0.0.59):
     resolution: {integrity: sha512-r3V/lUUH4zpgjJABKPgulJ/fOIpyh4FFI49eWbTQhqRgj0wvAsxzWEMs2++vDlS3AgbXOpIQwEVUI7SASFy2Ag==}
     peerDependencies:
       vinxi: ^0.0.54
     dependencies:
-      '@vinxi/plugin-directives': 0.0.50(vinxi@0.0.54)
+      '@vinxi/plugin-directives': 0.0.50(vinxi@0.0.59)
       acorn: 8.11.2
       acorn-loose: 8.4.0
       acorn-typescript: 1.4.12(acorn@8.11.2)
       astring: 1.8.6
       magicast: 0.2.11
       recast: 0.23.4
-      vinxi: 0.0.54
+      vinxi: 0.0.59
     dev: false
 
   /@vitejs/plugin-react@4.2.1(vite@5.0.10):
@@ -6970,8 +6970,8 @@ packages:
   /validate-html-nesting@1.2.2:
     resolution: {integrity: sha512-hGdgQozCsQJMyfK5urgFcWEqsSSrK63Awe0t/IMR0bZ0QMtnuaiHzThW81guu3qx9abLi99NEuiaN6P9gVYsNg==}
 
-  /vinxi@0.0.54:
-    resolution: {integrity: sha512-tSWW/NxwcGtLGi9i7r+++PUlgas5hWtHwakbvmCe6di5PlRxGZD5XrZ8xCoCgExj1VAyuRdoWCpI5WIbQZ6erA==}
+  /vinxi@0.0.59:
+    resolution: {integrity: sha512-75VKYGAEFYU9n4HOpc7Sj4xtM7pqu4uGj9Q9nEQnJEmhC7EAKBrMVfHZXUVQFqadEllLLpPq2C5tX3mXOnvxbg==}
     hasBin: true
     dependencies:
       '@babel/core': 7.23.6
@@ -7127,6 +7127,24 @@ packages:
     transitivePeerDependencies:
       - supports-color
       - typescript
+    dev: false
+
+  /vite-tsconfig-paths@4.2.3(typescript@5.3.3)(vite@5.0.10):
+    resolution: {integrity: sha512-xVsA2xe6QSlzBujtWF8q2NYexh7PAUYfzJ4C8Axpe/7d2pcERYxuxGgph9F4f0iQO36g5tyGq6eBUYIssdUrVw==}
+    peerDependencies:
+      vite: '*'
+    peerDependenciesMeta:
+      vite:
+        optional: true
+    dependencies:
+      debug: 4.3.4
+      globrex: 0.1.2
+      tsconfck: 2.1.2(typescript@5.3.3)
+      vite: 5.0.10
+    transitivePeerDependencies:
+      - supports-color
+      - typescript
+    dev: true
 
   /vite@4.5.0:
     resolution: {integrity: sha512-ulr8rNLA6rkyFAlVWw2q5YJ91v098AFQ2R0PRFwPzREXOUJQPtFUG0t+/ZikhaOCDqFoDhN6/v8Sq0o4araFAw==}

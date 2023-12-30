@@ -39,7 +39,7 @@ function InputEditor({
       auto-focus
       type={type}
       value={tmpValue()}
-      onChange={e => setTmpValue(e.currentTarget.value)}
+      onInput={e => setTmpValue(e.currentTarget.value)}
       onKeyDown={e => {
         if (e.key === 'Enter') {
           onCommit(tmpValue())
@@ -67,7 +67,7 @@ function InputEditor({
   )
 }
 
-export default function Demo({ theme }: DemoProps) {
+export default function Demo(props: DemoProps) {
   const [people, setPeople] = createSignal(data)
 
   const columns = createMemo<GroupedColumns<Person, N>>(
@@ -139,7 +139,7 @@ export default function Demo({ theme }: DemoProps) {
       columns={columns()}
       data={people()}
       getRowId={d => d.id}
-      theme={theme === 'light' ? lightTheme : darkTheme}
+      theme={props.theme === 'light' ? lightTheme : darkTheme}
     />
   )
 }

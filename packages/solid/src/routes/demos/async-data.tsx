@@ -1,4 +1,4 @@
-import { createEffect, createSignal, onCleanup } from 'solid-js'
+import { createEffect, createSignal } from 'solid-js'
 import { darkTheme, lightTheme } from '@lightfin/datagrid'
 import { DataGrid } from '@lightfin/solid-datagrid'
 
@@ -8,15 +8,14 @@ import { DemoProps } from './types'
 
 import '@lightfin/datagrid/dist/styles.css'
 
-export default function Demo({ theme }: DemoProps) {
+export default function Demo(props: DemoProps) {
   const [data, setData] = createSignal<Animal[]>([])
 
   const fakeFetchData = () => {
     // Simulate fetching data with a delay
-    const interval = setTimeout(() => {
+    setTimeout(() => {
       setData(animalData)
     }, 1200)
-    onCleanup(() => clearInterval(interval))
   }
 
   createEffect(fakeFetchData)
@@ -37,9 +36,9 @@ export default function Demo({ theme }: DemoProps) {
         columns={columns}
         data={data()}
         getRowId={d => d.animal}
-        theme={theme === 'light' ? lightTheme : darkTheme}
+        theme={props.theme === 'light' ? lightTheme : darkTheme}
         loadingOverlay={
-          data.length === 0 && (
+          data().length === 0 && (
             <div
               style={{
                 width: '100%',
@@ -48,7 +47,7 @@ export default function Demo({ theme }: DemoProps) {
                 'align-items': 'center',
                 'justify-content': 'center',
                 background:
-                  theme === 'light' ? 'rgba(255,255,255,0.8)' : 'rgba(0,0,0,0.7)',
+                  props.theme === 'light' ? 'rgba(255 255 255 0.8)' : 'rgba(0 0 0 0.7)',
               }}
             >
               Loading, please wait...

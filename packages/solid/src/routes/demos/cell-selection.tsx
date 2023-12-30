@@ -5,7 +5,7 @@ import { DemoProps } from './types'
 
 import '@lightfin/datagrid/dist/styles.css'
 
-export default function Demo({ theme }: DemoProps) {
+export default function Demo(props: DemoProps) {
   return (
     <DataGrid<LifeExpectancy>
       columns={columns}
@@ -14,7 +14,7 @@ export default function Demo({ theme }: DemoProps) {
       pinnedBottomData={data.slice(-1)}
       getRowId={d => d.country + d.year}
       enableCellSelection
-      theme={theme === 'light' ? lightTheme : darkTheme}
+      theme={props.theme === 'light' ? lightTheme : darkTheme}
     />
   )
 }

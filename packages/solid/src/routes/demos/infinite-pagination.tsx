@@ -7,7 +7,7 @@ import { Person, peopleColumns, peopleData } from 'src/demo-data/people'
 import { DemoProps } from './types'
 
 import '@lightfin/datagrid/dist/styles.css'
-import styles from './InfinitePagination.module.css'
+import styles from './infinite-pagination.module.css'
 
 const itemsPerPage = 50
 
@@ -26,7 +26,7 @@ async function fetchData(
   })
 }
 
-export default function Demo({ theme }: DemoProps) {
+export default function Demo(props: DemoProps) {
   const [data, setData] = createSignal<Person[]>([])
   const [cursor, setCursor] = createSignal<number | undefined>(0)
   const [loading, setLoading] = createSignal(true)
@@ -54,9 +54,9 @@ export default function Demo({ theme }: DemoProps) {
         columns={peopleColumns}
         data={data()}
         getRowId={d => d.id}
-        theme={theme === 'light' ? lightTheme : darkTheme}
+        theme={props.theme === 'light' ? lightTheme : darkTheme}
         loadingOverlay={
-          data.length === 0 && (
+          data().length === 0 && (
             <div
               style={{
                 width: '100%',

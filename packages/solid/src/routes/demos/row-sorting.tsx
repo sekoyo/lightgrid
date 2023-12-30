@@ -10,7 +10,7 @@ import {
 
 import '@lightfin/datagrid/dist/styles.css'
 
-export default function Demo({ theme }: DemoProps) {
+export default function Demo(props: DemoProps) {
   const [columns, setColumns] = createSignal(happinessColumns)
   return (
     <DataGrid<HappinessEntry>
@@ -18,7 +18,7 @@ export default function Demo({ theme }: DemoProps) {
       onColumnsChange={setColumns}
       data={happinessData}
       getRowId={d => d.country}
-      theme={theme === 'light' ? lightTheme : darkTheme}
+      theme={props.theme === 'light' ? lightTheme : darkTheme}
     />
   )
 }

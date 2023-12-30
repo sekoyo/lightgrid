@@ -48,13 +48,13 @@ const columns: GroupedColumns<SomeData, N> = [
   },
 ]
 
-export default function Demo({ theme }: DemoProps) {
+export default function Demo(props: DemoProps) {
   return (
     <DataGrid<SomeData>
       columns={columns}
       data={data}
       getRowId={d => d.id}
-      theme={theme === 'light' ? lightTheme : darkTheme}
+      theme={props.theme === 'light' ? lightTheme : darkTheme}
     />
   )
 }

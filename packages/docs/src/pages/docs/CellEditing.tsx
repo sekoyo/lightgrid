@@ -55,9 +55,11 @@ export default function Doc() {
               component: (
                 <Demo
                   demoUrl={`${
-                    import.meta.env.VITE_REACT_DEMO_BASE_URL
+                    import.meta.env.VITE_SOLID_DEMO_BASE_URL
                   }/demos/cell-editing`}
-                  demoSrc={import("/../react/src/demos/CellEditing.tsx?raw")}
+                  demoSrc={
+                    import("/../solid/src/routes/demos/cell-editing.tsx?raw")
+                  }
                 />
               ),
             },

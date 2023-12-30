@@ -1,5 +1,12 @@
 'use client'
-import { createEffect, createSignal, createMemo, type JSX, For } from 'solid-js'
+import {
+  createEffect,
+  createSignal,
+  createMemo,
+  type JSX,
+  For,
+  mergeProps,
+} from 'solid-js'
 import {
   cls,
   createGridManager,
@@ -60,35 +67,24 @@ interface DataGridProps<T, S> {
   enableColumnResize?: boolean
   enableColumnReorder?: boolean
   loadingOverlay?: N
-  className?: string
+  class?: string
   style?: JSX.CSSProperties
 }
 
-export function DataGrid<T, S = unknown>({
-  columns,
-  onColumnsChange,
-  onFiltersChange = noop,
-  headerRowHeight,
-  filterRowHeight,
-  getRowId,
-  getRowMeta = DEFAULT_GET_ROW_META,
-  getRowDetailsMeta = DEFAULT_GET_ROW_DETAILS_META,
-  data,
-  pinnedTopData = emptyData,
-  pinnedBottomData = emptyData,
-  rowState = emptyRowState,
-  setRowState,
-  renderRowDetails = defaultRowDetailsRenderer,
-  direction,
-  theme = darkTheme,
-  multiSort,
-  enableCellSelection,
-  enableColumnResize,
-  enableColumnReorder,
-  loadingOverlay,
-  className,
-  style,
-}: DataGridProps<T, S>) {
+export function DataGrid<T, S = unknown>(_props: DataGridProps<T, S>) {
+  const props = mergeProps(
+    {
+      onFiltersChange: noop,
+      getRowMeta: DEFAULT_GET_ROW_META,
+      getRowDetailsMeta: DEFAULT_GET_ROW_DETAILS_META,
+      pinnedTopData: emptyData,
+      pinnedBottomData: emptyData,
+      rowState: emptyRowState,
+      renderRowDetails: defaultRowDetailsRenderer,
+      theme: darkTheme,
+    },
+    _props
+  )
   let gridEl: HTMLDivElement | undefined
   let scrollEl: HTMLDivElement | undefined
   let viewportEl: HTMLDivElement | undefined
@@ -110,15 +106,15 @@ export function DataGrid<T, S = unknown>({
 
   // Grid manager instance and props that don't change
   const mgr = createGridManager<T, N>({
-    getRowId,
-    getRowMeta,
-    getRowDetailsMeta,
-    renderRowDetails,
-    setStartCell,
-    setSelection,
-    setColResizeData,
-    setColReorderKey,
-    onColumnsChange,
+    getRowId: props.getRowId,
+    getRowMeta: props.getRowMeta,
+    getRowDetailsMeta: props.getRowDetailsMeta,
+    renderRowDetails: props.renderRowDetails,
+    setStartCell: setStartCell,
+    setSelection: setSelection,
+    setColResizeData: setColResizeData,
+    setColReorderKey: setColReorderKey,
+    onColumnsChange: props.onColumnsChange,
     onDerivedColumnsChange: setDerivedCols,
     onAreasChanged: setBodyAreas,
     onHeadersChanged: setHeaderAreas,
@@ -130,17 +126,17 @@ export function DataGrid<T, S = unknown>({
   // Pass props which update to grid manager
   createEffect(() => {
     mgr.update({
-      columns,
-      headerRowHeight,
-      filterRowHeight,
-      data,
-      pinnedTopData,
-      pinnedBottomData,
-      rowState,
-      multiSort,
-      enableCellSelection,
-      enableColumnResize,
-      enableColumnReorder,
+      columns: props.columns,
+      headerRowHeight: props.headerRowHeight,
+      filterRowHeight: props.filterRowHeight,
+      data: props.data,
+      pinnedTopData: props.pinnedTopData,
+      pinnedBottomData: props.pinnedBottomData,
+      rowState: props.rowState,
+      multiSort: props.multiSort,
+      enableCellSelection: props.enableCellSelection,
+      enableColumnResize: props.enableColumnResize,
+      enableColumnReorder: props.enableColumnReorder,
     })
   })
 
@@ -162,21 +158,21 @@ export function DataGrid<T, S = unknown>({
     }
   }
 
-  const themeObj = createMemo(() => themeToCSSObj(theme))
+  const themeObj = createMemo(() => themeToCSSObj(props.theme))
   const mergedStyle = createMemo(
     () =>
       ({
         ...themeObj(),
-        '--lgDirection': direction,
+        '--lgDirection': props.direction,
         'min-height': `${headerHeight()}px`,
-        ...style,
+        ...props.style,
       }) as JSX.CSSProperties
   )
 
   return (
     <div
       ref={gridEl}
-      class={cls('lg', className)}
+      class={cls('lg', props.class)}
       role="table"
       tabIndex={0}
       style={mergedStyle()}
@@ -202,11 +198,11 @@ export function DataGrid<T, S = unknown>({
                   area={area}
                   columns={area.colResult.items}
                   rows={area.rowResult.items}
-                  rowState={rowState}
-                  setRowState={setRowState}
+                  rowState={props.rowState}
+                  setRowState={props.setRowState}
                   detailsWidth={viewport().width}
-                  renderRowDetails={renderRowDetails}
-                  enableColumnReorder={enableColumnReorder}
+                  renderRowDetails={props.renderRowDetails}
+                  enableColumnReorder={props.enableColumnReorder}
                   selection={selection()}
                   selectionStartCell={startCell()}
                   isFirstColumnGroup={area.colResult.firstWithSize}
@@ -221,34 +217,35 @@ export function DataGrid<T, S = unknown>({
                   columns={headerArea.columns}
                   flatColumns={headerArea.flatColumns}
                   colAreaPos={headerArea.colAreaPos}
+                  headerRowCount={headerArea.headerRowCount}
                   headerRowHeight={headerArea.headerRowHeight}
                   filterRowHeight={headerArea.filterRowHeight}
-                  onFiltersChange={onFiltersChange}
+                  onFiltersChange={props.onFiltersChange}
                   left={headerArea.left}
                   width={headerArea.width}
                   height={headerArea.height}
-                  enableColumnResize={enableColumnResize}
-                  enableColumnReorder={enableColumnReorder}
+                  enableColumnResize={props.enableColumnResize}
+                  enableColumnReorder={props.enableColumnReorder}
                   colReorderKey={colReorderKey()}
                 />
               )}
             </For>
           </div>
-          {!!(enableColumnResize && colResizeData()) && (
+          {!!(props.enableColumnResize && colResizeData()) && (
             <div
               class="lg-resizer-marker"
               style={{ left: `${colResizeData()!.left}px` }}
             />
           )}
-          {loadingOverlay && (
+          {props.loadingOverlay && (
             <div
               class="lg-loading-overlay"
               style={{
-                top: `${headerHeight}px`,
+                top: `${headerHeight()}px`,
                 height: `${viewport().height - headerHeight()}px`,
               }}
             >
-              {loadingOverlay}
+              {props.loadingOverlay}
             </div>
           )}
         </div>

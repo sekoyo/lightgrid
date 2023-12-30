@@ -56,7 +56,7 @@ const editorsChoices = Array.from<string>(
   }, new Set())
 ).sort()
 
-export function TextFilter({
+function TextFilter({
   type,
   onChange,
 }: {
@@ -77,7 +77,7 @@ export function TextFilter({
   )
 }
 
-export function SelectFilter({
+function SelectFilter({
   options,
   onChange,
 }: {
@@ -117,15 +117,9 @@ export function RangeFilter({
   max: number
   onChange: (value: [min: number, max: number]) => void
 }) {
-  const [value, setValue] = useState<[min: number, max: number]>([
-    min,
-    max,
-  ])
+  const [value, setValue] = useState<[min: number, max: number]>([min, max])
   return (
-    <IconButton
-      className={styles.popoverBtn}
-      aria-labelledby="range filter popup"
-    >
+    <IconButton className={styles.popoverBtn} aria-labelledby="range filter popup">
       <SliderIcon style={{ height: 10 }} />
       <div className={styles.popover}>
         <RangeSlider
@@ -172,7 +166,7 @@ const gameColumns: GroupedColumns<Game, React.ReactNode> = [
         <OpenLinkIcon style={{ height: 16 }} />
       </a>
     ),
-    width: 50,
+    width: 44,
     pin: 'start',
   },
   {
@@ -180,9 +174,7 @@ const gameColumns: GroupedColumns<Game, React.ReactNode> = [
     header: 'ID',
     getValue: d => d.id,
     width: 80,
-    filterComponent: onChange => (
-      <TextFilter type="number" onChange={onChange} />
-    ),
+    filterComponent: onChange => <TextFilter type="number" onChange={onChange} />,
     filterFn: (item, filterValue) =>
       filterValue ? item.id === Number(filterValue) : true,
   },
@@ -191,11 +183,8 @@ const gameColumns: GroupedColumns<Game, React.ReactNode> = [
     header: 'Title',
     getValue: d => d.title,
     width: 200,
-    filterComponent: onChange => (
-      <TextFilter type="search" onChange={onChange} />
-    ),
-    filterFn: (item, value) =>
-      item.title.toLowerCase().includes(value.toLowerCase()),
+    filterComponent: onChange => <TextFilter type="search" onChange={onChange} />,
+    filterFn: (item, value) => item.title.toLowerCase().includes(value.toLowerCase()),
   },
   {
     key: 'platform',
@@ -205,21 +194,17 @@ const gameColumns: GroupedColumns<Game, React.ReactNode> = [
     filterComponent: onChange => (
       <SelectFilter options={ignPlatforms} onChange={onChange} />
     ),
-    filterFn: (item, filterValue) =>
-      filterValue ? item.platform === filterValue : true,
+    filterFn: (item, filterValue) => (filterValue ? item.platform === filterValue : true),
   },
   {
     key: 'score',
     header: 'Score',
     getValue: d => d.score,
     width: 80,
-    filterComponent: onChange => (
-      <RangeFilter min={0} max={10} onChange={onChange} />
-    ),
+    filterComponent: onChange => <RangeFilter min={0} max={10} onChange={onChange} />,
     filterFn: (item, filterValues) =>
       filterValues?.length
-        ? item.score >= filterValues[0] &&
-          item.score <= filterValues[1]
+        ? item.score >= filterValues[0] && item.score <= filterValues[1]
         : true,
   },
   {
@@ -237,11 +222,8 @@ const gameColumns: GroupedColumns<Game, React.ReactNode> = [
     header: 'Genre',
     getValue: d => d.genre,
     width: 120,
-    filterComponent: onChange => (
-      <SelectFilter options={ignGenres} onChange={onChange} />
-    ),
-    filterFn: (item, filterValue) =>
-      filterValue ? item.genre === filterValue : true,
+    filterComponent: onChange => <SelectFilter options={ignGenres} onChange={onChange} />,
+    filterFn: (item, filterValue) => (filterValue ? item.genre === filterValue : true),
   },
   {
     key: 'editorsChoice',
@@ -258,18 +240,11 @@ const gameColumns: GroupedColumns<Game, React.ReactNode> = [
     key: 'release',
     header: 'Release',
     getValue: d =>
-      new Date(
-        `${d.releaseYear}-${d.releaseMonth}-${d.releaseDay}`
-      ).toLocaleDateString(),
+      new Date(`${d.releaseYear}-${d.releaseMonth}-${d.releaseDay}`).toLocaleDateString(),
     width: 120,
     filterComponent: onChange => (
       <SelectFilter
-        options={[
-          'This year',
-          'Last year',
-          'This decade',
-          'All time',
-        ]}
+        options={['This year', 'Last year', 'This decade', 'All time']}
         onChange={onChange}
       />
     ),
@@ -300,26 +275,22 @@ export default function Demo({ theme }: DemoProps) {
   // Filter the data after a delay when a filter changes
   const filterData = useMemo(
     () =>
-      debounce(
-        (column: DerivedColumn<Game, N>, filterValue: string) => {
-          const state = Object.assign(filterState.current, {
-            [column.key]: {
-              filterValue,
-              filterFn: column.filterFn,
-            },
-          })
+      debounce((column: DerivedColumn<Game, N>, filterValue: string) => {
+        const state = Object.assign(filterState.current, {
+          [column.key]: {
+            filterValue,
+            filterFn: column.filterFn,
+          },
+        })
 
-          setData(
-            gameData.filter(item =>
-              Object.values(state).every(
-                ({ filterValue, filterFn }) =>
-                  filterFn?.(item, filterValue) ?? true
-              )
+        setData(
+          gameData.filter(item =>
+            Object.values(state).every(
+              ({ filterValue, filterFn }) => filterFn?.(item, filterValue) ?? true
             )
           )
-        },
-        100
-      ),
+        )
+      }, 100),
     []
   )
 

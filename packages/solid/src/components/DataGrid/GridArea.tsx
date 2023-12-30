@@ -1,4 +1,4 @@
-import { For, createEffect, type JSX } from 'solid-js'
+import { For, type JSX } from 'solid-js'
 import {
   CellPosition,
   CellSelection,
@@ -87,12 +87,6 @@ export function GridArea<T>({
   }
 
   const rowSpans = new Map<number, number>()
-
-  // const prop = () => area.pinnedX && !area.pinnedY ? 'margin-top' : 'top'
-
-  createEffect(() => {
-    console.log(area.pinnedX && !area.pinnedY ? 'margin-top' : 'top', `${area.windowY}px`)
-  })
 
   return (
     <div class="lg-area">

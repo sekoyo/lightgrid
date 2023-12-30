@@ -5,13 +5,13 @@ import { DemoProps } from './types'
 
 import '@lightfin/datagrid/dist/styles.css'
 
-export default function Demo({ theme }: DemoProps) {
+export default function Demo(props: DemoProps) {
   return (
     <DataGrid<Animal>
       columns={columns}
       data={animalData}
       getRowId={d => d.animal}
-      theme={theme === 'light' ? lightTheme : darkTheme}
+      theme={props.theme === 'light' ? lightTheme : darkTheme}
     />
   )
 }

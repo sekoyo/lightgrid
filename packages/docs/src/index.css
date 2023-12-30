@@ -7,7 +7,7 @@ body.dark {
   --borderColor: #353535;
   --focusColor: #038cf4;
   --brandColor: #f6d62b;
-  --enterpriseColor: #f67f7f;
+  --enterpriseColor: #f53333;
   --scrollTrack: #111;
   --scrollThumbColor: #3e3e3e;
   --scrollThumbHoverColor: #555;
@@ -28,7 +28,7 @@ body.light {
   --borderColor: #353535;
   --focusColor: #038cf4;
   --brandColor: black;
-  --enterpriseColor: #f64f4f;
+  --enterpriseColor: #ff2727;
   --scrollTrack: #ebebeb;
   --scrollThumbColor: #c2c2c5;
   --scrollThumbHoverColor: #a4a4a4;

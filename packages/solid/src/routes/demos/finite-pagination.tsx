@@ -1,4 +1,4 @@
-import { type JSX, createEffect, createSignal } from 'solid-js'
+import { type JSX, createEffect, createSignal, onCleanup } from 'solid-js'
 import { cancelable } from 'cancelable-promise'
 import { darkTheme, lightTheme } from '@lightfin/datagrid'
 import { DataGrid } from '@lightfin/solid-datagrid'
@@ -9,7 +9,7 @@ import { DemoProps } from './types'
 import { Person, peopleColumns, peopleData } from 'src/demo-data/people'
 
 import '@lightfin/datagrid/dist/styles.css'
-import styles from './FinitePagination.module.css'
+import styles from './finite-pagination.module.css'
 
 // Our pretend server api
 const itemsPerPage = 50
@@ -24,7 +24,7 @@ async function fetchData(fromIndex = 0): Promise<{ data: Person[]; pageCount: nu
   })
 }
 
-export default function Demo({ theme }: DemoProps) {
+export default function Demo(props: DemoProps) {
   const [page, setPage] = createSignal(1)
   const [data, setData] = createSignal<Person[]>([])
   const [pageCount, setPageCount] = createSignal(0)
@@ -57,11 +57,11 @@ export default function Demo({ theme }: DemoProps) {
   createEffect(() => {
     const fromIdx = (page() - 1) * itemsPerPage
     const promise = fetchPaginatedData(fromIdx)
-    return () => {
+    onCleanup(() => {
       // If page changes while fetching, cancel in favour of new request
       // A real API would use something like https://developer.mozilla.org/en-US/docs/Web/API/AbortController
       promise.cancel()
-    }
+    })
   })
 
   const gotoPrevPage = () => {
@@ -85,7 +85,7 @@ export default function Demo({ theme }: DemoProps) {
         columns={peopleColumns}
         data={data()}
         getRowId={d => d.id}
-        theme={theme === 'light' ? lightTheme : darkTheme}
+        theme={props.theme === 'light' ? lightTheme : darkTheme}
         loadingOverlay={
           loading() && (
             <div
@@ -96,7 +96,7 @@ export default function Demo({ theme }: DemoProps) {
                 'align-items': 'center',
                 'justify-content': 'center',
                 background:
-                  theme === 'light' ? 'rgba(255,255,255,0.8)' : 'rgba(0,0,0,0.7)',
+                  props.theme === 'light' ? 'rgba(255,255,255,0.8)' : 'rgba(0,0,0,0.7)',
               }}
             >
               Loading, please wait...

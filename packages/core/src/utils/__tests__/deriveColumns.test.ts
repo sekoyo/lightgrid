@@ -94,6 +94,7 @@ test('deriveColumns', () => {
           getValue: noop,
         },
       ],
+      topLevelByIndex: [],
       size: 650,
       startOffset: 0,
       startIndexOffset: 0,
@@ -125,6 +126,7 @@ test('deriveColumns', () => {
           getValue: noop,
         },
       ],
+      topLevelByIndex: [],
       size: 20,
       startOffset: 650,
       startIndexOffset: 2,
@@ -188,6 +190,7 @@ test('deriveColumns', () => {
           getValue: noop,
         },
       ],
+      topLevelByIndex: [],
       size: 330,
       startOffset: 670,
       startIndexOffset: 3,
@@ -195,7 +198,7 @@ test('deriveColumns', () => {
     },
     size: 1000,
     itemCount: 6,
-    headerRows: 2,
+    headerRowCount: 2,
     hasFilters: false,
   }
 

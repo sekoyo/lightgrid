@@ -255,6 +255,7 @@ export function DataGrid<T, S = unknown>({
                 columns={headerArea.columns}
                 flatColumns={headerArea.flatColumns}
                 colAreaPos={headerArea.colAreaPos}
+                headerRowCount={headerArea.headerRowCount}
                 headerRowHeight={headerArea.headerRowHeight}
                 filterRowHeight={headerArea.filterRowHeight}
                 onFiltersChangeRef={onFiltersChangeRef}

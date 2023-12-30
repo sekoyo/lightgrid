@@ -1,4 +1,4 @@
-import { type JSX, createMemo, createSignal, createEffect, untrack } from 'solid-js'
+import { type JSX, createSignal, createEffect, untrack, onCleanup } from 'solid-js'
 import debounce from 'lodash-es/debounce'
 import {
   DerivedColumn,
@@ -20,7 +20,7 @@ import { DemoProps } from './types'
 
 import '@lightfin/datagrid/dist/styles.css'
 import 'range-slider-input/dist/style.css'
-import styles from './ColumnFiltering.module.css'
+import styles from './column-filtering.module.css'
 
 // Our IGN data stops in 2016 so lets pretend it's current
 const ignNowDate = new Date()
@@ -56,7 +56,7 @@ const editorsChoices = Array.from<string>(
   }, new Set())
 ).sort()
 
-export function TextFilter({
+function TextFilter({
   type,
   onChange,
 }: {
@@ -69,7 +69,7 @@ export function TextFilter({
       type={type}
       value={value()}
       style={{ padding: '0.25em' }}
-      onChange={e => {
+      onInput={e => {
         setValue(e.currentTarget.value)
         onChange(e.currentTarget.value)
       }}
@@ -77,7 +77,7 @@ export function TextFilter({
   )
 }
 
-export function SelectFilter({
+function SelectFilter({
   options,
   onChange,
 }: {
@@ -108,7 +108,7 @@ export function SelectFilter({
   )
 }
 
-export function RangeFilter({
+function RangeFilter({
   min,
   max,
   onChange,
@@ -118,7 +118,7 @@ export function RangeFilter({
   onChange: (value: [min: number, max: number]) => void
 }) {
   let rangeSliderRef: HTMLDivElement | undefined
-  const [value, setValue] = createSignal<[min: number, max: number]>([min, max])
+  const [value, setValue] = createSignal<[from: number, to: number]>([min, max])
 
   createEffect(() => {
     if (rangeSliderRef) {
@@ -126,11 +126,13 @@ export function RangeFilter({
         min,
         max,
         value: untrack(value),
-        onInput: (values: [min: number, max: number]) => {
+        onInput: (values: [from: number, to: number]) => {
+          console.log('onInput', values)
           setValue(values)
           onChange(values)
         },
       })
+      onCleanup(() => rangeSliderElement.removeGlobalEventListeners())
     }
   })
 
@@ -138,16 +140,7 @@ export function RangeFilter({
     <IconButton class={styles.popoverBtn} aria-labelledby="range filter popup">
       <SliderIcon style={{ height: '10px' }} />
       <div class={styles.popover}>
-        <div
-          ref={rangeSliderRef}
-          // min={min}
-          // max={max}
-          // value={value}
-          // onInput={(values: [min: number, max: number]) => {
-          //   setValue(values)
-          //   onChange(values)
-          // }}
-        />
+        <div ref={rangeSliderRef} />
       </div>
     </IconButton>
   )
@@ -183,7 +176,7 @@ const gameColumns: GroupedColumns<Game, JSX.Element> = [
         <OpenLinkIcon style={{ height: '16px' }} />
       </a>
     ),
-    width: 50,
+    width: 44,
     pin: 'start',
   },
   {
@@ -280,7 +273,7 @@ const gameColumns: GroupedColumns<Game, JSX.Element> = [
   },
 ]
 
-export default function Demo({ theme }: DemoProps) {
+export default function Demo(props: DemoProps) {
   const [data, setData] = createSignal(gameData)
 
   // We save the value and the column.filterFn so that whenever a filter
@@ -288,31 +281,30 @@ export default function Demo({ theme }: DemoProps) {
   const filterState: Record<ItemId, { filterValue: any; filterFn: FilterFn<Game> }> = {}
 
   // Filter the data after a delay when a filter changes
-  const filterData = createMemo(() =>
-    debounce((column: DerivedColumn<Game, N>, filterValue: string) => {
-      const state = Object.assign(filterState.current, {
-        [column.key]: {
-          filterValue,
-          filterFn: column.filterFn,
-        },
-      })
+  const filterData = debounce((column: DerivedColumn<Game, N>, filterValue: string) => {
+    console.log('filterData', column, filterValue)
+    const state = Object.assign(filterState, {
+      [column.key]: {
+        filterValue,
+        filterFn: column.filterFn,
+      },
+    })
 
-      setData(
-        gameData.filter(item =>
-          Object.values(state).every(
-            ({ filterValue, filterFn }) => filterFn?.(item, filterValue) ?? true
-          )
+    setData(
+      gameData.filter(item =>
+        Object.values(state).every(
+          ({ filterValue, filterFn }) => filterFn?.(item, filterValue) ?? true
         )
       )
-    }, 100)
-  )
+    )
+  }, 100)
 
   return (
     <DataGrid<Game>
       columns={gameColumns}
       data={data()}
       getRowId={d => d.id}
-      theme={theme === 'light' ? lightTheme : darkTheme}
+      theme={props.theme === 'light' ? lightTheme : darkTheme}
       onFiltersChange={filterData}
     />
   )

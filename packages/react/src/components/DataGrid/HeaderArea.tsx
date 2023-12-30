@@ -18,6 +18,7 @@ interface HeaderAreaProps<T> {
   columns: GroupedDerivedColumns<T, N>
   flatColumns: DerivedColumn<T, N>[]
   colAreaPos: AreaPos
+  headerRowCount: number
   headerRowHeight: number
   filterRowHeight: number
   onFiltersChangeRef: React.MutableRefObject<OnFiltersChange<T, N>>
@@ -34,6 +35,7 @@ function _HeaderArea<T>({
   columns,
   flatColumns,
   colAreaPos,
+  headerRowCount,
   headerRowHeight,
   filterRowHeight,
   onFiltersChangeRef,
@@ -44,7 +46,7 @@ function _HeaderArea<T>({
   enableColumnReorder,
   colReorderKey,
 }: HeaderAreaProps<T>) {
-  const lastIndex = flatColumns.at(-1)?.colIndex ?? 0
+  const outline = headerRowCount > 1
   const renderColumns = useCallback(
     (
       mgr: GridManager<T, N>,
@@ -66,7 +68,8 @@ function _HeaderArea<T>({
               enableColumnResize={enableColumnResize}
               enableColumnReorder={enableColumnReorder}
               colReorderKey={colReorderKey}
-              isLastInRow={column.colIndex + (column.headerColSpan - 1) === lastIndex}
+              outline={outline}
+              border={!!column.pin}
             />
             {isDerivedColumnGroup(column) &&
               renderColumns(
@@ -82,7 +85,7 @@ function _HeaderArea<T>({
         ))}
       </>
     ),
-    [lastIndex]
+    [outline]
   )
 
   const renderFilters = useCallback(

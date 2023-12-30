@@ -156,7 +156,7 @@ export interface DerivedColResult<T, N, S = unknown> {
   areaPos: AreaPos
   itemsWithGrouping: GroupedDerivedColumns<T, N, S>
   items: DerivedColumn<T, N>[]
-  groupedByColIndex: GroupedDerivedColumns<T, N, S>
+  topLevelByIndex: GroupedDerivedColumns<T, N, S>
   size: number
   startOffset: number
   startIndexOffset: number
@@ -169,7 +169,7 @@ export interface DerivedColsResult<T, N, S = unknown> {
   end: DerivedColResult<T, N, S>
   size: number
   itemCount: number
-  headerRows: number
+  headerRowCount: number
   hasFilters: boolean
 }
 
@@ -300,6 +300,7 @@ export interface HeaderAreaDesc<T, N> {
   columns: GroupedDerivedColumns<T, N>
   flatColumns: DerivedColumn<T, N>[]
   colAreaPos: AreaPos
+  headerRowCount: number
   headerRowHeight: number
   filterRowHeight: number
   left: number

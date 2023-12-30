@@ -6,8 +6,8 @@ import {
   type GroupedDerivedColumns,
   type DerivedColsResult,
   type DerivedColResult,
+  type DerivedColumnGroup,
   AreaPos,
-  DerivedColumnGroup,
 } from '../types'
 import { isColumnGroup } from './isTypes'
 import { toNearestHalf } from './numbers'
@@ -152,7 +152,7 @@ const createEmptyColResults: <T, N>() => DerivedColsResult<T, N> = () => ({
     areaPos: AreaPos.Start,
     itemsWithGrouping: [],
     items: [],
-    groupedByColIndex: [],
+    topLevelByIndex: [],
     size: 0,
     startOffset: 0,
     startIndexOffset: 0,
@@ -162,7 +162,7 @@ const createEmptyColResults: <T, N>() => DerivedColsResult<T, N> = () => ({
     areaPos: AreaPos.Middle,
     itemsWithGrouping: [],
     items: [],
-    groupedByColIndex: [],
+    topLevelByIndex: [],
     size: 0,
     startOffset: 0,
     startIndexOffset: 0,
@@ -172,7 +172,7 @@ const createEmptyColResults: <T, N>() => DerivedColsResult<T, N> = () => ({
     areaPos: AreaPos.End,
     itemsWithGrouping: [],
     items: [],
-    groupedByColIndex: [],
+    topLevelByIndex: [],
     size: 0,
     startOffset: 0,
     startIndexOffset: 0,
@@ -180,7 +180,7 @@ const createEmptyColResults: <T, N>() => DerivedColsResult<T, N> = () => ({
   },
   size: 0,
   itemCount: 0,
-  headerRows: 0,
+  headerRowCount: 0,
   hasFilters: false,
 })
 
@@ -206,8 +206,9 @@ export function deriveColumns<T, N>(
     levelColumns: GroupedColumns<T, N>,
     colResult: DerivedColResult<T, N>,
     levelDerivedCols: GroupedDerivedColumns<T, N>,
-    groupedByColIndex: GroupedDerivedColumns<T, N>,
-    colIndexOffset = 0,
+    topLevelByIndex: GroupedDerivedColumns<T, N>,
+    startingColIndexOffset = 0,
+    colIndexOffset = startingColIndexOffset,
     rowIndex = 0,
     descendantRef = { offset: 0, lastColIndex: 0 }
   ) {
@@ -222,7 +223,8 @@ export function deriveColumns<T, N>(
             column.children,
             colResult,
             [],
-            groupedByColIndex,
+            topLevelByIndex,
+            startingColIndexOffset,
             colIndex,
             rowIndex + 1,
             descendantRef
@@ -246,7 +248,7 @@ export function deriveColumns<T, N>(
 
           // Add group by colIndex so it can be looked up for virtual window
           if (rowIndex === 0) {
-            groupedByColIndex[colIndex] = colGroup
+            topLevelByIndex[colIndex - startingColIndexOffset] = colGroup
           }
 
           // Increment the column index if the group has more than 1 descendant column
@@ -300,7 +302,7 @@ export function deriveColumns<T, N>(
 
         // Add non-grouped columns to be looked up the virtual window
         if (rowIndex === 0) {
-          groupedByColIndex[colIndex] = col
+          topLevelByIndex[colIndex - startingColIndexOffset] = col
         }
 
         levelDerivedCols.push(col)
@@ -319,7 +321,7 @@ export function deriveColumns<T, N>(
     summed.leftColumns,
     out.start,
     out.start.itemsWithGrouping,
-    out.start.groupedByColIndex
+    out.start.topLevelByIndex
   )
 
   const startLastIdx = out.start.items.length ? out.start.items.at(-1)!.colIndex + 1 : 0
@@ -327,7 +329,7 @@ export function deriveColumns<T, N>(
     summed.middleColumns,
     out.middle,
     out.middle.itemsWithGrouping,
-    out.middle.groupedByColIndex,
+    out.middle.topLevelByIndex,
     startLastIdx
   )
 
@@ -338,7 +340,7 @@ export function deriveColumns<T, N>(
     summed.rightColumns,
     out.end,
     out.end.itemsWithGrouping,
-    out.end.groupedByColIndex,
+    out.end.topLevelByIndex,
     middleLastIdx
   )
 
@@ -360,7 +362,7 @@ export function deriveColumns<T, N>(
   out.end.startOffset = viewportWidth - out.end.size
 
   out.itemCount = out.start.items.length + out.middle.items.length + out.end.items.length
-  out.headerRows = summed.totalDepth
+  out.headerRowCount = summed.totalDepth
 
   return out
 }
