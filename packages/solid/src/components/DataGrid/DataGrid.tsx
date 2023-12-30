@@ -36,6 +36,7 @@ import '@lightfin/datagrid/dist/styles.css'
 import { N } from './types'
 import { HeaderArea } from './HeaderArea'
 import { GridArea } from './GridArea'
+import { createStore } from 'solid-js/store'
 
 const emptyData: any[] = []
 const emptyRowState: RowState<any> = {}
@@ -89,11 +90,11 @@ export function DataGrid<T, S = unknown>(_props: DataGridProps<T, S>) {
   let scrollEl: HTMLDivElement | undefined
   let viewportEl: HTMLDivElement | undefined
 
-  const [derivedCols, setDerivedCols] = createSignal<DerivedColsResult<T, N>>(
+  const [derivedCols, setDerivedCols] = createStore<DerivedColsResult<T, N>>(
     EMPTY_DERIVED_COLS_RESULT
   )
-  const [bodyAreas, setBodyAreas] = createSignal<BodyAreaDesc<T, N>[]>([])
-  const [headerAreas, setHeaderAreas] = createSignal<HeaderAreaDesc<T, N>[]>([])
+  const [bodyAreas, setBodyAreas] = createStore<BodyAreaDesc<T, N>[]>([])
+  const [headerAreas, setHeaderAreas] = createStore<HeaderAreaDesc<T, N>[]>([])
   const [viewport, setViewport] = createSignal({ width: 0, height: 0 })
   const [scrollLeft, setScrollLeft] = createSignal(0)
   const [scrollTop, setScrollTop] = createSignal(0)
@@ -180,7 +181,7 @@ export function DataGrid<T, S = unknown>(_props: DataGridProps<T, S>) {
       <div ref={scrollEl} class="lg-canvas lg-scroll" onScroll={onScroll}>
         <div
           class="lg-grid-sizer"
-          style={{ width: `${derivedCols().size}px`, height: `${contentHeight()}px` }}
+          style={{ width: `${derivedCols.size}px`, height: `${contentHeight()}px` }}
         />
         <div
           ref={viewportEl}
@@ -189,9 +190,9 @@ export function DataGrid<T, S = unknown>(_props: DataGridProps<T, S>) {
         >
           <div
             class="lg-view"
-            style={{ width: `${derivedCols().size}px`, height: `${contentHeight()}px` }}
+            style={{ width: `${derivedCols.size}px`, height: `${contentHeight()}px` }}
           >
-            <For each={bodyAreas()}>
+            <For each={bodyAreas}>
               {area => (
                 <GridArea
                   mgr={mgr}
@@ -210,7 +211,7 @@ export function DataGrid<T, S = unknown>(_props: DataGridProps<T, S>) {
                 />
               )}
             </For>
-            <For each={headerAreas()}>
+            <For each={headerAreas}>
               {headerArea => (
                 <HeaderArea<T>
                   mgr={mgr}
