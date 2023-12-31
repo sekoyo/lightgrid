@@ -4,11 +4,8 @@ https://github.com/jdorfman/awesome-json-datasets
 https://catalog.data.gov/dataset/?res_format=JSON
 https://www.kaggle.com/datasets
 
-- On Column Filtering, filtering is losing input value on first change, and losing focus on others
-- Solid still on dark theme on light theme
 - Style improvements
   Make col dragging colour nicer - sep. var for header part
-  Tweak cell selection bg
 - Pressing up/down arrow on cell selection scrolls the page
 - Lazily load iframe demos based on visibility?
 - Iframe loading spinner
@@ -47,7 +44,6 @@ https://www.kaggle.com/datasets
 
 ## Bugs
 
-- ⛔️ Cell selection not working on pinned columns
 - Clicking in row details selects closest parent cell. Don't change selection on item details clicks.
 
 # Do and Donts

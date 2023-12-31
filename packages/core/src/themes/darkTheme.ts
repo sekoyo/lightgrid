@@ -14,8 +14,8 @@ export const darkTheme: Theme = {
   scrollTrack: '#0b0b0b',
   scrollThumb: '#3e3e3e',
   scrollThumbHover: '#555',
-  cellSelectedBg: 'rgb(50 48 57)',
-  cellStartCellBg: 'rgb(71 69 81)',
+  cellSelectedBg: 'rgb(37 40 43)',
+  cellStartCellBg: 'rgb(50 54 57)',
   colResizeColor: 'rgb(44 136 255)',
   colReorderBgColor: 'rgb(100 118 235)',
 }
