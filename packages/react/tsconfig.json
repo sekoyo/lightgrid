@@ -21,7 +21,7 @@
 
     "baseUrl": ".",
     "paths": {
-      "@lightgrid/react/dist/style.css": ["./dist/style.css"],
+      "@lightgrid/react/dist/style.css": ["../core/dist/style.css"],
       "@lightgrid/react": ["./src/lib"]
     }
   },

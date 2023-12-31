@@ -2,7 +2,17 @@
   "name": "@lightgrid/core",
   "version": "0.1.0",
   "type": "module",
-  "main": "dist/index.js",
+  "files": [
+    "dist"
+  ],
+  "module": "./dist/index.js",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js"
+    },
+    "./dist/style.css": "./dist/style.css",
+    "./package.json": "./package.json"
+  },
   "types": "dist/index.d.ts",
   "sideEffects": false,
   "license": "UNLICENSED",
