@@ -16,7 +16,7 @@ const config: Config = {
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
-  organizationName: 'lightgrid-io', // Usually your GitHub org/user name.
+  organizationName: 'lightgridjs', // Usually your GitHub org/user name.
   projectName: 'lightgrid', // Usually your repo name.
 
   customFields: {
@@ -46,7 +46,7 @@ const config: Config = {
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl:
-            'https://github.com/lightgrid-io/lightgrid/tree/main/packages/docs/',
+            'https://github.com/lightgridjs/lightgrid/tree/master/packages/docs/',
         },
         blog: false,
         // blog: {
@@ -54,7 +54,7 @@ const config: Config = {
         //   // Please change this to your repo.
         //   // Remove this to remove the "edit this page" links.
         //   editUrl:
-        //     'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
+        //     'https://github.com/facebook/docusaurus/tree/master/packages/create-docusaurus/templates/shared/',
         // },
         theme: {
           customCss: './src/css/custom.css',
@@ -85,7 +85,7 @@ const config: Config = {
         // },
         // { to: '/blog', label: 'Blog', position: 'left' },
         {
-          href: 'https://github.com/lightgrid-io/lightgrid',
+          href: 'https://github.com/lightgridjs/lightgrid',
           label: 'GitHub',
           position: 'right',
         },
