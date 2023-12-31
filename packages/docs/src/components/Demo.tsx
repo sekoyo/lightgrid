@@ -122,6 +122,7 @@ export function Demo({ demoPath, srcPath, height }: DemoProps) {
       <div className={styles.demoActions}>
         <button className={styles.btn} onClick={() => toggleFullScreen()}>
           <svg
+            className={styles.btnSvg}
             viewBox="0 0 469.333 469.333"
             xmlns="http://www.w3.org/2000/svg"
             fill="currentColor"
@@ -132,7 +133,11 @@ export function Demo({ demoPath, srcPath, height }: DemoProps) {
           {fullscreen ? 'Close Fullscreen' : 'FullScreen'}
         </button>
         <a href={srcUrl} className={styles.btn} target="_blank">
-          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <svg
+            className={styles.btnSvg}
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
             <path
               d="m1.293 12.707 4 4a1 1 0 1 0 1.414-1.414L3.414 12l3.293-3.293a1 1 0 1 0-1.414-1.414l-4 4a1 1 0 0 0 0 1.414zM18.707 7.293a1 1 0 1 0-1.414 1.414L20.586 12l-3.293 3.293a1 1 0 1 0 1.414 1.414l4-4a1 1 0 0 0 0-1.414zM13.039 4.726l-4 14a1 1 0 0 0 .686 1.236A1.053 1.053 0 0 0 10 20a1 1 0 0 0 .961-.726l4-14a1 1 0 1 0-1.922-.548z"
               fill="currentColor"

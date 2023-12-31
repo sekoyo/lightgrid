@@ -68,9 +68,9 @@
   &:disabled {
     background-color: var(--secondaryBtnBg);
   }
+}
 
-  svg {
-    flex-shrink: 0;
-    height: 16px;
-  }
+.btnSvg {
+  flex-shrink: 0;
+  height: 16px;
 }
