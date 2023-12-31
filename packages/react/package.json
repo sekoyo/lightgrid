@@ -1,9 +1,9 @@
 {
   "name": "@lightgrid/react",
-  "private": true,
   "version": "0.1.0",
   "type": "module",
   "license": "UNLICENSED",
+  "sideEffects": false,
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
