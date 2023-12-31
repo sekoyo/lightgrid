@@ -84,3 +84,9 @@
 :root[data-theme='dark'] pre {
   background: #181d22 !important;
 }
+
+.navbar__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}

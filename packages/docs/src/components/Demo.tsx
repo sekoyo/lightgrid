@@ -45,6 +45,7 @@ export function Demo({ demoPath, srcPath, height }: DemoProps) {
     resolvedHeight
   )}`
   const srcUrl = `https://github.com/lightgrid-io/lightgrid/tree/main/packages/react/src/demos/${srcPath}`
+  const loadingColor = colorMode === 'dark' ? '#fff' : '#000'
 
   return (
     <div
@@ -76,17 +77,13 @@ export function Demo({ demoPath, srcPath, height }: DemoProps) {
                   y2="23.865%"
                   id="a"
                 >
+                  <stop stopColor={loadingColor} stopOpacity="0" offset="0%" />
                   <stop
-                    stopColor="var(--ifm-heading-color)"
-                    stopOpacity="0"
-                    offset="0%"
-                  />
-                  <stop
-                    stopColor="var(--ifm-heading-color)"
+                    stopColor={loadingColor}
                     stopOpacity=".631"
                     offset="63.146%"
                   />
-                  <stop stopColor="var(--ifm-heading-color)" offset="100%" />
+                  <stop stopColor={loadingColor} offset="100%" />
                 </linearGradient>
               </defs>
               <g fill="none" fillRule="evenodd">
