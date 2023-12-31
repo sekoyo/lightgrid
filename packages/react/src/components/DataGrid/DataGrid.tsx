@@ -270,6 +270,7 @@ export function DataGrid<T, S = unknown>({
         <div
           ref={viewportEl}
           className="lg-viewport"
+          data-cell-selection={enableCellSelection}
           style={{ width: viewport.width, height: viewport.height }}
         >
           <div

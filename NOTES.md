@@ -5,12 +5,6 @@ https://catalog.data.gov/dataset/?res_format=JSON
 https://www.kaggle.com/datasets
 
 - Scroll to row / col + docs
-- Add bookmark # to H1,H2 etc
-- Home page
-- Pricing page
-- Legal page
-- // TODO: Change to 404 return <IntroDoc />
-- Enable text selection if cell selection is off
 - Add Virtual Rows and Virtual Columns docs (just saying it's always on)
 - Make menu mobile VP friendly
 - Check on mobile VP

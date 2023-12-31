@@ -72,7 +72,10 @@
     left: 0;
     contain: strict;
     overflow: hidden;
-    user-select: none;
+
+    &[data-cell-selection='true'] {
+      user-select: none;
+    }
   }
 
   &-view {

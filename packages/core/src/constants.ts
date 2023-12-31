@@ -22,7 +22,9 @@ export const DEFAULT_GET_ROW_DETAILS_META = (item: any) => ({
 })
 
 export const canUseDOM = Boolean(
-  typeof window !== 'undefined' && window.document && window.document.createElement
+  typeof window !== 'undefined' &&
+    window.document &&
+    window.document.createElement
 )
 
 export const getColumnOffset = <T, N>(
@@ -34,6 +36,7 @@ export const EMPTY_DERIVED_COL_RESULT: DerivedColResult<any, any> = {
   areaPos: AreaPos.Start,
   itemsWithGrouping: [],
   items: [],
+  topLevelByIndex: [],
   size: 0,
   startOffset: 0,
   startIndexOffset: 0,
@@ -46,6 +49,6 @@ export const EMPTY_DERIVED_COLS_RESULT: DerivedColsResult<any, any> = {
   end: { ...EMPTY_DERIVED_COL_RESULT, areaPos: AreaPos.End },
   size: 0,
   itemCount: 0,
-  headerRows: 0,
+  headerRowCount: 0,
   hasFilters: false,
 }
