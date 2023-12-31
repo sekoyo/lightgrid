@@ -17,5 +17,5 @@ export const darkTheme: Theme = {
   cellSelectedBg: 'rgb(37 40 43)',
   cellStartCellBg: 'rgb(50 54 57)',
   colResizeColor: 'rgb(44 136 255)',
-  colReorderBgColor: 'rgb(100 118 235)',
+  colReorderBgColor: 'rgb(84 122 238)',
 }

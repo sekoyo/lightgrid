@@ -4,9 +4,6 @@ https://github.com/jdorfman/awesome-json-datasets
 https://catalog.data.gov/dataset/?res_format=JSON
 https://www.kaggle.com/datasets
 
-- Style improvements
-  Make col dragging colour nicer - sep. var for header part
-- Pressing up/down arrow on cell selection scrolls the page
 - Lazily load iframe demos based on visibility?
 - Iframe loading spinner
 - Scroll to row / col + docs

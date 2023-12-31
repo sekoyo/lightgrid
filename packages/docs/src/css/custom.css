@@ -80,3 +80,7 @@
   --ifm-footer-background-color: #111315;
   --ifm-footer-color: rgba(255 255 255 / 0.3);
 }
+
+:root[data-theme='dark'] pre {
+  background: #181d22 !important;
+}

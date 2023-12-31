@@ -66,7 +66,6 @@ export default function Demo({ theme }: DemoProps) {
       data={someData}
       getRowId={d => d}
       theme={theme === 'light' ? lightTheme : darkTheme}
-      enableColumnResize
     />
   )
 }
