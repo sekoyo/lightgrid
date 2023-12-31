@@ -4,7 +4,9 @@ https://github.com/jdorfman/awesome-json-datasets
 https://catalog.data.gov/dataset/?res_format=JSON
 https://www.kaggle.com/datasets
 
+- Disable text selection on headers always
 - READMEs
+- Trading demo
 - Scroll to row / col + docs
 
 ### Post MVP

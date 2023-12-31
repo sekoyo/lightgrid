@@ -6,6 +6,7 @@
     bottom: 0;
     left: 0;
     pointer-events: none;
+    user-select: none;
 
     &-inner {
       position: sticky;

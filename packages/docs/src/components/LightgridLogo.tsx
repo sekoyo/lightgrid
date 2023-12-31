@@ -1,7 +1,7 @@
 export function LightgridLogo(attrs: React.SVGAttributes<SVGSVGElement>) {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 811 168" {...attrs}>
-      <g fill="none" fill-rule="evenodd">
+      <g fill="none" fillRule="evenodd">
         <text
           fill="var(--textColor)"
           fontFamily="Helvetica"
