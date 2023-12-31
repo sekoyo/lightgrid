@@ -3,7 +3,7 @@ import { Route } from 'wouter'
 import { DemoContainer } from './components/DemoContainer'
 
 const params = new URLSearchParams(window.location.search)
-const height = params.get('height') || '600px'
+const height = params.get('height') || '420px'
 const theme = params.get('theme') === 'light' ? 'light' : 'dark'
 document.body.classList.add(theme)
 
