@@ -1,11 +1,15 @@
 import { useMemo, useState } from 'react'
-import { GroupedColumns, darkTheme, lightTheme } from '@lightfin/datagrid'
-import { DataGrid, N } from '@lightfin/react-datagrid'
+import {
+  DataGrid,
+  GroupedColumns,
+  darkTheme,
+  lightTheme,
+} from '@lightgrid/react'
 import { Input } from 'src/components/Input'
 import { DemoProps } from './types'
 import { GhostButton } from './GhostButton'
 
-import '@lightfin/datagrid/dist/styles.css'
+import '@lightgrid/react/dist/style.css'
 
 interface Person {
   id: string
@@ -71,7 +75,7 @@ function InputEditor({
 export default function Demo({ theme }: DemoProps) {
   const [people, setPeople] = useState(data)
 
-  const columns = useMemo<GroupedColumns<Person, N>>(
+  const columns = useMemo<GroupedColumns<Person>>(
     () => [
       {
         key: 'firstname',
@@ -114,7 +118,8 @@ export default function Demo({ theme }: DemoProps) {
       {
         key: 'dob',
         header: 'Date of Birth',
-        getValue: d => (d.dob ? new Date(d.dob).toLocaleDateString() : undefined),
+        getValue: d =>
+          d.dob ? new Date(d.dob).toLocaleDateString() : undefined,
         cellComponent: ({ item, rowIndex }) => (
           <InputEditor
             type="date"

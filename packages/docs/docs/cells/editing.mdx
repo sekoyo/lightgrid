@@ -1,0 +1,19 @@
+---
+title: Editing
+---
+
+import { Demo } from '@site/src/components'
+
+# Cell Editing
+
+Cell editing can be achieved by creating custom cell renderers.
+
+In this demo we create a custom cell component which:
+
+1. Renders a read-only cell
+1. Listens to double click
+1. On click, renders an edit cell
+1. As the user types the edit state is kept internal to the cell. If the user presses enter it is commited via `onCommit` which updates the data. If the user presses Escape the changes are cancelled.
+1. The cell then returns the read-only mode
+
+<Demo demoPath="cell-editing" srcPath="CellEditing.tsx" />

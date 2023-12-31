@@ -1,24 +1,24 @@
 import debounce from 'lodash-es/debounce'
 import { useMemo, useRef, useState } from 'react'
 import {
+  DataGrid,
   DerivedColumn,
   FilterFn,
   ItemId,
   darkTheme,
   lightTheme,
   GroupedColumns,
-} from '@lightfin/datagrid'
-import { DataGrid, type N } from '@lightfin/react-datagrid'
+} from '@lightgrid/react'
 import RangeSlider from 'react-range-slider-input'
 
-import { DemoProps } from './types'
 import { Input } from 'src/components/Input'
 import { Select } from 'src/components/Select'
 import { OpenLinkIcon, SliderIcon } from 'src/components/Icons'
 import { IconButton } from 'src/components/IconButton'
 import ignData from './data/ign_data.json'
+import { DemoProps } from './types'
 
-import '@lightfin/datagrid/dist/styles.css'
+import '@lightgrid/react/dist/style.css'
 import 'react-range-slider-input/dist/style.css'
 import styles from './ColumnFiltering.module.css'
 
@@ -119,7 +119,10 @@ export function RangeFilter({
 }) {
   const [value, setValue] = useState<[min: number, max: number]>([min, max])
   return (
-    <IconButton className={styles.popoverBtn} aria-labelledby="range filter popup">
+    <IconButton
+      className={styles.popoverBtn}
+      aria-labelledby="range filter popup"
+    >
       <SliderIcon style={{ height: 10 }} />
       <div className={styles.popover}>
         <RangeSlider
@@ -152,7 +155,7 @@ export interface Game {
 
 const gameData = ignData as Game[]
 
-const gameColumns: GroupedColumns<Game, React.ReactNode> = [
+const gameColumns: GroupedColumns<Game> = [
   {
     key: 'url',
     header: null,
@@ -174,7 +177,9 @@ const gameColumns: GroupedColumns<Game, React.ReactNode> = [
     header: 'ID',
     getValue: d => d.id,
     width: 80,
-    filterComponent: onChange => <TextFilter type="number" onChange={onChange} />,
+    filterComponent: onChange => (
+      <TextFilter type="number" onChange={onChange} />
+    ),
     filterFn: (item, filterValue) =>
       filterValue ? item.id === Number(filterValue) : true,
   },
@@ -183,8 +188,11 @@ const gameColumns: GroupedColumns<Game, React.ReactNode> = [
     header: 'Title',
     getValue: d => d.title,
     width: 200,
-    filterComponent: onChange => <TextFilter type="search" onChange={onChange} />,
-    filterFn: (item, value) => item.title.toLowerCase().includes(value.toLowerCase()),
+    filterComponent: onChange => (
+      <TextFilter type="search" onChange={onChange} />
+    ),
+    filterFn: (item, value) =>
+      item.title.toLowerCase().includes(value.toLowerCase()),
   },
   {
     key: 'platform',
@@ -194,14 +202,17 @@ const gameColumns: GroupedColumns<Game, React.ReactNode> = [
     filterComponent: onChange => (
       <SelectFilter options={ignPlatforms} onChange={onChange} />
     ),
-    filterFn: (item, filterValue) => (filterValue ? item.platform === filterValue : true),
+    filterFn: (item, filterValue) =>
+      filterValue ? item.platform === filterValue : true,
   },
   {
     key: 'score',
     header: 'Score',
     getValue: d => d.score,
     width: 80,
-    filterComponent: onChange => <RangeFilter min={0} max={10} onChange={onChange} />,
+    filterComponent: onChange => (
+      <RangeFilter min={0} max={10} onChange={onChange} />
+    ),
     filterFn: (item, filterValues) =>
       filterValues?.length
         ? item.score >= filterValues[0] && item.score <= filterValues[1]
@@ -222,8 +233,11 @@ const gameColumns: GroupedColumns<Game, React.ReactNode> = [
     header: 'Genre',
     getValue: d => d.genre,
     width: 120,
-    filterComponent: onChange => <SelectFilter options={ignGenres} onChange={onChange} />,
-    filterFn: (item, filterValue) => (filterValue ? item.genre === filterValue : true),
+    filterComponent: onChange => (
+      <SelectFilter options={ignGenres} onChange={onChange} />
+    ),
+    filterFn: (item, filterValue) =>
+      filterValue ? item.genre === filterValue : true,
   },
   {
     key: 'editorsChoice',
@@ -240,7 +254,9 @@ const gameColumns: GroupedColumns<Game, React.ReactNode> = [
     key: 'release',
     header: 'Release',
     getValue: d =>
-      new Date(`${d.releaseYear}-${d.releaseMonth}-${d.releaseDay}`).toLocaleDateString(),
+      new Date(
+        `${d.releaseYear}-${d.releaseMonth}-${d.releaseDay}`
+      ).toLocaleDateString(),
     width: 120,
     filterComponent: onChange => (
       <SelectFilter
@@ -275,7 +291,7 @@ export default function Demo({ theme }: DemoProps) {
   // Filter the data after a delay when a filter changes
   const filterData = useMemo(
     () =>
-      debounce((column: DerivedColumn<Game, N>, filterValue: string) => {
+      debounce((column: DerivedColumn<Game>, filterValue: string) => {
         const state = Object.assign(filterState.current, {
           [column.key]: {
             filterValue,
@@ -286,7 +302,8 @@ export default function Demo({ theme }: DemoProps) {
         setData(
           gameData.filter(item =>
             Object.values(state).every(
-              ({ filterValue, filterFn }) => filterFn?.(item, filterValue) ?? true
+              ({ filterValue, filterFn }) =>
+                filterFn?.(item, filterValue) ?? true
             )
           )
         )

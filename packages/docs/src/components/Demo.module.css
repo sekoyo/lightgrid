@@ -6,16 +6,13 @@
 
 .fullscreenContainer {
   position: fixed;
+  z-index: var(--ifm-z-index-fixed);
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
   background: var(--bg);
   padding: 1rem;
-}
-
-.code {
-  overflow: auto;
 }
 
 .demoActions {
@@ -25,14 +22,11 @@
   margin-top: 12px;
 }
 
-.switchView {
-  display: flex;
-  justify-content: flex-end;
-  gap: 1em;
-  height: 30px;
+.iframe {
+  max-height: calc(100% - 30px - 12px);
 }
 
-.switchBtn {
+.btn {
   display: flex;
   align-items: center;
   gap: 0.5em;
@@ -45,8 +39,10 @@
   font-size: 0.75em;
   color: var(--secondaryBtnTextColor);
 
-  &:not(:disabled) {
+  &:not(:disabled):hover {
     cursor: pointer;
+    color: var(--ifm-link-hover-color);
+    text-decoration: underline;
   }
 
   &:disabled {
@@ -57,8 +53,4 @@
     flex-shrink: 0;
     height: 16px;
   }
-}
-
-.mainView {
-  max-height: calc(100% - 30px - 12px);
 }

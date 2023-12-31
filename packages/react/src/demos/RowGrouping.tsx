@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 import {
+  DataGrid,
   darkTheme,
   lightTheme,
   GroupedColumns,
@@ -8,14 +9,13 @@ import {
   isRowGroup,
   groupData,
   RowStateItem,
-} from '@lightfin/datagrid'
-import { DataGrid } from '@lightfin/react-datagrid'
+} from '@lightgrid/react'
 import { RightArrowIcon } from 'src/components/Icons'
 import { IconButton } from 'src/components/IconButton'
 import { DemoProps } from './types'
 import { data, Medalist } from './data/winterOlympics'
 
-import '@lightfin/datagrid/dist/styles.css'
+import '@lightgrid/react/dist/style.css'
 
 // By default no groups will be expanded. You can
 // expand to a certain depth by default, -1 means
@@ -52,16 +52,12 @@ function renderGroupValue(item: GroupRow) {
   return item.value
 }
 
-function getExpandToggle(
-  groupRow: GroupRow,
-  rowState?: RowStateItem
-) {
+function getExpandToggle(groupRow: GroupRow, rowState?: RowStateItem) {
   // If true, or if undefined and within
   // DEFAULT_EXPAND_DEPTH then collapse (false)
   if (
     rowState?.expanded === true ||
-    (rowState?.expanded === undefined &&
-      groupRow.depth < DEFAULT_EXPAND_DEPTH)
+    (rowState?.expanded === undefined && groupRow.depth < DEFAULT_EXPAND_DEPTH)
   ) {
     return false
   }
@@ -72,9 +68,7 @@ function getExpandToggle(
 export default function Demo({ theme }: DemoProps) {
   const [rowState, setRowState] = useState<RowState>({})
 
-  const columns = useMemo<
-    GroupedColumns<GroupRow | Medalist, React.ReactNode>
-  >(
+  const columns = useMemo<GroupedColumns<GroupRow | Medalist>>(
     () => [
       {
         key: 'group',
@@ -94,10 +88,7 @@ export default function Demo({ theme }: DemoProps) {
                 <ExpandBtn
                   expanded={rowStateItem?.expanded}
                   onExpandToggle={() => {
-                    const expanded = getExpandToggle(
-                      item,
-                      rowStateItem
-                    )
+                    const expanded = getExpandToggle(item, rowStateItem)
                     setRowState?.(s => ({
                       ...s,
                       [item.id]: { expanded },

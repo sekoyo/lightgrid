@@ -1,10 +1,9 @@
 import { useState } from 'react'
-import { RowState, darkTheme, lightTheme } from '@lightfin/datagrid'
-import { DataGrid } from '@lightfin/react-datagrid'
+import { DataGrid, RowState, darkTheme, lightTheme } from '@lightgrid/react'
 import { DemoProps } from './types'
 import { data, columns, prizeColumns, Laureate, Prize } from './data/nobelPrize'
 
-import '@lightfin/datagrid/dist/styles.css'
+import '@lightgrid/react/dist/style.css'
 
 // You don't have to do this, we're just making the row details
 // a perfect height for a datagrid with n prizes

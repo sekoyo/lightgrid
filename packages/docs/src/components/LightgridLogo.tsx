@@ -1,13 +1,11 @@
-import type { JSX } from "solid-js";
-
-export function LightgridLogo(attrs: JSX.SvgSVGAttributes<SVGSVGElement>) {
+export function LightgridLogo(attrs: React.SVGAttributes<SVGSVGElement>) {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 811 157" {...attrs}>
-      <g fill="none" fill-rule="evenodd">
+      <g fill="none" fillRule="evenodd">
         <text
-          font-family="Helvetica"
-          font-size="140"
-          letter-spacing="10"
+          fontFamily="Helvetica"
+          fontSize="140"
+          letterSpacing="10"
           fill="var(--textColor)"
         >
           <tspan x="203" y="125">
@@ -21,5 +19,5 @@ export function LightgridLogo(attrs: JSX.SvgSVGAttributes<SVGSVGElement>) {
         />
       </g>
     </svg>
-  );
+  )
 }

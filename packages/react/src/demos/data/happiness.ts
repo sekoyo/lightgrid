@@ -1,4 +1,4 @@
-import { GroupedColumns, SortDirection } from '@lightfin/datagrid'
+import { GroupedColumns, SortDirection } from '@lightgrid/react'
 import happiness from './happiness.json'
 
 export interface HappinessEntry {
@@ -10,7 +10,7 @@ export interface HappinessEntry {
 
 export const happinessData: HappinessEntry[] = happiness
 
-export const happinessColumns: GroupedColumns<HappinessEntry, React.ReactNode> = [
+export const happinessColumns: GroupedColumns<HappinessEntry> = [
   {
     key: 'country',
     header: 'Country',

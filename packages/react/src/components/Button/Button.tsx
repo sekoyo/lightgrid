@@ -1,4 +1,4 @@
-import { cls } from '@lightfin/datagrid'
+import { cls } from '@lightgrid/core'
 import styles from './Button.module.css'
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {

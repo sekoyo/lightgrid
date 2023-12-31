@@ -1,0 +1,15 @@
+import { Demo } from '@site/src/components'
+
+# Detail Rows
+
+In order to show row details we need to:
+
+1. Add an expansion column (`columns`)
+
+1. Tell the grid whether a row has a child details row (`getRowMeta`)
+
+1. Choose whatever you want to render in this details row (`renderRowDetails`)
+
+1. Pass in `rowState` and `setRowState` so that the grid knows whether to render a details row (expanded), and so our expansion column can toggle the expansion state.
+
+<Demo demoPath="detail-rows" srcPath="DetailRows.tsx" />

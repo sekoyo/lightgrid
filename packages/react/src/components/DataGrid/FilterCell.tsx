@@ -1,4 +1,4 @@
-import type { DerivedColumnOrGroup } from '@lightfin/datagrid'
+import type { DerivedColumnOrGroup } from '@lightgrid/core'
 import type { N } from './types'
 
 interface FilterCellProps<T> {
@@ -7,7 +7,11 @@ interface FilterCellProps<T> {
   children?: React.ReactNode
 }
 
-export function FilterCell<T>({ column, filterRowHeight, children }: FilterCellProps<T>) {
+export function FilterCell<T>({
+  column,
+  filterRowHeight,
+  children,
+}: FilterCellProps<T>) {
   return (
     <div
       className="lg-header-filter"

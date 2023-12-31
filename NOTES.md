@@ -8,7 +8,7 @@ https://www.kaggle.com/datasets
 - Solid still on dark theme on light theme
 - Style improvements
   Make col dragging colour nicer - sep. var for header part
-  Col resizing now that we don't have bars
+  Tweak cell selection bg
 - Pressing up/down arrow on cell selection scrolls the page
 - Lazily load iframe demos based on visibility?
 - Iframe loading spinner
@@ -47,7 +47,7 @@ https://www.kaggle.com/datasets
 
 ## Bugs
 
-- ⛔️ Missing rightmost column on Column Filtering
+- ⛔️ Cell selection not working on pinned columns
 - Clicking in row details selects closest parent cell. Don't change selection on item details clicks.
 
 # Do and Donts

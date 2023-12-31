@@ -27,7 +27,7 @@ export default defineConfig({
     }),
     nodeResolve({ extensions }),
     typescript(),
-    scss({ fileName: 'styles.css', watch: 'src/styles' }),
+    scss({ fileName: 'style.css', watch: 'src/styles' }),
     copy({
       targets: [{ src: 'src/assets/**/*', dest: 'dist/assets' }],
     }),

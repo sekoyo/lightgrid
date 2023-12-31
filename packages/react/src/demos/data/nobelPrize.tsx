@@ -1,4 +1,4 @@
-import { GroupedColumns } from '@lightfin/datagrid'
+import { GroupedColumns } from '@lightgrid/react'
 import { IconButton } from 'src/components/IconButton'
 import { DownArrowIcon } from 'src/components/Icons'
 import rawData from './laureate.json'
@@ -35,7 +35,7 @@ export interface Laureate {
 
 export const data: Laureate[] = rawData
 
-export const columns: GroupedColumns<Laureate, React.ReactNode> = [
+export const columns: GroupedColumns<Laureate> = [
   {
     key: 'expand',
     header: '',
@@ -54,9 +54,7 @@ export const columns: GroupedColumns<Laureate, React.ReactNode> = [
         <DownArrowIcon
           style={{
             height: '12px',
-            transform: rowStateItem?.expanded
-              ? undefined
-              : 'rotate(270deg)',
+            transform: rowStateItem?.expanded ? undefined : 'rotate(270deg)',
           }}
         />
       </IconButton>
@@ -125,7 +123,7 @@ export const columns: GroupedColumns<Laureate, React.ReactNode> = [
   },
 ]
 
-export const prizeColumns: GroupedColumns<Prize, React.ReactNode> = [
+export const prizeColumns: GroupedColumns<Prize> = [
   {
     key: 'year',
     header: 'Year',

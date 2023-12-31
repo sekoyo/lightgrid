@@ -1,4 +1,4 @@
-import { DerivedColumn, ValueSource } from '@lightfin/datagrid'
+import { DerivedColumn, ValueSource } from '@lightgrid/core'
 import { N } from './types'
 
 export interface DefaultCellComponentProps<T, N> {

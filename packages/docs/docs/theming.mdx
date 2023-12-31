@@ -1,0 +1,26 @@
+---
+sidebar_position: 2
+---
+
+import { Demo } from '@site/src/components'
+
+# Theming
+
+The datagrid comes with a light and a dark theme, but you can override all or part of them via the `theme` prop.
+
+```tsx
+import { darkTheme, lightTheme, type Theme } from '@lightgrid/core'
+
+<DataGrid theme={darkTheme} />
+// Or:
+<DataGrid theme={lightTheme} />
+
+// Or create a custom theme
+const myCustomTheme: Theme = {
+  ...darkTheme,
+  headerCellBg: 'rgb(93, 126, 234)',
+}
+<DataGrid theme={myCustomTheme} />
+```
+
+<Demo demoPath="theming" srcPath="Theming.tsx" height="362px" />

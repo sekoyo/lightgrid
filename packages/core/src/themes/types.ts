@@ -1,12 +1,11 @@
 export type Theme = {
   borderRadius: string
   bg: string
-  cellBg: string
-  evenRowCellBg: string
+  cellEvenBg: string
+  cellOddBg: string
   headerCellBg: string
   filterCellBg: string
   headerBorderColor: string
-  headerInnerBorderColor: string
   headerTextColor: string
   borderColor: string
   textColor: string

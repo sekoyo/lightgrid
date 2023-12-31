@@ -1,24 +1,24 @@
 import { useState } from 'react'
 import {
+  DataGrid,
   CellComponentProps,
   GroupedColumns,
   darkTheme,
   lightTheme,
-} from '@lightfin/datagrid'
-import { DataGrid, N } from '@lightfin/react-datagrid'
+} from '@lightgrid/react'
 import { DemoProps } from './types'
 
-import '@lightfin/datagrid/dist/styles.css'
+import '@lightgrid/react/dist/style.css'
 
 const someData = new Array(10).fill('_').map((_, i) => `row ${i}`)
 
 const getValue = (s: string) => s
 
-const cellComponent = ({ column }: CellComponentProps<string, N>) => (
+const cellComponent = ({ column }: CellComponentProps<string>) => (
   <span style={{ padding: '0 var(--lgCellHPadding)' }}>{column.key}</span>
 )
 
-const groupedColumns: GroupedColumns<string, N> = [
+const groupedColumns: GroupedColumns<string> = [
   {
     key: 'groupA',
     children: [

@@ -1,0 +1,72 @@
+---
+title: Grouping
+---
+
+import { Demo } from '@site/src/components'
+
+# Row Grouping
+
+Row grouping is a concept that exists outside the datagrid. If you think about it, it's just a datagrid with rows of two different types: either a grouping row, or a data item.
+
+Lightgrid provides a utility method `groupData` to group your data. We pass in our `rowState` to determine what should be expanded.
+
+```tsx
+groupData<Medalist>(
+  data,
+  ['country', 'medal_type', 'athlete_sex'],
+  rowState,
+  2 // optional: "expand 2 levels by default"
+)
+```
+
+Strings for the groups only works for simple getters. You can also use an object to normalize or access nested data:
+
+```tsx
+{
+  key: 'country',
+  getValue: item => item.country.toLowerCase()
+}
+```
+
+We also need to create a grouping column. And all columns need to distinguish if they are rendering a grouping or normal row using `isRowGroup(item)`.
+
+In the grouping column we only want to render something if it's a row group:
+
+```tsx
+{
+  key: 'group',
+  header: 'Group',
+  getValue: d => d.id,
+  cellComponent: ({ item }) => {
+    if (isRowGroup(item)) {
+      return (
+        <div>Special grouping cell</div>
+      )
+    }
+  }
+}
+```
+
+For other columns we only want to render something if it's not a grouping row:
+
+```tsx
+{
+  key: 'athlete_name',
+  header: 'Athelete',
+  getValue: d => !isRowGroup(d) && d.athlete_name
+}
+```
+
+For Typescript users we also want to tell the Datagrid that a row item can be either a group or data item:
+
+```tsx
+<DataGrid<GroupRow | Medalist>
+  columns={columns}
+  data={groupedData}
+  getRowId={d => d.id}
+  rowState={rowState}
+  setRowState={setRowState}
+/>
+```
+
+<Demo demoPath="row-grouping" srcPath="RowGrouping.tsx" />

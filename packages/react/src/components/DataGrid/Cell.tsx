@@ -6,7 +6,7 @@ import {
   ItemId,
   RowStateItem,
   StateSetter,
-} from '@lightfin/datagrid'
+} from '@lightgrid/core'
 
 import type { N } from './types'
 import { DefaultCellComponent } from './DefaultCellComponent'
@@ -65,13 +65,21 @@ export function CellNoMemo<T>({
       onPointerEnter={
         enableColumnReorder && colReorderKey
           ? e =>
-              mgr.columnReorderPlugin?.onPointerEnter(e.currentTarget, e.clientX, column)
+              mgr.columnReorderPlugin?.onPointerEnter(
+                e.currentTarget,
+                e.clientX,
+                column
+              )
           : undefined
       }
       onPointerMove={
         enableColumnReorder && colReorderKey
           ? e =>
-              mgr.columnReorderPlugin?.onPointerMove(e.currentTarget, e.clientX, column)
+              mgr.columnReorderPlugin?.onPointerMove(
+                e.currentTarget,
+                e.clientX,
+                column
+              )
           : undefined
       }
     >

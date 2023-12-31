@@ -337,204 +337,288 @@ export class GridManager<T, N> {
     return areas
   })
 
-  // -- Grid areas (pushed in render order)
-  $areas = memo(() => {
-    const byRender: BodyAreaDesc<T, N>[] = []
-    const byCol: BodyAreaDesc<T, N>[][] = []
+  // -- Grid areas
+  $topStartArea = memo<BodyAreaDesc<T, N> | undefined>(() => {
+    const derivedRows = this.$derivedRows()
+    const derivedCols = this.$derivedCols()
+
+    if (derivedRows.start.size && derivedCols.start.size) {
+      return {
+        id: 'topStart',
+        windowX: 0,
+        windowY: derivedRows.start.startOffset,
+        windowWidth: derivedCols.start.size,
+        windowHeight: derivedRows.start.size,
+        width: derivedCols.start.size,
+        height: derivedRows.start.size,
+        colResult: derivedCols.start,
+        rowResult: derivedRows.start,
+        pinnedX: true,
+        pinnedY: true,
+        lastY: !derivedCols.middle.size && !derivedCols.end.size,
+      }
+    }
+  })
+  $topMiddleArea = memo<BodyAreaDesc<T, N> | undefined>(() => {
+    const derivedRows = this.$derivedRows()
+    const derivedCols = this.$derivedCols()
+    const middleWidth =
+      this.$viewportWidth() - derivedCols.start.size - derivedCols.end.size
+
+    if (derivedRows.start.size && derivedCols.middle.size) {
+      return {
+        id: 'topMiddle',
+        windowX: derivedCols.middle.startOffset,
+        windowY: derivedRows.start.startOffset,
+        windowWidth: middleWidth,
+        windowHeight: derivedRows.start.size,
+        width: derivedCols.middle.size + derivedCols.end.size,
+        height: derivedRows.start.size,
+        colResult: derivedCols.middle,
+        rowResult: derivedRows.start,
+        pinnedX: false,
+        pinnedY: true,
+        lastY: !derivedCols.middle.size && !derivedCols.end.size,
+      }
+    }
+  })
+  $topEndArea = memo<BodyAreaDesc<T, N> | undefined>(() => {
+    const derivedRows = this.$derivedRows()
+    const derivedCols = this.$derivedCols()
+    const endX =
+      this.$viewportWidth() - derivedCols.end.size - this.$horizontalScrollSize()
+
+    if (derivedRows.start.size && derivedCols.end.size) {
+      return {
+        id: 'topEnd',
+        windowX: endX,
+        windowY: derivedRows.start.startOffset,
+        windowWidth: derivedCols.end.size,
+        windowHeight: derivedRows.start.size,
+        width: derivedCols.end.size,
+        height: derivedRows.start.size,
+        colResult: derivedCols.end,
+        rowResult: derivedRows.start,
+        pinnedX: true,
+        pinnedY: true,
+        lastY: !derivedCols.middle.size && !derivedCols.end.size,
+      }
+    }
+  })
+  $middleRowResult = memo(() => ({
+    ...this.$derivedRows().middle,
+    items: this.$middleRows(),
+  }))
+  $mainStartArea = memo<BodyAreaDesc<T, N> | undefined>(() => {
+    const derivedRows = this.$derivedRows()
+    const derivedCols = this.$derivedCols()
+    const middleHeight =
+      this.$viewportHeight() - derivedRows.middle.startOffset - derivedRows.end.size
+
+    if (derivedRows.middle.size && derivedCols.start.size) {
+      return {
+        id: 'mainStart',
+        windowX: 0,
+        windowY: derivedRows.middle.startOffset,
+        windowWidth: derivedCols.start.size,
+        windowHeight: middleHeight,
+        width: derivedCols.start.size,
+        height: derivedRows.middle.size,
+        colResult: derivedCols.start,
+        rowResult: this.$middleRowResult(),
+        pinnedX: true,
+        pinnedY: false,
+        lastY: !derivedCols.end.size,
+      }
+    }
+  })
+  $mainMiddleArea = memo<BodyAreaDesc<T, N> | undefined>(() => {
     const derivedRows = this.$derivedRows()
     const derivedCols = this.$derivedCols()
     const middleWidth =
       this.$viewportWidth() - derivedCols.start.size - derivedCols.end.size
     const middleHeight =
       this.$viewportHeight() - derivedRows.middle.startOffset - derivedRows.end.size
+
+    if (derivedRows.middle.size && derivedCols.middle.size) {
+      return {
+        id: 'mainMiddle',
+        windowX: derivedCols.middle.startOffset,
+        windowY: derivedRows.middle.startOffset,
+        windowWidth: middleWidth,
+        windowHeight: middleHeight,
+        width: derivedCols.middle.size,
+        height: derivedRows.middle.size,
+        colResult: {
+          ...derivedCols.middle,
+          items: this.$middleCols(),
+        },
+        rowResult: this.$middleRowResult(),
+        pinnedX: false,
+        pinnedY: false,
+        lastY: !derivedCols.end.size,
+      }
+    }
+  })
+  $mainEndArea = memo<BodyAreaDesc<T, N> | undefined>(() => {
+    const derivedRows = this.$derivedRows()
+    const derivedCols = this.$derivedCols()
+    const middleHeight =
+      this.$viewportHeight() - derivedRows.middle.startOffset - derivedRows.end.size
+    const endX =
+      this.$viewportWidth() - derivedCols.end.size - this.$horizontalScrollSize()
+
+    if (derivedRows.middle.size && derivedCols.end.size) {
+      return {
+        id: 'mainEnd',
+        windowX: endX,
+        windowY: derivedRows.middle.startOffset,
+        windowWidth: derivedCols.end.size,
+        windowHeight: middleHeight,
+        width: derivedCols.end.size,
+        height: derivedRows.middle.size,
+        colResult: derivedCols.end,
+        rowResult: this.$middleRowResult(),
+        pinnedX: true,
+        pinnedY: false,
+        lastY: !derivedCols.end.size,
+      }
+    }
+  })
+  $bottomStartArea = memo<BodyAreaDesc<T, N> | undefined>(() => {
+    const derivedRows = this.$derivedRows()
+    const derivedCols = this.$derivedCols()
+    const endY =
+      this.$viewportHeight() - derivedRows.end.size - this.$horizontalScrollSize()
+
+    if (derivedRows.end.size && derivedCols.start.size) {
+      return {
+        id: 'bottomStart',
+        windowX: 0,
+        windowY: endY,
+        windowWidth: derivedCols.start.size,
+        windowHeight: derivedRows.end.size,
+        width: derivedCols.start.size,
+        height: derivedRows.end.size,
+        colResult: derivedCols.start,
+        rowResult: derivedRows.end,
+        pinnedX: true,
+        pinnedY: true,
+        lastY: true,
+      }
+    }
+  })
+  $bottomMiddleArea = memo<BodyAreaDesc<T, N> | undefined>(() => {
+    const derivedRows = this.$derivedRows()
+    const derivedCols = this.$derivedCols()
+    const middleWidth =
+      this.$viewportWidth() - derivedCols.start.size - derivedCols.end.size
+    const endY =
+      this.$viewportHeight() - derivedRows.end.size - this.$horizontalScrollSize()
+
+    if (derivedRows.end.size && derivedCols.middle.size) {
+      return {
+        id: 'bottomMiddle',
+        windowX: derivedCols.middle.startOffset,
+        windowY: endY,
+        windowWidth: middleWidth,
+        width: derivedCols.middle.size + derivedCols.end.size,
+        height: derivedRows.end.size,
+        windowHeight: derivedRows.end.size,
+        colResult: derivedCols.middle,
+        rowResult: derivedRows.end,
+        pinnedX: false,
+        pinnedY: true,
+        lastY: true,
+      }
+    }
+  })
+  $bottomEndArea = memo<BodyAreaDesc<T, N> | undefined>(() => {
+    const derivedRows = this.$derivedRows()
+    const derivedCols = this.$derivedCols()
     const endX =
       this.$viewportWidth() - derivedCols.end.size - this.$horizontalScrollSize()
     const endY =
       this.$viewportHeight() - derivedRows.end.size - this.$horizontalScrollSize()
+
+    if (derivedRows.end.size && derivedCols.end.size) {
+      return {
+        id: 'bottomEnd',
+        windowX: endX,
+        windowY: endY,
+        windowWidth: derivedCols.end.size,
+        windowHeight: derivedRows.end.size,
+        width: derivedCols.end.size,
+        height: derivedRows.end.size,
+        colResult: derivedCols.end,
+        rowResult: derivedRows.end,
+        pinnedX: true,
+        pinnedY: true,
+        lastY: true,
+      }
+    }
+  })
+
+  $areas = memo(() => {
+    const byRender: BodyAreaDesc<T, N>[] = []
+    const byCol: BodyAreaDesc<T, N>[][] = []
 
     const startColAreas: BodyAreaDesc<T, N>[] = []
     const middleColAreas: BodyAreaDesc<T, N>[] = []
     const endColAreas: BodyAreaDesc<T, N>[] = []
 
     // Main
-    if (derivedRows.middle.size) {
-      const rowResult = {
-        ...derivedRows.middle,
-        items: this.$middleRows(),
-      }
-      if (derivedCols.middle.size) {
-        const area: BodyAreaDesc<T, N> = {
-          id: 'mainMiddle',
-          windowX: derivedCols.middle.startOffset,
-          windowY: derivedRows.middle.startOffset,
-          windowWidth: middleWidth,
-          windowHeight: middleHeight,
-          width: derivedCols.middle.size,
-          height: derivedRows.middle.size,
-          colResult: {
-            ...derivedCols.middle,
-            items: this.$middleCols(),
-          },
-          rowResult,
-          pinnedX: false,
-          pinnedY: false,
-          lastY: !derivedCols.end.size,
-        }
-        byRender.push(area)
-        middleColAreas.push(area)
-      }
-      if (derivedCols.end.size) {
-        const area: BodyAreaDesc<T, N> = {
-          id: 'mainEnd',
-          windowX: endX,
-          windowY: derivedRows.middle.startOffset,
-          windowWidth: derivedCols.end.size,
-          windowHeight: middleHeight,
-          width: derivedCols.end.size,
-          height: derivedRows.middle.size,
-          colResult: derivedCols.end,
-          rowResult,
-          pinnedX: true,
-          pinnedY: false,
-          lastY: !derivedCols.end.size,
-        }
-        byRender.push(area)
-        endColAreas.push(area)
-      }
-      if (derivedCols.start.size) {
-        const area: BodyAreaDesc<T, N> = {
-          id: 'mainStart',
-          windowX: 0,
-          windowY: derivedRows.middle.startOffset,
-          windowWidth: derivedCols.start.size,
-          windowHeight: middleHeight,
-          width: derivedCols.start.size,
-          height: derivedRows.middle.size,
-          colResult: derivedCols.start,
-          rowResult,
-          pinnedX: true,
-          pinnedY: false,
-          lastY: !derivedCols.end.size,
-        }
-        byRender.push(area)
-        startColAreas.push(area)
-      }
+    const mainStartArea = this.$mainStartArea()
+    const mainMiddleArea = this.$mainMiddleArea()
+    const mainEndArea = this.$mainEndArea()
+
+    if (mainMiddleArea) {
+      byRender.push(mainMiddleArea)
+      middleColAreas.push(mainMiddleArea)
+    }
+    if (mainEndArea) {
+      byRender.push(mainEndArea)
+      middleColAreas.push(mainEndArea)
+    }
+    if (mainStartArea) {
+      byRender.push(mainStartArea)
+      middleColAreas.push(mainStartArea)
     }
 
     // Top
-    if (derivedRows.start.size) {
-      if (derivedCols.middle.size) {
-        const area: BodyAreaDesc<T, N> = {
-          id: 'topMiddle',
-          windowX: derivedCols.middle.startOffset,
-          windowY: derivedRows.start.startOffset,
-          windowWidth: middleWidth,
-          windowHeight: derivedRows.start.size,
-          width: derivedCols.middle.size + derivedCols.end.size,
-          height: derivedRows.start.size,
-          colResult: derivedCols.middle,
-          rowResult: derivedRows.start,
-          pinnedX: false,
-          pinnedY: true,
-          lastY: !derivedCols.middle.size && !derivedCols.end.size,
-        }
-        byRender.push(area)
-        middleColAreas.unshift(area)
-      }
-      if (derivedCols.end.size) {
-        const area: BodyAreaDesc<T, N> = {
-          id: 'topEnd',
-          windowX: endX,
-          windowY: derivedRows.start.startOffset,
-          windowWidth: derivedCols.end.size,
-          windowHeight: derivedRows.start.size,
-          width: derivedCols.end.size,
-          height: derivedRows.start.size,
-          colResult: derivedCols.end,
-          rowResult: derivedRows.start,
-          pinnedX: true,
-          pinnedY: true,
-          lastY: !derivedCols.middle.size && !derivedCols.end.size,
-        }
-        byRender.push(area)
-        endColAreas.unshift(area)
-      }
-      if (derivedCols.start.size) {
-        const area: BodyAreaDesc<T, N> = {
-          id: 'topStart',
-          windowX: 0,
-          windowY: derivedRows.start.startOffset,
-          windowWidth: derivedCols.start.size,
-          windowHeight: derivedRows.start.size,
-          width: derivedCols.start.size,
-          height: derivedRows.start.size,
-          colResult: derivedCols.start,
-          rowResult: derivedRows.start,
-          pinnedX: true,
-          pinnedY: true,
-          lastY: !derivedCols.middle.size && !derivedCols.end.size,
-        }
-        byRender.push(area)
-        startColAreas.unshift(area)
-      }
+    const topStartArea = this.$topStartArea()
+    const topMiddleArea = this.$topMiddleArea()
+    const topEndArea = this.$topEndArea()
+
+    if (topMiddleArea) {
+      byRender.push(topMiddleArea)
+      startColAreas.unshift(topMiddleArea)
+    }
+    if (topEndArea) {
+      byRender.push(topEndArea)
+      startColAreas.unshift(topEndArea)
+    }
+    if (topStartArea) {
+      byRender.push(topStartArea)
+      startColAreas.unshift(topStartArea)
     }
 
     // Bottom
-    if (derivedRows.end.size) {
-      if (derivedCols.middle.size) {
-        const area: BodyAreaDesc<T, N> = {
-          id: 'bottomMiddle',
-          windowX: derivedCols.middle.startOffset,
-          windowY: endY,
-          windowWidth: middleWidth,
-          width: derivedCols.middle.size + derivedCols.end.size,
-          height: derivedRows.end.size,
-          windowHeight: derivedRows.end.size,
-          colResult: derivedCols.middle,
-          rowResult: derivedRows.end,
-          pinnedX: false,
-          pinnedY: true,
-          lastY: true,
-        }
-        byRender.push(area)
-        middleColAreas.push(area)
-      }
-      if (derivedCols.end.size) {
-        const area: BodyAreaDesc<T, N> = {
-          id: 'bottomEnd',
-          windowX: endX,
-          windowY: endY,
-          windowWidth: derivedCols.end.size,
-          windowHeight: derivedRows.end.size,
-          width: derivedCols.end.size,
-          height: derivedRows.end.size,
-          colResult: derivedCols.end,
-          rowResult: derivedRows.end,
-          pinnedX: true,
-          pinnedY: true,
-          lastY: true,
-        }
-        byRender.push(area)
-        endColAreas.push(area)
-      }
-      if (derivedCols.start.size) {
-        const area: BodyAreaDesc<T, N> = {
-          id: 'bottomStart',
-          windowX: 0,
-          windowY: endY,
-          windowWidth: derivedCols.start.size,
-          windowHeight: derivedRows.end.size,
-          width: derivedCols.start.size,
-          height: derivedRows.end.size,
-          colResult: derivedCols.start,
-          rowResult: derivedRows.end,
-          pinnedX: true,
-          pinnedY: true,
-          lastY: true,
-        }
-        byRender.push(area)
-        startColAreas.push(area)
-      }
+    const bottomStartArea = this.$bottomStartArea()
+    const bottomMiddleArea = this.$bottomMiddleArea()
+    const bottomEndArea = this.$bottomEndArea()
+
+    if (bottomMiddleArea) {
+      byRender.push(bottomMiddleArea)
+      endColAreas.push(bottomMiddleArea)
+    }
+    if (bottomEndArea) {
+      byRender.push(bottomEndArea)
+      endColAreas.push(bottomEndArea)
+    }
+    if (bottomStartArea) {
+      byRender.push(bottomStartArea)
+      endColAreas.push(bottomStartArea)
     }
 
     if (startColAreas.length) {

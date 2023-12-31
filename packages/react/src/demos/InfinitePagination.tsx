@@ -1,12 +1,11 @@
 import { useCallback, useEffect, useState } from 'react'
-import { darkTheme, lightTheme } from '@lightfin/datagrid'
-import { DataGrid } from '@lightfin/react-datagrid'
+import { DataGrid, darkTheme, lightTheme } from '@lightgrid/react'
 
 import { Button } from 'src/components/Button'
 import { DemoProps } from './types'
 import { Person, peopleColumns, peopleData } from './data/people'
 
-import '@lightfin/datagrid/dist/styles.css'
+import '@lightgrid/react/dist/style.css'
 import styles from './InfinitePagination.module.css'
 
 const itemsPerPage = 50

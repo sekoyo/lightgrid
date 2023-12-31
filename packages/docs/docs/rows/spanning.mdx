@@ -1,0 +1,11 @@
+---
+title: Spanning
+---
+
+import { Demo } from '@site/src/components'
+
+# Row Spanning
+
+Row spanning is done by add a `rowSpan?: (item: T) => number` function to a column definition. Anything greater than `1` will make the cell span into adjacent cells. `-1` means span over all rows in the grid area.
+
+<Demo demoPath="row-spanning" srcPath="RowSpanning.tsx" />

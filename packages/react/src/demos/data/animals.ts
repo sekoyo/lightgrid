@@ -1,4 +1,4 @@
-import { GroupedColumns } from '@lightfin/datagrid'
+import { GroupedColumns } from '@lightgrid/react'
 
 export interface Animal {
   animal: string
@@ -67,7 +67,7 @@ export const animalData: Animal[] = [
   },
 ]
 
-export const columns: GroupedColumns<Animal, React.ReactNode> = [
+export const columns: GroupedColumns<Animal> = [
   {
     key: 'animal',
     header: 'Animal',

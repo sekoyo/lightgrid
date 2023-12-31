@@ -1,12 +1,12 @@
 import {
+  DataGrid,
   GroupedColumns,
   darkTheme,
   lightTheme,
-} from '@lightfin/datagrid'
-import { DataGrid } from '@lightfin/react-datagrid'
+} from '@lightgrid/react'
 import { DemoProps } from './types'
 
-import '@lightfin/datagrid/dist/styles.css'
+import '@lightgrid/react/dist/style.css'
 
 interface SomeData {
   id: string
@@ -36,7 +36,7 @@ const data: SomeData[] = [
   },
 ]
 
-const columns: GroupedColumns<SomeData, React.ReactNode> = [
+const columns: GroupedColumns<SomeData> = [
   {
     key: 'col1',
     getValue: d => d.col1,

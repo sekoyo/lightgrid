@@ -96,7 +96,7 @@ export function App() {
           <RowSortingDemo theme={theme} />
         </DemoContainer>
       </Route>
-      <Route path="/demos/multi-col-row-sorting">
+      <Route path="/demos/multi-row-sorting">
         <DemoContainer height={height}>
           <MultiRowSortingDemo theme={theme} />
         </DemoContainer>

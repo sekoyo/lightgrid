@@ -1,4 +1,4 @@
-import { cls } from '@lightfin/datagrid'
+import { cls } from '@lightgrid/core'
 import styles from './Input.module.css'
 
 export function Input(attrs: React.InputHTMLAttributes<HTMLInputElement>) {

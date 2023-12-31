@@ -1,4 +1,4 @@
-import { DerivedDetailRow } from '@lightfin/datagrid'
+import { DerivedDetailRow } from '@lightgrid/core'
 
 interface GridDetailRowsProps<T> {
   itemDetails: DerivedDetailRow<T>[]

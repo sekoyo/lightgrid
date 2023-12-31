@@ -1,34 +1,41 @@
-## Usage
+# Website
 
-Those templates dependencies are maintained via [pnpm](https://pnpm.io) via `pnpm up -Lri`.
+This website is built using [Docusaurus](https://docusaurus.io/), a modern static website generator.
 
-This is the reason you see a `pnpm-lock.yaml`. That being said, any package manager will work. This file can be safely be removed once you clone a template.
+### Installation
 
-```bash
-$ npm install # or pnpm install or yarn install
+```
+$ yarn
 ```
 
-### Learn more on the [Solid Website](https://solidjs.com) and come chat with us on our [Discord](https://discord.com/invite/solidjs)
+### Local Development
 
-## Available Scripts
+```
+$ yarn start
+```
 
-In the project directory, you can run:
+This command starts a local development server and opens up a browser window. Most changes are reflected live without having to restart the server.
 
-### `npm run dev` or `npm start`
+### Build
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+```
+$ yarn build
+```
 
-The page will reload if you make edits.<br>
+This command generates static content into the `build` directory and can be served using any static contents hosting service.
 
-### `npm run build`
+### Deployment
 
-Builds the app for production to the `dist` folder.<br>
-It correctly bundles Solid in production mode and optimizes the build for the best performance.
+Using SSH:
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+```
+$ USE_SSH=true yarn deploy
+```
 
-## Deployment
+Not using SSH:
 
-You can deploy the `dist` folder to any static host provider (netlify, surge, now, etc.)
+```
+$ GIT_USER=<Your GitHub username> yarn deploy
+```
+
+If you are using GitHub pages for hosting, this command is a convenient way to build the website and push to the `gh-pages` branch.

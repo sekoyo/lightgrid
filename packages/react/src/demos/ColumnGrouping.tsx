@@ -1,14 +1,18 @@
-import { GroupedColumns, darkTheme, lightTheme } from '@lightfin/datagrid'
-import { DataGrid } from '@lightfin/react-datagrid'
+import {
+  DataGrid,
+  GroupedColumns,
+  darkTheme,
+  lightTheme,
+} from '@lightgrid/react'
 import { DemoProps } from './types'
 
-import '@lightfin/datagrid/dist/styles.css'
+import '@lightgrid/react/dist/style.css'
 
 const someData = new Array(5).fill('someValue').map((s, i) => `row ${i}: ${s}`)
 
 const getValue = (s: string) => s
 
-const columns: GroupedColumns<string, React.ReactNode> = [
+const columns: GroupedColumns<string> = [
   {
     key: 'aNormalColumn',
     header: 'Normal column',
@@ -62,6 +66,7 @@ export default function Demo({ theme }: DemoProps) {
       data={someData}
       getRowId={d => d}
       theme={theme === 'light' ? lightTheme : darkTheme}
+      enableColumnResize
     />
   )
 }

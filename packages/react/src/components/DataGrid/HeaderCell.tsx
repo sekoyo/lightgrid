@@ -6,7 +6,7 @@ import {
   SortDirection,
   isColumnGroup,
   isDerivedColumnGroup,
-} from '@lightfin/datagrid'
+} from '@lightgrid/core'
 import { N } from './types'
 import { SortAscendingIcon, SortDescendingIcon } from '../Icons'
 
@@ -60,13 +60,21 @@ export function HeaderCell<T>({
       onPointerEnter={
         enableColumnReorder && colReorderKey
           ? e =>
-              mgr.columnReorderPlugin?.onPointerEnter(e.currentTarget, e.clientX, column)
+              mgr.columnReorderPlugin?.onPointerEnter(
+                e.currentTarget,
+                e.clientX,
+                column
+              )
           : undefined
       }
       onPointerMove={
         enableColumnReorder && colReorderKey
           ? e =>
-              mgr.columnReorderPlugin?.onPointerMove(e.currentTarget, e.clientX, column)
+              mgr.columnReorderPlugin?.onPointerMove(
+                e.currentTarget,
+                e.clientX,
+                column
+              )
           : undefined
       }
     >
@@ -89,10 +97,14 @@ export function HeaderCell<T>({
         <div
           className="lg-header-grip-resizer"
           role="button"
-          aria-labelledby="resize handle"
+          aria-labelledby="resize column handle"
           onPointerDown={e => {
             e.stopPropagation()
-            mgr.columnResizePlugin?.onPointerDown(e.nativeEvent, column, colAreaPos)
+            mgr.columnResizePlugin?.onPointerDown(
+              e.nativeEvent,
+              column,
+              colAreaPos
+            )
           }}
         />
       )}

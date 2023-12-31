@@ -7,7 +7,7 @@ import {
   type GridManager,
   type ItemId,
   type OnFiltersChange,
-} from '@lightfin/datagrid'
+} from '@lightgrid/core'
 
 import { N } from './types'
 import { HeaderCell } from './HeaderCell'

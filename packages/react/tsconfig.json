@@ -21,7 +21,8 @@
 
     "baseUrl": ".",
     "paths": {
-      "@lightfin/react-datagrid": ["./src/lib"]
+      "@lightgrid/react/dist/style.css": ["./dist/style.css"],
+      "@lightgrid/react": ["./src/lib"]
     }
   },
   "include": ["src"],

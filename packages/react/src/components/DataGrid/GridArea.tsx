@@ -11,7 +11,7 @@ import {
   StateSetter,
   isCellSelected,
   GridManager,
-} from '@lightfin/datagrid'
+} from '@lightgrid/core'
 
 import { N } from './types'
 import { GridDetailRows } from './GridDetailRows'
@@ -108,7 +108,7 @@ export function GridAreaNoMemo<T>({
               key={row.rowId}
               role="row"
               className={`lg-row ${
-                row.rowIndex % 2 === 0 ? 'lg-row-even' : 'lg-row-odd'
+                (row.rowIndex + 1) % 2 === 0 ? 'lg-row-even' : 'lg-row-odd'
               }`}
               style={{
                 height: row.size,
@@ -123,7 +123,10 @@ export function GridAreaNoMemo<T>({
                 }
 
                 let rowSkipCount: number | undefined
-                if (rowSpans.size && (rowSkipCount = rowSpans.get(column.colIndex))) {
+                if (
+                  rowSpans.size &&
+                  (rowSkipCount = rowSpans.get(column.colIndex))
+                ) {
                   rowSpans.set(column.colIndex, rowSkipCount - 1)
                   return cells
                 }
@@ -131,7 +134,10 @@ export function GridAreaNoMemo<T>({
                 let colSpan = 1
                 let width = column.size
                 if (column.colSpan) {
-                  colSpan = Math.min(column.colSpan(row.item), columns.length - ci)
+                  colSpan = Math.min(
+                    column.colSpan(row.item),
+                    columns.length - ci
+                  )
                   width = getCellWidth(colSpan, column, columns, ci, area.width)
                   if (colSpan > 1) {
                     skipColCount = colSpan - 1
@@ -164,7 +170,11 @@ export function GridAreaNoMemo<T>({
                     pinnedY={area.pinnedY}
                     colReorderKey={colReorderKey}
                     enableColumnReorder={enableColumnReorder}
-                    selected={isCellSelected(column.colIndex, row.rowIndex, selection)}
+                    selected={isCellSelected(
+                      column.colIndex,
+                      row.rowIndex,
+                      selection
+                    )}
                     selectionStart={Boolean(
                       selectionStartCell &&
                         selectionStartCell.colIndex === column.colIndex &&

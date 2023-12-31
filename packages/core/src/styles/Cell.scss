@@ -4,16 +4,15 @@
   contain: strict;
   display: flex;
   align-items: center;
-  direction: var(--lgDirection);
-  background: var(--lgCellBg, var(--lgBg));
+  background: var(--lgCellOddBg, var(--lgBg));
 
   &[data-pinned-x='true'],
   &[data-pinned-y='true'] {
-    background: var(--lg-pinned-cell-bg, var(--lgCellBg, var(--lgBg)));
+    background: var(--lg-pinned-cell-bg, var(--lgCellOddBg, var(--lgBg)));
   }
 
   .lg-row-even & {
-    background: var(--lgEvenRowCellBg, var(--lgCellBg, var(--lgBg)));
+    background: var(--lgCellEvenBg, var(--lgCellOddBg, var(--lgBg)));
   }
 
   &[data-selected='true'] {

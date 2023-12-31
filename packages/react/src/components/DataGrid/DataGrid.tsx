@@ -31,8 +31,8 @@ import {
   Theme,
   themeToCSSObj,
   StateSetter,
-} from '@lightfin/datagrid'
-import '@lightfin/datagrid/dist/styles.css'
+} from '@lightgrid/core'
+import '@lightgrid/core/dist/style.css'
 import { N } from './types'
 import { HeaderArea } from './HeaderArea'
 import { GridArea } from './GridArea'
@@ -44,30 +44,78 @@ const defaultRowDetailsRenderer = () => (
   <div>Define a `renderRowDetails` to customize this</div>
 )
 
-// TODO: JSDoc these props
 interface DataGridProps<T, S> {
+  /** An array of column definitions (required) */
   columns: GroupedColumns<T, N, S>
+  /**
+   * Required if columns need to change e.g. you have enabled resizing or
+   * re-ordering
+   */
   onColumnsChange?: (columnns: GroupedColumns<T, N>) => void
+  /**
+   * The `filterComponent` is passed this via the `onChange` arg to be called
+   * when the user changes the value of the filter
+   */
   onFiltersChange?: OnFiltersChange<T, N>
+  /** The row height of column headers in pixels. Defaults to 40 */
   headerRowHeight?: number
+  /** The row height of filter headers in pixels. Defaults to 40 */
   filterRowHeight?: number
+  /** Given a row data item should return a unique ID for the row (required) */
   getRowId: GetRowId<T>
+  /**
+   * An optional function which can return the height of the row, as well as if
+   * it has row details. Row height defaults to 40px
+   */
   getRowMeta?: GetRowMeta<T>
+  /**
+   * If a row has row details, this function can return the height of that
+   * details row. Row details height defaults to 160px.
+   */
   getRowDetailsMeta?: GetRowDetailsMeta<T>
+  /** The array of data to render in the datagrid (required) */
   data: T[]
+  /**
+   * The array of data to render in the datagrid which should be pinned to the
+   * top
+   */
   pinnedTopData?: T[]
+  /**
+   * The array of data to render in the datagrid which should be pinned to the
+   * bottom.
+   */
   pinnedBottomData?: T[]
+  /** Row state is required when grouping rows or showing row details */
   rowState?: RowState<S>
+  /**
+   * A setter for row state passed to cell components so that grouping or row
+   * details can be expanded or collapsed. You can also pass custom state to row
+   * cells
+   */
   setRowState?: StateSetter<RowState<S>>
+  /**
+   * A function given the row item which should render what goes in the row
+   * details area
+   */
   renderRowDetails?: RenderRowDetails<T, N>
-  direction?: 'ltr' | 'rtl'
+  /**
+   * A custom theme object or the built in `lightTheme` or `darkTheme`. Defaults
+   * dark.
+   */
   theme?: Theme
+  /** Whether to allow sorting by multiple columns or not. Defaults to false. */
   multiSort?: boolean
+  /** Whether the user can select cells */
   enableCellSelection?: boolean
+  /** Whether the user can resize columns */
   enableColumnResize?: boolean
+  /** Whether the user can re-order columns */
   enableColumnReorder?: boolean
+  /** Shows a custom loading overlay on top of the body area of the datagrid */
   loadingOverlay?: N
+  /** Pass custom classes into the datagrid element */
   className?: string
+  /** Pass custom inline styles into the data element */
   style?: React.CSSProperties
 }
 
@@ -86,7 +134,6 @@ export function DataGrid<T, S = unknown>({
   rowState = emptyRowState,
   setRowState,
   renderRowDetails = defaultRowDetailsRenderer,
-  direction,
   theme = darkTheme,
   multiSort,
   enableCellSelection,
@@ -201,11 +248,10 @@ export function DataGrid<T, S = unknown>({
     () =>
       ({
         ...themeObj,
-        '--lgDirection': direction,
         minHeight: headerHeight,
         ...style,
       }) as CSSProperties,
-    [themeObj, direction, headerHeight, style]
+    [themeObj, headerHeight, style]
   )
 
   return (
@@ -269,12 +315,18 @@ export function DataGrid<T, S = unknown>({
             ))}
           </div>
           {!!(enableColumnResize && colResizeData) && (
-            <div className="lg-resizer-marker" style={{ left: colResizeData.left }} />
+            <div
+              className="lg-resizer-marker"
+              style={{ left: colResizeData.left }}
+            />
           )}
           {loadingOverlay && (
             <div
               className="lg-loading-overlay"
-              style={{ top: headerHeight, height: viewport.height - headerHeight }}
+              style={{
+                top: headerHeight,
+                height: viewport.height - headerHeight,
+              }}
             >
               {loadingOverlay}
             </div>

@@ -1,4 +1,4 @@
-import { GroupedColumns, ValueSource } from '@lightfin/datagrid'
+import { GroupedColumns, ValueSource } from '@lightgrid/react'
 import rawData from './life_expectancy.json'
 
 export interface LifeExpectancy {
@@ -30,7 +30,7 @@ export interface LifeExpectancy {
 
 export const data: LifeExpectancy[] = rawData
 
-export const columns: GroupedColumns<LifeExpectancy, React.ReactNode> = [
+export const columns: GroupedColumns<LifeExpectancy> = [
   {
     key: 'country',
     header: 'Country',
@@ -46,7 +46,8 @@ export const columns: GroupedColumns<LifeExpectancy, React.ReactNode> = [
   {
     key: 'gdp',
     header: 'GDP',
-    getValue: (d, source) => (source === ValueSource.Cell ? d.GDP.toFixed(2) : d.GDP),
+    getValue: (d, source) =>
+      source === ValueSource.Cell ? d.GDP.toFixed(2) : d.GDP,
   },
   {
     key: 'status',

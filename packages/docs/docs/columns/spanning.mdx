@@ -1,0 +1,11 @@
+---
+title: Spanning
+---
+
+import { Demo } from '@site/src/components'
+
+# Column Spanning
+
+Column spanning is done by add a `colSpan?: (item: T) => number` function to a column definition. Anything greater than `1` will make the cell span into adjacent cells. `-1` means span over all columns in the grid area.
+
+<Demo demoPath="column-spanning" srcPath="ColumnSpanning.tsx" />

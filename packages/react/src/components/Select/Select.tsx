@@ -1,4 +1,4 @@
-import { cls } from '@lightfin/datagrid'
+import { cls } from '@lightgrid/core'
 import styles from './Select.module.css'
 
 interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {

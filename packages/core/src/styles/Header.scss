@@ -19,9 +19,8 @@
     position: absolute;
     display: flex;
     align-items: center;
-    background: var(--lgHeaderCellBg, var(--lgCellBg, var(--lgBg)));
+    background: var(--lgHeaderCellBg, var(--lgCellOddBg, var(--lgBg)));
     padding: 6px var(--lgCellHPadding);
-    direction: var(--lgDirection);
     color: var(--lgHeaderTextColor);
 
     &[role='button'] {
@@ -87,8 +86,20 @@
     top: 0;
     right: 0;
     bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
     width: 6px;
     cursor: col-resize;
+    transition: 120ms background;
+
+    &::after {
+      content: '';
+      display: block;
+      width: 1px;
+      height: 16px;
+      background: var(--lgHeaderBorderColor);
+    }
   }
 
   &-filters {
@@ -127,7 +138,6 @@
   &-filter {
     position: absolute;
     bottom: 0;
-    direction: var(--lgDirection);
     display: flex;
     align-items: center;
     justify-content: center;

@@ -1,0 +1,48 @@
+---
+title: Sorting
+---
+
+import { Demo } from '@site/src/components'
+
+# Row Sorting
+
+## Grid props
+
+### onColumnsChange
+
+As with anything where the state of the columns can be changed, you must also implement the `onColumnsChange` prop to update the column state (see the code examples below).
+
+### multiSort
+
+Allow sorting by multiple columns (see section below).
+
+## Column props
+
+There are 4 column props which control sorting:
+
+### sortable
+
+Whether or not this column can be sorted. This is the only prop you need to set yourself.
+
+### sortDirection
+
+The sort direction of this column (or undefined for no sort). You can set this to start off with a sort, but otherwise it will be set as the user toggles sorting on the columns
+
+### createSortComparator
+
+Passes the current `SortDirection` and expects you to return a function which
+sorts the data. If this isn't specified then the built in sort function will be used.
+
+### sortPriority
+
+When sorting by multiple columns this determines which column is sorted first. Columns with lower values are sorted first. Usually you don't need to worry about setting this manually.
+
+<Demo demoPath="row-sorting" srcPath="RowSorting.tsx" />
+
+## Sorting by multiple columns
+
+In some case you may wish to sort by multiple columns. In this case pass `multiSort=true` into the Datagrid.
+
+You can also control which column has sort priority by setting the `sortPriority` on the column. Lower values have higher priority. By default the sort priority will be set for you based on which column the user sorted first.
+
+<Demo demoPath="multi-row-sorting" srcPath="MultiRowSorting.tsx" />

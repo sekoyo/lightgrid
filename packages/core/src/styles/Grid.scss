@@ -16,7 +16,7 @@
   border: 1px solid var(--lgBorderColor);
   overflow: hidden;
   color: var(--lgTextColor);
-  background: var(--lgCellBg, var(--lgBg));
+  background: var(--lgCellOddBg, var(--lgBg));
 
   // Used in getScrollbarSize else on touch devices it will
   // come back as 0 since they are overlays by default. But
@@ -149,7 +149,7 @@
       width: 100%;
       height: 100%;
       outline: 1px solid var(--lgBorderColor);
-      background: var(--lgCellBg, var(--lgBg));
+      background: var(--lgCellOddBg, var(--lgBg));
     }
   }
 

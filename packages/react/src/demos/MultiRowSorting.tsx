@@ -1,22 +1,20 @@
 import { useState } from 'react'
 import {
-  // Column,
+  DataGrid,
   GroupedColumns,
-  // isColumnGroup,
   darkTheme,
   lightTheme,
-} from '@lightfin/datagrid'
-import { DataGrid } from '@lightfin/react-datagrid'
+} from '@lightgrid/react'
 
 import { DemoProps } from './types'
 import { data, columns, LifeExpectancy } from './data/lifeExpectancy'
 
-import '@lightfin/datagrid/dist/styles.css'
+import '@lightgrid/react/dist/style.css'
 
-const sortableColumns: GroupedColumns<
-  LifeExpectancy,
-  React.ReactNode
-> = columns.map(c => ({ ...c, sortable: true }))
+const sortableColumns: GroupedColumns<LifeExpectancy> = columns.map(c => ({
+  ...c,
+  sortable: true,
+}))
 
 export default function Demo({ theme }: DemoProps) {
   const [columns, setColumns] = useState(sortableColumns)
