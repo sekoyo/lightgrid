@@ -4,6 +4,7 @@ https://github.com/jdorfman/awesome-json-datasets
 https://catalog.data.gov/dataset/?res_format=JSON
 https://www.kaggle.com/datasets
 
+- READMEs
 - Scroll to row / col + docs
 
 ### Post MVP
