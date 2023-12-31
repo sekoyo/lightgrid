@@ -26,7 +26,7 @@
   --textActive: rgb(234, 205, 93);
   --borderColor: #c4c4c4;
   --focusColor: #038cf4;
-  --brandColor: black;
+  --brandColor: #f6d62b;
   --enterpriseColor: #ff2727;
   --scrollTrack: #ebebeb;
   --scrollThumbColor: #c2c2c5;
@@ -50,6 +50,8 @@
   --ifm-navbar-background-color: #111315;
   --ifm-background-color: #111315;
   --ifm-toc-border-color: #111315;
+  --ifm-table-stripe-background: rgba(96 95 95 / 0.07);
+  --ifm-table-border-color: #282828;
 
   --textColor: rgba(255, 255, 255, 0.96);
   --textColorSecondary: rgba(255, 255, 255, 0.65);

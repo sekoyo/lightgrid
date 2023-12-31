@@ -8,7 +8,7 @@ export default function LogoWrapper(props) {
       to="/"
       style={{ display: 'flex', alignItems: 'center', marginLeft: 8 }}
     >
-      <LightgridLogo style={{ height: 22, marginTop: 3 }} />
+      <LightgridLogo style={{ height: 22 }} />
     </Link>
   )
 }

@@ -32,8 +32,9 @@ type Person = {
   age: number
 }
 
-// If you define columns inside the component function it's VERY important
-// to wrap them in useMemo/useState so they are not re-created unnecessarily
+// If you define columns inside the component function
+// it's VERY important to wrap them in useMemo/useState
+// so they are not re-created unnecessarily
 const columns: GroupedColumns<Person> = []
 
 const data: Person[] = []

@@ -6,7 +6,7 @@ import type * as Preset from '@docusaurus/preset-classic'
 const config: Config = {
   title: 'Lightgrid',
   tagline: 'A full-featured, lightweight, and fast Datagrid for React',
-  favicon: 'img/favicon.ico',
+  favicon: 'img/favicon.svg',
 
   // Set the production url of your site here
   url: 'https://lightgrid.io',
