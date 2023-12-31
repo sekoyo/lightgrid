@@ -20,12 +20,11 @@
   --ifm-toc-border-color: white;
   --ifm-navbar-shadow: none;
 
-  --bg: white;
   --textColor: rgba(0, 0, 0, 0.96);
   --textColorSecondary: rgba(0, 0, 0, 0.6);
   --textColorTertiary: rgba(0, 0, 0, 0.4);
   --textActive: rgb(234, 205, 93);
-  --borderColor: #353535;
+  --borderColor: #c4c4c4;
   --focusColor: #038cf4;
   --brandColor: black;
   --enterpriseColor: #ff2727;
@@ -52,7 +51,6 @@
   --ifm-background-color: #111315;
   --ifm-toc-border-color: #111315;
 
-  --bg: rgb(1, 4, 11);
   --textColor: rgba(255, 255, 255, 0.96);
   --textColorSecondary: rgba(255, 255, 255, 0.65);
   --textColorTertiary: rgba(255, 255, 255, 0.45);

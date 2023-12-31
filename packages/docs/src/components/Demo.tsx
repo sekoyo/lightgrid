@@ -17,6 +17,7 @@ export function Demo({ demoPath, srcPath, height }: DemoProps) {
   } = useDocusaurusContext()
   const { colorMode } = useColorMode()
   const [fullscreen, setFullscreen] = useState(false)
+  const [loaded, setLoaded] = useState(false)
   const resolvedHeight = fullscreen ? '100%' : height || '420px'
 
   useEffect(() => {
@@ -29,6 +30,10 @@ export function Demo({ demoPath, srcPath, height }: DemoProps) {
       document.body.style.removeProperty('overflow')
     }
   }, [fullscreen])
+
+  const onLoad = () => {
+    setLoaded(true)
+  }
 
   const toggleFullScreen = () => {
     setFullscreen(f => !f)
@@ -48,7 +53,75 @@ export function Demo({ demoPath, srcPath, height }: DemoProps) {
         fullscreen && styles.fullscreenContainer
       )}
     >
-      <iframe className={styles.iframe} src={demoUrl} height={resolvedHeight} />
+      <div className={styles.iframeWrapper}>
+        <iframe
+          className={styles.iframe}
+          src={demoUrl}
+          height={resolvedHeight}
+          onLoad={onLoad}
+        />
+        {!loaded && (
+          <div className={styles.iframeLoader}>
+            <svg
+              width="38"
+              height="38"
+              viewBox="0 0 38 38"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <defs>
+                <linearGradient
+                  x1="8.042%"
+                  y1="0%"
+                  x2="65.682%"
+                  y2="23.865%"
+                  id="a"
+                >
+                  <stop
+                    stopColor="var(--ifm-heading-color)"
+                    stopOpacity="0"
+                    offset="0%"
+                  />
+                  <stop
+                    stopColor="var(--ifm-heading-color)"
+                    stopOpacity=".631"
+                    offset="63.146%"
+                  />
+                  <stop stopColor="var(--ifm-heading-color)" offset="100%" />
+                </linearGradient>
+              </defs>
+              <g fill="none" fill-rule="evenodd">
+                <g transform="translate(1 1)">
+                  <path
+                    d="M36 18c0-9.94-8.06-18-18-18"
+                    id="Oval-2"
+                    stroke="url(#a)"
+                    strokeWidth="2"
+                  >
+                    <animateTransform
+                      attributeName="transform"
+                      type="rotate"
+                      from="0 18 18"
+                      to="360 18 18"
+                      dur="0.9s"
+                      repeatCount="indefinite"
+                    />
+                  </path>
+                  <circle fill="#fff" cx="36" cy="18" r="1">
+                    <animateTransform
+                      attributeName="transform"
+                      type="rotate"
+                      from="0 18 18"
+                      to="360 18 18"
+                      dur="0.9s"
+                      repeatCount="indefinite"
+                    />
+                  </circle>
+                </g>
+              </g>
+            </svg>
+          </div>
+        )}
+      </div>
       <div className={styles.demoActions}>
         <button className={styles.btn} onClick={() => toggleFullScreen()}>
           <svg
