@@ -5,9 +5,6 @@ https://catalog.data.gov/dataset/?res_format=JSON
 https://www.kaggle.com/datasets
 
 - Scroll to row / col + docs
-- Add Virtual Rows and Virtual Columns docs (just saying it's always on)
-- Make menu mobile VP friendly
-- Check on mobile VP
 
 ### Post MVP
 
