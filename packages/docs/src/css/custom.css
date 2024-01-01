@@ -19,6 +19,7 @@
   --ifm-background-color: white;
   --ifm-toc-border-color: white;
   --ifm-navbar-shadow: none;
+  --ifm-code-font-size: 15px;
 
   --textColor: rgba(0, 0, 0, 0.96);
   --textColorSecondary: rgba(0, 0, 0, 0.6);

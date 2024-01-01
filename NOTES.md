@@ -1,13 +1,10 @@
 ## Todo
 
-https://github.com/jdorfman/awesome-json-datasets
-https://catalog.data.gov/dataset/?res_format=JSON
-https://www.kaggle.com/datasets
-
 - Disable text selection on headers always
 - READMEs
 - Trading demo
 - Scroll to row / col + docs
+- Cell selection copy & paste
 
 ### Post MVP
 
@@ -25,8 +22,6 @@ https://www.kaggle.com/datasets
 - Write medium articles under Lightfin and link to Datagrid. e.g. one about Solid
 - Context menu plugin
 - Automate doc page navigation buttons (prev/next)
-- More user friendly version of `GroupedColumns<Animal, React.ReactNode>` for each framework?
-  Have it as an option to import `<T, N>` ones from framework package without the N?
 - Add expand/collapse to header of expand cols
 - Consider how left/right/tab could edit adjacent cells
 - Virtualize itemDetails
@@ -39,3 +34,7 @@ https://www.kaggle.com/datasets
 
 - Wrap columns in hook in functional component
 - Use fn version of useState for columns: useState(() => {})
+
+https://github.com/jdorfman/awesome-json-datasets
+https://catalog.data.gov/dataset/?res_format=JSON
+https://www.kaggle.com/datasets
