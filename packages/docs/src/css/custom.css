@@ -19,7 +19,6 @@
   --ifm-background-color: white;
   --ifm-toc-border-color: white;
   --ifm-navbar-shadow: none;
-  --ifm-code-font-size: 15px;
 
   --textColor: rgba(0, 0, 0, 0.96);
   --textColorSecondary: rgba(0, 0, 0, 0.6);
@@ -90,4 +89,12 @@
   display: inline-flex;
   align-items: center;
   gap: 0.3rem;
+}
+
+body {
+  /* Otherwise end up with giant text in <code> on mobile */
+  text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
 }
