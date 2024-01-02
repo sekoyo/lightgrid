@@ -199,8 +199,11 @@ export function deriveColumns<T, N>(
 
   // If abs doesn't overflow we have to make sure total size doesn't
   // slightly under/overflow due to floating point rounding.
-  const willStretchToVP = summed.minFractionalSize + summed.totalAbsolutes < viewportWidth
-  let frSizeRemaining = willStretchToVP ? viewportWidth - summed.totalAbsolutes : Infinity
+  const willStretchToVP =
+    summed.minFractionalSize + summed.totalAbsolutes < viewportWidth
+  let frSizeRemaining = willStretchToVP
+    ? viewportWidth - summed.totalAbsolutes
+    : Infinity
 
   function recurseColumns(
     levelColumns: GroupedColumns<T, N>,
@@ -281,7 +284,11 @@ export function deriveColumns<T, N>(
           // it due to FR rounding. This won't work for pinned columns since the offset
           // will be relative to the pinned area, but doesn't matter as pinned area will
           // be flush with the edge anyway.
-          if (!column.pin && isLastCol && descendantRef.offset + size < viewportWidth) {
+          if (
+            !column.pin &&
+            isLastCol &&
+            descendantRef.offset + size < viewportWidth
+          ) {
             size = viewportWidth - descendantRef.offset
           }
         }
@@ -324,7 +331,9 @@ export function deriveColumns<T, N>(
     out.start.topLevelByIndex
   )
 
-  const startLastIdx = out.start.items.length ? out.start.items.at(-1)!.colIndex + 1 : 0
+  const startLastIdx = out.start.items.length
+    ? out.start.items.at(-1)!.colIndex + 1
+    : 0
   recurseColumns(
     summed.middleColumns,
     out.middle,
@@ -361,7 +370,8 @@ export function deriveColumns<T, N>(
   out.middle.startOffset = out.start.size
   out.end.startOffset = viewportWidth - out.end.size
 
-  out.itemCount = out.start.items.length + out.middle.items.length + out.end.items.length
+  out.itemCount =
+    out.start.items.length + out.middle.items.length + out.end.items.length
   out.headerRowCount = summed.totalDepth
 
   return out

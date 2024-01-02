@@ -23,7 +23,7 @@
   "license": "UNLICENSED",
   "sideEffects": false,
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host 0.0.0.0",
     "build": "tsc && vite build",
     "build:lib": "tsc && BUILD_MODE=lib vite build",
     "prepublishOnly": "npm run build:lib",

@@ -50,6 +50,13 @@ function App() {
 }
 ```
 
+:::note
+
+- The Datagrid takes up the size of the parent, make sure it has a width and height
+- Don't re-create columns every render. Define them outside or wrap them in `useMemo` or `useState(() => [/* columns */])` (also note the arrow syntax on `useState`)
+
+:::
+
 ### Basic grid example
 
 <Demo demoPath="basic-grid" srcPath="BasicGrid.tsx" height="362px" />
