@@ -59,6 +59,18 @@ const config: Config = {
         theme: {
           customCss: './src/css/custom.css',
         },
+        // If we want to add manually:
+        // <script async src="https://www.googletagmanager.com/gtag/js?id=G-4GWEBJZH81"></script>
+        // <script>
+        //   window.dataLayer = window.dataLayer || [];
+        //   function gtag(){dataLayer.push(arguments);}
+        //   gtag('js', new Date());
+
+        //   gtag('config', 'G-4GWEBJZH81');
+        // </script>
+        gtag: {
+          trackingID: 'G-4GWEBJZH81',
+        },
       } satisfies Preset.Options,
     ],
   ],
