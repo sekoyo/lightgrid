@@ -1,3 +1,43 @@
+@mixin scroll {
+  overflow: auto;
+  scrollbar-color: var(--lgScrollThumb) var(--lgScrollTrack);
+
+  // Size
+  &::-webkit-scrollbar {
+    width: 14px;
+    height: 14px;
+  }
+
+  // Track
+  &::-webkit-scrollbar-track {
+    background: var(--lgScrollTrack);
+  }
+  &::-webkit-scrollbar-corner {
+    background: var(--lgScrollTrack);
+  }
+
+  // Handle
+  &::-webkit-scrollbar-thumb {
+    background: var(--lgScrollThumb);
+    border-radius: 8px;
+    border: 3px solid var(--lgScrollTrack);
+  }
+
+  // Handle on hover
+  &::-webkit-scrollbar-thumb:hover {
+    background: var(--lgScrollThumbHover);
+  }
+}
+
+// Used in getScrollbarSize else on touch devices it will
+// come back as 0 since they are overlays by default. But
+// as soon as we style the scrollbar to not look terrible
+// it unfortunately means the scrollbar will always be visible
+// and never a nice overlay on phones/laptops.
+.lg-scroll {
+  @include scroll;
+}
+
 .lg {
   --lgCellHPadding: 0.75em;
 
@@ -18,44 +58,9 @@
   color: var(--lgTextColor);
   background: var(--lgCellOddBg, var(--lgBg));
 
-  // Used in getScrollbarSize else on touch devices it will
-  // come back as 0 since they are overlays by default. But
-  // as soon as we style the scrollbar to not look terrible
-  // it unfortunately means the scrollbar will always be visible
-  // and never a nice overlay on phones/laptops.
-  &-scroll {
-    scrollbar-color: var(--lgScrollThumb) var(--lgScrollTrack);
-
-    // Size
-    &::-webkit-scrollbar {
-      width: 14px;
-      height: 14px;
-    }
-
-    // Track
-    &::-webkit-scrollbar-track {
-      background: var(--lgScrollTrack);
-    }
-    &::-webkit-scrollbar-corner {
-      background: var(--lgScrollTrack);
-    }
-
-    // Handle
-    &::-webkit-scrollbar-thumb {
-      background: var(--lgScrollThumb);
-      border-radius: 8px;
-      border: 3px solid var(--lgScrollTrack);
-    }
-
-    // Handle on hover
-    &::-webkit-scrollbar-thumb:hover {
-      background: var(--lgScrollThumbHover);
-    }
-  }
-
   &-canvas {
     position: relative;
-    overflow: auto;
+    @include scroll;
     height: 100%;
     contain: strict;
   }
@@ -189,5 +194,20 @@
   &-loading-overlay {
     position: sticky;
     pointer-events: none;
+  }
+}
+
+// On touch the optimisations we've done for desktop cause jittering,
+// not sure why, so let the browser scroll natively.
+@media (hover: none) and (pointer: coarse) {
+  .lg {
+    &-grid-sizer {
+      display: none;
+    }
+    &-viewport {
+      position: unset;
+      overflow: unset;
+      contain: unset;
+    }
   }
 }
