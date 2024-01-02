@@ -1,6 +1,6 @@
 {
   "name": "@lightgrid/react",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "type": "module",
   "files": [
     "dist"
@@ -14,6 +14,11 @@
     },
     "./dist/style.css": "./dist/style.css",
     "./package.json": "./package.json"
+  },
+  "homepage": "https://github.com/lightgridjs/lightgrid",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lightgridjs/lightgrid.git"
   },
   "license": "UNLICENSED",
   "sideEffects": false,

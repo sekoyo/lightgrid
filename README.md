@@ -1,3 +1,5 @@
+[View the docs](https://lightgrid.io)
+
 # Lightgrid
 
 Lightgrid is a headless datagrid with a focus on:
@@ -31,7 +33,3 @@ At the moment there is only one frontend: `@lightgrid/react`, but more will be a
 - Cell editing
 - Cell selection
 - Copy to clipboard
-
-## Documentation
-
-[View the docs](https://lightgrid.io)
