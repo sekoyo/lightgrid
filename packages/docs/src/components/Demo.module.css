@@ -58,16 +58,14 @@
   font-family: inherit;
   font-size: 0.75em;
   color: var(--secondaryBtnTextColor);
-
-  &:not(:disabled):hover {
-    cursor: pointer;
-    color: var(--ifm-link-hover-color);
-    text-decoration: underline;
-  }
-
-  &:disabled {
-    background-color: var(--secondaryBtnBg);
-  }
+}
+.btn:not(:disabled):hover {
+  cursor: pointer;
+  color: var(--ifm-link-hover-color);
+  text-decoration: underline;
+}
+.btn:disabled {
+  background-color: var(--secondaryBtnBg);
 }
 
 .btnSvg {

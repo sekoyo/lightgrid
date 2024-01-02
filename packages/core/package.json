@@ -15,6 +15,11 @@
   },
   "types": "dist/index.d.ts",
   "sideEffects": false,
+  "homepage": "https://github.com/lightgridjs/lightgrid",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lightgridjs/lightgrid.git"
+  },
   "license": "UNLICENSED",
   "scripts": {
     "dev": "NODE_ENV=development rollup -c rollup.config.ts --configPlugin typescript -w",
