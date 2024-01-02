@@ -1,16 +1,21 @@
 ## Todo
 
-- Disable text selection on headers always
 - READMEs
-- Trading demo
 - Scroll to row / col + docs
 - Cell selection copy & paste
 
-### Post MVP
+### Backlog
 
-- Check re-order scrolls during drag on edges
+#### Bugs
+
+- Clicking in row details selects closest parent cell. Don't change selection on item details clicks.
+
+#### Tasks
+
 - Paste CSV/XLS into grid
 - Include instructions to use from CDN
+- Home page with demo, features etc
+- Changelog page (pull in CHANGELOG.md)
 - Row resizing
 - Move col sort icon to abs and put in padding area
 - Allow user to programmatically scroll to a row/col
@@ -25,15 +30,6 @@
 - Add expand/collapse to header of expand cols
 - Consider how left/right/tab could edit adjacent cells
 - Virtualize itemDetails
-
-## Bugs
-
-- Clicking in row details selects closest parent cell. Don't change selection on item details clicks.
-
-# Do and Donts
-
-- Wrap columns in hook in functional component
-- Use fn version of useState for columns: useState(() => {})
 
 https://github.com/jdorfman/awesome-json-datasets
 https://catalog.data.gov/dataset/?res_format=JSON

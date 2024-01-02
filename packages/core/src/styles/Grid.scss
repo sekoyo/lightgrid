@@ -197,7 +197,7 @@
   }
 }
 
-// On touch the optimisations we've done for desktop cause jittering,
+// On touch the optimisations we've done for scroll cause jittering,
 // not sure why, so let the browser scroll natively.
 @media (hover: none) and (pointer: coarse) {
   .lg {
