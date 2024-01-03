@@ -210,7 +210,8 @@ export function deriveColumns<T, N>(
     colResult: DerivedColResult<T, N>,
     levelDerivedCols: GroupedDerivedColumns<T, N>,
     topLevelByIndex: GroupedDerivedColumns<T, N>,
-    startingColIndexOffset = 0,
+    startingColOffset: number,
+    startingColIndexOffset: number,
     colIndexOffset = startingColIndexOffset,
     rowIndex = 0,
     descendantRef = { offset: 0, lastColIndex: 0 }
@@ -227,6 +228,7 @@ export function deriveColumns<T, N>(
             colResult,
             [],
             topLevelByIndex,
+            startingColOffset,
             startingColIndexOffset,
             colIndex,
             rowIndex + 1,
@@ -287,9 +289,9 @@ export function deriveColumns<T, N>(
           if (
             !column.pin &&
             isLastCol &&
-            descendantRef.offset + size < viewportWidth
+            startingColOffset + descendantRef.offset + size < viewportWidth
           ) {
-            size = viewportWidth - descendantRef.offset
+            size = viewportWidth - (startingColOffset + descendantRef.offset)
           }
         }
 
@@ -328,7 +330,9 @@ export function deriveColumns<T, N>(
     summed.leftColumns,
     out.start,
     out.start.itemsWithGrouping,
-    out.start.topLevelByIndex
+    out.start.topLevelByIndex,
+    0,
+    0
   )
 
   const startLastIdx = out.start.items.length
@@ -339,6 +343,7 @@ export function deriveColumns<T, N>(
     out.middle,
     out.middle.itemsWithGrouping,
     out.middle.topLevelByIndex,
+    out.start.startOffset + out.start.size,
     startLastIdx
   )
 
@@ -350,6 +355,7 @@ export function deriveColumns<T, N>(
     out.end,
     out.end.itemsWithGrouping,
     out.end.topLevelByIndex,
+    out.middle.startOffset + out.middle.size,
     middleLastIdx
   )
 

@@ -7,7 +7,6 @@
 
 ### Bugs
 
-- ⛔️ Final (Release) col wider than it should be on :8094/demos/column-filtering?theme=dark&height=420px
 - Clicking in row details selects closest parent cell. Don't change selection on item details clicks.
 
 ### Tasks
