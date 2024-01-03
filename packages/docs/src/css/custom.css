@@ -98,3 +98,7 @@ body {
   -moz-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
 }
+
+.navbar-sidebar__brand {
+  gap: 1em;
+}

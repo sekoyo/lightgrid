@@ -1,7 +1,7 @@
 ## Next
 
 - Scroll to row / col + docs
-- Cell selection copy & paste
+- Cell paste
 
 ## Backlog
 

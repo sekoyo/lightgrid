@@ -2,30 +2,34 @@
   overflow: auto;
   scrollbar-color: var(--lgScrollThumb) var(--lgScrollTrack);
 
-  // Size
-  &::-webkit-scrollbar {
-    width: 14px;
-    height: 14px;
-  }
+  // Only add on mouse devices else measuring scrollbar with will misreport
+  // on mobile even though the scrollbar is an overlay and takes no space.
+  @media (hover: hover) and (pointer: fine) {
+    // Size
+    &::-webkit-scrollbar {
+      width: 14px;
+      height: 14px;
+    }
 
-  // Track
-  &::-webkit-scrollbar-track {
-    background: var(--lgScrollTrack);
-  }
-  &::-webkit-scrollbar-corner {
-    background: var(--lgScrollTrack);
-  }
+    // Track
+    &::-webkit-scrollbar-track {
+      background: var(--lgScrollTrack);
+    }
+    &::-webkit-scrollbar-corner {
+      background: var(--lgScrollTrack);
+    }
 
-  // Handle
-  &::-webkit-scrollbar-thumb {
-    background: var(--lgScrollThumb);
-    border-radius: 8px;
-    border: 3px solid var(--lgScrollTrack);
-  }
+    // Handle
+    &::-webkit-scrollbar-thumb {
+      background: var(--lgScrollThumb);
+      border-radius: 8px;
+      border: 3px solid var(--lgScrollTrack);
+    }
 
-  // Handle on hover
-  &::-webkit-scrollbar-thumb:hover {
-    background: var(--lgScrollThumbHover);
+    // Handle on hover
+    &::-webkit-scrollbar-thumb:hover {
+      background: var(--lgScrollThumbHover);
+    }
   }
 }
 
