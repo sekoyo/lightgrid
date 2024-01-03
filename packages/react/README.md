@@ -4,8 +4,8 @@
 
 Lightgrid is a headless datagrid with a focus on:
 
-- Performance (the best performing React datagrid)
-- Lightweight (<25kb gzip with all plugins enabled. 10-60x smaller than other datagrids with comparable featuresets)
+- Performance (smoothly handles millions of cells)
+- Lightweight (<25kb gzip with all plugins enabled)
 - Stateless, declarative, small, intuitive API
 - Unopinionated UI (render your own controls, filters etc)
 - Native rendering: each framework is fully responsible for rendering
