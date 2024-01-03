@@ -12,6 +12,13 @@ export const happinessData: HappinessEntry[] = happiness
 
 export const happinessColumns: GroupedColumns<HappinessEntry> = [
   {
+    key: 'globalRank',
+    header: 'Global Rank',
+    getValue: d => d.globalRank,
+    sortable: true,
+    sortDirection: SortDirection.Asc,
+  },
+  {
     key: 'country',
     header: 'Country',
     getValue: d => d.country,
@@ -22,13 +29,6 @@ export const happinessColumns: GroupedColumns<HappinessEntry> = [
     header: 'Index',
     getValue: d => d.happinessIndex,
     sortable: true,
-  },
-  {
-    key: 'globalRank',
-    header: 'Global Rank',
-    getValue: d => d.globalRank,
-    sortable: true,
-    sortDirection: SortDirection.Asc,
   },
   {
     key: 'availableData',

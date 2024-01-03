@@ -80,17 +80,33 @@ export async function copySelection<T, N>(
   derivedCols: DerivedColsResult<T, N>,
   derivedRows: DerivedRowsResult<T>
 ) {
+  console.log('copySelection')
   const values: string[][] = []
 
   if (derivedRows.start.size) {
     getCellValues<T, N>(selection, derivedCols.start, derivedRows.start, values)
-    getCellValues<T, N>(selection, derivedCols.middle, derivedRows.start, values)
+    getCellValues<T, N>(
+      selection,
+      derivedCols.middle,
+      derivedRows.start,
+      values
+    )
     getCellValues<T, N>(selection, derivedCols.end, derivedRows.start, values)
   }
 
   if (derivedRows.middle.size) {
-    getCellValues<T, N>(selection, derivedCols.start, derivedRows.middle, values)
-    getCellValues<T, N>(selection, derivedCols.middle, derivedRows.middle, values)
+    getCellValues<T, N>(
+      selection,
+      derivedCols.start,
+      derivedRows.middle,
+      values
+    )
+    getCellValues<T, N>(
+      selection,
+      derivedCols.middle,
+      derivedRows.middle,
+      values
+    )
     getCellValues<T, N>(selection, derivedCols.end, derivedRows.middle, values)
   }
 

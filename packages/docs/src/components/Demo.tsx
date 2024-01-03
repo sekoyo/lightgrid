@@ -59,6 +59,7 @@ export function Demo({ demoPath, srcPath, height }: DemoProps) {
           className={styles.iframe}
           src={demoUrl}
           height={resolvedHeight}
+          allow="clipboard-write"
           onLoad={onLoad}
         />
         {!loaded && (
