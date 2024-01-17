@@ -56,6 +56,7 @@ export function CellNoMemo<T>({
       data-selection-start={selectionStart}
       data-reordering={!!colReorderKey}
       data-moving-col={column.key === colReorderKey}
+      data-align={column.contentAlign}
       style={{
         width,
         height,

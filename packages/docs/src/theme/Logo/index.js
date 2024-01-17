@@ -4,10 +4,7 @@ import { LightgridLogo } from '@site/src/components'
 
 export default function LogoWrapper(props) {
   return (
-    <Link
-      to="/"
-      style={{ display: 'flex', alignItems: 'center', marginLeft: 8 }}
-    >
+    <Link to="/" className="header-logo">
       <LightgridLogo style={{ height: 22 }} />
     </Link>
   )

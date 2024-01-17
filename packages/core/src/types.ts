@@ -6,9 +6,13 @@ export enum SortDirection {
 
 /** Value for column.pin */
 export type ColumnPin = 'start' | 'end'
+
+/** Value for column.contentAlign */
+export type ContentAlign = 'start' | 'end'
+
 /**
- * The source that is requesting a column value, which can be a cell, the clipboard, or
- * the default sorting function.
+ * The source that is requesting a column value, which can be a cell, the
+ * clipboard, or the default sorting function.
  */
 export enum ValueSource {
   /** During a cell rendering operation */
@@ -23,8 +27,8 @@ export enum ValueSource {
 export type ItemId = string | number
 
 /**
- * A column group definition which consists of a header and one or more columns or sub
- * groups in the children array.
+ * A column group definition which consists of a header and one or more columns
+ * or sub groups in the children array.
  */
 export interface ColumnGroup<T, N, S = unknown> {
   /** A unique key for this column group. Do not use an array index. */
@@ -34,15 +38,20 @@ export interface ColumnGroup<T, N, S = unknown> {
   /** The columns and groups under this group. */
   children: GroupedColumns<T, N, S>
   /**
-   * Pin this column to the left (`"start"`) or right (`"end"`) if you wish it to always
-   * be visible even if the user scrolls.
+   * Pin this column to the left (`"start"`) or right (`"end"`) if you wish it
+   * to always be visible even if the user scrolls.
    */
   pin?: ColumnPin
+  /**
+   * Can be used when you just want to align content instead of a custom
+   * `header`.
+   */
+  contentAlign?: ContentAlign
 }
 
 /**
- * The sort comparator function returned by column.createSortComparator used to sort the
- * column. If none is provided a default comparator is used.
+ * The sort comparator function returned by column.createSortComparator used to
+ * sort the column. If none is provided a default comparator is used.
  */
 export type Comparator<T> = (a: T, b: T) => number
 
@@ -63,55 +72,61 @@ export interface Column<T, N, S = unknown> {
   /** The header text or node for this column. */
   header?: N
   /**
-   * The column width. Can be `"10px"` or `10` (pixels), or `"0.5fr"` (fractional unit).
-   * Defaults to `"1fr"`.
+   * The column width. Can be `"10px"` or `10` (pixels), or `"0.5fr"`
+   * (fractional unit). Defaults to `"1fr"`.
    */
   width?: number | string
   /** The minimum width this column can be, in pixels. Defaults to `100`. */
   minWidth?: number
   /**
-   * Should return the value for the cell. You can return different values depending on
-   * the `source` param.
+   * Should return the value for the cell. You can return different values
+   * depending on the `source` param.
    */
   getValue: (row: T, source: ValueSource) => any
   /**
-   * Whether this column can be sorted or not. You must implement the `onColumnsChange`
-   * prop for sorting to work.
+   * Whether this column can be sorted or not. You must implement the
+   * `onColumnsChange` prop for sorting to work.
    */
   sortable?: boolean
   /** The current sort direction of this column (or undefined for no sort) */
   sortDirection?: SortDirection
   /**
-   * Given the sort direction, returns a custom comparator function. If not defined then
-   * the default comparator is used.
+   * Given the sort direction, returns a custom comparator function. If not
+   * defined then the default comparator is used.
    */
   createSortComparator?: (sortDirection: SortDirection) => Comparator<T>
   /**
-   * The sort priority when multiple columns are sorted. Lower is higher priority. By
-   * default it's based on the order that columns are clicked.
+   * The sort priority when multiple columns are sorted. Lower is higher
+   * priority. By default it's based on the order that columns are clicked.
    */
   sortPriority?: number
   /**
-   * Pin this column to the left (`"start"`) or right (`"end"`) if you wish it to always
-   * be visible even if the user scrolls.
+   * Pin this column to the left (`"start"`) or right (`"end"`) if you wish it
+   * to always be visible even if the user scrolls.
    */
   pin?: ColumnPin
   /**
-   * A function given a the current column and row item returns the cell node to be
-   * rendered. If not specified will try to render the result of `getValue` as a string.
+   * A function given a the current column and row item returns the cell node to
+   * be rendered. If not specified will try to render the result of `getValue`
+   * as a string.
    */
   cellComponent?: (props: CellComponentProps<T, N, S>) => N
   /**
-   * A component for filtering data on this column (e.g. a text input). Input state should
-   * be local (useState) and when you are ready to apply the filter (e.g. after a
-   * debounce), call `onChange` which will trigger a `onFiltersChange(columnKey, <value>)`
-   * callback on the DataGrid.
+   * Can be used when you just want to align content instead of a custom
+   * `cellComponent` and `header`.
+   */
+  contentAlign?: ContentAlign
+  /**
+   * A component for filtering data on this column (e.g. a text input). Input
+   * state should be local (useState) and when you are ready to apply the filter
+   * (e.g. after a debounce), call `onChange` which will trigger a
+   * `onFiltersChange(columnKey, <value>)` callback on the DataGrid.
    */
   filterComponent?: (onChange: (value: any) => void) => N
   /**
-   * When a filterComponent calls `onChange`, `onFiltersChange` prop receives `(column,
-   * value)`. So you can use `column.filterFn` to filter the item. Returning `false` means
-   * filter the item out of the datagrid.
+   * When a filterComponent calls `onChange`, `onFiltersChange` prop receives
+   * `(column, value)`. So you can use `column.filterFn` to filter the item.
+   * Returning `false` means filter the item out of the datagrid.
    */
   filterFn?: FilterFn<T>
   /** Span over adjacent columns. -1 means span the whole grid. */
@@ -120,9 +135,14 @@ export interface Column<T, N, S = unknown> {
   rowSpan?: (item: T) => number
 }
 
-export type ColumnOrGroup<T, N, S = unknown> = ColumnGroup<T, N, S> | Column<T, N, S>
+export type ColumnOrGroup<T, N, S = unknown> =
+  | ColumnGroup<T, N, S>
+  | Column<T, N, S>
 
-/** An array which can contain a mix of columns which can also be nested under groups */
+/**
+ * An array which can contain a mix of columns which can also be nested under
+ * groups
+ */
 export type GroupedColumns<T, N, S = unknown> = ColumnOrGroup<T, N, S>[]
 
 // Derived for internal use
@@ -150,7 +170,11 @@ export type DerivedColumnOrGroup<T, N, S = unknown> =
   | DerivedColumnGroup<T, N, S>
   | DerivedColumn<T, N>
 
-export type GroupedDerivedColumns<T, N, S = unknown> = DerivedColumnOrGroup<T, N, S>[]
+export type GroupedDerivedColumns<T, N, S = unknown> = DerivedColumnOrGroup<
+  T,
+  N,
+  S
+>[]
 
 export interface DerivedColResult<T, N, S = unknown> {
   areaPos: AreaPos
@@ -174,13 +198,13 @@ export interface DerivedColsResult<T, N, S = unknown> {
 }
 
 /**
- * What you should return in the `getRowMeta` function prop to describe the row's height
- * and optionally if it has a row details section.
+ * What you should return in the `getRowMeta` function prop to describe the
+ * row's height and optionally if it has a row details section.
  */
 export interface RowMeta {
   /**
-   * The height of the row in pixels. When `getRowMeta` is not defined row heights will
-   * default to `40`.
+   * The height of the row in pixels. When `getRowMeta` is not defined row
+   * heights will default to `40`.
    */
   height: number
   /** Optionally return true if this row has a row details section. */
@@ -188,9 +212,9 @@ export interface RowMeta {
 }
 
 /**
- * The row details meta returned in the `getRowDetailsMeta` function prop for providing
- * the the row details height in pixels. If `getRowDetailsMeta` isn't specified, detail
- * rows will be 160px.
+ * The row details meta returned in the `getRowDetailsMeta` function prop for
+ * providing the the row details height in pixels. If `getRowDetailsMeta` isn't
+ * specified, detail rows will be 160px.
  */
 export interface RowDetailsMeta {
   /** The row details section height in pixels. */
@@ -246,10 +270,13 @@ export type RowStateItem<S = unknown> = S & {
 export type RowState<S = unknown> = Record<ItemId, RowStateItem<S>>
 
 /**
- * Signature of `onFiltersChange` callback which is called when a `filterComponent` in a
- * column calls `onChange(<value>)`.
+ * Signature of `onFiltersChange` callback which is called when a
+ * `filterComponent` in a column calls `onChange(<value>)`.
  */
-export type OnFiltersChange<T, N> = (column: DerivedColumn<T, N>, value: any) => void
+export type OnFiltersChange<T, N> = (
+  column: DerivedColumn<T, N>,
+  value: any
+) => void
 
 /** Signature of function which returns a unique row ID per row. */
 export type GetRowId<T> = (item: T) => ItemId

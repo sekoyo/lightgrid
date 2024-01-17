@@ -31,15 +31,20 @@
     background: var(--lgColReorderBgColor);
   }
 
+  &[data-align='start'] {
+    justify-content: flex-start;
+  }
+  &[data-align='end'] {
+    justify-content: flex-end;
+  }
+
   &-details-btn {
     margin: 0 2px 0 8px;
   }
 }
 
 .lg-default-cell {
-  align-items: center;
   padding: 0 var(--lgCellHPadding);
-  min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;

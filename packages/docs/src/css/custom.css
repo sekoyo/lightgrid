@@ -56,7 +56,7 @@
   --textColor: rgba(255, 255, 255, 0.96);
   --textColorSecondary: rgba(255, 255, 255, 0.65);
   --textColorTertiary: rgba(255, 255, 255, 0.45);
-  --textActive: rgb(234, 205, 93);
+  --textActive: #eacd5d;
   --borderColor: #353535;
   --focusColor: #038cf4;
   --brandColor: #f6d62b;
@@ -85,20 +85,26 @@
   background: #181d22 !important;
 }
 
-.navbar__link {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.3rem;
-}
-
 body {
   /* Otherwise end up with giant text in <code> on mobile */
-  text-size-adjust: 100%;
-  -ms-text-size-adjust: 100%;
   -moz-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 .navbar-sidebar__brand {
   gap: 1em;
+}
+
+.header-logo {
+  display: flex;
+  align-items: center;
+  margin-right: 8px;
+}
+
+/* when mobile menu appears add some space between */
+@media (max-width: 996px) {
+  .header-logo {
+    margin-left: 8px;
+  }
 }

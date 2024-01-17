@@ -43,6 +43,7 @@ export function HeaderCell<T>({
       data-moving-col={column.key === colReorderKey}
       data-outline={outline}
       data-border={border}
+      data-align={column.contentAlign}
       role={sortable ? 'button' : undefined}
       style={{
         width: column.size,

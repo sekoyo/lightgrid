@@ -1,7 +1,10 @@
 ## Next
 
+- Add demo to virtualization page
+- Home page with demo, features etc
 - Scroll to row / col + docs
 - Cell paste
+- Doc search
 
 ## Backlog
 
@@ -11,9 +14,8 @@
 
 ### Tasks
 
-- Paste CSV/XLS into grid
+- Fast path for evenly spaced rows (static row meta and instant virtual window)
 - Include instructions to use from CDN
-- Home page with demo, features etc
 - Changelog page (pull in CHANGELOG.md)
 - Row resizing
 - Move col sort icon to abs and put in padding area
@@ -24,6 +26,8 @@
 - Context menu plugin
 - Ability to default expand row details
 - Virtualize itemDetails
+- Multi-line headers?
+- Single cell mode cell selection
 
 ## Notes
 

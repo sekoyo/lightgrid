@@ -1,4 +1,5 @@
 import 'dotenv/config'
+import path from 'path'
 import { themes as prismThemes } from 'prism-react-renderer'
 import type { Config } from '@docusaurus/types'
 import type * as Preset from '@docusaurus/preset-classic'
@@ -40,7 +41,7 @@ const config: Config = {
       '@docusaurus/preset-classic',
       {
         docs: {
-          routeBasePath: '/',
+          // routeBasePath: '/',
           sidebarPath: './sidebars.ts',
           sidebarCollapsed: false,
           // Please change this to your repo.
@@ -57,7 +58,7 @@ const config: Config = {
         //     'https://github.com/facebook/docusaurus/tree/master/packages/create-docusaurus/templates/shared/',
         // },
         theme: {
-          customCss: './src/css/custom.css',
+          customCss: ['./src/css/custom.css'],
         },
         // If we want to add manually:
         // <script async src="https://www.googletagmanager.com/gtag/js?id=G-4GWEBJZH81"></script>
@@ -95,7 +96,7 @@ const config: Config = {
         //   position: 'left',
         //   label: 'Tutorial',
         // },
-        // { to: '/blog', label: 'Blog', position: 'left' },
+        { to: '/docs', label: 'Docs', position: 'right' },
         {
           href: 'https://github.com/lightgridjs/lightgrid',
           label: 'GitHub',

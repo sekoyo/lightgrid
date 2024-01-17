@@ -40,6 +40,13 @@
       outline: 1px solid var(--lgHeaderBorderColor, var(--lgBorderColor));
     }
 
+    &[data-align='start'] {
+      justify-content: flex-start;
+    }
+    &[data-align='end'] &-inner {
+      justify-content: flex-end;
+    }
+
     &[data-border='true'] {
       &::before,
       &::after {

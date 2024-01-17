@@ -10,7 +10,7 @@ Lightgrid is a headless datagrid with a focus on:
 - Unopinionated UI (render your own controls, filters etc)
 - Native rendering: each framework is fully responsible for rendering
 
-At the moment there is only one frontend: `@lightgrid/react`, but more will be added.
+At the moment there is one frontend: `@lightgrid/react`, but more will be added.
 
 ## Features
 
