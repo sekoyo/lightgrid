@@ -4,6 +4,8 @@ import useDocusaurusContext from '@docusaurus/useDocusaurusContext'
 import { HtmlClassNameProvider } from '@docusaurus/theme-common'
 import useLayoutEffect from '@docusaurus/useIsomorphicLayoutEffect'
 import Link from '@docusaurus/Link'
+import Layout from '@theme/Layout'
+import { useColorMode } from '@docusaurus/theme-common'
 import {
   DataGrid,
   GroupedColumns,
@@ -11,9 +13,6 @@ import {
   CellComponentProps,
   darkTheme,
 } from '@lightgrid/react'
-
-import Layout from '@theme/Layout'
-import { useColorMode } from '@docusaurus/theme-common'
 
 import { cls } from '../utils'
 import {
@@ -275,7 +274,12 @@ function Content() {
     fetch('/api/top-cryptos')
       .then(r => r.json() as Promise<Market[]>)
       .then(setMarkets)
-      .catch(console.error)
+      .catch(err => {
+        console.error(err)
+        return import('../components/marketsFallback.json').then(m =>
+          setMarkets(m.default)
+        )
+      })
   }, [functionsBase])
 
   // Randomly change current price
@@ -284,15 +288,18 @@ function Content() {
 
     function changeData() {
       setMarkets(markets => {
-        const idx = randomInt(0, markets.length - 1)
-        const newMarkets = [...markets]
-        const amount = Number((Math.random() * 40).toFixed(2))
-        if (Math.random() > 0.5) {
-          newMarkets[idx].current_price += amount
-        } else {
-          newMarkets[idx].current_price -= amount
+        if (markets.length) {
+          const idx = randomInt(0, markets.length - 1)
+          const newMarkets = [...markets]
+          const amount = Number((Math.random() * 40).toFixed(2))
+          if (Math.random() > 0.5) {
+            newMarkets[idx].current_price += amount
+          } else {
+            newMarkets[idx].current_price -= amount
+          }
+          return newMarkets
         }
-        return newMarkets
+        return markets
       })
       timeout = setTimeout(changeData, Math.floor(100 + Math.random() * 600))
     }
