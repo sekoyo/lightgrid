@@ -25,9 +25,9 @@
     "baseUrl": ".",
     "paths": {
       "@lightgrid/react/dist/style.css": ["../core/dist/style.css"],
-      "@lightgrid/react": ["./src/lib"]
-    }
+      "@lightgrid/react": ["./src/lib"],
+    },
   },
   "include": ["src"],
-  "references": [{ "path": "./tsconfig.node.json" }]
+  "references": [{ "path": "./tsconfig.node.json" }],
 }

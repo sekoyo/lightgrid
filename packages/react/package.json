@@ -19,7 +19,10 @@
       "import": "./dist/index.js",
       "require": "./dist/index.umd.cjs"
     },
-    "./dist/style.css": "./dist/style.css",
+    "./dist/": {
+      "import": "./dist/",
+      "require": "./dist/"
+    },
     "./package.json": "./package.json"
   },
   "types": "dist/lib.d.ts",
@@ -64,6 +67,6 @@
     "wouter": "^2.12.1"
   },
   "dependencies": {
-    "@lightgrid/core": "workspace:*"
+    "@lightgrid/core": "workspace:^"
   }
 }

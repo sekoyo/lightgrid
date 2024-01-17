@@ -15,7 +15,6 @@ import {
 import Layout from '@theme/Layout'
 import { useColorMode } from '@docusaurus/theme-common'
 
-import styles from './index.module.css'
 import { cls } from '../utils'
 import {
   AngularIcon,
@@ -28,6 +27,7 @@ import {
 } from '../components'
 
 import '@lightgrid/react/dist/style.css'
+import styles from './index.module.css'
 
 type Market = {
   id: string
