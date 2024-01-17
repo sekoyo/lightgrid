@@ -1,2 +1,5 @@
 [dev]
   targetPort = 8095
+
+[build]
+  command = "cd packages/docs && pnpm build"
