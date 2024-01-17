@@ -62,7 +62,7 @@ type Market = {
   last_updated: string
 }
 
-const lang = navigator?.language || 'en-US'
+const lang = typeof navigator !== 'undefined' ? navigator.language : 'en-US'
 
 const randomInt = (min: number, max: number) =>
   Math.floor(Math.random() * (max - min + 1)) + min
