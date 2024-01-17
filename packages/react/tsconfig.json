@@ -10,7 +10,10 @@
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
+    "declaration": true,
     "noEmit": true,
+    "rootDir": ".",
+    "outDir": "dist",
     "jsx": "react-jsx",
 
     /* Linting */

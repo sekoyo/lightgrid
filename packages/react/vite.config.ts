@@ -2,6 +2,7 @@ import { resolve } from 'path'
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tsconfigPaths from 'vite-tsconfig-paths'
+import typescript from '@rollup/plugin-typescript'
 
 // https://vitejs.dev/config/
 const config = defineConfig({
@@ -16,6 +17,19 @@ console.log('process.env.BUILD_MODE', process.env.BUILD_MODE)
 if (process.env.BUILD_MODE === 'lib') {
   Object.assign(config, {
     define: { 'process.env.NODE_ENV': '"production"' },
+    plugins: [
+      ...config.plugins,
+      {
+        ...typescript({
+          declarationDir: resolve('./dist'),
+          rootDir: resolve('./src'),
+          compilerOptions: {
+            emitDeclarationOnly: true,
+          },
+        }),
+        apply: 'build',
+      },
+    ],
     build: {
       lib: {
         // Could also be a dictionary or array of multiple entry points
