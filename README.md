@@ -1,5 +1,7 @@
 [View the docs](https://lightgrid.io)
 
+https://github.com/lightgridjs/lightgrid/assets/760314/9ba94933-eff5-4e13-a006-9b8909f70fa7
+
 # Lightgrid
 
 Lightgrid is a headless datagrid with a focus on:
