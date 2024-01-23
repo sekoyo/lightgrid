@@ -12,8 +12,6 @@ const config = defineConfig({
   plugins: [tsconfigPaths(), react()],
 })
 
-console.log('process.env.BUILD_MODE', process.env.BUILD_MODE)
-
 if (process.env.BUILD_MODE === 'lib') {
   Object.assign(config, {
     define: { 'process.env.NODE_ENV': '"production"' },
@@ -34,7 +32,7 @@ if (process.env.BUILD_MODE === 'lib') {
       lib: {
         // Could also be a dictionary or array of multiple entry points
         entry: resolve(__dirname, 'src/lib.ts'),
-        name: 'LightgridReact',
+        name: 'Lightgrid',
         // the proper extensions will be added
         fileName: 'index',
       },

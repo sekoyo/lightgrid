@@ -41,7 +41,7 @@ const config: Config = {
       '@docusaurus/preset-classic',
       {
         docs: {
-          // routeBasePath: '/',
+          routeBasePath: '/',
           sidebarPath: './sidebars.ts',
           sidebarCollapsed: false,
           // Please change this to your repo.
@@ -96,7 +96,7 @@ const config: Config = {
         //   position: 'left',
         //   label: 'Tutorial',
         // },
-        { to: '/docs', label: 'Docs', position: 'right' },
+        // { to: '/docs', label: 'Docs', position: 'right' },
         {
           href: 'https://github.com/lightgridjs/lightgrid',
           label: 'GitHub',

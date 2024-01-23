@@ -14,17 +14,6 @@
   ],
   "main": "./dist/index.umd.cjs",
   "module": "./dist/index.js",
-  "exports": {
-    ".": {
-      "import": "./dist/index.js",
-      "require": "./dist/index.umd.cjs"
-    },
-    "./dist/": {
-      "import": "./dist/",
-      "require": "./dist/"
-    },
-    "./package.json": "./package.json"
-  },
   "types": "dist/lib.d.ts",
   "homepage": "https://github.com/lightgridjs/lightgrid",
   "repository": {

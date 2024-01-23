@@ -6,16 +6,6 @@
     "dist"
   ],
   "module": "./dist/index.js",
-  "exports": {
-    ".": {
-      "import": "./dist/index.js"
-    },
-    "./dist/": {
-      "import": "./dist/",
-      "require": "./dist/"
-    },
-    "./package.json": "./package.json"
-  },
   "types": "dist/index.d.ts",
   "homepage": "https://github.com/lightgridjs/lightgrid",
   "repository": {
