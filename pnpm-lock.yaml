@@ -86,9 +86,6 @@ importers:
       '@docusaurus/plugin-google-gtag':
         specifier: ^3.1.0
         version: 3.1.0(eslint@8.56.0)(react-dom@18.2.0)(react@18.2.0)(typescript@5.3.3)
-      '@lightgrid/react':
-        specifier: file:../react
-        version: file:packages/react(react@18.2.0)
       '@mdx-js/react':
         specifier: ^3.0.0
         version: 3.0.0(@types/react@18.2.48)(react@18.2.0)
@@ -101,9 +98,6 @@ importers:
       react-dom:
         specifier: ^18.2.0
         version: 18.2.0(react@18.2.0)
-      react-sparklines:
-        specifier: ^1.7.0
-        version: 1.7.0(react-dom@18.2.0)(react@18.2.0)
     devDependencies:
       '@docusaurus/eslint-plugin':
         specifier: ^3.1.0
@@ -132,21 +126,12 @@ importers:
       '@types/node':
         specifier: ^20.11.5
         version: 20.11.5
-      '@types/react-sparklines':
-        specifier: ^1.7.5
-        version: 1.7.5
-      css-loader:
-        specifier: ^6.9.0
-        version: 6.9.0(webpack@5.89.0)
       dotenv:
-        specifier: ^16.3.1
-        version: 16.3.1
+        specifier: ^16.3.2
+        version: 16.3.2
       eslint-plugin-react-hooks:
         specifier: ^4.6.0
         version: 4.6.0(eslint@8.56.0)
-      style-loader:
-        specifier: ^3.3.4
-        version: 3.3.4(webpack@5.89.0)
       typescript:
         specifier: ^5.3.3
         version: 5.3.3
@@ -3667,12 +3652,6 @@ packages:
       '@types/react': 18.2.48
     dev: true
 
-  /@types/react-sparklines@1.7.5:
-    resolution: {integrity: sha512-rIAmNyRKUqWWnaQMjNrxMNkgEFi5f9PrdczSNxj5DscAa48y4i9P0fRKZ72FmNcFsdg6Jx4o6CXWZtIaC0OJOg==}
-    dependencies:
-      '@types/react': 18.2.48
-    dev: true
-
   /@types/react@18.2.48:
     resolution: {integrity: sha512-qboRCl6Ie70DQQG9hhNREz81jqC1cs9EVNcjQ1AU+jH6NFfSAhVVbrrY/+nSF+Bsk4AOwm9Qa61InvMCyV+H3w==}
     dependencies:
@@ -5361,8 +5340,8 @@ packages:
     dependencies:
       is-obj: 2.0.0
 
-  /dotenv@16.3.1:
-    resolution: {integrity: sha512-IPzF4w4/Rd94bA9imS68tZBaYyBWSCE47V1RGuMrB94iyTOIEwRmVL2x/4An+6mETpLrKJ5hQkB8W4kFAadeIQ==}
+  /dotenv@16.3.2:
+    resolution: {integrity: sha512-HTlk5nmhkm8F6JcdXvHIzaorzCoziNQT9mGxLPVXW8wJF1TiGSL60ZGB4gHWabHOaMmWmhvk2/lPHfnBiT78AQ==}
     engines: {node: '>=12'}
     dev: true
 
@@ -9198,17 +9177,6 @@ packages:
       tiny-invariant: 1.3.1
       tiny-warning: 1.0.3
 
-  /react-sparklines@1.7.0(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-bJFt9K4c5Z0k44G8KtxIhbG+iyxrKjBZhdW6afP+R7EnIq+iKjbWbEFISrf3WKNFsda+C46XAfnX0StS5fbDcg==}
-    peerDependencies:
-      react: '*'
-      react-dom: '*'
-    dependencies:
-      prop-types: 15.8.1
-      react: 18.2.0
-      react-dom: 18.2.0(react@18.2.0)
-    dev: false
-
   /react@18.2.0:
     resolution: {integrity: sha512-/3IjMdb2L9QbBdWiW5e3P2/npwMBaU9mHCSCUzNln0ZCYbcfTsGbTJrU/kGemdH2IWmB2ioZ+zkxtmq6g09fGQ==}
     engines: {node: '>=0.10.0'}
@@ -9965,15 +9933,6 @@ packages:
   /strip-json-comments@3.1.1:
     resolution: {integrity: sha512-6fPc+R4ihwqP6N/aIv2f1gMH8lOVtWQHoqC4yK6oSDVVocumAsfCqjkXnqiYMhmMwS/mEHLp7Vehlt3ql6lEig==}
     engines: {node: '>=8'}
-
-  /style-loader@3.3.4(webpack@5.89.0):
-    resolution: {integrity: sha512-0WqXzrsMTyb8yjZJHDqwmnwRJvhALK9LfRtRc6B4UTWe8AijYLZYZ9thuJTZc2VfQWINADW/j+LiJnfy2RoC1w==}
-    engines: {node: '>= 12.13.0'}
-    peerDependencies:
-      webpack: ^5.0.0
-    dependencies:
-      webpack: 5.89.0
-    dev: true
 
   /style-to-object@0.4.4:
     resolution: {integrity: sha512-HYNoHZa2GorYNyqiCaBgsxvcJIn7OHq6inEga+E6Ke3m5JkoqpQbnFssk4jwe+K7AhGa2fcha4wSOf1Kn01dMg==}
@@ -10825,14 +10784,3 @@ packages:
 
   /zwitch@2.0.4:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}
-
-  file:packages/react(react@18.2.0):
-    resolution: {directory: packages/react, type: directory}
-    id: file:packages/react
-    name: '@lightgrid/react'
-    peerDependencies:
-      react: ^18.2.0
-    dependencies:
-      '@lightgrid/core': link:packages/core
-      react: 18.2.0
-    dev: false

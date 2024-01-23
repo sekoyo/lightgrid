@@ -17,12 +17,10 @@
   "dependencies": {
     "@docusaurus/core": "^3.1.0",
     "@docusaurus/plugin-google-gtag": "^3.1.0",
-    "@lightgrid/react": "file:../react",
     "@mdx-js/react": "^3.0.0",
     "prism-react-renderer": "^2.3.1",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-sparklines": "^1.7.0"
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@docusaurus/eslint-plugin": "^3.1.0",
@@ -34,11 +32,8 @@
     "@docusaurus/types": "^3.1.0",
     "@netlify/edge-functions": "^2.3.0",
     "@types/node": "^20.11.5",
-    "@types/react-sparklines": "^1.7.5",
-    "css-loader": "^6.9.0",
-    "dotenv": "^16.3.1",
+    "dotenv": "^16.3.2",
     "eslint-plugin-react-hooks": "^4.6.0",
-    "style-loader": "^3.3.4",
     "typescript": "^5.3.3"
   },
   "browserslist": [
