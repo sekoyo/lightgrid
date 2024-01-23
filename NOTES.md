@@ -28,6 +28,7 @@
 - Virtualize itemDetails
 - Multi-line headers?
 - Single cell mode cell selection
+- Sticky group headers to left/right
 
 ## Notes
 

@@ -1,4 +1,4 @@
-import { observable, effect, memo } from 'oby'
+import { signal, effect, computed } from '@preact/signals-core'
 import throttle from 'lodash-es/throttle'
 
 import {
@@ -106,27 +106,27 @@ export class GridManager<T, N> {
   columnReorderPlugin?: ColumnReorderPlugin<T, N>
 
   // Dynamic props
-  $viewportWidth = observable(0)
-  $viewportHeight = observable(0)
-  $columns = observable<GroupedColumns<T, N>>([])
-  $headerRowHeight = observable(0)
-  $filterRowHeight = observable(0)
-  $data = observable<T[]>([])
-  $pinnedTopData = observable<T[]>([])
-  $pinnedBottomData = observable<T[]>([])
-  $rowState = observable<RowState>({})
-  $multiSort = observable(false)
-  $enableCellSelection = observable(false)
-  $enableColumnResize = observable(false)
-  $enableColumnReorder = observable(false)
+  $viewportWidth = signal(0)
+  $viewportHeight = signal(0)
+  $columns = signal<GroupedColumns<T, N>>([])
+  $headerRowHeight = signal(0)
+  $filterRowHeight = signal(0)
+  $data = signal<T[]>([])
+  $pinnedTopData = signal<T[]>([])
+  $pinnedBottomData = signal<T[]>([])
+  $rowState = signal<RowState>({})
+  $multiSort = signal(false)
+  $enableCellSelection = signal(false)
+  $enableColumnResize = signal(false)
+  $enableColumnReorder = signal(false)
 
   // Derived values
-  $sortedColumn = memo(() =>
-    findColumn(this.$columns(), c => Boolean(c.sortable && c.sortDirection))
+  $sortedColumn = computed(() =>
+    findColumn(this.$columns.value, c => Boolean(c.sortable && c.sortDirection))
   )
-  $comparators = memo(() =>
+  $comparators = computed(() =>
     flatMapColumns(
-      this.$columns(),
+      this.$columns.value,
       c => c as Column<T, N>,
       c => Boolean(!isColumnGroup(c) && c.sortable && c.sortDirection)
     )
@@ -137,11 +137,11 @@ export class GridManager<T, N> {
           createDefaultSortComparator(c.getValue, c.sortDirection!)
       )
   )
-  $derivedData = memo(() => {
-    if (!this.$multiSort()) {
-      const sortedColumn = this.$sortedColumn()
+  $derivedData = computed(() => {
+    if (!this.$multiSort.value) {
+      const sortedColumn = this.$sortedColumn.value
       if (!sortedColumn) {
-        return this.$data()
+        return this.$data.value
       }
       const comparator =
         sortedColumn.createSortComparator?.(sortedColumn.sortDirection!) ||
@@ -150,67 +150,69 @@ export class GridManager<T, N> {
           sortedColumn.sortDirection!
         )
 
-      return this.$data().slice().sort(comparator)
+      return this.$data.value.slice().sort(comparator)
     } else {
-      if (!this.$comparators().length) {
-        return this.$data()
+      if (!this.$comparators.value.length) {
+        return this.$data.value
       }
 
-      return this.$data().slice().sort(createMultiSort(this.$comparators()))
+      return this.$data.value
+        .slice()
+        .sort(createMultiSort(this.$comparators.value))
     }
   })
 
   // Has to be calculated first so that we can calc rows and know if they overflow since
   // vscrollbars will affect available width for derivedCols (and their fractional sizing)
-  $headerHeight = memo(() =>
+  $headerHeight = computed(() =>
     getHeaderHeight(
-      this.$columns(),
-      this.$headerRowHeight(),
-      this.$filterRowHeight()
+      this.$columns.value,
+      this.$headerRowHeight.value,
+      this.$filterRowHeight.value
     )
   )
 
-  $derivedStartRows = memo(() =>
+  $derivedStartRows = computed(() =>
     deriveRows(
       AreaPos.Start,
-      this.$pinnedTopData(),
-      this.$rowState(),
+      this.$pinnedTopData.value,
+      this.$rowState.value,
       this.getRowId,
       this.getRowMeta,
       this.getRowDetailsMeta,
-      () => this.$headerHeight(),
+      () => this.$headerHeight.value,
       0
     )
   )
-  $derivedMiddleRows = memo(() =>
+  $derivedMiddleRows = computed(() =>
     deriveRows(
       AreaPos.Middle,
-      this.$derivedData(),
-      this.$rowState(),
+      this.$derivedData.value,
+      this.$rowState.value,
       this.getRowId,
       this.getRowMeta,
       this.getRowDetailsMeta,
-      () => this.$headerHeight() + this.$derivedStartRows().size,
-      this.$derivedStartRows().items.length
+      () => this.$headerHeight.value + this.$derivedStartRows.value.size,
+      this.$derivedStartRows.value.items.length
     )
   )
-  $derivedEndRows = memo(() =>
+  $derivedEndRows = computed(() =>
     deriveRows(
       AreaPos.End,
-      this.$pinnedBottomData(),
-      this.$rowState(),
+      this.$pinnedBottomData.value,
+      this.$rowState.value,
       this.getRowId,
       this.getRowMeta,
       this.getRowDetailsMeta,
-      thisSize => this.$viewportHeight() - thisSize,
-      this.$derivedStartRows().items.length +
-        this.$derivedMiddleRows().items.length
+      thisSize => this.$viewportHeight.value - thisSize,
+      this.$derivedStartRows.value.items.length +
+        this.$derivedMiddleRows.value.items.length
     )
   )
-  $derivedRows = memo<DerivedRowsResult<T>>(() => {
-    const start = this.$derivedStartRows()
-    const middle = this.$derivedMiddleRows()
-    const end = this.$derivedEndRows()
+  $derivedRows = computed<DerivedRowsResult<T>>(() => {
+    const start = this.$derivedStartRows.value
+    const middle = this.$derivedMiddleRows.value
+    const end = this.$derivedEndRows.value
     return {
       start,
       middle,
@@ -220,63 +222,66 @@ export class GridManager<T, N> {
     }
   })
 
-  $contentHeight = memo(() => this.$headerHeight() + this.$derivedRows().size)
+  $contentHeight = computed(
+    () => this.$headerHeight.value + this.$derivedRows.value.size
+  )
 
-  $verticalScrollSize = memo(() =>
-    this.$viewportHeight() && this.$contentHeight() > this.$viewportHeight()
+  $verticalScrollSize = computed(() =>
+    this.$viewportHeight.value &&
+    this.$contentHeight.value > this.$viewportHeight.value
       ? this.scrollbarSize
       : 0
   )
 
-  $derivedCols = memo(() =>
+  $derivedCols = computed(() =>
     deriveColumns(
-      this.$columns(),
-      this.$viewportWidth() - this.$verticalScrollSize()
+      this.$columns.value,
+      this.$viewportWidth.value - this.$verticalScrollSize.value
     )
   )
 
-  $horizontalScrollSize = memo(() =>
-    this.$viewportWidth() &&
-    this.$derivedCols().size >
-      this.$viewportWidth() - this.$verticalScrollSize()
+  $horizontalScrollSize = computed(() =>
+    this.$viewportWidth.value &&
+    this.$derivedCols.value.size >
+      this.$viewportWidth.value - this.$verticalScrollSize.value
       ? this.scrollbarSize
       : 0
   )
 
   // -- Column window.
-  // Also `- $verticalScrollSize()` too but a bit of extra overscan is ok
-  $midWidth = memo(
+  // Also `- $verticalScrollSize.value` too but a bit of extra overscan is ok
+  $midWidth = computed(
     () =>
-      this.$viewportWidth() -
-      this.$derivedCols().start.size -
-      this.$derivedCols().end.size
+      this.$viewportWidth.value -
+      this.$derivedCols.value.start.size -
+      this.$derivedCols.value.end.size
   )
-  $colWindow = memo(() =>
+  $colWindow = computed(() =>
     getColumnWindow(
-      this.$midWidth(),
-      this.$scrollX(),
-      this.$derivedCols().middle.items
+      this.$midWidth.value,
+      this.$scrollX.value,
+      this.$derivedCols.value.middle.items
     )
   )
-  $middleCols = memo(() =>
-    this.$derivedCols().middle.items.slice(
-      this.$colWindow()[0],
-      this.$colWindow()[1] + 1
+  $middleCols = computed(() =>
+    this.$derivedCols.value.middle.items.slice(
+      this.$colWindow.value[0],
+      this.$colWindow.value[1] + 1
     )
   )
   // For simplicity & perf in common case this renders everything in a visible group, even if children
   // of that group go off screen. I think in reality this is unlikely to be an issue unless groups are
   // very wide with many child columns. Otherwise could slice out all but groups from topLevelByIndex
   // but then we'd need to create a new tree of groups without them (array of references so not too bad)
-  $middleHeaderCols = memo(() =>
-    this.$derivedCols().middle.topLevelByIndex.slice(
+  $middleHeaderCols = computed(() =>
+    this.$derivedCols.value.middle.topLevelByIndex.slice(
       this.getFirstDefinedRev(
-        this.$derivedCols().middle.topLevelByIndex,
-        this.$colWindow()[0]
+        this.$derivedCols.value.middle.topLevelByIndex,
+        this.$colWindow.value[0]
       ),
       this.getFirstDefinedFwd(
-        this.$derivedCols().middle.topLevelByIndex,
-        this.$colWindow()[1]
+        this.$derivedCols.value.middle.topLevelByIndex,
+        this.$colWindow.value[1]
       ) + 1
     )
   )
@@ -300,40 +305,40 @@ export class GridManager<T, N> {
   }
 
   // -- Row window.
-  // Also `- $horizontalScrollSize()` too but a bit of extra overscan is ok
-  $midHeight = memo(
+  // Also `- $horizontalScrollSize.value` too but a bit of extra overscan is ok
+  $midHeight = computed(
     () =>
-      this.$viewportHeight() -
-      this.$headerHeight() -
-      this.$derivedRows().start.size -
-      this.$derivedRows().end.size
+      this.$viewportHeight.value -
+      this.$headerHeight.value -
+      this.$derivedRows.value.start.size -
+      this.$derivedRows.value.end.size
   )
-  $rowWindow = memo(() =>
+  $rowWindow = computed(() =>
     getRowWindow(
-      this.$midHeight(),
-      this.$scrollY(),
-      this.$derivedRows().middle.items
+      this.$midHeight.value,
+      this.$scrollY.value,
+      this.$derivedRows.value.middle.items
     )
   )
-  $middleRows = memo(() =>
-    this.$derivedRows().middle.items.slice(
-      this.$rowWindow()[0],
-      this.$rowWindow()[1] + 1
+  $middleRows = computed(() =>
+    this.$derivedRows.value.middle.items.slice(
+      this.$rowWindow.value[0],
+      this.$rowWindow.value[1] + 1
     )
   )
 
-  $headerAreas = memo<HeaderAreaDesc<T, N>[]>(() => {
-    const derivedCols = this.$derivedCols()
-    const headerRowHeight = this.$headerRowHeight()
-    const filterRowHeight = this.$filterRowHeight()
-    const headerHeight = this.$headerHeight()
+  $headerAreas = computed<HeaderAreaDesc<T, N>[]>(() => {
+    const derivedCols = this.$derivedCols.value
+    const headerRowHeight = this.$headerRowHeight.value
+    const filterRowHeight = this.$filterRowHeight.value
+    const headerHeight = this.$headerHeight.value
     const areas: HeaderAreaDesc<T, N>[] = []
 
     // In render order
-    if (this.$middleCols().length) {
+    if (this.$middleCols.value.length) {
       areas.push({
-        columns: this.$middleHeaderCols(),
-        flatColumns: this.$middleCols(), // Remove
+        columns: this.$middleHeaderCols.value,
+        flatColumns: this.$middleCols.value, // Remove
         colAreaPos: AreaPos.Middle,
         headerRowCount: derivedCols.headerRowCount,
         headerRowHeight,
@@ -352,8 +357,8 @@ export class GridManager<T, N> {
         headerRowHeight,
         filterRowHeight,
         left:
-          this.$viewportWidth() -
-          this.$horizontalScrollSize() -
+          this.$viewportWidth.value -
+          this.$horizontalScrollSize.value -
           derivedCols.end.size,
         width: derivedCols.end.size,
         height: headerHeight,
@@ -376,9 +381,9 @@ export class GridManager<T, N> {
   })
 
   // -- Grid areas
-  $topStartArea = memo<BodyAreaDesc<T, N> | undefined>(() => {
-    const derivedRows = this.$derivedRows()
-    const derivedCols = this.$derivedCols()
+  $topStartArea = computed<BodyAreaDesc<T, N> | undefined>(() => {
+    const derivedRows = this.$derivedRows.value
+    const derivedCols = this.$derivedCols.value
 
     if (derivedRows.start.size && derivedCols.start.size) {
       return {
@@ -397,11 +402,11 @@ export class GridManager<T, N> {
       }
     }
   })
-  $topMiddleArea = memo<BodyAreaDesc<T, N> | undefined>(() => {
-    const derivedRows = this.$derivedRows()
-    const derivedCols = this.$derivedCols()
+  $topMiddleArea = computed<BodyAreaDesc<T, N> | undefined>(() => {
+    const derivedRows = this.$derivedRows.value
+    const derivedCols = this.$derivedCols.value
     const middleWidth =
-      this.$viewportWidth() - derivedCols.start.size - derivedCols.end.size
+      this.$viewportWidth.value - derivedCols.start.size - derivedCols.end.size
 
     if (derivedRows.start.size && derivedCols.middle.size) {
       return {
@@ -420,13 +425,13 @@ export class GridManager<T, N> {
       }
     }
   })
-  $topEndArea = memo<BodyAreaDesc<T, N> | undefined>(() => {
-    const derivedRows = this.$derivedRows()
-    const derivedCols = this.$derivedCols()
+  $topEndArea = computed<BodyAreaDesc<T, N> | undefined>(() => {
+    const derivedRows = this.$derivedRows.value
+    const derivedCols = this.$derivedCols.value
     const endX =
-      this.$viewportWidth() -
+      this.$viewportWidth.value -
       derivedCols.end.size -
-      this.$horizontalScrollSize()
+      this.$horizontalScrollSize.value
 
     if (derivedRows.start.size && derivedCols.end.size) {
       return {
@@ -445,15 +450,15 @@ export class GridManager<T, N> {
       }
     }
   })
-  $middleRowResult = memo(() => ({
-    ...this.$derivedRows().middle,
-    items: this.$middleRows(),
+  $middleRowResult = computed(() => ({
+    ...this.$derivedRows.value.middle,
+    items: this.$middleRows.value,
   }))
-  $mainStartArea = memo<BodyAreaDesc<T, N> | undefined>(() => {
-    const derivedRows = this.$derivedRows()
-    const derivedCols = this.$derivedCols()
+  $mainStartArea = computed<BodyAreaDesc<T, N> | undefined>(() => {
+    const derivedRows = this.$derivedRows.value
+    const derivedCols = this.$derivedCols.value
     const middleHeight =
-      this.$viewportHeight() -
+      this.$viewportHeight.value -
       derivedRows.middle.startOffset -
       derivedRows.end.size
 
@@ -467,20 +472,20 @@ export class GridManager<T, N> {
         width: derivedCols.start.size,
         height: derivedRows.middle.size,
         colResult: derivedCols.start,
-        rowResult: this.$middleRowResult(),
+        rowResult: this.$middleRowResult.value,
         pinnedX: true,
         pinnedY: false,
         lastY: !derivedCols.end.size,
       }
     }
   })
-  $mainMiddleArea = memo<BodyAreaDesc<T, N> | undefined>(() => {
-    const derivedRows = this.$derivedRows()
-    const derivedCols = this.$derivedCols()
+  $mainMiddleArea = computed<BodyAreaDesc<T, N> | undefined>(() => {
+    const derivedRows = this.$derivedRows.value
+    const derivedCols = this.$derivedCols.value
     const middleWidth =
-      this.$viewportWidth() - derivedCols.start.size - derivedCols.end.size
+      this.$viewportWidth.value - derivedCols.start.size - derivedCols.end.size
     const middleHeight =
-      this.$viewportHeight() -
+      this.$viewportHeight.value -
       derivedRows.middle.startOffset -
       derivedRows.end.size
 
@@ -495,26 +500,26 @@ export class GridManager<T, N> {
         height: derivedRows.middle.size,
         colResult: {
           ...derivedCols.middle,
-          items: this.$middleCols(),
+          items: this.$middleCols.value,
         },
-        rowResult: this.$middleRowResult(),
+        rowResult: this.$middleRowResult.value,
         pinnedX: false,
         pinnedY: false,
         lastY: !derivedCols.end.size,
       }
     }
   })
-  $mainEndArea = memo<BodyAreaDesc<T, N> | undefined>(() => {
-    const derivedRows = this.$derivedRows()
-    const derivedCols = this.$derivedCols()
+  $mainEndArea = computed<BodyAreaDesc<T, N> | undefined>(() => {
+    const derivedRows = this.$derivedRows.value
+    const derivedCols = this.$derivedCols.value
     const middleHeight =
-      this.$viewportHeight() -
+      this.$viewportHeight.value -
       derivedRows.middle.startOffset -
       derivedRows.end.size
     const endX =
-      this.$viewportWidth() -
+      this.$viewportWidth.value -
       derivedCols.end.size -
-      this.$horizontalScrollSize()
+      this.$horizontalScrollSize.value
 
     if (derivedRows.middle.size && derivedCols.end.size) {
       return {
@@ -526,20 +531,20 @@ export class GridManager<T, N> {
         width: derivedCols.end.size,
         height: derivedRows.middle.size,
         colResult: derivedCols.end,
-        rowResult: this.$middleRowResult(),
+        rowResult: this.$middleRowResult.value,
         pinnedX: true,
         pinnedY: false,
         lastY: !derivedCols.end.size,
       }
     }
   })
-  $bottomStartArea = memo<BodyAreaDesc<T, N> | undefined>(() => {
-    const derivedRows = this.$derivedRows()
-    const derivedCols = this.$derivedCols()
+  $bottomStartArea = computed<BodyAreaDesc<T, N> | undefined>(() => {
+    const derivedRows = this.$derivedRows.value
+    const derivedCols = this.$derivedCols.value
     const endY =
-      this.$viewportHeight() -
+      this.$viewportHeight.value -
       derivedRows.end.size -
-      this.$horizontalScrollSize()
+      this.$horizontalScrollSize.value
 
     if (derivedRows.end.size && derivedCols.start.size) {
       return {
@@ -558,15 +563,15 @@ export class GridManager<T, N> {
       }
     }
   })
-  $bottomMiddleArea = memo<BodyAreaDesc<T, N> | undefined>(() => {
-    const derivedRows = this.$derivedRows()
-    const derivedCols = this.$derivedCols()
+  $bottomMiddleArea = computed<BodyAreaDesc<T, N> | undefined>(() => {
+    const derivedRows = this.$derivedRows.value
+    const derivedCols = this.$derivedCols.value
     const middleWidth =
-      this.$viewportWidth() - derivedCols.start.size - derivedCols.end.size
+      this.$viewportWidth.value - derivedCols.start.size - derivedCols.end.size
     const endY =
-      this.$viewportHeight() -
+      this.$viewportHeight.value -
       derivedRows.end.size -
-      this.$horizontalScrollSize()
+      this.$horizontalScrollSize.value
 
     if (derivedRows.end.size && derivedCols.middle.size) {
       return {
@@ -585,17 +590,17 @@ export class GridManager<T, N> {
       }
     }
   })
-  $bottomEndArea = memo<BodyAreaDesc<T, N> | undefined>(() => {
-    const derivedRows = this.$derivedRows()
-    const derivedCols = this.$derivedCols()
+  $bottomEndArea = computed<BodyAreaDesc<T, N> | undefined>(() => {
+    const derivedRows = this.$derivedRows.value
+    const derivedCols = this.$derivedCols.value
     const endX =
-      this.$viewportWidth() -
+      this.$viewportWidth.value -
       derivedCols.end.size -
-      this.$horizontalScrollSize()
+      this.$horizontalScrollSize.value
     const endY =
-      this.$viewportHeight() -
+      this.$viewportHeight.value -
       derivedRows.end.size -
-      this.$horizontalScrollSize()
+      this.$horizontalScrollSize.value
 
     if (derivedRows.end.size && derivedCols.end.size) {
       return {
@@ -615,7 +620,7 @@ export class GridManager<T, N> {
     }
   })
 
-  $areas = memo(() => {
+  $areas = computed(() => {
     const byRender: BodyAreaDesc<T, N>[] = []
     const byCol: BodyAreaDesc<T, N>[][] = []
 
@@ -624,9 +629,9 @@ export class GridManager<T, N> {
     const endColAreas: BodyAreaDesc<T, N>[] = []
 
     // Main
-    const mainStartArea = this.$mainStartArea()
-    const mainMiddleArea = this.$mainMiddleArea()
-    const mainEndArea = this.$mainEndArea()
+    const mainStartArea = this.$mainStartArea.value
+    const mainMiddleArea = this.$mainMiddleArea.value
+    const mainEndArea = this.$mainEndArea.value
 
     if (mainMiddleArea) {
       byRender.push(mainMiddleArea)
@@ -642,9 +647,9 @@ export class GridManager<T, N> {
     }
 
     // Top
-    const topStartArea = this.$topStartArea()
-    const topMiddleArea = this.$topMiddleArea()
-    const topEndArea = this.$topEndArea()
+    const topStartArea = this.$topStartArea.value
+    const topMiddleArea = this.$topMiddleArea.value
+    const topEndArea = this.$topEndArea.value
 
     if (topMiddleArea) {
       byRender.push(topMiddleArea)
@@ -660,9 +665,9 @@ export class GridManager<T, N> {
     }
 
     // Bottom
-    const bottomStartArea = this.$bottomStartArea()
-    const bottomMiddleArea = this.$bottomMiddleArea()
-    const bottomEndArea = this.$bottomEndArea()
+    const bottomStartArea = this.$bottomStartArea.value
+    const bottomMiddleArea = this.$bottomMiddleArea.value
+    const bottomEndArea = this.$bottomEndArea.value
 
     if (bottomMiddleArea) {
       byRender.push(bottomMiddleArea)
@@ -691,8 +696,8 @@ export class GridManager<T, N> {
   })
 
   // State
-  $scrollY = observable(0)
-  $scrollX = observable(0)
+  $scrollY = signal(0)
+  $scrollX = signal(0)
 
   constructor(props: GridManagerStaticProps<T, N>) {
     this.getRowId = props.getRowId
@@ -708,7 +713,7 @@ export class GridManager<T, N> {
 
     // Lazily load plugins
     effect(() => {
-      const enabled = this.$enableCellSelection()
+      const enabled = this.$enableCellSelection.value
       if (enabled) {
         this.enableCellSelectionPlugin()
       } else {
@@ -717,7 +722,7 @@ export class GridManager<T, N> {
     })
 
     effect(() => {
-      const enabled = this.$enableColumnResize()
+      const enabled = this.$enableColumnResize.value
       if (enabled) {
         this.enableColumnResizePlugin()
       } else {
@@ -726,7 +731,7 @@ export class GridManager<T, N> {
     })
 
     effect(() => {
-      const enabled = this.$enableColumnReorder()
+      const enabled = this.$enableColumnReorder.value
       if (enabled) {
         this.enableColumnReorderPlugin()
       } else {
@@ -735,17 +740,17 @@ export class GridManager<T, N> {
     })
 
     // Propagate changes to props
-    effect(() => props.onDerivedColumnsChange(this.$derivedCols()))
-    effect(() => props.onAreasChanged(this.$areas().byRender))
-    effect(() => props.onHeadersChanged(this.$headerAreas()))
+    effect(() => props.onDerivedColumnsChange(this.$derivedCols.value))
+    effect(() => props.onAreasChanged(this.$areas.value.byRender))
+    effect(() => props.onHeadersChanged(this.$headerAreas.value))
     effect(() =>
       props.onViewportChanged({
-        width: this.$viewportWidth() - this.$verticalScrollSize(),
-        height: this.$viewportHeight() - this.$horizontalScrollSize(),
+        width: this.$viewportWidth.value - this.$verticalScrollSize.value,
+        height: this.$viewportHeight.value - this.$horizontalScrollSize.value,
       })
     )
-    effect(() => props.onContentHeightChanged(this.$contentHeight()))
-    effect(() => props.onHeaderHeightChanged(this.$headerHeight()))
+    effect(() => props.onContentHeightChanged(this.$contentHeight.value))
+    effect(() => props.onHeaderHeightChanged(this.$headerHeight.value))
   }
 
   mount(
@@ -778,22 +783,24 @@ export class GridManager<T, N> {
   }
 
   update(props: GridManagerDynamicProps<T, N>) {
-    this.$columns(props.columns)
-    this.$headerRowHeight(props.headerRowHeight ?? DEFAULT_HEADER_ROW_HEIGHT)
-    this.$filterRowHeight(props.filterRowHeight ?? DEFAULT_FILTER_ROW_HEIGHT)
-    this.$data(props.data)
-    this.$pinnedTopData(props.pinnedTopData)
-    this.$pinnedBottomData(props.pinnedBottomData)
-    this.$rowState(props.rowState)
-    this.$multiSort(props.multiSort || false)
-    this.$enableCellSelection(props.enableCellSelection || false)
-    this.$enableColumnResize(props.enableColumnResize || false)
-    this.$enableColumnReorder(props.enableColumnReorder || false)
+    this.$columns.value = props.columns
+    this.$headerRowHeight.value =
+      props.headerRowHeight ?? DEFAULT_HEADER_ROW_HEIGHT
+    this.$filterRowHeight.value =
+      props.filterRowHeight ?? DEFAULT_FILTER_ROW_HEIGHT
+    this.$data.value = props.data
+    this.$pinnedTopData.value = props.pinnedTopData
+    this.$pinnedBottomData.value = props.pinnedBottomData
+    this.$rowState.value = props.rowState
+    this.$multiSort.value = props.multiSort || false
+    this.$enableCellSelection.value = props.enableCellSelection || false
+    this.$enableColumnResize.value = props.enableColumnResize || false
+    this.$enableColumnReorder.value = props.enableColumnReorder || false
   }
 
   updateScroll(scrollLeft: number, scrollTop: number) {
-    this.$scrollX(scrollLeft)
-    this.$scrollY(scrollTop)
+    this.$scrollX.value = scrollLeft
+    this.$scrollY.value = scrollTop
   }
 
   scrollLeft(value: number) {
@@ -810,12 +817,12 @@ export class GridManager<T, N> {
   }
 
   private onResize = throttle<ResizeObserverCallback>(([{ contentRect }]) => {
-    this.$viewportWidth(contentRect.width)
-    this.$viewportHeight(contentRect.height)
+    this.$viewportWidth.value = contentRect.width
+    this.$viewportHeight.value = contentRect.height
   }, 30)
 
   columnsHaveFilters() {
-    return this.$derivedCols().hasFilters
+    return this.$derivedCols.value.hasFilters
   }
 
   changeSort(columnKey: ItemId) {
@@ -824,11 +831,11 @@ export class GridManager<T, N> {
       return
     }
 
-    const multiSort = this.$multiSort()
+    const multiSort = this.$multiSort.value
 
     // Update columns, we derived sorting columns and sort the data once
     // we receive new $columns
-    const nextColumns = mapColumns(this.$columns(), column => {
+    const nextColumns = mapColumns(this.$columns.value, column => {
       if (!isColumnGroup(column)) {
         if (columnKey === column.key) {
           return {

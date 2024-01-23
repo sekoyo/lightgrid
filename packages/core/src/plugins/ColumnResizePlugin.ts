@@ -15,7 +15,9 @@ export type ColResizeData = {
   left: number
 }
 
-export type SetColResizeData = (colReorderKey: ColResizeData | undefined) => void
+export type SetColResizeData = (
+  colReorderKey: ColResizeData | undefined
+) => void
 
 export class ColumnResizePlugin<T, N> extends GridPlugin<T, N> {
   startClientX = 0
@@ -46,7 +48,9 @@ export class ColumnResizePlugin<T, N> extends GridPlugin<T, N> {
     colAreaPos: AreaPos
   ) => {
     if (!this.mgr.onColumnsChange) {
-      console.error('onColumnsChange prop is required to enable column resizing')
+      console.error(
+        'onColumnsChange prop is required to enable column resizing'
+      )
       return
     }
 
@@ -67,9 +71,14 @@ export class ColumnResizePlugin<T, N> extends GridPlugin<T, N> {
     let left = column.offset + column.size + diffX
 
     if (colAreaPos === AreaPos.Middle) {
-      left = this.mgr.$derivedCols().middle.startOffset + left - this.mgr.$scrollX()
+      left =
+        this.mgr.$derivedCols.value.middle.startOffset +
+        left -
+        this.mgr.$scrollX.value
     } else if (colAreaPos === AreaPos.End) {
-      left += this.mgr.$derivedCols().end.startOffset - this.mgr.$horizontalScrollSize()
+      left +=
+        this.mgr.$derivedCols.value.end.startOffset -
+        this.mgr.$horizontalScrollSize.value
     }
 
     this.mgr.setColResizeData({ colAreaPos, left })
@@ -112,7 +121,7 @@ export class ColumnResizePlugin<T, N> extends GridPlugin<T, N> {
   }
 
   updateColumnWidth(colOrGroup: DerivedColumnOrGroup<T, N>, newSize: number) {
-    const nextColumns: GroupedColumns<T, N> = [...this.mgr.$columns()]
+    const nextColumns: GroupedColumns<T, N> = [...this.mgr.$columns.value]
     const isUpdatingGroup = isDerivedColumnGroup(colOrGroup)
     let columnUpdates: Map<string | number, number>
 

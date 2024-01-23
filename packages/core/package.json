@@ -52,7 +52,7 @@
     "typescript": "^5.3.3"
   },
   "dependencies": {
-    "lodash-es": "^4.17.21",
-    "oby": "^15.1.0"
+    "@preact/signals-core": "^1.5.1",
+    "lodash-es": "^4.17.21"
   }
 }

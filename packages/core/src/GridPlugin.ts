@@ -14,7 +14,7 @@ export abstract class GridPlugin<T, N> {
   onResize?(width: number, height: number): void
 
   getBodyAreaFromPoint(windowX: number, windowY: number) {
-    const areasByCol = this.mgr.$areas().byCol
+    const areasByCol = this.mgr.$areas.value.byCol
 
     for (let i = 0; i < areasByCol.length; i++) {
       const areasByRow = areasByCol[i]
@@ -25,7 +25,10 @@ export abstract class GridPlugin<T, N> {
         // We found the column now find the row
         for (let j = 0; j < areasByRow.length; j++) {
           const area = areasByRow[j]
-          if (windowY >= area.windowY && windowY <= area.windowY + area.windowHeight) {
+          if (
+            windowY >= area.windowY &&
+            windowY <= area.windowY + area.windowHeight
+          ) {
             return area
           }
         }
@@ -42,13 +45,17 @@ export abstract class GridPlugin<T, N> {
     let scrolledY = windowY - area.rowResult.startOffset
 
     if (!area.pinnedX) {
-      scrolledX += this.mgr.$scrollX()
+      scrolledX += this.mgr.$scrollX.value
     }
     if (!area.pinnedY) {
-      scrolledY += this.mgr.$scrollY()
+      scrolledY += this.mgr.$scrollY.value
     }
 
-    const colIndex = binarySearch(area.colResult.items, scrolledX, getColumnOffset)
+    const colIndex = binarySearch(
+      area.colResult.items,
+      scrolledX,
+      getColumnOffset
+    )
     const rowIndex = binarySearch(area.rowResult.items, scrolledY, getRowOffset)
 
     return {
@@ -58,7 +65,7 @@ export abstract class GridPlugin<T, N> {
   }
 
   getColResultFromIndex(colIndex: number) {
-    const cols = this.mgr.$derivedCols()
+    const cols = this.mgr.$derivedCols.value
     if (colIndex < cols.start.items.length) {
       return cols.start
     } else if (colIndex >= cols.start.items.length + cols.middle.items.length) {
@@ -73,7 +80,7 @@ export abstract class GridPlugin<T, N> {
   }
 
   getRowResultFromIndex(rowIndex: number) {
-    const rows = this.mgr.$derivedRows()
+    const rows = this.mgr.$derivedRows.value
     if (rowIndex < rows.start.items.length) {
       return rows.start
     } else if (rowIndex >= rows.start.items.length + rows.middle.items.length) {

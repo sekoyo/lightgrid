@@ -10,12 +10,12 @@ importers:
 
   packages/core:
     dependencies:
+      '@preact/signals-core':
+        specifier: ^1.5.1
+        version: 1.5.1
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      oby:
-        specifier: ^15.1.0
-        version: 15.1.0
     devDependencies:
       '@jest/globals':
         specifier: ^29.7.0
@@ -3047,6 +3047,10 @@ packages:
 
   /@polka/url@1.0.0-next.24:
     resolution: {integrity: sha512-2LuNTFBIO0m7kKIQvvPHN6UE63VjpmL9rnEEaOOaiSPbZK+zUOYIzBAWcED+3XYzhYsd/0mD57VdxAEqqV52CQ==}
+
+  /@preact/signals-core@1.5.1:
+    resolution: {integrity: sha512-dE6f+WCX5ZUDwXzUIWNMhhglmuLpqJhuy3X3xHrhZYI0Hm2LyQwOu0l9mdPiWrVNsE+Q7txOnJPgtIqHCYoBVA==}
+    dev: false
 
   /@rollup/plugin-node-resolve@15.2.3(rollup@4.9.5):
     resolution: {integrity: sha512-j/lym8nf5E21LwBT4Df1VD6hRO2L2iwUeUmP7litikRsVp1H6NWx20NEp0Y7su+7XGc476GnXXc4kFeZNGmaSQ==}
@@ -8245,10 +8249,6 @@ packages:
 
   /obuf@1.1.2:
     resolution: {integrity: sha512-PX1wu0AmAdPqOL1mWhqmlOd8kOIZQwGZw6rh7uby9fTc5lhaOWFLX3I6R1hrF9k3zUY40e6igsLGkDXK92LJNg==}
-
-  /oby@15.1.0:
-    resolution: {integrity: sha512-2ybzrWvIXev6fvVoa0LWP/Kzul6ba8O9s20y9FMmnyoQbo59hckcc2kDmGFPaPfl97IOLL6osC3Q/ceGEHYA0g==}
-    dev: false
 
   /on-finished@2.4.1:
     resolution: {integrity: sha512-oVlzkg3ENAhCk2zdv7IJwd/QUD4z2RxRwpkcGY8psCVcCYZNq4wYnVWALHM+brtuJjePWiYF/ClmuDr8Ch5+kg==}

@@ -1,4 +1,4 @@
-import { observable, effect } from 'oby'
+import { signal, effect } from '@preact/signals-core'
 import {
   AreaPos,
   CellPosition,
@@ -20,8 +20,8 @@ export class CellSelectionPlugin<T, N> extends GridPlugin<T, N> {
   selection?: CellSelection
   setSelection: (sel: CellSelection | undefined) => void
 
-  $autoScrollX = observable(false)
-  $autoScrollY = observable(false)
+  $autoScrollX = signal(false)
+  $autoScrollY = signal(false)
   scrollXStep = 0
   scrollYStep = 0
   stepFactor = 0.1
@@ -81,8 +81,8 @@ export class CellSelectionPlugin<T, N> extends GridPlugin<T, N> {
       if (lowerKey === 'c') {
         copySelection(
           this.selection,
-          this.mgr.$derivedCols(),
-          this.mgr.$derivedRows()
+          this.mgr.$derivedCols.value,
+          this.mgr.$derivedRows.value
         )
       } else if (lowerKey === 'a') {
         this.selectAll()
@@ -179,15 +179,15 @@ export class CellSelectionPlugin<T, N> extends GridPlugin<T, N> {
       if (endWindowX < startArea.windowX) {
         // Left
         this.scrollXStep = (endWindowX - startArea.windowX) * this.stepFactor
-        this.$autoScrollX(true)
+        this.$autoScrollX.value = true
       } else if (endWindowX > startArea.windowX + startArea.windowWidth) {
         // Right
         this.scrollXStep =
           (endWindowX - (startArea.windowX + startArea.windowWidth)) *
           this.stepFactor
-        this.$autoScrollX(true)
+        this.$autoScrollX.value = true
       } else {
-        this.$autoScrollX(false)
+        this.$autoScrollX.value = false
       }
     }
 
@@ -196,43 +196,45 @@ export class CellSelectionPlugin<T, N> extends GridPlugin<T, N> {
       if (endWindowY < startArea.windowY) {
         // Up
         this.scrollYStep = (endWindowY - startArea.windowY) * this.stepFactor
-        this.$autoScrollY(true)
+        this.$autoScrollY.value = true
       } else if (endWindowY > startArea.windowY + startArea.windowHeight) {
         // Down
         this.scrollYStep =
           (endWindowY - (startArea.windowY + startArea.windowHeight)) *
           this.stepFactor
-        this.$autoScrollY(true)
+        this.$autoScrollY.value = true
       } else {
-        this.$autoScrollY(false)
+        this.$autoScrollY.value = false
       }
     }
   }
 
   onWindowMouseUp = () => {
-    this.$autoScrollX(false)
-    this.$autoScrollY(false)
+    this.$autoScrollX.value = false
+    this.$autoScrollY.value = false
     window.removeEventListener('mouseup', this.onWindowMouseUp)
     window.removeEventListener('mousemove', this.onWindowMouseMove)
   }
 
   isInSelectableArea = (windowX: number, windowY: number) =>
-    windowX < this.mgr.$viewportWidth() - this.mgr.$horizontalScrollSize() &&
-    windowY > this.mgr.$headerHeight() &&
-    windowY < this.mgr.$viewportHeight() - this.mgr.$horizontalScrollSize()
+    windowX <
+      this.mgr.$viewportWidth.value - this.mgr.$horizontalScrollSize.value &&
+    windowY > this.mgr.$headerHeight.value &&
+    windowY <
+      this.mgr.$viewportHeight.value - this.mgr.$horizontalScrollSize.value
 
   scrollX = effect(() => {
-    if (this.$autoScrollX()) {
+    if (this.$autoScrollX.value) {
       const id = setInterval(() => {
         const maxScroll =
-          this.mgr.$derivedCols().size -
-          (this.mgr.$viewportWidth() - this.mgr.$horizontalScrollSize())
+          this.mgr.$derivedCols.value.size -
+          (this.mgr.$viewportWidth.value - this.mgr.$horizontalScrollSize.value)
         const scrollLeft = clamp(
-          this.mgr.$scrollX() + this.scrollXStep,
+          this.mgr.$scrollX.value + this.scrollXStep,
           0,
           maxScroll
         )
-        this.mgr.$scrollX(scrollLeft)
+        this.mgr.$scrollX.value = scrollLeft
         this.mgr.scrollLeft(scrollLeft)
       }, 10)
       return () => clearInterval(id)
@@ -240,17 +242,18 @@ export class CellSelectionPlugin<T, N> extends GridPlugin<T, N> {
   })
 
   scrollY = effect(() => {
-    if (this.$autoScrollY()) {
+    if (this.$autoScrollY.value) {
       const id = setInterval(() => {
         const maxScroll =
-          this.mgr.$derivedRows().size -
-          (this.mgr.$viewportHeight() - this.mgr.$horizontalScrollSize())
+          this.mgr.$derivedRows.value.size -
+          (this.mgr.$viewportHeight.value -
+            this.mgr.$horizontalScrollSize.value)
         const scrollTop = clamp(
-          this.mgr.$scrollY() + this.scrollYStep,
+          this.mgr.$scrollY.value + this.scrollYStep,
           0,
           maxScroll
         )
-        this.mgr.$scrollY(scrollTop)
+        this.mgr.$scrollY.value = scrollTop
         this.mgr.scrollTop(scrollTop)
       }, 10)
       return () => clearInterval(id)
@@ -259,8 +262,8 @@ export class CellSelectionPlugin<T, N> extends GridPlugin<T, N> {
 
   selectAll() {
     this.setSelection({
-      colRange: [0, this.mgr.$derivedCols().itemCount - 1],
-      rowRange: [0, this.mgr.$derivedRows().itemCount - 1],
+      colRange: [0, this.mgr.$derivedCols.value.itemCount - 1],
+      rowRange: [0, this.mgr.$derivedRows.value.itemCount - 1],
     })
   }
 
@@ -303,7 +306,7 @@ export class CellSelectionPlugin<T, N> extends GridPlugin<T, N> {
               this.selection.rowRange[0],
               Math.min(
                 this.selection.rowRange[1] + 1,
-                this.mgr.$derivedRows().itemCount - 1
+                this.mgr.$derivedRows.value.itemCount - 1
               ),
             ],
           })
@@ -329,7 +332,7 @@ export class CellSelectionPlugin<T, N> extends GridPlugin<T, N> {
               this.selection.colRange[0],
               Math.min(
                 this.selection.colRange[1] + 1,
-                this.mgr.$derivedCols().itemCount - 1
+                this.mgr.$derivedCols.value.itemCount - 1
               ),
             ],
             rowRange: this.selection.rowRange,
@@ -389,13 +392,13 @@ export class CellSelectionPlugin<T, N> extends GridPlugin<T, N> {
       case Direction.Down:
         startCell.rowIndex = Math.min(
           startCell.rowIndex + 1,
-          this.mgr.$derivedRows().itemCount - 1
+          this.mgr.$derivedRows.value.itemCount - 1
         )
         break
       case Direction.Right:
         startCell.colIndex = Math.min(
           startCell.colIndex + 1,
-          this.mgr.$derivedCols().itemCount - 1
+          this.mgr.$derivedCols.value.itemCount - 1
         )
         break
       case Direction.Left:
@@ -418,11 +421,11 @@ export class CellSelectionPlugin<T, N> extends GridPlugin<T, N> {
       return
     }
 
-    const scrollX = this.mgr.$scrollX()
+    const scrollX = this.mgr.$scrollX.value
     const relativeColIndex = colIndex - colResult.items[0].colIndex
     const col = colResult.items[relativeColIndex]
-    const startSize = this.mgr.$derivedCols().start.size
-    const endSize = this.mgr.$derivedCols().end.size
+    const startSize = this.mgr.$derivedCols.value.start.size
+    const endSize = this.mgr.$derivedCols.value.end.size
 
     if (col.offset - scrollX < 0) {
       this.mgr.scrollLeft(col.offset)
@@ -430,8 +433,8 @@ export class CellSelectionPlugin<T, N> extends GridPlugin<T, N> {
     }
 
     // This seems a bit complex, is there a better way?
-    const scrollbarWidth = this.mgr.$horizontalScrollSize()
-    const mainXWidth = this.mgr.$viewportWidth() - (startSize + endSize)
+    const scrollbarWidth = this.mgr.$horizontalScrollSize.value
+    const mainXWidth = this.mgr.$viewportWidth.value - (startSize + endSize)
     const colEndY = scrollbarWidth + col.offset + col.size - scrollX
 
     if (colEndY > mainXWidth) {
@@ -450,11 +453,11 @@ export class CellSelectionPlugin<T, N> extends GridPlugin<T, N> {
       return
     }
 
-    const scrollY = this.mgr.$scrollY()
+    const scrollY = this.mgr.$scrollY.value
     const relativeRowIndex = rowIndex - rowResult.items[0].rowIndex
     const row = rowResult.items[relativeRowIndex]
-    const startSize = this.mgr.$derivedRows().start.size
-    const endSize = this.mgr.$derivedRows().end.size
+    const startSize = this.mgr.$derivedRows.value.start.size
+    const endSize = this.mgr.$derivedRows.value.end.size
 
     if (row.offset - scrollY < 0) {
       this.mgr.scrollTop(row.offset)
@@ -462,10 +465,10 @@ export class CellSelectionPlugin<T, N> extends GridPlugin<T, N> {
     }
 
     // This seems a bit complex, is there a better way?
-    const scrollbarHeight = this.mgr.$horizontalScrollSize()
+    const scrollbarHeight = this.mgr.$horizontalScrollSize.value
     const mainYHeight =
-      this.mgr.$viewportHeight() -
-      (this.mgr.$headerHeight() + startSize + endSize)
+      this.mgr.$viewportHeight.value -
+      (this.mgr.$headerHeight.value + startSize + endSize)
     const rowEndY = scrollbarHeight + row.offset + row.size - scrollY
 
     if (rowEndY > mainYHeight) {

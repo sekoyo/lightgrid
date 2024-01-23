@@ -79,7 +79,9 @@ export class ColumnReorderPlugin<T, N> extends GridPlugin<T, N> {
 
   onPointerDown = (e: PointerEvent, column: DerivedColumnOrGroup<T, N>) => {
     if (!this.mgr.onColumnsChange) {
-      console.error('onColumnsChange prop is required to enable column reordering')
+      console.error(
+        'onColumnsChange prop is required to enable column reordering'
+      )
       return
     }
 
@@ -87,7 +89,7 @@ export class ColumnReorderPlugin<T, N> extends GridPlugin<T, N> {
       return
     }
 
-    this.colToMove = findColumnOrGroupByKey(this.mgr.$columns(), column.key)
+    this.colToMove = findColumnOrGroupByKey(this.mgr.$columns.value, column.key)
 
     if (!this.colToMove) {
       return
@@ -96,12 +98,18 @@ export class ColumnReorderPlugin<T, N> extends GridPlugin<T, N> {
     this.lastPin = column.pin
 
     if (isColumnGroup(this.colToMove)) {
-      this.colToMoveChildKeys = flatMapColumns(this.colToMove.children, c => c.key)
+      this.colToMoveChildKeys = flatMapColumns(
+        this.colToMove.children,
+        c => c.key
+      )
     }
 
     this.mgr.setColReorderKey(column.key)
     this.onWindowPointerEvents()
-    this.dragLabel.mount(e.target.textContent || String(column.key), DragIcon.Move)
+    this.dragLabel.mount(
+      e.target.textContent || String(column.key),
+      DragIcon.Move
+    )
   }
 
   // In react at least, e.nativeEvent.target/currentTarget is wrong :/
@@ -151,7 +159,7 @@ export class ColumnReorderPlugin<T, N> extends GridPlugin<T, N> {
       this.lastPointerSide = pointerSide
 
       const nextColumns = this.moveColumn(
-        this.mgr.$columns(),
+        this.mgr.$columns.value,
         this.colToMove,
         overColumn.key,
         pointerSide
@@ -183,7 +191,9 @@ export class ColumnReorderPlugin<T, N> extends GridPlugin<T, N> {
 
           if (isColumnGroup(colToMoveCopy)) {
             // When columns are re-derived the pin of the parent will be inherited
-            colToMoveCopy.children = this.removePinFromChildren(colToMoveCopy.children)
+            colToMoveCopy.children = this.removePinFromChildren(
+              colToMoveCopy.children
+            )
           }
 
           // If the adjacent col was a group, we may need to filter out the moved col from it
@@ -252,27 +262,29 @@ export class ColumnReorderPlugin<T, N> extends GridPlugin<T, N> {
       newPin = 'start'
       this.dragLabel.updateIcon(DragIcon.Pin)
     } else if (
-      relativeX > this.mgr.$viewportWidth() - pinAreaBounds &&
-      relativeX < this.mgr.$viewportWidth()
+      relativeX > this.mgr.$viewportWidth.value - pinAreaBounds &&
+      relativeX < this.mgr.$viewportWidth.value
     ) {
       newPin = 'end'
       this.dragLabel.updateIcon(DragIcon.Pin)
     } else {
       const outOfBounds =
         relativeX < 0 ||
-        relativeX > this.mgr.$viewportWidth() ||
+        relativeX > this.mgr.$viewportWidth.value ||
         relativeY < 0 ||
-        relativeY > this.mgr.$viewportHeight()
+        relativeY > this.mgr.$viewportHeight.value
 
       newPin = undefined
-      this.dragLabel.updateIcon(outOfBounds ? DragIcon.NotAllowed : DragIcon.Move)
+      this.dragLabel.updateIcon(
+        outOfBounds ? DragIcon.NotAllowed : DragIcon.Move
+      )
     }
 
     // This will unecessarily trigger if a child of a pinned group doesn't
     // itself have a pin set but meh
     if (this.colToMove && newPin && newPin !== this.lastPin) {
       this.lastPin = newPin
-      const newColumns = updateColumn(this.mgr.$columns(), {
+      const newColumns = updateColumn(this.mgr.$columns.value, {
         ...this.colToMove,
         pin: newPin,
       })
