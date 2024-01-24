@@ -22,7 +22,6 @@
 - Context menu plugin
 - Ability to default expand row details
 - Virtualize itemDetails
-- Multi-line headers?
 - Single cell mode cell selection
 - Sticky group headers to left/right
 - Include instructions to use from CDN

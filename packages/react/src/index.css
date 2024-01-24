@@ -19,8 +19,8 @@ body.light {
   --textColorSecondary: rgba(0, 0, 0, 0.6);
   --textColorTertiary: rgba(0, 0, 0, 0.4);
   --linkColor: rgb(35, 137, 247);
-  --inputBg: #e4e6ec;
-  --focusColor: #6161c0;
+  --inputBg: #f3f4f6;
+  --focusColor: rgb(6 140 230);
   --primaryBtnBg: rgb(104 104 222);
   --primaryBtnTextColor: white;
   --secondaryBtnBg: rgb(227 231 238);

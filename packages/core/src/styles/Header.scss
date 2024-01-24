@@ -24,6 +24,10 @@
     padding: 6px var(--lgCellHPadding);
     color: var(--lgHeaderTextColor);
 
+    &:not([data-outline='true']) {
+      border-bottom: 1px solid var(--lgHeaderBorderColor);
+    }
+
     &[role='button'] {
       cursor: pointer;
     }

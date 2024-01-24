@@ -1,6 +1,7 @@
 export type Theme = {
-  borderRadius: string
   bg: string
+  borderRadius: string
+  borderColor: string
   cellEvenBg: string
   cellOddBg: string
   headerCellBg: string
@@ -8,7 +9,6 @@ export type Theme = {
   filterCellBg: string
   headerBorderColor: string
   headerTextColor: string
-  borderColor: string
   textColor: string
   scrollTrack: string
   scrollThumb: string

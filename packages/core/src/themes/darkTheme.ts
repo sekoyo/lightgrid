@@ -1,8 +1,9 @@
 import { Theme } from './types'
 
 export const darkTheme: Theme = {
-  borderRadius: '4px',
   bg: 'rgb(17 19 21)',
+  borderRadius: '4px',
+  borderColor: 'rgb(47 50 51)',
   cellEvenBg: 'rgb(23 24 26)',
   cellOddBg: 'rgb(17 19 21)',
   headerCellBg: 'rgb(234 205 93)',
@@ -10,7 +11,6 @@ export const darkTheme: Theme = {
   filterCellBg: 'rgb(17 19 21)',
   headerBorderColor: 'rgb(47 50 51)',
   headerTextColor: 'black',
-  borderColor: 'rgb(47 50 51)',
   textColor: 'white',
   scrollTrack: '#111315',
   scrollThumb: '#3e3e3e',
