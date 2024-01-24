@@ -1,6 +1,5 @@
 import { useMemo, useState } from 'react'
-import throttle from 'lodash-es/throttle'
-import { DataGrid, darkTheme, lightTheme } from '@lightgrid/react'
+import { DataGrid, darkTheme, lightTheme, throttle } from '@lightgrid/react'
 
 import { Input } from 'src/components/Input'
 import { DemoProps } from './types'

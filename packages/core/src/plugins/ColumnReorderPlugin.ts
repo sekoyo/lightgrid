@@ -1,4 +1,3 @@
-import throttle from 'lodash-es/throttle'
 import type {
   ColumnOrGroup,
   ColumnPin,
@@ -11,6 +10,7 @@ import {
   flatMapColumns,
   isColumnGroup,
   updateColumn,
+  throttle,
 } from '../utils'
 import { GridPlugin } from '../GridPlugin'
 

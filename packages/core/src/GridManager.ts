@@ -1,5 +1,4 @@
 import { signal, effect, computed } from '@preact/signals-core'
-import throttle from 'lodash-es/throttle'
 
 import {
   AreaPos,
@@ -33,6 +32,7 @@ import {
   getScrollBarSize,
   isColumnGroup,
   mapColumns,
+  throttle,
 } from './utils'
 import type {
   ColumnResizePlugin,

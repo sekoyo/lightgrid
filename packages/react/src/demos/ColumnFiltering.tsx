@@ -1,4 +1,3 @@
-import debounce from 'lodash-es/debounce'
 import { useMemo, useRef, useState } from 'react'
 import {
   DataGrid,
@@ -6,6 +5,7 @@ import {
   FilterFn,
   ItemId,
   darkTheme,
+  debounce,
   lightTheme,
   GroupedColumns,
 } from '@lightgrid/react'
