@@ -79,6 +79,9 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 0.25em;
   }
 
   &-sort-indicator {
@@ -99,14 +102,20 @@
     justify-content: flex-end;
     width: 6px;
     cursor: col-resize;
-    transition: 120ms background;
+    transition-duration: 120ms;
+    transition-property: background, opacity;
+    opacity: 0.4;
+
+    &:hover {
+      opacity: 1;
+    }
 
     &::after {
       content: '';
       display: block;
-      width: 1px;
+      width: 2px;
       height: 16px;
-      background: var(--lgHeaderBorderColor);
+      background: var(--lgHeaderResizeGripColor);
     }
   }
 

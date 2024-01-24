@@ -6,6 +6,7 @@ export const lightTheme: Theme = {
   cellEvenBg: 'rgb(245 246 247)',
   cellOddBg: 'rgb(255 255 255)',
   headerCellBg: 'rgb(242 243 244)',
+  headerResizeGripColor: 'rgb(190 188 188)',
   filterCellBg: 'rgb(242 242 244)',
   headerBorderColor: 'rgb(216 216 216)',
   headerTextColor: 'black',

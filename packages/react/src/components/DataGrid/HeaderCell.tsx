@@ -85,14 +85,14 @@ export function HeaderCell<T>({
           title={typeof label === 'string' ? label : undefined}
         >
           {label}
+          {!isGroup &&
+            column.sortDirection &&
+            (column.sortDirection === SortDirection.Asc ? (
+              <SortAscendingIcon className="lg-header-sort-indicator" />
+            ) : (
+              <SortDescendingIcon className="lg-header-sort-indicator" />
+            ))}
         </div>
-        {!isGroup &&
-          column.sortDirection &&
-          (column.sortDirection === SortDirection.Asc ? (
-            <SortAscendingIcon className="lg-header-sort-indicator" />
-          ) : (
-            <SortDescendingIcon className="lg-header-sort-indicator" />
-          ))}
       </div>
       {enableColumnResize && (
         <div

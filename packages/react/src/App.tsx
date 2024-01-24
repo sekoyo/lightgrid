@@ -13,6 +13,7 @@ const GlobalFilteringDemo = lazy(() => import('./demos/GlobalFiltering'))
 const AsyncDataDemo = lazy(() => import('./demos/AsyncData'))
 const FinitePaginationDemo = lazy(() => import('./demos/FinitePagination'))
 const InfinitePaginationDemo = lazy(() => import('./demos/InfinitePagination'))
+const VirtualizationDemo = lazy(() => import('./demos/Virtualization'))
 const ColumnGroupingDemo = lazy(() => import('./demos/ColumnGrouping'))
 const ColumnFilteringDemo = lazy(() => import('./demos/ColumnFiltering'))
 const ColumnPinningDemo = lazy(() => import('./demos/ColumnPinning'))
@@ -59,6 +60,11 @@ export function App() {
       <Route path="/demos/infinite-pagination">
         <DemoContainer height={height}>
           <InfinitePaginationDemo theme={theme} />
+        </DemoContainer>
+      </Route>
+      <Route path="/demos/virtualization">
+        <DemoContainer height={height}>
+          <VirtualizationDemo theme={theme} />
         </DemoContainer>
       </Route>
       <Route path="/demos/column-grouping">

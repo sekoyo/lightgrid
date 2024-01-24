@@ -6,6 +6,7 @@ export const darkTheme: Theme = {
   cellEvenBg: 'rgb(23 24 26)',
   cellOddBg: 'rgb(17 19 21)',
   headerCellBg: 'rgb(234 205 93)',
+  headerResizeGripColor: 'rgb(152 128 33)',
   filterCellBg: 'rgb(17 19 21)',
   headerBorderColor: 'rgb(47 50 51)',
   headerTextColor: 'black',

@@ -1,6 +1,5 @@
 ## Next
 
-- Add demo to virtualization page
 - Home page with demo, features etc
 - Scroll to row / col + docs
 - Cell paste
@@ -15,10 +14,7 @@
 ### Tasks
 
 - Fast path for evenly spaced rows (static row meta and instant virtual window)
-- Include instructions to use from CDN
-- Changelog page (pull in CHANGELOG.md)
 - Row resizing
-- Move col sort icon to abs and put in padding area
 - Example with loading placeholders in cells
 - Row re-ordering with drag'n'drop
 - Safely limit row/col window range?
@@ -29,6 +25,8 @@
 - Multi-line headers?
 - Single cell mode cell selection
 - Sticky group headers to left/right
+- Include instructions to use from CDN
+- Change pin to 'left' and 'right'
 
 ## Notes
 

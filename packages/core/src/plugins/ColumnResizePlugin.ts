@@ -24,6 +24,7 @@ export class ColumnResizePlugin<T, N> extends GridPlugin<T, N> {
   startClientY = 0
   column?: DerivedColumnOrGroup<T, N>
   colAreaPos?: AreaPos
+  resizing = false
 
   unmount() {
     window.removeEventListener('pointermove', this.onWindowPointerMove)
@@ -42,6 +43,10 @@ export class ColumnResizePlugin<T, N> extends GridPlugin<T, N> {
     return diffX
   }
 
+  isResizing() {
+    return this.resizing
+  }
+
   onPointerDown = (
     e: PointerEvent,
     column: DerivedColumnOrGroup<T, N>,
@@ -54,6 +59,7 @@ export class ColumnResizePlugin<T, N> extends GridPlugin<T, N> {
       return
     }
 
+    this.resizing = true
     this.column = column
     this.colAreaPos = colAreaPos
     this.startClientX = e.clientX
@@ -71,10 +77,7 @@ export class ColumnResizePlugin<T, N> extends GridPlugin<T, N> {
     let left = column.offset + column.size + diffX
 
     if (colAreaPos === AreaPos.Middle) {
-      left =
-        this.mgr.$derivedCols.value.middle.startOffset +
-        left -
-        this.mgr.$scrollX.value
+      left = this.mgr.$derivedCols.value.middle.startOffset + left
     } else if (colAreaPos === AreaPos.End) {
       left +=
         this.mgr.$derivedCols.value.end.startOffset -
@@ -85,6 +88,14 @@ export class ColumnResizePlugin<T, N> extends GridPlugin<T, N> {
   }
 
   onWindowPointerUp = (e: PointerEvent) => {
+    // Sort is on 'click' which is down anywhere and then up on the
+    // element. We have this slight delay so that resizing is still
+    // true in the changeSort click handler and we don't accidentally
+    // sort a header when releasing resizing.
+    setTimeout(() => {
+      this.resizing = false
+    }, 0)
+
     const column = this.column!
     const diffX = this.rangeBoundDiff(column, e.clientX - this.startClientX)
     const nextColumns = this.updateColumnWidth(column, column.size + diffX)

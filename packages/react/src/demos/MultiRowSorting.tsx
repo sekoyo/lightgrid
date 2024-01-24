@@ -23,7 +23,7 @@ export default function Demo({ theme }: DemoProps) {
       columns={columns}
       onColumnsChange={setColumns}
       data={data}
-      multiSort={true}
+      multiSort
       getRowId={d => d.country + d.year}
       theme={theme === 'light' ? lightTheme : darkTheme}
     />
