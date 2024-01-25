@@ -1,6 +1,5 @@
 ## Next
 
-- Home page with demo, features etc
 - Scroll to row / col + docs
 - Cell paste
 - Doc search
@@ -13,11 +12,9 @@
 
 ### Tasks
 
-- Fast path for evenly spaced rows (static row meta and instant virtual window)
 - Row resizing
 - Example with loading placeholders in cells
 - Row re-ordering with drag'n'drop
-- Safely limit row/col window range?
 - When sorting col at edge auto scroll
 - Context menu plugin
 - Ability to default expand row details
@@ -25,7 +22,6 @@
 - Single cell mode cell selection
 - Sticky group headers to left/right
 - Include instructions to use from CDN
-- Change pin to 'left' and 'right'
 
 ## Notes
 

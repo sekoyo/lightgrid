@@ -44,7 +44,7 @@ export function Demo({ demoPath, srcPath, height }: DemoProps) {
   }/demos/${demoPath}?theme=${colorMode}&height=${encodeURIComponent(
     resolvedHeight
   )}`
-  const srcUrl = `https://github.com/lightgridjs/lightgrid/tree/master/packages/react/src/demos/${srcPath}`
+  const srcUrl = `https://github.com/sekoyo/lightgrid/tree/master/packages/react/src/demos/${srcPath}`
   const loadingColor = colorMode === 'dark' ? '#fff' : '#000'
 
   return (

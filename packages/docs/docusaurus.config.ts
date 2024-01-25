@@ -46,7 +46,7 @@ const config: Config = {
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl:
-            'https://github.com/lightgridjs/lightgrid/tree/master/packages/docs/',
+            'https://github.com/sekoyo/lightgrid/tree/master/packages/docs/',
         },
         blog: false,
         // blog: {
@@ -97,7 +97,7 @@ const config: Config = {
         // },
         // { to: '/docs', label: 'Docs', position: 'right' },
         {
-          href: 'https://github.com/lightgridjs/lightgrid',
+          href: 'https://github.com/sekoyo/lightgrid',
           label: 'GitHub',
           position: 'right',
         },

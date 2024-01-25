@@ -15,10 +15,10 @@
   "main": "./dist/index.umd.cjs",
   "module": "./dist/index.js",
   "types": "dist/lib.d.ts",
-  "homepage": "https://github.com/lightgridjs/lightgrid",
+  "homepage": "https://github.com/sekoyo/lightgrid",
   "repository": {
     "type": "git",
-    "url": "https://github.com/lightgridjs/lightgrid.git"
+    "url": "https://github.com/sekoyo/lightgrid.git"
   },
   "license": "UNLICENSED",
   "scripts": {

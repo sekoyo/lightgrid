@@ -3,6 +3,7 @@
   "version": "0.1.2",
   "keywords": [
     "datagrid",
+    "table",
     "headless"
   ],
   "type": "module",
@@ -11,10 +12,10 @@
   ],
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
-  "homepage": "https://github.com/lightgridjs/lightgrid",
+  "homepage": "https://github.com/sekoyo/lightgrid",
   "repository": {
     "type": "git",
-    "url": "https://github.com/lightgridjs/lightgrid.git"
+    "url": "https://github.com/sekoyo/lightgrid.git"
   },
   "license": "UNLICENSED",
   "scripts": {
