@@ -15,6 +15,7 @@ This is the React frontend for Lightgrid, a headless datagrid with a focus on:
 - [Theming](https://lightgrid.io/theming)
 - [Search](https://lightgrid.io/global-search)
 - [Virtualized columns and rows](https://lightgrid.io/virtualization)
+- [Scroll to row/column](https://lightgrid.io/scroll-to-cell)
 - [Lazy loading](https://lightgrid.io/async-data)
 - [Pagination](https://lightgrid.io/pagination)
 - [Column filtering](https://lightgrid.io/columns/filtering)

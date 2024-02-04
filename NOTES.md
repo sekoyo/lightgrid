@@ -1,8 +1,8 @@
 ## Next
 
-- Scroll to row / col + docs
-- Cell paste
 - Doc search
+- Doc intro page
+- Cell paste
 
 ## Backlog
 
