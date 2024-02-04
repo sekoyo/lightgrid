@@ -19,7 +19,7 @@ All grids must provide:
 
 - **columns**: an array of column definitions
 - **data**: an array of data to render in the grid
-- **getRowId**: a function which returns a unique ID for each data item. If your data doesn't have one you can combine multiple properties to make a unique value, or generate and insert unique IDs before using the data
+- **getRowKey**: a function which returns a unique ID for each data item. If your data doesn't have one you can combine multiple properties to make a unique value, or generate and insert unique IDs before using the data
 
 ```tsx
 import { DataGrid, type GroupedColumns } from '@lightgrid/react'
@@ -44,7 +44,7 @@ function App() {
     <DataGrid<Person>
       columns={columns}
       data={data}
-      getRowId={person => person.id}
+      getRowKey={person => person.id}
     />
   )
 }

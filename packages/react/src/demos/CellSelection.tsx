@@ -11,7 +11,7 @@ export default function Demo({ theme }: DemoProps) {
       pinnedTopData={data.slice(0, 1)}
       data={data.slice(1, -1)}
       pinnedBottomData={data.slice(-1)}
-      getRowId={d => d.country + d.year}
+      getRowKey={d => d.country + d.year}
       enableCellSelection
       theme={theme === 'light' ? lightTheme : darkTheme}
     />

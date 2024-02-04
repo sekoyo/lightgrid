@@ -5,7 +5,7 @@ import type {
   DerivedRow,
   DerivedDetailRow,
   RowState,
-  GetRowId,
+  GetRowKey,
   DerivedRowResult,
 } from '../types'
 
@@ -13,7 +13,7 @@ export function deriveRows<T>(
   areaPos: AreaPos,
   data: T[],
   rowState: RowState,
-  getRowId: GetRowId<T>,
+  getRowKey: GetRowKey<T>,
   getRowMeta: GetRowMeta<T>,
   getRowDetailsMeta: GetRowDetailsMeta<T>,
   getStartOffset: (thiSize: number) => number,
@@ -25,12 +25,12 @@ export function deriveRows<T>(
 
   for (let i = 0; i < data.length; i++) {
     const item = data[i]
-    const rowId = getRowId(item)
+    const rowKey = getRowKey(item)
     const meta = getRowMeta(item)
 
     const derivedRow: DerivedRow<T> = {
       item,
-      rowId,
+      rowKey,
       size: meta.height,
       hasDetails: meta.hasDetails,
       offset,
@@ -40,12 +40,12 @@ export function deriveRows<T>(
     items.push(derivedRow)
     offset += meta.height
 
-    if (meta.hasDetails && rowState[rowId]?.expanded) {
+    if (meta.hasDetails && rowState[rowKey]?.expanded) {
       const detailsMeta = getRowDetailsMeta(item)
 
       const detailsRow: DerivedDetailRow<T> = {
         item,
-        rowId,
+        rowKey,
         size: detailsMeta.height,
         offset,
       }

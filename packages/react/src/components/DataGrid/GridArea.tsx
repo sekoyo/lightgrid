@@ -105,7 +105,7 @@ export function GridAreaNoMemo<T>({
           let skipColCount = 0
           return (
             <div
-              key={row.rowId}
+              key={row.rowKey}
               role="row"
               className={`lg-row ${
                 (row.rowIndex + 1) % 2 === 0 ? 'lg-row-even' : 'lg-row-odd'
@@ -164,7 +164,7 @@ export function GridAreaNoMemo<T>({
                     mgr={mgr}
                     column={column}
                     row={row}
-                    rowStateItem={rowState[row.rowId]}
+                    rowStateItem={rowState[row.rowKey]}
                     setRowState={setRowState}
                     pinnedX={area.pinnedX}
                     pinnedY={area.pinnedY}

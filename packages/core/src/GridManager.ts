@@ -7,7 +7,7 @@ import {
   DerivedColsResult,
   DerivedRowsResult,
   GetRowDetailsMeta,
-  GetRowId,
+  GetRowKey,
   GetRowMeta,
   BodyAreaDesc,
   GroupedColumns,
@@ -51,7 +51,7 @@ import {
 type Viewport = { width: number; height: number }
 
 interface GridManagerStaticProps<T, N> {
-  getRowId: GetRowId<T>
+  getRowKey: GetRowKey<T>
   getRowMeta: GetRowMeta<T>
   getRowDetailsMeta: GetRowDetailsMeta<T>
   renderRowDetails: RenderRowDetails<T, N>
@@ -91,7 +91,7 @@ export class GridManager<T, N> {
   mounted = false
 
   // Static props
-  getRowId: GetRowId<T>
+  getRowKey: GetRowKey<T>
   getRowMeta: GetRowMeta<T>
   getRowDetailsMeta: GetRowDetailsMeta<T>
   renderRowDetails: RenderRowDetails<T, N>
@@ -177,7 +177,7 @@ export class GridManager<T, N> {
       AreaPos.Start,
       this.$pinnedTopData.value,
       this.$rowState.value,
-      this.getRowId,
+      this.getRowKey,
       this.getRowMeta,
       this.getRowDetailsMeta,
       () => this.$headerHeight.value,
@@ -189,7 +189,7 @@ export class GridManager<T, N> {
       AreaPos.Middle,
       this.$derivedData.value,
       this.$rowState.value,
-      this.getRowId,
+      this.getRowKey,
       this.getRowMeta,
       this.getRowDetailsMeta,
       () => this.$headerHeight.value + this.$derivedStartRows.value.size,
@@ -201,7 +201,7 @@ export class GridManager<T, N> {
       AreaPos.End,
       this.$pinnedBottomData.value,
       this.$rowState.value,
-      this.getRowId,
+      this.getRowKey,
       this.getRowMeta,
       this.getRowDetailsMeta,
       thisSize => this.$viewportHeight.value - thisSize,
@@ -700,7 +700,7 @@ export class GridManager<T, N> {
   $scrollX = signal(0)
 
   constructor(props: GridManagerStaticProps<T, N>) {
-    this.getRowId = props.getRowId
+    this.getRowKey = props.getRowKey
     this.getRowMeta = props.getRowMeta
     this.getRowDetailsMeta = props.getRowDetailsMeta
     this.renderRowDetails = props.renderRowDetails
@@ -886,6 +886,57 @@ export class GridManager<T, N> {
       './plugins/ColumnReorderPlugin'
     )
     this.columnReorderPlugin = new ColumnReorderPlugin(this)
+  }
+
+  scrollToCell = ({
+    columnKey,
+    rowKey,
+  }: {
+    columnKey?: ItemId
+    rowKey?: ItemId
+  }) => {
+    let colOffset: number | undefined
+    let rowOffset: number | undefined
+
+    if (columnKey) {
+      const cols = this.$derivedCols.value
+      const joinedItems = [
+        ...cols.start.items,
+        ...cols.middle.items,
+        ...cols.end.items,
+      ]
+      colOffset = joinedItems.find(c => c.key === columnKey)?.offset
+      if (!colOffset) {
+        console.warn(`Column with key ${columnKey} not found`)
+      }
+    }
+
+    if (rowKey) {
+      const rows = this.$derivedRows.value
+      const joinedItems = [
+        ...rows.start.items,
+        ...rows.middle.items,
+        ...rows.end.items,
+      ]
+      rowOffset = joinedItems.find(c => c.rowKey === rowKey)?.offset
+      if (!rowOffset) {
+        console.warn(`Row with key ${rowKey} not found`)
+      }
+    }
+
+    if (colOffset && rowOffset) {
+      this.scrollTo(colOffset, rowOffset)
+    } else if (rowOffset) {
+      this.scrollTop(rowOffset)
+    } else if (colOffset) {
+      this.scrollLeft(colOffset)
+    }
+  }
+
+  getImperativeApi() {
+    return {
+      scrollTo: this.scrollToCell,
+    }
   }
 }
 

@@ -85,7 +85,7 @@ export default function Demo({ theme }: DemoProps) {
       <DataGrid<Person>
         columns={peopleColumns}
         data={data}
-        getRowId={d => d.id}
+        getRowKey={d => d.id}
         theme={theme === 'light' ? lightTheme : darkTheme}
         loadingOverlay={
           loading && (

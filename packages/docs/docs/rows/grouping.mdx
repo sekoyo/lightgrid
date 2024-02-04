@@ -63,7 +63,7 @@ For Typescript users we also want to tell the Datagrid that a row item can be ei
 <DataGrid<GroupRow | Medalist>
   columns={columns}
   data={groupedData}
-  getRowId={d => d.id}
+  getRowKey={d => d.id}
   rowState={rowState}
   setRowState={setRowState}
 />

@@ -19,8 +19,8 @@
 - Context menu plugin
 - Ability to default expand row details
 - Virtualize itemDetails
-- Single cell mode cell selection
-- Sticky group headers to left/right
+- Single-cell mode cell selection
+- Sticky group header content to left/right
 - Include instructions to use from CDN
 
 ## Notes

@@ -1,5 +1,5 @@
 import { DerivedRow } from '../types'
-import { getRowOffset } from '../constants'
+import { getRowOffsetValue } from '../constants'
 import { binarySearch } from './binarySearch'
 import { expoSearchGreater } from './expoSearchGreater'
 
@@ -14,11 +14,11 @@ export function getRowWindow<T>(
   const xStart = Math.max(0, scrollTop - overscan)
   const xEnd = scrollTop + viewportSize + overscan
 
-  const startIndex = binarySearch(rows, xStart, getRowOffset)
+  const startIndex = binarySearch(rows, xStart, getRowOffsetValue)
 
   // Exponential search so we can limit the binary search range
-  const upTo = expoSearchGreater(rows, xEnd, getRowOffset, 8)
-  const endIndex = binarySearch(rows, xEnd, getRowOffset, startIndex, upTo)
+  const upTo = expoSearchGreater(rows, xEnd, getRowOffsetValue, 8)
+  const endIndex = binarySearch(rows, xEnd, getRowOffsetValue, startIndex, upTo)
 
   return [startIndex, endIndex]
 }

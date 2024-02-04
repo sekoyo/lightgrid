@@ -58,7 +58,7 @@ export default function Demo({ theme }: DemoProps) {
     <DataGrid<SomeData>
       columns={columns}
       data={data}
-      getRowId={d => d.id}
+      getRowKey={d => d.id}
       theme={theme === 'light' ? lightTheme : darkTheme}
     />
   )

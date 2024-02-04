@@ -20,8 +20,9 @@ import {
   ColResizeData,
   DerivedColsResult,
   GetRowDetailsMeta,
-  GetRowId,
+  GetRowKey,
   GetRowMeta,
+  GridApi,
   HeaderAreaDesc,
   ItemId,
   GroupedColumns,
@@ -62,7 +63,7 @@ interface DataGridProps<T, S> {
   /** The row height of filter headers in pixels. Defaults to 40 */
   filterRowHeight?: number
   /** Given a row data item should return a unique ID for the row (required) */
-  getRowId: GetRowId<T>
+  getRowKey: GetRowKey<T>
   /**
    * An optional function which can return the height of the row, as well as if
    * it has row details. Row height defaults to 40px
@@ -117,6 +118,7 @@ interface DataGridProps<T, S> {
   className?: string
   /** Pass custom inline styles into the data element */
   style?: React.CSSProperties
+  gridApi?: React.MutableRefObject<GridApi | undefined>
 }
 
 export function DataGrid<T, S = unknown>({
@@ -125,7 +127,7 @@ export function DataGrid<T, S = unknown>({
   onFiltersChange = noop,
   headerRowHeight,
   filterRowHeight,
-  getRowId,
+  getRowKey,
   getRowMeta = DEFAULT_GET_ROW_META,
   getRowDetailsMeta = DEFAULT_GET_ROW_DETAILS_META,
   data,
@@ -142,6 +144,7 @@ export function DataGrid<T, S = unknown>({
   loadingOverlay,
   className,
   style,
+  gridApi,
 }: DataGridProps<T, S>) {
   const gridEl = useRef<HTMLDivElement>(null)
   const scrollEl = useRef<HTMLDivElement>(null)
@@ -171,7 +174,7 @@ export function DataGrid<T, S = unknown>({
   // Grid manager instance and props that don't change
   const [mgr] = useState(() =>
     createGridManager<T, N>({
-      getRowId,
+      getRowKey,
       getRowMeta,
       getRowDetailsMeta,
       renderRowDetails,
@@ -188,6 +191,13 @@ export function DataGrid<T, S = unknown>({
       onHeaderHeightChanged: setHeaderHeight,
     })
   )
+
+  // Imperative api is just if the user wants to scroll to a cell atm
+  useEffect(() => {
+    if (gridApi) {
+      gridApi.current = mgr.getImperativeApi()
+    }
+  }, [gridApi, mgr])
 
   // Pass props which update to grid manager
   useEffect(() => {

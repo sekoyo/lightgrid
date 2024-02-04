@@ -24,7 +24,7 @@ export default function Demo({ theme }: DemoProps) {
       onColumnsChange={setColumns}
       data={data}
       multiSort
-      getRowId={d => d.country + d.year}
+      getRowKey={d => d.country + d.year}
       theme={theme === 'light' ? lightTheme : darkTheme}
     />
   )

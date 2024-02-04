@@ -9,7 +9,7 @@ export default function Demo({ theme }: DemoProps) {
     <DataGrid<LifeExpectancy>
       columns={columns}
       data={data}
-      getRowId={d => d.country + d.year}
+      getRowKey={d => d.country + d.year}
       theme={theme === 'light' ? lightTheme : darkTheme}
     />
   )

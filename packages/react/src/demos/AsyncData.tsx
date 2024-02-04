@@ -35,7 +35,7 @@ export default function Demo({ theme }: DemoProps) {
       <DataGrid<Animal>
         columns={columns}
         data={data}
-        getRowId={d => d.animal}
+        getRowKey={d => d.animal}
         theme={theme === 'light' ? lightTheme : darkTheme}
         loadingOverlay={
           data.length === 0 && (

@@ -16,7 +16,7 @@ export default function Demo({ theme }: DemoProps) {
       columns={columns}
       onColumnsChange={setColumns}
       data={happinessData}
-      getRowId={d => d.country}
+      getRowKey={d => d.country}
       theme={theme === 'light' ? lightTheme : darkTheme}
     />
   )

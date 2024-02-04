@@ -11,7 +11,7 @@ export default function Demo({ theme }: DemoProps) {
     <DataGrid<Animal>
       columns={animalColumns}
       data={animalData}
-      getRowId={d => d.animal}
+      getRowKey={d => d.animal}
       enableColumnResize
       onColumnsChange={setAnimalColumns}
       theme={theme === 'light' ? lightTheme : darkTheme}

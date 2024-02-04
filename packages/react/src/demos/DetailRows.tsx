@@ -18,7 +18,7 @@ export default function Demo({ theme }: DemoProps) {
     <DataGrid<Laureate>
       columns={columns}
       data={data}
-      getRowId={d => d.id}
+      getRowKey={d => d.id}
       // Required: tell the datagrid this row has row details
       getRowMeta={item => ({
         height: ROW_SIZE,
@@ -36,7 +36,7 @@ export default function Demo({ theme }: DemoProps) {
         <div style={{ height: '100%', width: '100%', padding: '1em' }}>
           <DataGrid<Prize>
             data={item.prizes || []}
-            getRowId={d => item.id + d.year}
+            getRowKey={d => item.id + d.year}
             columns={prizeColumns}
           />
         </div>

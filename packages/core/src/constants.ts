@@ -27,10 +27,10 @@ export const canUseDOM = Boolean(
     window.document.createElement
 )
 
-export const getColumnOffset = <T, N>(
+export const getColOffsetValue = <T, N>(
   r: DerivedColumnGroup<T, N> | DerivedColumn<T, N>
 ) => r.offset
-export const getRowOffset = <T>(r: DerivedRow<T>) => r.offset
+export const getRowOffsetValue = <T>(r: DerivedRow<T>) => r.offset
 
 export const EMPTY_DERIVED_COL_RESULT: DerivedColResult<any, any> = {
   areaPos: AreaPos.Start,

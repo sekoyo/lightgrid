@@ -136,7 +136,7 @@ export default function Demo({ theme }: DemoProps) {
     <DataGrid<GroupRow | Medalist>
       columns={columns}
       data={groupedData}
-      getRowId={d => d.id}
+      getRowKey={d => d.id}
       rowState={rowState}
       setRowState={setRowState}
       theme={theme === 'light' ? lightTheme : darkTheme}

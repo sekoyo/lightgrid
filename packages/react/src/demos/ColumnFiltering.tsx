@@ -315,7 +315,7 @@ export default function Demo({ theme }: DemoProps) {
     <DataGrid<Game>
       columns={gameColumns}
       data={data}
-      getRowId={d => d.id}
+      getRowKey={d => d.id}
       theme={theme === 'light' ? lightTheme : darkTheme}
       onFiltersChange={filterData}
     />

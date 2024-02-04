@@ -9,7 +9,7 @@ export default function Demo({ theme }: DemoProps) {
     <DataGrid<Animal>
       columns={columns}
       data={animalData}
-      getRowId={d => d.animal}
+      getRowKey={d => d.animal}
       theme={theme === 'light' ? lightTheme : darkTheme}
     />
   )

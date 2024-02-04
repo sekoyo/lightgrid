@@ -229,7 +229,7 @@ export type GetRowDetailsMeta<T> = (item: T) => RowDetailsMeta
 // Derived for internal use
 export interface DerivedRow<T> {
   item: T
-  rowId: ItemId
+  rowKey: ItemId
   hasDetails?: boolean
   size: number
   offset: number
@@ -238,7 +238,7 @@ export interface DerivedRow<T> {
 
 export interface DerivedDetailRow<T> {
   item: T
-  rowId: ItemId
+  rowKey: ItemId
   size: number
   offset: number
 }
@@ -279,7 +279,7 @@ export type OnFiltersChange<T, N> = (
 ) => void
 
 /** Signature of function which returns a unique row ID per row. */
-export type GetRowId<T> = (item: T) => ItemId
+export type GetRowKey<T> = (item: T) => ItemId
 
 /** Renders the row details and returns a node. */
 export type RenderRowDetails<T, N> = (item: T) => N
@@ -353,3 +353,13 @@ export enum Direction {
 
 type Dispatch<A> = (value: A) => void
 export type StateSetter<S> = Dispatch<S | ((prevState: S) => S)>
+
+export type GridApi = {
+  scrollTo: ({
+    columnKey,
+    rowKey,
+  }: {
+    columnKey?: ItemId
+    rowKey?: ItemId
+  }) => void
+}

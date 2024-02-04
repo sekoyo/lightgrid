@@ -20,7 +20,8 @@ export function isRowGroup<T>(row: GroupRow | T): row is GroupRow {
   return (row as GroupRow).isGroup
 }
 
-const makeRowId = (parentId: string, id: string) => (parentId ? `${parentId}>${id}` : id)
+const makeRowId = (parentId: string, id: string) =>
+  parentId ? `${parentId}>${id}` : id
 
 type RecursiveGroup<T> = { [key: string]: RecursiveGroup<T> | T[] }
 
@@ -61,9 +62,9 @@ function _groupBy<T extends object>(
     // For each group we encountered while putting
     // the item in place, increment its descendant
     // count by 1.
-    descRowIds.forEach(rowId => {
-      const count = descCount.get(rowId) ?? 0
-      descCount.set(rowId, count + 1)
+    descRowIds.forEach(rowKey => {
+      const count = descCount.get(rowKey) ?? 0
+      descCount.set(rowKey, count + 1)
     })
 
     return groups
@@ -106,29 +107,35 @@ export function groupData<T extends object>(
   const [groupedData, descCount] = groupBy(data, normalizedGroups)
   const groupedRows: Array<T | GroupRow> = []
 
-  function recurse(level: RecursiveGroup<T> | T[], depth: number, parentId: string) {
+  function recurse(
+    level: RecursiveGroup<T> | T[],
+    depth: number,
+    parentId: string
+  ) {
     if (Array.isArray(level)) {
       groupedRows.push(...level)
     } else {
       Object.keys(level).forEach(groupValue => {
-        const rowId = makeRowId(parentId, groupValue)
+        const rowKey = makeRowId(parentId, groupValue)
         const children = level[groupValue]
         const childIsArr = Array.isArray(children)
-        const childCount = childIsArr ? children.length : Object.keys(children).length
+        const childCount = childIsArr
+          ? children.length
+          : Object.keys(children).length
 
         const groupRow: GroupRow = {
           isGroup: true,
-          id: rowId,
+          id: rowKey,
           groupKey: normalizedGroups[depth].key,
           value: groupValue,
           childCount,
-          descendantCount: descCount.get(rowId) ?? 0,
+          descendantCount: descCount.get(rowKey) ?? 0,
           depth,
         }
 
         groupedRows.push(groupRow)
 
-        const rs = rowState[rowId]
+        const rs = rowState[rowKey]
 
         if (
           rs?.expanded ||

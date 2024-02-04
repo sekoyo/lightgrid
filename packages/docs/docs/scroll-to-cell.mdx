@@ -1,0 +1,28 @@
+---
+sidebar_position: 7
+---
+
+import { Demo } from '@site/src/components'
+
+# Scroll to cell
+
+To scroll to a row, column or both (a cell), get a handle to the imperative API:
+
+```ts
+const gridApi = useRef<GridApi>()
+
+<DataGrid
+  gridApi={gridApi}
+  // ...
+/>
+```
+
+On a user interaction you can then scroll to a particular row and/or column:
+
+```ts
+gridApi.current.scrollTo({ rowKey: 'someRowKey' }) // Vertical scroll
+gridApi.current.scrollTo({ columnKey: 'someColumnKey' }) // Horizontal scroll
+gridApi.current.scrollTo({ rowKey: 'someRowKey', columnKey: 'someColumnKey' }) // Scroll both
+```
+
+<Demo demoPath="scroll-to-cell" srcPath="ScrollToCell.tsx" height="400px" />

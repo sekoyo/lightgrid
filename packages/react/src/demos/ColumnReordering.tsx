@@ -81,7 +81,7 @@ export default function Demo({ theme }: DemoProps) {
       onColumnsChange={setColumns}
       enableColumnReorder
       data={someData}
-      getRowId={d => d}
+      getRowKey={d => d}
       theme={theme === 'light' ? lightTheme : darkTheme}
     />
   )

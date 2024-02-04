@@ -1,4 +1,4 @@
-import { getColumnOffset, getRowOffset } from './constants'
+import { getColOffsetValue, getRowOffsetValue } from './constants'
 import { type GridManager } from './GridManager'
 import { type CellPosition, type BodyAreaDesc } from './types'
 import { binarySearch } from './utils'
@@ -54,9 +54,13 @@ export abstract class GridPlugin<T, N> {
     const colIndex = binarySearch(
       area.colResult.items,
       scrolledX,
-      getColumnOffset
+      getColOffsetValue
     )
-    const rowIndex = binarySearch(area.rowResult.items, scrolledY, getRowOffset)
+    const rowIndex = binarySearch(
+      area.rowResult.items,
+      scrolledY,
+      getRowOffsetValue
+    )
 
     return {
       colIndex: area.colResult.items[colIndex].colIndex,

@@ -19,7 +19,7 @@ export default function Demo({ theme }: DemoProps) {
       enableColumnResize
       headerRowHeight={80}
       data={rankingsData}
-      getRowId={d => `${d.rank}${d.year}`}
+      getRowKey={d => `${d.rank}${d.year}`}
       theme={theme === 'light' ? lightTheme : darkTheme}
     />
   )

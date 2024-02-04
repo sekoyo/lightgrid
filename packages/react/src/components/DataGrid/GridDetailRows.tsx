@@ -15,7 +15,7 @@ export function GridDetailRows<T>({
     <>
       {itemDetails.map(detailRow => (
         <div
-          key={detailRow.rowId}
+          key={detailRow.rowKey}
           className="lg-detail-row"
           style={{
             height: detailRow.size,
