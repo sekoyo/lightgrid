@@ -2,8 +2,8 @@
   overflow: auto;
   scrollbar-color: var(--lgScrollThumb) var(--lgScrollTrack);
 
-  // Only add on mouse devices else measuring scrollbar with will misreport
-  // on mobile even though the scrollbar is an overlay and takes no space.
+  // Only add on mouse devices because touch has a nice looking scrollbar overlay
+  // and as soon as we style it stops being a nice overlay.
   @media (hover: hover) and (pointer: fine) {
     // Size
     &::-webkit-scrollbar {

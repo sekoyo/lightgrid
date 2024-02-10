@@ -826,9 +826,7 @@ export class GridManager<T, N> {
   }
 
   changeSort(columnKey: ItemId) {
-    console.log('resizing:', this.columnResizePlugin?.isResizing())
     if (this.columnResizePlugin?.isResizing()) {
-      console.log('F off')
       return
     }
     if (!this.onColumnsChange) {

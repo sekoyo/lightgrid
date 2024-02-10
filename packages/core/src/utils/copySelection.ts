@@ -80,7 +80,6 @@ export async function copySelection<T, N>(
   derivedCols: DerivedColsResult<T, N>,
   derivedRows: DerivedRowsResult<T>
 ) {
-  console.log('copySelection')
   const values: string[][] = []
 
   if (derivedRows.start.size) {

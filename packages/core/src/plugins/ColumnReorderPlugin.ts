@@ -288,7 +288,6 @@ export class ColumnReorderPlugin<T, N> extends GridPlugin<T, N> {
         ...this.colToMove,
         pin: newPin,
       })
-      console.log('onColumnsChange')
       this.mgr.onColumnsChange?.(newColumns)
     }
   }, 150)

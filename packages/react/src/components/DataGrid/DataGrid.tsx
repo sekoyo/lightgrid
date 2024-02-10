@@ -272,7 +272,7 @@ export function DataGrid<T, S = unknown>({
       tabIndex={0}
       style={mergedStyle}
     >
-      <div ref={scrollEl} className="lg-canvas lg-scroll" onScroll={onScroll}>
+      <div ref={scrollEl} className="lg-canvas" onScroll={onScroll}>
         <div
           className="lg-grid-sizer"
           style={{ width: derivedCols.size, height: contentHeight }}
