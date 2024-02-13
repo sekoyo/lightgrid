@@ -1,27 +1,21 @@
-## Next
-
-- Doc search
-- Doc intro page
-- Cell paste
-
-## Backlog
-
-### Bugs
+## Bugs
 
 - Clicking in row details selects closest parent cell. Don't change selection on item details clicks.
 
-### Tasks
+## Backlog
 
+- Doc intro page
+- Include instructions to use from CDN
+- Context menu plugin
+- Virtualize itemDetails
+- Sticky group header content to left/right
 - Row resizing
 - Example with loading placeholders in cells
 - Row re-ordering with drag'n'drop
 - When sorting col at edge auto scroll
-- Context menu plugin
 - Ability to default expand row details
-- Virtualize itemDetails
 - Single-cell mode cell selection
-- Sticky group header content to left/right
-- Include instructions to use from CDN
+- Cell paste
 
 ## Notes
 
