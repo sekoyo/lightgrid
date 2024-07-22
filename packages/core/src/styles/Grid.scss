@@ -42,15 +42,9 @@
   @include scroll;
 }
 
-.lg {
+.lg {  
   --lgCellHPadding: 10px;
-
-  *,
-  *::before,
-  *::after {
-    box-sizing: border-box;
-  }
-
+  
   position: relative;
   box-sizing: border-box;
   width: 100%;
@@ -62,11 +56,17 @@
   color: var(--lgTextColor);
   background: var(--lgCellOddBg, var(--lgBg));
 
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
   &-canvas {
     position: relative;
-    @include scroll;
     height: 100%;
     contain: strict;
+    @include scroll;
   }
 
   &-grid-sizer {

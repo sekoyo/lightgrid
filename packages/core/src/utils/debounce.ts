@@ -142,7 +142,7 @@ export function debounce<T extends (...args: any) => any>(
 
     lastArgs = lastThis = undefined
     lastInvokeTime = time
-    result = func.apply(thisArg, args)
+    result = args ? func.apply(thisArg, args) : func.call(thisArg)
     return result
   }
 
