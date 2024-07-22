@@ -31,7 +31,8 @@
   --scrollTrack: #ebebeb;
   --scrollThumbColor: #c2c2c5;
   --scrollThumbHoverColor: #a4a4a4;
-  --primaryBtnBg: rgb(104 104 222);
+  --primaryBtnBg: white;
+  --primaryBtnTextColor: black;
   --primaryTextColor: white;
   --secondaryBtnBg: rgb(227 231 238);
   --secondaryBtnTextColor: var(--textColor);
