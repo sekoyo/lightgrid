@@ -16,6 +16,7 @@
 - Ability to default expand row details
 - Single-cell mode cell selection
 - Cell paste
+- Row selection demo
 
 ## Notes
 
